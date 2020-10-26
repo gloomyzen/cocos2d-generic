@@ -3,8 +3,8 @@
 #include "coreModule/enums/statesEnums.h"
 #include <map>
 
-using namespace mb;
-using namespace mb::coreModule;
+using namespace common;
+using namespace common::coreModule;
 using namespace cocos2d;
 
 scenesFactoryInstance *currentFactoryInstance = nullptr;

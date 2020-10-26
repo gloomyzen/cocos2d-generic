@@ -4,7 +4,7 @@
 #include "coreModule/gameManager.h"
 #include "coreModule/scenes/scenesFactory/scenesFactoryInstance.h"
 
-using namespace mb::coreModule;
+using namespace common::coreModule;
 using namespace cocos2d;
 
 Scene *mainScene::createScene() {
@@ -19,7 +19,7 @@ bool mainScene::init() {
 
 #ifdef DEBUG
 	/// insert debug layer
-	auto imGuiLayer = mb::debugModule::imGuiLayer::create();
+	auto imGuiLayer = common::debugModule::imGuiLayer::create();
 	this->addChild(imGuiLayer, eGameLayers::DEBUG_LAYER);
 #endif
 

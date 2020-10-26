@@ -2,7 +2,7 @@
 #include <map>
 #include <string>
 
-using namespace mb::debugModule;
+using namespace common::debugModule;
 
 const std::map<eLogTypes, std::string> mapPrefix = {
 		{eLogTypes::INFO,    "[INFO] "},

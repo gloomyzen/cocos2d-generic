@@ -3,7 +3,7 @@
 #include "coreModule/nodes/nodeFactory.h"
 #include "coreModule/gameManager.h"
 
-using namespace mb::coreModule;
+using namespace common::coreModule;
 using namespace cocos2d;
 using namespace rapidjson;
 

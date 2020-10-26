@@ -2,8 +2,8 @@
 #include "coreModule/scenes/mainScene.h"
 #include "debugModule/logManager.h"
 
-using namespace mb;
-using namespace mb::coreModule;
+using namespace common;
+using namespace common::coreModule;
 
 gameManager *currentGameManager = nullptr;
 

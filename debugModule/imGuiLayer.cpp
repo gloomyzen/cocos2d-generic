@@ -3,8 +3,8 @@
 #include <imgui/misc/cpp/imgui_stdlib.h>
 #include "coreModule/nodes/nodeProperties.h"
 
-using namespace mb;
-using namespace mb::debugModule;
+using namespace common;
+using namespace common::debugModule;
 
 void imGuiLayer::_onStart() {
 	std::string layerName = "ImGUILayer";

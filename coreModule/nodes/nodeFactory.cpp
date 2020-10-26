@@ -6,7 +6,7 @@
 #include "dragonBones/cocos2dx/CCDragonBonesHeaders.h"
 #include "coreModule/nodes/armatureHolderNode.h"
 
-using namespace mb::coreModule;
+using namespace common::coreModule;
 using namespace cocos2d;
 using namespace cocos2d::ui;
 using namespace dragonBones;

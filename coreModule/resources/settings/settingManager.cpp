@@ -3,7 +3,7 @@
 #include "json/ostreamwrapper.h"
 #include "debugModule/logManager.h"
 
-using namespace mb::coreModule;
+using namespace common::coreModule;
 
 settingManager::settingManager(cocos2d::Size frameResolution, const cocos2d::Size largeResolution, const bool showDisplayStats) :
 		frameResolutionSize(frameResolution )

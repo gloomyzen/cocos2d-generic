@@ -1,16 +1,16 @@
-#ifndef MERCENARY_BATTLES_RESOURCEMANAGER_H
-#define MERCENARY_BATTLES_RESOURCEMANAGER_H
+#ifndef COMMON_RESOURCEMANAGER_H
+#define COMMON_RESOURCEMANAGER_H
 
 #include <map>
 #include <string>
 #include "coreModule/resources/loaders/jsonLoader.h"
 
-#define GET_RESOURCE_MANAGER() mb::coreModule::resourceManager::getInstance()
-#define GET_JSON_MANAGER() mb::coreModule::resourceManager::getInstance().getJsonLoader()
+#define GET_RESOURCE_MANAGER() common::coreModule::resourceManager::getInstance()
+#define GET_JSON_MANAGER() common::coreModule::resourceManager::getInstance().getJsonLoader()
 #define GET_JSON(L) GET_JSON_MANAGER()->loadJson(L)
 #define GET_JSON_PREF(L, K) GET_JSON_MANAGER()->loadJson(L, K)
 
-namespace mb {
+namespace common {
 
 	namespace coreModule {
 		class resourceManager {
@@ -25,7 +25,7 @@ namespace mb {
 			jsonLoader jsonLoaderInstance;
 		};
 	}
-}//mb::coreModule
+}//common::coreModule
 
 
-#endif //MERCENARY_BATTLES_RESOURCEMANAGER_H
+#endif //COMMON_RESOURCEMANAGER_H

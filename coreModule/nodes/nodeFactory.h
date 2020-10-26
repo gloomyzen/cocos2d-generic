@@ -1,5 +1,5 @@
-#ifndef MERCENARY_BATTLES_NODEFACTORY_H
-#define MERCENARY_BATTLES_NODEFACTORY_H
+#ifndef COMMON_NODEFACTORY_H
+#define COMMON_NODEFACTORY_H
 
 #include "cocos2d.h"
 #include <string>
@@ -7,9 +7,9 @@
 #include <functional>
 #include "json/document.h"
 
-#define GET_NODE_FACTORY() mb::coreModule::nodeFactory::getInstance()
+#define GET_NODE_FACTORY() common::coreModule::nodeFactory::getInstance()
 
-namespace mb {
+namespace common {
 	namespace coreModule {
 		using namespace cocos2d;
 
@@ -48,7 +48,7 @@ namespace mb {
 			bool inited = false;
 		};
 	}
-}//mb::coreModule
+}//common::coreModule
 
 
-#endif //MERCENARY_BATTLES_NODEFACTORY_H
+#endif //COMMON_NODEFACTORY_H

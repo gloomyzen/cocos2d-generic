@@ -1,11 +1,11 @@
-#ifndef MERCENARY_BATTLES_STATESENUMS_H
-#define MERCENARY_BATTLES_STATESENUMS_H
+#ifndef COMMON_STATESENUMS_H
+#define COMMON_STATESENUMS_H
 
 #include <map>
 #include <string>
 
 
-namespace mb {
+namespace common {
 
 	namespace coreModule {
 
@@ -21,6 +21,6 @@ namespace mb {
 				{BATTLE_SCENE, "battleScene"},
 		};
 	}
-}//mb::coreModule
+}//common::coreModule
 
-#endif //MERCENARY_BATTLES_STATESENUMS_H
+#endif //COMMON_STATESENUMS_H

@@ -1,12 +1,12 @@
-#ifndef MERCENARY_BATTLES_NODEPROPERTIES_H
-#define MERCENARY_BATTLES_NODEPROPERTIES_H
+#ifndef COMMON_NODEPROPERTIES_H
+#define COMMON_NODEPROPERTIES_H
 
 #include "debugModule/logManager.h"
 #include "cocos2d.h"
 #include <string>
 #include "json/document.h"
 
-namespace mb {
+namespace common {
 	using namespace cocos2d;
 
 	namespace coreModule {
@@ -26,6 +26,6 @@ namespace mb {
 			void parseData(Node *node, const rapidjson::GenericValue<rapidjson::UTF8<char>>::Array &array);
 		};
 	}
-}//mb::coreModule
+}//common::coreModule
 
-#endif //MERCENARY_BATTLES_NODEPROPERTIES_H
+#endif //COMMON_NODEPROPERTIES_H

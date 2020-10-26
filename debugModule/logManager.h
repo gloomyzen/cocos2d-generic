@@ -1,17 +1,17 @@
-#ifndef MERCENARY_BATTLES_LOGMANAGER_H
-#define MERCENARY_BATTLES_LOGMANAGER_H
+#ifndef COMMON_LOGMANAGER_H
+#define COMMON_LOGMANAGER_H
 
 #include <string>
 #include <iostream>
 #include <vector>
 #include <string>
 
-#define GET_LOGGER() mb::debugModule::loggerInstance::getInstance()
+#define GET_LOGGER() common::debugModule::loggerInstance::getInstance()
 #define LOG_INFO(W) GET_LOGGER().info(W)
 #define LOG_WARNING(W) GET_LOGGER().warning(W)
 #define LOG_ERROR(W) GET_LOGGER().error(W)
 
-namespace mb {
+namespace common {
 	namespace debugModule {
 
 		enum eLogTypes : size_t {
@@ -57,6 +57,6 @@ namespace mb {
 		};
 	}
 
-}//mb::debugModule
+}//common::debugModule
 
-#endif// MERCENARY_BATTLES_LOGMANAGER_H
+#endif// COMMON_LOGMANAGER_H

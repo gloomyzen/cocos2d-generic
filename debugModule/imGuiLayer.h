@@ -1,5 +1,5 @@
-#ifndef MERCENARY_BATTLES_IMGUILAYER_H
-#define MERCENARY_BATTLES_IMGUILAYER_H
+#ifndef COMMON_IMGUILAYER_H
+#define COMMON_IMGUILAYER_H
 
 #ifdef DEBUG
 
@@ -13,7 +13,7 @@
 #include "CCImGuiLayer.h"
 #include "dragonBones/cocos2dx/CCDragonBonesHeaders.h"
 
-namespace mb {
+namespace common {
 	namespace debugModule {
 		class imGuiLayer : public cocos2d::Layer {
 		protected:
@@ -158,7 +158,7 @@ namespace mb {
 			Node* lastTarget = nullptr;
 		};
 	}
-}//mb::debugModule
+}//common::debugModule
 
 #endif //DEBUG
-#endif //MERCENARY_BATTLES_IMGUILAYER_H
+#endif //COMMON_IMGUILAYER_H

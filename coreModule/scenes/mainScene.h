@@ -1,12 +1,12 @@
-#ifndef MERCENARY_BATTLES_MAINSCENE_H
-#define MERCENARY_BATTLES_MAINSCENE_H
+#ifndef COMMON_MAINSCENE_H
+#define COMMON_MAINSCENE_H
 
 #include "cocos2d.h"
 #include "coreModule/nodes/nodeProperties.h"
 #include "coreModule/enums/statesEnums.h"
 #include <vector>
 
-namespace mb {
+namespace common {
 	namespace coreModule {
 
 	using namespace cocos2d;
@@ -29,7 +29,7 @@ namespace mb {
 			cocos2d::Layer* gameLayer;
 		};
 	}
-}//mb::coreModule
+}//common::coreModule
 
 
-#endif //MERCENARY_BATTLES_MAINSCENE_H
+#endif //COMMON_MAINSCENE_H

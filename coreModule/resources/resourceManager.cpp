@@ -2,7 +2,7 @@
 #include "debugModule/logManager.h"
 #include "cocos2d.h"
 
-using namespace mb::coreModule;
+using namespace common::coreModule;
 
 resourceManager *currentResourceManager = nullptr;
 

@@ -1,5 +1,5 @@
-#ifndef MERCENARY_BATTLES_JSONLOADER_H
-#define MERCENARY_BATTLES_JSONLOADER_H
+#ifndef COMMON_JSONLOADER_H
+#define COMMON_JSONLOADER_H
 
 #include <fstream>
 #include "json/document.h"
@@ -9,7 +9,7 @@
 #include "json/ostreamwrapper.h"
 #include <string>
 
-namespace mb {
+namespace common {
 
 	namespace coreModule {
 		class jsonLoader {
@@ -26,7 +26,7 @@ namespace mb {
 			rapidjson::Document loadJson(const std::string &path);
 		};
 	}
-}//mb::coreModule
+}//common::coreModule
 
 
-#endif //MERCENARY_BATTLES_JSONLOADER_H
+#endif //COMMON_JSONLOADER_H

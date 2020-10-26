@@ -1,11 +1,11 @@
-#ifndef MERCENARY_BATTLES_ARMATUREHOLDERNODE_H
-#define MERCENARY_BATTLES_ARMATUREHOLDERNODE_H
+#ifndef COMMON_ARMATUREHOLDERNODE_H
+#define COMMON_ARMATUREHOLDERNODE_H
 
 #include "cocos2d.h"
 #include "dragonBones/cocos2dx/CCDragonBonesHeaders.h"
 #include <vector>
 
-namespace mb {
+namespace common {
 	namespace coreModule {
 		using namespace cocos2d;
 		using namespace dragonBones;
@@ -40,4 +40,4 @@ namespace mb {
 	}
 }
 
-#endif //MERCENARY_BATTLES_ARMATUREHOLDERNODE_H
+#endif //COMMON_ARMATUREHOLDERNODE_H

@@ -1,7 +1,7 @@
-#ifndef MERCENARY_BATTLES_LAYERSENUM_H
-#define MERCENARY_BATTLES_LAYERSENUM_H
+#ifndef COMMON_LAYERSENUM_H
+#define COMMON_LAYERSENUM_H
 
-namespace mb {
+namespace common {
 
 	namespace coreModule {
 
@@ -17,6 +17,6 @@ namespace mb {
 			DEBUG_LAYER = 99
 		};
 	}
-}//mb::coreModule
+}//common::coreModule
 
-#endif //MERCENARY_BATTLES_LAYERSENUM_H
+#endif //COMMON_LAYERSENUM_H

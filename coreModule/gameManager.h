@@ -1,13 +1,13 @@
-#ifndef MERCENARY_BATTLES_GAMEMANAGER_H
-#define MERCENARY_BATTLES_GAMEMANAGER_H
+#ifndef COMMON_GAMEMANAGER_H
+#define COMMON_GAMEMANAGER_H
 
 #include "cocos2d.h"
 #include "enums/layersEnum.h"
 #include "enums/statesEnums.h"
 
-#define GET_GAME_MANAGER() mb::coreModule::gameManager::getInstance()
+#define GET_GAME_MANAGER() common::coreModule::gameManager::getInstance()
 
-namespace mb {
+namespace common {
 
 	namespace coreModule {
 		class mainScene;
@@ -28,7 +28,7 @@ namespace mb {
 			mainScene* mainSceneIns = nullptr;
 		};
 	}
-}//mb::coreModule
+}//common::coreModule
 
 
-#endif //MERCENARY_BATTLES_GAMEMANAGER_H
+#endif //COMMON_GAMEMANAGER_H

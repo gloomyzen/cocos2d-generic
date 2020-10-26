@@ -1,9 +1,9 @@
-#ifndef MERCENARY_BATTLES_SETTINGMANAGER_H
-#define MERCENARY_BATTLES_SETTINGMANAGER_H
+#ifndef COMMON_SETTINGMANAGER_H
+#define COMMON_SETTINGMANAGER_H
 
 #include "cocos2d.h"
 
-namespace mb {
+namespace common {
 	namespace coreModule {
 		class settingManager {
 		private:
@@ -21,4 +21,4 @@ namespace mb {
 }
 
 
-#endif //MERCENARY_BATTLES_SETTINGMANAGER_H
+#endif //COMMON_SETTINGMANAGER_H

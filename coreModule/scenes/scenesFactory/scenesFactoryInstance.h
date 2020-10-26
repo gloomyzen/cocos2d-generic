@@ -1,5 +1,5 @@
-#ifndef MERCENARY_BATTLES_SCENESFACTORYINSTANCE_H
-#define MERCENARY_BATTLES_SCENESFACTORYINSTANCE_H
+#ifndef COMMON_SCENESFACTORYINSTANCE_H
+#define COMMON_SCENESFACTORYINSTANCE_H
 
 #include "cocos2d.h"
 #include "coreModule/enums/layersEnum.h"
@@ -8,9 +8,9 @@
 #include <functional>
 #include <string>
 
-#define GET_SCENES_FACTORY() mb::coreModule::scenesFactoryInstance::getInstance()
+#define GET_SCENES_FACTORY() common::coreModule::scenesFactoryInstance::getInstance()
 
-namespace mb {
+namespace common {
 
 	namespace coreModule {
 		using namespace cocos2d;
@@ -26,7 +26,7 @@ namespace mb {
 			std::map<eGameStates, std::function<Layer*(Layer*)>> states{};
 		};
 	}
-}//mb::coreModule
+}//common::coreModule
 
 
-#endif //MERCENARY_BATTLES_SCENESFACTORYINSTANCE_H
+#endif //COMMON_SCENESFACTORYINSTANCE_H
