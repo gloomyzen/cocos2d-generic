@@ -1,10 +1,10 @@
 #include "nodeFactory.h"
 #include <map>
 #include <string>
-#include "debugModule/logManager.h"
+#include "common/debugModule/logManager.h"
 #include "ui/CocosGUI.h"
 #include "dragonBones/cocos2dx/CCDragonBonesHeaders.h"
-#include "coreModule/nodes/armatureHolderNode.h"
+#include "common/coreModule/nodes/armatureHolderNode.h"
 
 using namespace common::coreModule;
 using namespace cocos2d;

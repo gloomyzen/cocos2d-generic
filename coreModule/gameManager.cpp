@@ -1,6 +1,6 @@
 #include "gameManager.h"
-#include "coreModule/scenes/mainScene.h"
-#include "debugModule/logManager.h"
+#include "common/coreModule/scenes/mainScene.h"
+#include "common/debugModule/logManager.h"
 
 using namespace common;
 using namespace common::coreModule;

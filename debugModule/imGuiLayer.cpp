@@ -1,7 +1,7 @@
 #ifdef DEBUG
 #include "imGuiLayer.h"
 #include <imgui/misc/cpp/imgui_stdlib.h>
-#include "coreModule/nodes/nodeProperties.h"
+#include "common/coreModule/nodes/nodeProperties.h"
 
 using namespace common;
 using namespace common::debugModule;

@@ -1,5 +1,5 @@
 #include "resourceManager.h"
-#include "debugModule/logManager.h"
+#include "common/debugModule/logManager.h"
 #include "cocos2d.h"
 
 using namespace common::coreModule;

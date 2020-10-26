@@ -1,7 +1,7 @@
 #include "nodeProperties.h"
-#include "coreModule/resources/resourceManager.h"
-#include "coreModule/nodes/nodeFactory.h"
-#include "coreModule/gameManager.h"
+#include "common/coreModule/resources/resourceManager.h"
+#include "common/coreModule/nodes/nodeFactory.h"
+#include "common/coreModule/gameManager.h"
 
 using namespace common::coreModule;
 using namespace cocos2d;

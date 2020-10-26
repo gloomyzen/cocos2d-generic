@@ -1,6 +1,6 @@
 #include "scenesFactoryInstance.h"
-#include "debugModule/logManager.h"
-#include "coreModule/enums/statesEnums.h"
+#include "common/debugModule/logManager.h"
+#include "common/coreModule/enums/statesEnums.h"
 #include <map>
 
 using namespace common;

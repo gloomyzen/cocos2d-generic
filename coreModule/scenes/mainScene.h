@@ -2,8 +2,8 @@
 #define COMMON_MAINSCENE_H
 
 #include "cocos2d.h"
-#include "coreModule/nodes/nodeProperties.h"
-#include "coreModule/enums/statesEnums.h"
+#include "common/coreModule/nodes/nodeProperties.h"
+#include "common/coreModule/enums/statesEnums.h"
 #include <vector>
 
 namespace common {

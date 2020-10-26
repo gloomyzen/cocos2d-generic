@@ -3,7 +3,7 @@
 
 #include <map>
 #include <string>
-#include "coreModule/resources/loaders/jsonLoader.h"
+#include "common/coreModule/resources/loaders/jsonLoader.h"
 
 #define GET_RESOURCE_MANAGER() common::coreModule::resourceManager::getInstance()
 #define GET_JSON_MANAGER() common::coreModule::resourceManager::getInstance().getJsonLoader()

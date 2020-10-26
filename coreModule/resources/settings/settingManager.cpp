@@ -1,7 +1,7 @@
 #include "settingManager.h"
 #include "json/document.h"
 #include "json/ostreamwrapper.h"
-#include "debugModule/logManager.h"
+#include "common/debugModule/logManager.h"
 
 using namespace common::coreModule;
 

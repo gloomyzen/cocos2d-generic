@@ -1,8 +1,8 @@
 #include "mainScene.h"
-#include "debugModule/logManager.h"
-#include "debugModule/imGuiLayer.h"
-#include "coreModule/gameManager.h"
-#include "coreModule/scenes/scenesFactory/scenesFactoryInstance.h"
+#include "common/debugModule/logManager.h"
+#include "common/debugModule/imGuiLayer.h"
+#include "common/coreModule/gameManager.h"
+#include "common/coreModule/scenes/scenesFactory/scenesFactoryInstance.h"
 
 using namespace common::coreModule;
 using namespace cocos2d;

@@ -1,7 +1,7 @@
 #ifndef COMMON_NODEPROPERTIES_H
 #define COMMON_NODEPROPERTIES_H
 
-#include "debugModule/logManager.h"
+#include "common/debugModule/logManager.h"
 #include "cocos2d.h"
 #include <string>
 #include "json/document.h"
