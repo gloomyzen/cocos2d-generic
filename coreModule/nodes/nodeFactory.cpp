@@ -1,6 +1,7 @@
 #include "nodeFactory.h"
 #include <map>
 #include <string>
+#include <utility>
 #include "common/debugModule/logManager.h"
 #include "ui/CocosGUI.h"
 #include "dragonBones/cocos2dx/CCDragonBonesHeaders.h"
@@ -221,4 +222,16 @@ Node *nodeFactory::createNodeWithType(const std::string &type) {
 
 void nodeFactory::init() {
 
+}
+
+bool nodeFactory::registerCustomNodeType(const std::string& type, std::function<Node *()> node) {
+	if (!inited) {
+		CCLOGERROR("nodeFactory::registerCustomNodeType: No initialized instance of the class! Type %s not registered!", type.c_str());
+		return false;
+	}
+	if (nodes.find(type) == nodes.end()) {
+		nodes[type] = std::move(node);
+		return true;
+	}
+	return false;
 }

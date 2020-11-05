@@ -43,6 +43,8 @@ namespace common {
 
 			Node* createNodeWithType(const std::string &type);
 
+			bool registerCustomNodeType(const std::string&, std::function<Node*()>);
+
 		private:
 			void init();
 			bool inited = false;
