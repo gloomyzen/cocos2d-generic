@@ -13,8 +13,8 @@ void nodeProperties::loadProperty(const std::string &path, Node *node) {
 		LOG_ERROR("Node::loadProperty Node has no identifier!");
 		return;
 	}
-	std::string pathNodes = "nodes/" + path;
-	std::string pathProperties = "properties/" + path;
+	std::string pathNodes = "properties/nodes/" + path;
+	std::string pathProperties = "properties/nodeProperties/" + path;
 
 	auto json = GET_JSON(pathNodes);
 	if (json.HasParseError() || !json.IsObject()) {
