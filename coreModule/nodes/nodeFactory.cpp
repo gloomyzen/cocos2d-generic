@@ -31,11 +31,24 @@ nodeFactory::nodeFactory() {
 /// Default node types
 	if (!inited) {
 		inited = true;
+		///Core types
 		nodes["node"] = []()->Node* { return new Node(); };
 		nodes["sprite"] = []()->Sprite* { return new Sprite(); };
 		nodes["label"] = []()->Label* { return new Label(); };
 		nodes["button"] = []()->Button* { return new Button(); };
 		nodes["layout"] = []()->Layout* { return new Layout(); };
+		nodes["clippingNode"] = []()->ClippingNode* {
+			//todo need fix this
+			ClippingNode * clipper = ClippingNode::create();
+			DrawNode * stencil = DrawNode::create();
+			stencil->setName("clipperStencil");
+			stencil->drawSolidCircle(Vec2(100,
+										  100), 100, 0, 200, Color4F::MAGENTA);
+			clipper->setStencil(stencil);
+			clipper->setInverted(true);
+			return clipper;
+		};
+		///External types
 		nodes["dragonbones"] = []()->armatureHolderNode* { return new armatureHolderNode(); };
 	}
 }
