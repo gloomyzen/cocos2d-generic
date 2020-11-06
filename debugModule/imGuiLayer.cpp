@@ -164,7 +164,7 @@ ImRect imGuiLayer::renderPreferences(Node *node) {
 		 */
 		auto nodeAnchor = node->getAnchorPoint();
 		float vecAnchor[2] = {nodeAnchor.x, nodeAnchor.y};
-		ImGui::DragFloat2("Anchor X/Y", vecAnchor, 0.1f, -1.f, 1.f);
+		ImGui::DragFloat2("Anchor X/Y", vecAnchor, 0.1f, -100.f, 100.f);
 		if (vecAnchor[0] != nodeAnchor.x || vecAnchor[1] != nodeAnchor.y) {
 			node->setAnchorPoint({vecAnchor[0], vecAnchor[1]});
 		}

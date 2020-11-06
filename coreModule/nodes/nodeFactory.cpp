@@ -28,6 +28,7 @@ static std::map<std::string, bool> usedArmature{};
 nodeFactory *currentNodeFactory = nullptr;
 
 nodeFactory::nodeFactory() {
+/// Default node types
 	if (!inited) {
 		inited = true;
 		nodes["node"] = []()->Node* { return new Node(); };
@@ -66,7 +67,7 @@ void nodeFactory::getComponents(Node *node, const std::string &componentName, co
 				if (positions.Size() == 2) {
 					node->setPosition(positions[0].GetFloat(), positions[1].GetFloat());
 				} else {
-					LOG_ERROR(StringUtils::format("nodeFactory::getComponents: Component '%s' has '%s' position keys!",
+					LOG_ERROR(StringUtils::format("nodeFactory::getComponents: Component '%s' has wrong '%s' position keys!",
 												  componentName.c_str(), std::to_string(positions.Size()).c_str()));
 				}
 			}
@@ -75,7 +76,7 @@ void nodeFactory::getComponents(Node *node, const std::string &componentName, co
 				if (anchor.Size() == 2) {
 					node->setAnchorPoint(Vec2(anchor[0].GetFloat(), anchor[1].GetFloat()));
 				} else {
-					LOG_ERROR(StringUtils::format("nodeFactory::getComponents: Component '%s' has '%s' anchor keys!",
+					LOG_ERROR(StringUtils::format("nodeFactory::getComponents: Component '%s' has wrong '%s' anchor keys!",
 												  componentName.c_str(), std::to_string(anchor.Size()).c_str()));
 				}
 			}
@@ -87,7 +88,7 @@ void nodeFactory::getComponents(Node *node, const std::string &componentName, co
 					_size.height = size[1].GetFloat();
 					node->setContentSize(_size);
 				} else {
-					LOG_ERROR(StringUtils::format("nodeFactory::getComponents: Component '%s' has '%s' size keys!",
+					LOG_ERROR(StringUtils::format("nodeFactory::getComponents: Component '%s' has wrong '%s' size keys!",
 												  componentName.c_str(), std::to_string(size.Size()).c_str()));
 				}
 			}
@@ -96,6 +97,19 @@ void nodeFactory::getComponents(Node *node, const std::string &componentName, co
 			}
 			if (object.HasMember("rotation") && object["rotation"].IsNumber()) {
 				node->setRotation(object["rotation"].GetFloat());
+			}
+			if (object.HasMember("stretch")) {
+				auto stretch = object["stretch"].GetArray();
+				if (stretch.Size() == 2) {
+					auto visibleSize = Director::getInstance()->getVisibleSize();
+					auto _size = cocos2d::Size();
+					_size.width = visibleSize.width * stretch[0].GetFloat();
+					_size.height = visibleSize.height * stretch[1].GetFloat();
+					node->setContentSize(_size);
+				} else {
+					LOG_ERROR(StringUtils::format("nodeFactory::getComponents: Component '%s' has wrong '%s' stretch keys!",
+												  componentName.c_str(), std::to_string(stretch.Size()).c_str()));
+				}
 			}
 		}
 			break;
