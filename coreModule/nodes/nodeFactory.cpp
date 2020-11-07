@@ -243,7 +243,7 @@ Node *nodeFactory::createNodeWithType(const std::string &type) {
 	if (nodes.count(type)) {
 		return nodes[type]();
 	}
-	LOG_ERROR("nodeFactory::createNodeWithType: Type of node '" + type + "' not registered! Created simple node.");
+	LOG_ERROR("nodeFactory::createNodeWithType: Type of node '" + type + "' not registered! Created default node.");
 	return Node::create();
 }
 
