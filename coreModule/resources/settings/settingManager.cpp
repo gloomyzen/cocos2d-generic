@@ -5,63 +5,65 @@
 
 using namespace common::coreModule;
 
-settingManager::settingManager(cocos2d::Size frameResolution, const cocos2d::Size largeResolution, const bool showDisplayStats) :
-		frameResolutionSize(frameResolution )
-		, largeResolutionSize(largeResolution )
-		, showDisplayStats( showDisplayStats )
-{}
+settingManager::settingManager(const sDisplaySize frameResolution, const sDisplaySize largeResolution,
+							   const bool showDisplayStats) :
+		frameResolutionSize(frameResolution), largeResolutionSize(largeResolution),
+		showDisplayStats(showDisplayStats) {}
 
-settingManager settingManager::load()
-{
+settingManager settingManager::load() {
 	// default
-	cocos2d::Size frameResolution( 1024, 768 );
-	cocos2d::Size largeResolution( 480, 320 );
+	sDisplaySize frameResolution(1024.f, 768.f, 1.f);
+	sDisplaySize largeResolution(480.f, 320.f, 1.f);
 	auto stats = false;
 
 	// load json
-	const std::string& regionStr = cocos2d::FileUtils::getInstance()->getStringFromFile( "config/setting.json" );
+	const std::string &regionStr = cocos2d::FileUtils::getInstance()->getStringFromFile("config/setting.json");
 	rapidjson::Document doc;
-	doc.Parse<0>( regionStr.c_str() );
+	doc.Parse<0>(regionStr.c_str());
 
-	if( doc.HasParseError() )
-	{
+	if (doc.HasParseError()) {
 		LOG_ERROR("settingManager::load: json parse error");
 		return settingManager(frameResolution, largeResolution, stats);
 	}
 
-	if( doc.IsNull() )
-	{
+	if (doc.IsNull()) {
 		LOG_ERROR("settingManager::load: json is empty");
 		return settingManager(frameResolution, largeResolution, stats);
 	}
 
-	const auto frameResolutionItr = doc.FindMember( "frameResolution" );
-	if( doc.MemberEnd() != frameResolutionItr )
-	{
-		const auto xItr = frameResolutionItr->value.FindMember( "x" );
-		const auto yItr = frameResolutionItr->value.FindMember( "y" );
-		if( frameResolutionItr->value.MemberEnd() != xItr
+	const auto frameResolutionItr = doc.FindMember("frameResolution");
+	if (doc.MemberEnd() != frameResolutionItr) {
+		const auto xItr = frameResolutionItr->value.FindMember("x");
+		const auto yItr = frameResolutionItr->value.FindMember("y");
+		const auto scaleItr = frameResolutionItr->value.FindMember("desktopScale");
+		if (frameResolutionItr->value.MemberEnd() != xItr
 			&& xItr->value.IsInt()
 			&& frameResolutionItr->value.MemberEnd() != yItr
-			&& yItr->value.IsInt() )
-			frameResolution.setSize( xItr->value.GetInt(), yItr->value.GetInt() );
+			&& yItr->value.IsInt()
+			&& frameResolutionItr->value.MemberEnd() != scaleItr
+			&& scaleItr->value.IsFloat()
+				)
+			frameResolution = sDisplaySize(xItr->value.GetInt(), yItr->value.GetInt(), scaleItr->value.GetFloat());
 	}
 
-	const auto largeResolutionItr = doc.FindMember( "largeResolution" );
-	if( doc.MemberEnd() != largeResolutionItr )
-	{
-		const auto xItr = largeResolutionItr->value.FindMember( "x" );
-		const auto yItr = largeResolutionItr->value.FindMember( "y" );
-		if( largeResolutionItr->value.MemberEnd() != xItr
+	const auto largeResolutionItr = doc.FindMember("largeResolution");
+	if (doc.MemberEnd() != largeResolutionItr) {
+		const auto xItr = largeResolutionItr->value.FindMember("x");
+		const auto yItr = largeResolutionItr->value.FindMember("y");
+		const auto scaleItr = largeResolutionItr->value.FindMember("desktopScale");
+		if (largeResolutionItr->value.MemberEnd() != xItr
 			&& xItr->value.IsInt()
 			&& frameResolutionItr->value.MemberEnd() != yItr
-			&& yItr->value.IsInt() )
-			largeResolution.setSize( xItr->value.GetInt(), yItr->value.GetInt() );
+			&& yItr->value.IsInt()
+			&& frameResolutionItr->value.MemberEnd() != scaleItr
+			&& scaleItr->value.IsFloat()
+				)
+			largeResolution = sDisplaySize(xItr->value.GetInt(), yItr->value.GetInt(), scaleItr->value.GetFloat());
 	}
 
-	const auto showDisplayStatsItr = doc.FindMember( "showDisplayStats" );
-	if( doc.MemberEnd() != showDisplayStatsItr )
+	const auto showDisplayStatsItr = doc.FindMember("showDisplayStats");
+	if (doc.MemberEnd() != showDisplayStatsItr)
 		stats = showDisplayStatsItr->value.GetBool();
 
-	return settingManager( frameResolution, largeResolution, stats );
+	return settingManager(frameResolution, largeResolution, stats);
 }

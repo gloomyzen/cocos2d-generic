@@ -5,16 +5,27 @@
 
 namespace common {
 	namespace coreModule {
+
+		struct sDisplaySize {
+			cocos2d::Size size;
+			float scale;
+			sDisplaySize(float width, float height, float desktopScale) {
+				size.width = width;
+				size.height = height;
+				scale = desktopScale;
+			}
+		};
+
 		class settingManager {
 		private:
-			settingManager(cocos2d::Size frameResolution, const cocos2d::Size largeResolution, const bool showDisplayStats);
+			settingManager(const sDisplaySize frameResolution, const sDisplaySize largeResolution, const bool showDisplayStats);
 
 		public:
 
 			static settingManager load();
 
-			const cocos2d::Size frameResolutionSize;
-			const cocos2d::Size largeResolutionSize;
+			const sDisplaySize frameResolutionSize;
+			const sDisplaySize largeResolutionSize;
 			const bool showDisplayStats;
 		};
 	}
