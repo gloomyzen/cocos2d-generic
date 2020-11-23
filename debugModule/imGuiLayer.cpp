@@ -160,6 +160,15 @@ ImRect imGuiLayer::renderPreferences(Node *node) {
 			node->setPosition3D(vec3);
 		}
 		/**
+         * Pivot
+         */
+		auto nodePivot = node->getPivotPoint();
+		float vecPivot[2] = {nodePivot.x, nodePivot.y};
+		ImGui::DragFloat2("Pivot X/Y", vecPivot, 0.1f, -10.f, 10.f);
+		if (vecPivot[0] != nodePivot.x || vecPivot[1] != nodePivot.y) {
+			node->setPivotPoint({vecPivot[0], vecPivot[1]});
+		}
+		/**
 		 * Anchor
 		 */
 		auto nodeAnchor = node->getAnchorPoint();

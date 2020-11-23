@@ -84,6 +84,15 @@ void nodeFactory::getComponents(Node *node, const std::string &componentName, co
 												  componentName.c_str(), std::to_string(positions.Size()).c_str()));
 				}
 			}
+			if (object.HasMember("pivot")) {
+				auto pivot = object["pivot"].GetArray();
+				if (pivot.Size() == 2) {
+					node->setPivotPoint(Vec2(pivot[0].GetFloat(), pivot[1].GetFloat()));
+				} else {
+					LOG_ERROR(StringUtils::format("nodeFactory::getComponents: Component '%s' has wrong '%s' pivot keys!",
+												  componentName.c_str(), std::to_string(pivot.Size()).c_str()));
+				}
+			}
 			if (object.HasMember("anchor")) {
 				auto anchor = object["anchor"].GetArray();
 				if (anchor.Size() == 2) {
