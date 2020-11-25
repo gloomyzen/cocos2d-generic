@@ -115,7 +115,16 @@ void nodeFactory::getComponents(Node *node, const std::string &componentName, co
 				}
 			}
 			if (object.HasMember("scale") && object["scale"].IsNumber()) {
-				//todo
+				auto scale = object["scale"].GetFloat();
+				node->setScale(scale);
+			} else if (object.HasMember("scale") && object["scale"].IsArray()) {
+				auto scale = object["scale"].GetArray();
+				if (scale.Size() == 2) {
+					node->setScale(scale[0].GetFloat(), scale[1].GetFloat());
+				} else {
+					LOG_ERROR(StringUtils::format("nodeFactory::getComponents: Component '%s' has wrong '%s' scale keys!",
+												  componentName.c_str(), std::to_string(scale.Size()).c_str()));
+				}
 			}
 			if (object.HasMember("rotation") && object["rotation"].IsNumber()) {
 				node->setRotation(object["rotation"].GetFloat());
