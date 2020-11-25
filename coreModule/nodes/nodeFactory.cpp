@@ -19,6 +19,7 @@ std::map<std::string, eNodeFactory> componentsMap = {
 		{"LabelComponent", eNodeFactory::LABEL_COMPONENT},
 		{"ButtonComponent", eNodeFactory::BUTTON_COMPONENT},
 		{"DragonbonesComponent", eNodeFactory::DRAGONBONES_COMPONENT},
+		{"ColorComponent", eNodeFactory::COLOR_COMPONENT},
 };
 std::map<std::string, std::function<Node*()>> nodes{};
 
@@ -247,6 +248,25 @@ void nodeFactory::getComponents(Node *node, const std::string &componentName, co
 				}
 			} else {
 				LOG_ERROR(StringUtils::format("nodeFactory::getComponents: Component '%s' no has DragonBones node type!", componentName.c_str()));
+			}
+		}
+			break;
+		case COLOR_COMPONENT: {
+			if (object.HasMember("color") && object["color"].IsArray()) {
+				auto color = object["color"].GetArray();
+				if (color.Size() >= 3 && color.Size() <= 4) {
+					Color3B rgb;
+					rgb.r = static_cast<uint8_t>(color[0].GetFloat());
+					rgb.g = static_cast<uint8_t>(color[1].GetFloat());
+					rgb.b = static_cast<uint8_t>(color[2].GetFloat());
+					node->setColor(rgb);
+					if (color.Size() == 4) {
+						node->setOpacity(static_cast<uint8_t>(color[3].GetFloat()));
+					}
+				} else {
+					LOG_ERROR(StringUtils::format("nodeFactory::getComponents: Component '%s' has wrong '%s' color keys!",
+												  componentName.c_str(), std::to_string(color.Size()).c_str()));
+				}
 			}
 		}
 			break;
