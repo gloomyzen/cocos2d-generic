@@ -10,12 +10,15 @@
 #define LOG_INFO(W) GET_LOGGER().info(W)
 #define LOG_WARNING(W) GET_LOGGER().warning(W)
 #define LOG_ERROR(W) GET_LOGGER().error(W)
+#define LOGMANAGER_ITEMS_LIMIT 150
 
 namespace common {
 	namespace debugModule {
 
 		enum class eLogTypes : size_t {
-			INFO, WARNING, ERROR
+			INFO = 0,
+			WARNING,
+			ERROR
 		};
 
 		struct sLogMessage {
@@ -40,11 +43,6 @@ namespace common {
 			void error(const std::string &message);
 
 		private:
-			/**
-			 * Получение префикса типа события
-			 * @return std::string
-			 */
-			std::string getType(const eLogTypes &);
 
 			void addLogMessage(sLogMessage *);
 
