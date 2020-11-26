@@ -14,7 +14,7 @@
 namespace common {
 	namespace debugModule {
 
-		enum eLogTypes : size_t {
+		enum class eLogTypes : size_t {
 			INFO, WARNING, ERROR
 		};
 
