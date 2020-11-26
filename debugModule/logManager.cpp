@@ -9,21 +9,21 @@ void logManager::info(const std::string &message) {
 #ifdef DEBUG
 	CCLOG("[INFO] %s", message.c_str());
 #endif// DEBUG
-	addLogMessage(new sLogMessage(eLogTypes::INFO, message));
+	addLogMessage(new sLogMessage(eLogTypes::LOG_INFO, message));
 }
 
 void logManager::warning(const std::string &message) {
 #ifdef DEBUG
 	CCLOGWARN("[WARNING] %s", message.c_str());
 #endif// DEBUG
-	addLogMessage(new sLogMessage(eLogTypes::WARNING, message));
+	addLogMessage(new sLogMessage(eLogTypes::LOG_WARNING, message));
 }
 
 void logManager::error(const std::string &message) {
 #ifdef DEBUG
 	CCLOGWARN("[ERROR] %s", message.c_str());
 #endif// DEBUG
-	addLogMessage(new sLogMessage(eLogTypes::ERROR, message));
+	addLogMessage(new sLogMessage(eLogTypes::LOG_ERROR, message));
 }
 
 void logManager::addLogMessage(sLogMessage *message) {

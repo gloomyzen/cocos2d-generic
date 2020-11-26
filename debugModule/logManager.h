@@ -16,9 +16,9 @@ namespace common {
 	namespace debugModule {
 
 		enum class eLogTypes : size_t {
-			INFO = 0,
-			WARNING,
-			ERROR
+			LOG_INFO = 0,
+			LOG_WARNING,
+			LOG_ERROR
 		};
 
 		struct sLogMessage {
