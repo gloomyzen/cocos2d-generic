@@ -17,16 +17,25 @@ void imGuiLayer::_onStart() {
 		static bool nodeEditorOpened = false;
 //		static bool engineInfoOpened = false;
 //		static bool devicesListOpened = false;
+		auto text_size = ImGui::CalcTextSize("Debug");
+		default_width = text_size.x * 1.8f;
 
-		if (ImGui::Button("Debug")) {
-			nodeEditorOpened = !nodeEditorOpened;
+
+		ImGui::SetNextWindowCollapsed(true, ImGuiCond_Once);
+		ImGui::SetNextWindowContentSize({default_width, 0});
+
+		if (ImGui::Begin("Debug", &m_enabled, ImGuiWindowFlags_NoTitleBar|ImGuiWindowFlags_NoResize|ImGuiWindowFlags_NoSavedSettings|ImGuiWindowFlags_AlwaysAutoResize)) {
+			if (ImGui::Button("Debug")) {
+				nodeEditorOpened = !nodeEditorOpened;
+			}
+//			if (ImGui::Button("Engine")) {
+//				engineInfoOpened = !engineInfoOpened;
+//			}
+//			if (ImGui::Button("Devices")) {
+//				devicesListOpened = !devicesListOpened;
+//			}
+			ImGui::End();
 		}
-//		if (ImGui::Button("Engine")) {
-//			engineInfoOpened = !engineInfoOpened;
-//		}
-//		if (ImGui::Button("Devices")) {
-//			devicesListOpened = !devicesListOpened;
-//		}
 
 		if (nodeEditorOpened) showNodeEditor(&nodeEditorOpened);
 //		if (engineInfoOpened) showEngineInfo(&engineInfoOpened);
@@ -42,8 +51,6 @@ void imGuiLayer::_onStart() {
 			CCIMGUI::getInstance()->removeCallback("hello");
 		}*/
 	}, "buttons");
-
-//	_addArmature();
 
 }
 

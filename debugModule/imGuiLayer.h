@@ -144,6 +144,9 @@ namespace common {
 			ImRect renderTree(cocos2d::Vector<Node*> n);
 			ImRect renderPreferences(Node *);
 
+
+			bool m_enabled = true;
+			float default_width = 0.0f;
 			/***
 		 	 * Debug button properties
 		 	 */
