@@ -64,7 +64,7 @@ void nodeProperties::parseComponents(Node *node, const std::string &pathProperti
 		return;
 	}
 	bool found = false;
-	for (auto &propList : propJson.GetObject()) {
+	for (auto &propList : propJson.GetObjectJ()) {
 		auto nodeName = propList.name.GetString();
 		if (!recursive && nodeName != node->getName()) {
 			continue;
@@ -85,7 +85,7 @@ void nodeProperties::parseComponents(Node *node, const std::string &pathProperti
 			const auto componentItr = propJson[nodeName].FindMember(component.c_str());
 			if(componentItr != propJson[nodeName].MemberEnd()) {
 				if (componentItr->value.IsObject()) {
-					GET_NODE_FACTORY().getComponents(targetNode, component, componentItr->value.GetObject());
+					GET_NODE_FACTORY().getComponents(targetNode, component, componentItr->value.GetObjectJ());
 				}
 			}
 		}
