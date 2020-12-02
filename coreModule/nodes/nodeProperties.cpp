@@ -43,6 +43,15 @@ void nodeProperties::loadProperty(const std::string &path, Node *node) {
 	parseComponents(usedNode, pathProperties, true);
 }
 
+void nodeProperties::loadComponent(const std::string &path, Node *node) {
+	if (node->getName().empty()) {
+		LOG_ERROR("Node::loadProperty Node has no identifier!");
+		return;
+	}
+	std::string pathProperties = "properties/nodeProperties/" + path;
+	parseComponents(node, pathProperties, true);
+}
+
 void nodeProperties::parseData(Node *node, const GenericValue<UTF8<char>>::Array &array) {
 	for (auto &item : array) {
 		if (item["type"].IsString() && item["name"].IsString()) {

@@ -15,10 +15,18 @@ namespace common {
 		public:
 			/***
 		 	 * Парсинг параметров из json файла
+		 	 * Полный парсинг нод и следом параметров каждой ноды
 		 	 * @param path relative path to file
 			 * @param node Node instance
 		 	 */
 			void loadProperty(const std::string &path, Node *node);
+			/***
+		 	 * Парсинг параметров из json файла
+		 	 * Парсинг только параметров одной ноды
+		 	 * @param path relative path to file
+			 * @param node Node instance
+		 	 */
+			void loadComponent(const std::string &path, Node *node);
 			void parseComponents(Node *node, const std::string &string, bool recursive = false);
 
 		private:
