@@ -171,7 +171,7 @@ ImRect imGuiLayer::renderPreferences(Node *node) {
          */
 		auto nodePivot = node->getPivotPoint();
 		float vecPivot[2] = {nodePivot.x, nodePivot.y};
-		ImGui::DragFloat2("Pivot X/Y", vecPivot, 0.1f, -10.f, 10.f);
+		ImGui::DragFloat2("Pivot X/Y", vecPivot, 0.01f, -10.f, 10.f);
 		if (vecPivot[0] != nodePivot.x || vecPivot[1] != nodePivot.y) {
 			node->setPivotPoint({vecPivot[0], vecPivot[1]});
 		}
@@ -180,7 +180,7 @@ ImRect imGuiLayer::renderPreferences(Node *node) {
 		 */
 		auto nodeAnchor = node->getAnchorPoint();
 		float vecAnchor[2] = {nodeAnchor.x, nodeAnchor.y};
-		ImGui::DragFloat2("Anchor X/Y", vecAnchor, 0.1f, -100.f, 100.f);
+		ImGui::DragFloat2("Anchor X/Y", vecAnchor, 0.01f, -100.f, 100.f);
 		if (vecAnchor[0] != nodeAnchor.x || vecAnchor[1] != nodeAnchor.y) {
 			node->setAnchorPoint({vecAnchor[0], vecAnchor[1]});
 		}
