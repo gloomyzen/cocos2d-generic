@@ -83,6 +83,7 @@ ImRect imGuiLayer::renderTree(cocos2d::Vector<Node *> n) {
 	}
 	for (auto &node : n) {
 		if (node->getName() == "debugNode") continue;
+		if (typeid(*node).name() == typeid(imGuiLayer).name()) continue;
 		ImGui::AlignTextToFramePadding();
 		std::string className = {};
 //		auto test = typeid(*node).name(); // need only for debug
