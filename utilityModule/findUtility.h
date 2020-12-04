@@ -3,6 +3,7 @@
 
 #include <tuple>
 #include <vector>
+#include "randomUtility.h"
 
 namespace common {
 	namespace utilityModule {
@@ -17,10 +18,12 @@ namespace common {
 				int res = 0, diff = 0, lastIndex = 0;
 				for (std::size_t i = 0; i < items.size(); ++i) {
 					if (i == 0 || std::abs(roll - items[i].first) < diff) {
-						//todo random from res
-//						if (res == items[i]) {}
+						if (res == items[i].first) {
+							if (randomUtility::generateBetween(1, 2) == 1) lastIndex = i;
+						} else {
+							lastIndex = i;
+						}
 						res = items[i].first;
-						lastIndex = i;
 						diff = std::abs(roll - items[i].first);
 					}
 				}
@@ -29,7 +32,7 @@ namespace common {
 					return items[lastIndex].second;
 				}
 
-				return T();
+				return nullptr;
 			}
 		};
 	}
