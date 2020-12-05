@@ -9,8 +9,8 @@ using namespace rapidjson;
 
 
 void nodeProperties::loadProperty(const std::string &path, Node *node) {
-	if (node->getName().empty()) {
-		LOG_ERROR("Node::loadProperty Node has no identifier!");
+	if (node == nullptr || node->getName().empty()) {
+		LOG_ERROR("Node::loadProperty Node is null or node has no identifier!");
 		return;
 	}
 	std::string pathNodes = "properties/nodes/" + path;
