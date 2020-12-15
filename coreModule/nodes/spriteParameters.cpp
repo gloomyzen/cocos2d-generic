@@ -10,5 +10,6 @@ static cocos2d::Texture2D::TexParams pixelartTexParams = {
 };
 
 void spriteParameters::setCorrectPixelartTexture(cocos2d::Sprite *sprite) {
-	sprite->getTexture()->setTexParameters(pixelartTexParams);
+	if (sprite->getTexture() != nullptr)
+		sprite->getTexture()->setTexParameters(pixelartTexParams);
 }
