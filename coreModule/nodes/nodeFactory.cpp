@@ -6,6 +6,7 @@
 #include "ui/CocosGUI.h"
 #include "dragonBones/cocos2dx/CCDragonBonesHeaders.h"
 #include "common/coreModule/nodes/armatureHolderNode.h"
+#include "common/coreModule/nodes/spriteParameters.h"
 
 using namespace common::coreModule;
 using namespace cocos2d;
@@ -150,6 +151,10 @@ void nodeFactory::getComponents(Node *node, const std::string &componentName, co
 				if (object.HasMember("image") && object["image"].IsString()) {
 					sprite->initWithFile(object["image"].GetString());
 				}
+				if (object.HasMember("pixel") && object["pixel"].IsBool() && object["pixel"].GetBool()) {
+					spriteParameters::setCorrectPixelartTexture(sprite);
+				}
+				//spriteParameters
 			} else {
 				LOG_ERROR(StringUtils::format("nodeFactory::getComponents: Component '%s' no has sprite node type!", componentName.c_str()));
 			}
