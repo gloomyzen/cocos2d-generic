@@ -129,7 +129,6 @@ ImRect imGuiLayer::renderPreferences(Node *node) {
 	if (ImGui::CollapsingHeader("General info")) {
 		ImGui::Text("Node Name(ID) %s", node->getName().c_str());
 		ImGui::Text("Node GUI %d", node->_ID);
-		ImGui::Text("%s", node->getDescription().c_str());
 		if (node->isRunning()) {
 			auto active = node->isVisible();
 			auto tempActive = active;

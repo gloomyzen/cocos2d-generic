@@ -27,9 +27,9 @@ namespace common {
 			 * @param node Node instance
 		 	 */
 			void loadComponent(const std::string &path, Node *node);
-			void parseComponents(Node *node, const std::string &string, bool recursive = false);
 
 		private:
+			void parseComponents(Node *node, const std::string &string, bool recursive = false);
 			void parseData(Node *node, const rapidjson::GenericValue<rapidjson::UTF8<char>>::Array &array);
 		};
 	}

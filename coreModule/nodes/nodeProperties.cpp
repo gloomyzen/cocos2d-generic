@@ -14,7 +14,6 @@ void nodeProperties::loadProperty(const std::string &path, Node *node) {
 		return;
 	}
 	std::string pathNodes = "properties/nodes/" + path;
-	std::string pathProperties = "properties/nodeProperties/" + path;
 
 	auto json = GET_JSON(pathNodes);
 	if (json.HasParseError() || !json.IsObject()) {
@@ -40,7 +39,7 @@ void nodeProperties::loadProperty(const std::string &path, Node *node) {
 		parseData(usedNode, json["child"].GetArray());
 	}
 
-	parseComponents(usedNode, pathProperties, true);
+	parseComponents(usedNode, path, true);
 }
 
 void nodeProperties::loadComponent(const std::string &path, Node *node) {
@@ -48,8 +47,7 @@ void nodeProperties::loadComponent(const std::string &path, Node *node) {
 		LOG_ERROR("Node::loadProperty Node has no identifier!");
 		return;
 	}
-	std::string pathProperties = "properties/nodeProperties/" + path;
-	parseComponents(node, pathProperties, true);
+	parseComponents(node, path, true);
 }
 
 void nodeProperties::parseData(Node *node, const GenericValue<UTF8<char>>::Array &array) {
@@ -65,7 +63,8 @@ void nodeProperties::parseData(Node *node, const GenericValue<UTF8<char>>::Array
 	}
 }
 
-void nodeProperties::parseComponents(Node *node, const std::string &pathProperties, bool recursive) {
+void nodeProperties::parseComponents(Node *node, const std::string &path, bool recursive) {
+	std::string pathProperties = "properties/nodeProperties/" + path;
 	auto propJson = GET_JSON(pathProperties);
 
 	if (propJson.HasParseError() || !propJson.IsObject()) {
@@ -83,7 +82,7 @@ void nodeProperties::parseComponents(Node *node, const std::string &pathProperti
 		if (!propJson[nodeName].IsObject()) {
 			continue;
 		}
-		auto *targetNode = node->findNode(nodeName, node);
+		auto *targetNode = node->findNode(nodeName);
 		if (targetNode == nullptr) continue;
 
 		for (const auto &component : componentPriorityList) {
