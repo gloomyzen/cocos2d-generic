@@ -6,7 +6,9 @@ using namespace common::coreModule;
 
 resourceManager *currentResourceManager = nullptr;
 
-resourceManager::resourceManager() {}
+resourceManager::resourceManager() {
+	settingManagerInstance = new settingManager();
+}
 
 resourceManager::~resourceManager() {}
 
@@ -25,4 +27,8 @@ resourceManager &resourceManager::getInstance() {
 
 jsonLoader *resourceManager::getJsonLoader() {
 	return &jsonLoaderInstance;
+}
+
+settingManager *resourceManager::getSettingManager() {
+	return settingManagerInstance;
 }

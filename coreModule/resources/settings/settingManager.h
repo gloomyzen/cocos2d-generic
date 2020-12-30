@@ -2,6 +2,8 @@
 #define COMMON_SETTINGMANAGER_H
 
 #include "cocos2d.h"
+#include <string>
+#include <vector>
 
 namespace common {
 	namespace coreModule {
@@ -9,24 +11,30 @@ namespace common {
 		struct sDisplaySize {
 			cocos2d::Size size;
 			float scale;
+			std::string path;
+			sDisplaySize* parent = nullptr;
 			sDisplaySize(float width, float height, float desktopScale) {
 				size.width = width;
 				size.height = height;
 				scale = desktopScale;
 			}
+			std::string getPath() {
+				std::string fullPath;
+				if (parent != nullptr) {
+					fullPath += getPath();
+				}
+				fullPath += path;
+				return fullPath;
+			}
 		};
 
 		class settingManager {
-		private:
-			settingManager(const sDisplaySize frameResolution, const sDisplaySize largeResolution, const bool showDisplayStats);
-
 		public:
+			settingManager();
+			void load();
 
-			static settingManager load();
-
-			const sDisplaySize frameResolutionSize;
-			const sDisplaySize largeResolutionSize;
-			const bool showDisplayStats;
+		private:
+			std::vector<sDisplaySize*> allResolutions;
 		};
 	}
 }
