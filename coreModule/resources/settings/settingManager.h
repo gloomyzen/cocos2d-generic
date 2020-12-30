@@ -3,17 +3,23 @@
 
 #include "cocos2d.h"
 #include <string>
-#include <vector>
+#include <utility>
+#include <map>
 
 namespace common {
 	namespace coreModule {
 
 		struct sDisplaySize {
+			std::string resolutionName;
 			cocos2d::Size size;
-			float scale;
+			float scale = 1.f;
 			std::string path;
+			std::string parentName;
 			sDisplaySize* parent = nullptr;
-			sDisplaySize(float width, float height, float desktopScale) {
+			bool showStats = false;
+			sDisplaySize() = default;
+			sDisplaySize(std::string name, float width, float height, float desktopScale) {
+				resolutionName = std::move(name);
 				size.width = width;
 				size.height = height;
 				scale = desktopScale;
@@ -34,7 +40,7 @@ namespace common {
 			void load();
 
 		private:
-			std::vector<sDisplaySize*> allResolutions;
+			std::map<std::string, sDisplaySize*> allResolutions;
 		};
 	}
 }
