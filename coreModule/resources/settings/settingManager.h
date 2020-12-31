@@ -38,10 +38,12 @@ namespace common {
 		public:
 			settingManager();
 			void load();
-			sDisplaySize* getSizeByName(std::string);
+			sDisplaySize* getCurrentSize(bool isMobile, std::string settingName = "");
 
 		private:
+			sDisplaySize* getSizeByName(std::string);
 			std::map<std::string, sDisplaySize*> allResolutions;
+			sDisplaySize* currentSize = nullptr;
 		};
 	}
 }

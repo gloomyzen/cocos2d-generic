@@ -87,3 +87,23 @@ sDisplaySize *settingManager::getSizeByName(std::string name) {
 		return it->second;
 	return nullptr;
 }
+
+sDisplaySize *settingManager::getCurrentSize(bool isMobile, std::string settingName) {
+	if (currentSize) return currentSize;
+
+	if (isMobile) {
+		auto director = cocos2d::Director::getInstance();
+		auto glview = director->getOpenGLView();
+
+	}
+	if (!settingName.empty()) {
+		auto resolution = getSizeByName(settingName);
+		if (resolution != nullptr) {
+			return resolution;
+		} else {
+			LOG_ERROR("settingManager::getCurrentSize: Can't detect valid resolution!");
+		}
+	}
+	LOG_ERROR("settingManager::getCurrentSize: Can't detect valid resolution!");
+	return nullptr;
+}

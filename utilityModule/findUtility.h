@@ -34,6 +34,23 @@ namespace common {
 
 				return nullptr;
 			}
+
+			template <typename T>
+			static int findClosestBetween(T current, T resolution, T step) {
+				int cntSteps = 0;
+				if (current > resolution) {
+					while (resolution + step <= current) {
+						resolution += step;
+						cntSteps++;
+					}
+				} else {
+					while (resolution >= current + step) {
+						current += step;
+						cntSteps++;
+					}
+				}
+				return cntSteps;
+			};
 		};
 	}
 }
