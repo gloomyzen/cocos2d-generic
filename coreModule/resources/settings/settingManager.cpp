@@ -68,5 +68,22 @@ void settingManager::load() {
 		LOG_ERROR("settingManager::load: no data in json file!");
 		allResolutions.insert({defaultResolution->resolutionName, defaultResolution});
 		return;
+	} else {
+		for (auto& item : allResolutions) {
+			if (item.second->parent == nullptr && !item.second->parentName.empty()) {
+				auto parent = getSizeByName(item.second->parentName);
+				if (parent != nullptr) {
+					item.second->parent = parent;
+				}
+ 			}
+		}
 	}
+}
+
+sDisplaySize *settingManager::getSizeByName(std::string name) {
+	if (name.empty()) return nullptr;
+	auto it = allResolutions.find(name);
+	if (it != allResolutions.end())
+		return it->second;
+	return nullptr;
 }

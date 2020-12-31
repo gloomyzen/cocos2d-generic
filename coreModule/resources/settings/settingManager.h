@@ -38,6 +38,7 @@ namespace common {
 		public:
 			settingManager();
 			void load();
+			sDisplaySize* getSizeByName(std::string);
 
 		private:
 			std::map<std::string, sDisplaySize*> allResolutions;
