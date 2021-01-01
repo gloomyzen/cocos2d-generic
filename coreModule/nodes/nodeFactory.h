@@ -24,12 +24,12 @@ namespace common {
 		};
 
 		static const std::vector<std::string> componentPriorityList = {
-				{"ButtonComponent"},
-				{"SpriteComponent"},
-				{"LabelComponent"},
-				{"DragonbonesComponent"},
-				{"TransformComponent"},
-				{"ColorComponent"}
+				{"buttonComponent"},
+				{"spriteComponent"},
+				{"labelComponent"},
+				{"dragonbonesComponent"},
+				{"transformComponent"},
+				{"colorComponent"}
 		};
 
 		class nodeFactory {

@@ -14,13 +14,13 @@ using namespace cocos2d::ui;
 using namespace dragonBones;
 
 std::map<std::string, eNodeFactory> componentsMap = {
-		{"TransformComponent",  eNodeFactory::TRANSFORM_COMPONENT},
-		{"SpriteComponent",     eNodeFactory::SPRITE_COMPONENT},
-		{"AnimspriteComponent", eNodeFactory::ANIMSPRITE_COMPONENT},
-		{"LabelComponent", eNodeFactory::LABEL_COMPONENT},
-		{"ButtonComponent", eNodeFactory::BUTTON_COMPONENT},
-		{"DragonbonesComponent", eNodeFactory::DRAGONBONES_COMPONENT},
-		{"ColorComponent", eNodeFactory::COLOR_COMPONENT},
+		{"transformComponent",  eNodeFactory::TRANSFORM_COMPONENT},
+		{"spriteComponent",     eNodeFactory::SPRITE_COMPONENT},
+		{"animspriteComponent", eNodeFactory::ANIMSPRITE_COMPONENT},
+		{"labelComponent", eNodeFactory::LABEL_COMPONENT},
+		{"buttonComponent", eNodeFactory::BUTTON_COMPONENT},
+		{"dragonbonesComponent", eNodeFactory::DRAGONBONES_COMPONENT},
+		{"colorComponent", eNodeFactory::COLOR_COMPONENT},
 };
 std::map<std::string, std::function<Node*()>> nodes{};
 
