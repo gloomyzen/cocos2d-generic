@@ -2,6 +2,7 @@
 #include "json/document.h"
 #include "json/ostreamwrapper.h"
 #include "common/debugModule/logManager.h"
+#include "common/utilityModule/findUtility.h"
 
 using namespace common::coreModule;
 
@@ -92,13 +93,31 @@ sDisplaySize *settingManager::getCurrentSize(bool isMobile, std::string settingN
 	if (currentSize) return currentSize;
 
 	if (isMobile) {
+		using namespace common::utilityModule;
 		auto director = cocos2d::Director::getInstance();
-		auto glview = director->getOpenGLView();
-
+		auto glView = director->getOpenGLView();
+		auto currentRes = glView->getDesignResolutionSize();
+		auto current = currentRes.height / currentRes.width;
+		int lastSteps = 0;
+		for (const auto& item : allResolutions) {
+			auto frame = item.second->size.height / item.second->size.width;
+			if (currentSize == nullptr) {
+				currentSize = item.second;
+				lastSteps = findUtility::findClosestBetween(current, frame, 0.1f);
+			} else {
+				auto newStep = findUtility::findClosestBetween(current, frame, 0.1f);
+				if (newStep < lastSteps) {
+					currentSize = item.second;
+					lastSteps = newStep;
+				}
+			}
+		}
+		return currentSize;
 	}
 	if (!settingName.empty()) {
 		auto resolution = getSizeByName(settingName);
 		if (resolution != nullptr) {
+			currentSize = resolution;
 			return resolution;
 		} else {
 			LOG_ERROR("settingManager::getCurrentSize: Can't detect valid resolution!");
