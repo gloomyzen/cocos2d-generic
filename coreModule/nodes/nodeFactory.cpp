@@ -165,12 +165,13 @@ void nodeFactory::getComponents(Node *node, const std::string &componentName, co
 		case LABEL_COMPONENT: {
 			if (auto label = dynamic_cast<Label*>(node)) {
 				if (object.HasMember("fontType") && object["fontType"].IsString() && object["fontType"].GetString() == std::string("ttf")) {
-					TTFConfig font;
-					font.fontFilePath = "fonts/arial.ttf";
-					font.fontSize = 12.f;
+					TTFConfig font = label->getTTFConfig();
+					if (font.fontFilePath.empty()) {
+						font.fontFilePath = "fonts/arial.ttf";
+					}
 
-					TextHAlignment hAlignment = TextHAlignment::LEFT;
-					float maxLineWidth = 0.f;
+					TextHAlignment hAlignment = label->getTextAlignment();
+					float maxLineWidth = label->getMaxLineWidth();
 					if (object.HasMember("fontSize") && object["fontSize"].IsNumber()) {
 						font.fontSize = object["fontSize"].GetFloat();
 					}

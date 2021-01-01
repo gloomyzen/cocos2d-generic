@@ -42,10 +42,6 @@ void nodeProperties::loadProperty(const std::string &path, Node *node) {
 	}
 
 	parseComponents(usedNode, path, true);
-
-	if (GET_RESOLUTION_SETTING()->getCurrentSize() != nullptr && !GET_RESOLUTION_SETTING()->getCurrentSize()->getPath().empty()) {
-		//todo update for resolution
-	}
 }
 
 void nodeProperties::loadComponent(const std::string &path, Node *node) {
@@ -70,11 +66,57 @@ void nodeProperties::parseData(Node *node, const GenericValue<UTF8<char>>::Array
 }
 
 void nodeProperties::parseComponents(Node *node, const std::string &path, bool recursive) {
-	std::string pathProperties = "properties/nodeProperties/" + path;
+	std::string pathProperties = StringUtils::format("properties/nodeProperties/%s", path.c_str());
 	auto propJson = GET_JSON(pathProperties);
 
 	if (propJson.HasParseError() || !propJson.IsObject()) {
-		LOG_ERROR("nodeProperties::parseProperty Json file '" + pathProperties + "' has errors or not found!");
+		LOG_ERROR(StringUtils::format("nodeProperties::parseProperty Json file '%s' has errors or not found!", pathProperties.c_str()));
+		return;
+	}
+	bool found = false;
+	for (auto &propList : propJson.GetObjectJ()) {
+		auto nodeName = propList.name.GetString();
+		if (!recursive && nodeName != node->getName()) {
+			continue;
+		} else if (!recursive && nodeName == node->getName()) {
+			found = true;
+		}
+		if (!propJson[nodeName].IsObject()) {
+			continue;
+		}
+		auto *targetNode = node->findNode(nodeName);
+		if (targetNode == nullptr) continue;
+
+		for (const auto &component : componentPriorityList) {
+			if (component.empty()) {
+				LOG_ERROR(StringUtils::format("nodeProperties::parseProperty bad property '%s' in 'componentPriorityList'", component.c_str()));
+				continue;
+			}
+			const auto componentItr = propJson[nodeName].FindMember(component.c_str());
+			if(componentItr != propJson[nodeName].MemberEnd()) {
+				if (componentItr->value.IsObject()) {
+					GET_NODE_FACTORY().getComponents(targetNode, component, componentItr->value.GetObjectJ());
+				}
+			}
+		}
+
+		if (found && !recursive) {
+			parseComponentsEx(node, path, recursive);
+			return;
+		}
+	}
+	parseComponentsEx(node, path, recursive);
+}
+
+void nodeProperties::parseComponentsEx(Node *node, const std::string &path, bool recursive) {
+	if (GET_RESOLUTION_SETTING()->getCurrentSize() == nullptr || GET_RESOLUTION_SETTING()->getCurrentSize()->getPath().empty()) {
+		return;
+	}
+	std::string resolutionPath = GET_RESOLUTION_SETTING()->getCurrentSize()->getPath();
+	std::string pathProperties = StringUtils::format("%s/properties/nodeProperties/%s", resolutionPath.c_str(), path.c_str());
+	auto propJson = GET_JSON(pathProperties);
+
+	if (propJson.HasParseError() || !propJson.IsObject()) {
 		return;
 	}
 	bool found = false;
