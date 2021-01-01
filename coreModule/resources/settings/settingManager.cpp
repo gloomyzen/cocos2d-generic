@@ -89,9 +89,7 @@ sDisplaySize *settingManager::getSizeByName(std::string name) {
 	return nullptr;
 }
 
-sDisplaySize *settingManager::getCurrentSize(bool isMobile, std::string settingName) {
-	if (currentSize) return currentSize;
-
+void settingManager::init(bool isMobile, std::string settingName) {
 	if (isMobile) {
 		using namespace common::utilityModule;
 		auto director = cocos2d::Director::getInstance();
@@ -112,17 +110,22 @@ sDisplaySize *settingManager::getCurrentSize(bool isMobile, std::string settingN
 				}
 			}
 		}
-		return currentSize;
 	}
 	if (!settingName.empty()) {
 		auto resolution = getSizeByName(settingName);
 		if (resolution != nullptr) {
 			currentSize = resolution;
-			return resolution;
 		} else {
 			LOG_ERROR("settingManager::getCurrentSize: Can't detect valid resolution!");
 		}
 	}
-	LOG_ERROR("settingManager::getCurrentSize: Can't detect valid resolution!");
+	if (currentSize == nullptr) {
+		LOG_ERROR("settingManager::getCurrentSize: Can't detect valid resolution!");
+	}
+}
+
+sDisplaySize *settingManager::getCurrentSize() {
+	if (currentSize != nullptr) return currentSize;
+	LOG_ERROR("settingManager::getCurrentSize: Current resolution not inited!");
 	return nullptr;
 }

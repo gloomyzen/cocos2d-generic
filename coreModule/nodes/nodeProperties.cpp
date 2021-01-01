@@ -2,6 +2,8 @@
 #include "common/coreModule/resources/resourceManager.h"
 #include "common/coreModule/nodes/nodeFactory.h"
 #include "common/coreModule/gameManager.h"
+#include "common/coreModule/resources/settings/settingManager.h"
+#include "common/coreModule/resources/resourceManager.h"
 
 using namespace common::coreModule;
 using namespace cocos2d;
@@ -40,6 +42,10 @@ void nodeProperties::loadProperty(const std::string &path, Node *node) {
 	}
 
 	parseComponents(usedNode, path, true);
+
+	if (GET_RESOLUTION_SETTING()->getCurrentSize() != nullptr && !GET_RESOLUTION_SETTING()->getCurrentSize()->getPath().empty()) {
+		//todo update for resolution
+	}
 }
 
 void nodeProperties::loadComponent(const std::string &path, Node *node) {

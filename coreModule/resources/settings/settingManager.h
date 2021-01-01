@@ -27,7 +27,7 @@ namespace common {
 			std::string getPath() {
 				std::string fullPath;
 				if (parent != nullptr) {
-					fullPath += getPath();
+					fullPath += parent->getPath();
 				}
 				fullPath += path;
 				return fullPath;
@@ -38,7 +38,8 @@ namespace common {
 		public:
 			settingManager();
 			void load();
-			sDisplaySize* getCurrentSize(bool isMobile, std::string settingName = "");
+			void init(bool isMobile, std::string settingName = "");
+			sDisplaySize* getCurrentSize();
 
 		private:
 			sDisplaySize* getSizeByName(std::string);
