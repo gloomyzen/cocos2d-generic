@@ -84,7 +84,7 @@ void nodeProperties::parseComponents(Node *node, const std::string &path, bool r
 		if (!propJson[nodeName].IsObject()) {
 			continue;
 		}
-		auto *targetNode = node->findNode(nodeName);
+		auto targetNode = node->findNode(nodeName);
 		if (targetNode == nullptr) continue;
 
 		for (const auto &component : componentPriorityList) {
