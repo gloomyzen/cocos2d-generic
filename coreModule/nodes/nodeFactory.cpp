@@ -302,6 +302,8 @@ void nodeFactory::getComponents(Node *node, const std::string &componentName, co
 					bounce = object["bounce"].GetBool();
 				}
 				scrollNode->setBounceEnabled(bounce);
+				scrollNode->setScrollBarEnabled(false);
+				scrollNode->setInertiaScrollEnabled(false);
 			}
 		}
 			break;

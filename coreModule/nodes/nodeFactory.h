@@ -31,7 +31,7 @@ namespace common {
 				{"dragonbonesComponent"},
 				{"transformComponent"},
 				{"colorComponent"},
-				{"scrollviewComponent"},
+				{"scrollViewComponent"},
 		};
 
 		class nodeFactory {
