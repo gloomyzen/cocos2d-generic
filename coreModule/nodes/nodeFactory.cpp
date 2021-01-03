@@ -21,6 +21,7 @@ std::map<std::string, eNodeFactory> componentsMap = {
 		{"buttonComponent", eNodeFactory::BUTTON_COMPONENT},
 		{"dragonbonesComponent", eNodeFactory::DRAGONBONES_COMPONENT},
 		{"colorComponent", eNodeFactory::COLOR_COMPONENT},
+		{"scrollViewComponent", eNodeFactory::SCROLL_VIEW_COMPONENT},
 };
 std::map<std::string, std::function<Node*()>> nodes{};
 
@@ -51,7 +52,8 @@ nodeFactory::nodeFactory() {
 			return clipper;
 		};
 		///External types
-		nodes["dragonbones"] = []()->armatureHolderNode* { return new armatureHolderNode(); };
+		nodes["dragonbones"] = []() { return new armatureHolderNode(); };
+		nodes["scrollView"] = []() { return ScrollView::create(); };
 	}
 }
 
@@ -273,6 +275,33 @@ void nodeFactory::getComponents(Node *node, const std::string &componentName, co
 					LOG_ERROR(StringUtils::format("nodeFactory::getComponents: Component '%s' has wrong '%s' color keys!",
 												  componentName.c_str(), std::to_string(color.Size()).c_str()));
 				}
+			}
+		}
+			break;
+		case SCROLL_VIEW_COMPONENT: {
+			if (auto scrollNode = dynamic_cast<ui::ScrollView*>(node)) {
+				auto direction = ui::ScrollView::Direction::NONE;
+				if (object.HasMember("direction") && object["direction"].IsString()) {
+					std::string conf = object["direction"].GetString();
+					if (conf == "none") {
+						direction = ui::ScrollView::Direction::NONE;
+					} else
+					if (conf == "horizontal") {
+						direction = ui::ScrollView::Direction::HORIZONTAL;
+					} else
+					if (conf == "vertical") {
+						direction = ui::ScrollView::Direction::VERTICAL;
+					} else
+					if (conf == "both") {
+						direction = ui::ScrollView::Direction::BOTH;
+					}
+				}
+				scrollNode->setDirection(direction);
+				bool bounce = false;
+				if (object.HasMember("bounce") && object["bounce"].IsBool()) {
+					bounce = object["bounce"].GetBool();
+				}
+				scrollNode->setBounceEnabled(bounce);
 			}
 		}
 			break;
