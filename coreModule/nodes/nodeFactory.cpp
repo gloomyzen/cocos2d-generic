@@ -302,8 +302,16 @@ void nodeFactory::getComponents(Node *node, const std::string &componentName, co
 					bounce = object["bounce"].GetBool();
 				}
 				scrollNode->setBounceEnabled(bounce);
-				scrollNode->setScrollBarEnabled(false);
-				scrollNode->setInertiaScrollEnabled(false);
+				bool scrollBar = false;
+				if (object.HasMember("scrollBar") && object["scrollBar"].IsBool()) {
+					scrollBar = object["scrollBar"].GetBool();
+				}
+				scrollNode->setScrollBarEnabled(scrollBar);
+				bool inertialScroll = false;
+				if (object.HasMember("inertialScroll") && object["inertialScroll"].IsBool()) {
+					inertialScroll = object["inertialScroll"].GetBool();
+				}
+				scrollNode->setInertiaScrollEnabled(inertialScroll);
 			}
 		}
 			break;
