@@ -12,12 +12,14 @@ namespace common {
 		enum eGameStates {
 			LOADING_SCREEN = 0,
 			MAIN_MENU,
-			BATTLE_SCENE
+			MAP_SCENE,
+			BATTLE_SCENE,
 		};
 
 		static std::map<eGameStates, std::string> mapSceneNames = {
 				{LOADING_SCREEN, "loadingScreenScene"},
 				{MAIN_MENU, "mainMenuScene"},
+				{MAP_SCENE, "mapScene"},
 				{BATTLE_SCENE, "battleScene"},
 		};
 	}

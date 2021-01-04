@@ -280,6 +280,7 @@ void nodeFactory::getComponents(Node *node, const std::string &componentName, co
 			break;
 		case SCROLL_VIEW_COMPONENT: {
 			if (auto scrollNode = dynamic_cast<ui::ScrollView*>(node)) {
+				//direction
 				auto direction = ui::ScrollView::Direction::NONE;
 				if (object.HasMember("direction") && object["direction"].IsString()) {
 					std::string conf = object["direction"].GetString();
@@ -297,21 +298,54 @@ void nodeFactory::getComponents(Node *node, const std::string &componentName, co
 					}
 				}
 				scrollNode->setDirection(direction);
+				//bounce
 				bool bounce = false;
 				if (object.HasMember("bounce") && object["bounce"].IsBool()) {
 					bounce = object["bounce"].GetBool();
 				}
 				scrollNode->setBounceEnabled(bounce);
+				//scroll bar
 				bool scrollBar = false;
 				if (object.HasMember("scrollBar") && object["scrollBar"].IsBool()) {
 					scrollBar = object["scrollBar"].GetBool();
 				}
 				scrollNode->setScrollBarEnabled(scrollBar);
+				//inertial scroll (best performance with horizontal or vertical)
 				bool inertialScroll = false;
 				if (object.HasMember("inertialScroll") && object["inertialScroll"].IsBool()) {
 					inertialScroll = object["inertialScroll"].GetBool();
 				}
 				scrollNode->setInertiaScrollEnabled(inertialScroll);
+				//inner container size
+				if (object.HasMember("containerSize") && object["containerSize"].IsArray()) {
+					auto containerSize = object["containerSize"].GetArray();
+					if (containerSize.Size() == 2) {
+						cocos2d::Size innerSize;
+						innerSize.width = containerSize[0].GetFloat();
+						innerSize.height = containerSize[1].GetFloat();
+						scrollNode->setInnerContainerSize( innerSize );
+					}
+				}
+				//start scroll position
+				//tip: will work only with both scroll direction
+				if (object.HasMember("scrollPosPercent") && object["scrollPosPercent"].IsArray()) {
+					auto scrollPosPercent = object["scrollPosPercent"].GetArray();
+					if (scrollPosPercent.Size() == 2) {
+						cocos2d::Vec2 jumpPos;
+						jumpPos.x = scrollPosPercent[0].GetFloat();
+						jumpPos.y = scrollPosPercent[1].GetFloat();
+						if (direction == ui::ScrollView::Direction::HORIZONTAL) {
+							scrollNode->jumpToPercentHorizontal(jumpPos.x);
+						} else
+						if (direction == ui::ScrollView::Direction::VERTICAL) {
+							scrollNode->jumpToPercentVertical(jumpPos.y);
+						} else
+						if (direction == ui::ScrollView::Direction::BOTH) {
+							scrollNode->jumpToPercentBothDirection( jumpPos );
+						}
+
+					}
+				}
 			}
 		}
 			break;
