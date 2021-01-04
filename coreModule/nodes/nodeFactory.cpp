@@ -327,7 +327,6 @@ void nodeFactory::getComponents(Node *node, const std::string &componentName, co
 					}
 				}
 				//start scroll position
-				//tip: will work only with both scroll direction
 				if (object.HasMember("scrollPosPercent") && object["scrollPosPercent"].IsArray()) {
 					auto scrollPosPercent = object["scrollPosPercent"].GetArray();
 					if (scrollPosPercent.Size() == 2) {
