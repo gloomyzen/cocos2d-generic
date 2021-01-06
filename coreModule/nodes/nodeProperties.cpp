@@ -70,7 +70,7 @@ void nodeProperties::parseComponents(Node *node, const std::string &path, bool r
 	auto propJson = GET_JSON(pathProperties);
 
 	if (propJson.HasParseError() || !propJson.IsObject()) {
-		LOG_ERROR(StringUtils::format("nodeProperties::parseProperty Json file '%s' has errors or not found!", pathProperties.c_str()));
+		LOG_ERROR(StringUtils::format("nodeProperties::parseProperty Json file '%s' contains errors or not found!", pathProperties.c_str()));
 		return;
 	}
 	bool found = false;
