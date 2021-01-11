@@ -24,6 +24,7 @@ namespace common {
 			 * @return rapidjson::Document
 			 */
 			rapidjson::Document loadJson(const std::string &path);
+			rapidjson::Document stringToJson(const std::string &str);
 		};
 	}
 }//common::coreModule
