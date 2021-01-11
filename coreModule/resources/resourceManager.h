@@ -10,7 +10,6 @@
 #define GET_JSON_MANAGER() common::coreModule::resourceManager::getInstance().getJsonLoader()
 #define GET_RESOLUTION_SETTING() common::coreModule::resourceManager::getInstance().getSettingManager()
 #define GET_JSON(L) GET_JSON_MANAGER()->loadJson(L)
-#define GET_JSON_PREF(L, K) GET_JSON_MANAGER()->loadJson(L, K)
 
 namespace common {
 
