@@ -17,6 +17,8 @@ namespace common {
 
 			template <typename T1, typename T2>
 			static T1 getRandomVector(std::vector<T2> array) {
+				if (array.empty()) return T1();
+
 				int key = randomUtility::generateBetween(0, array.size() - 1);
 
 				try {
