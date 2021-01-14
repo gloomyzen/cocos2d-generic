@@ -11,7 +11,6 @@ namespace common {
 
 	namespace coreModule {
 		class mainScene;
-		using namespace cocos2d;
 
 		class gameManager {
 		public:

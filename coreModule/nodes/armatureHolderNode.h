@@ -7,17 +7,16 @@
 
 namespace common {
 	namespace coreModule {
-		using namespace cocos2d;
 		using namespace dragonBones;
 
-		class armatureHolderNode : public Node {
+	class armatureHolderNode : public cocos2d::Node {
 		public:
 			static Node* createNode() {
 				return armatureHolderNode::create();
 			}
 
 			virtual bool init() {
-				if(!Node::init())
+				if(!cocos2d::Node::init())
 				{
 					return false;
 				}
