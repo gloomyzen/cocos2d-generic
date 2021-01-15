@@ -21,8 +21,26 @@ rapidjson::Document jsonLoader::stringToJson(const std::string &jsonStr) {
 	rapidjson::Document document{};
 	document.Parse<0>(jsonStr.c_str());
 	if (!document.HasParseError()) {
+		mergeJson(document, document, document.GetAllocator());
 		return document;
 	}
 	LOG_ERROR(STRING_FORMAT("GetParseError %u\n", document.GetParseError()));
 	return nullptr;
+}
+
+void jsonLoader::mergeJson(rapidjson::Value& target, rapidjson::Value& source, rapidjson::Value::AllocatorType& allocator) {
+	if (!target.IsObject() || !source.IsObject()) return;
+
+	for (rapidjson::Value::MemberIterator item = source.MemberBegin(); item != source.MemberEnd(); ++item) {
+		if (!item->name.IsString()) {
+			target.AddMember(item->name, item->value, allocator);
+		} else {
+			auto find = target.FindMember(item->name);
+			if (find != target.MemberEnd() && find->value.IsObject()) {
+				mergeJson(find->value, item->value, allocator);
+			} else {
+				target.AddMember(item->name, item->value, allocator);
+			}
+		}
+	}
 }

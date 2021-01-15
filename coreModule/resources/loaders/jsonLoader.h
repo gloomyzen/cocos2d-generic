@@ -25,6 +25,9 @@ namespace common {
 			 */
 			rapidjson::Document loadJson(const std::string &path);
 			rapidjson::Document stringToJson(const std::string &str);
+
+		private:
+			void mergeJson(rapidjson::Value& a, rapidjson::Value& b, rapidjson::Value::AllocatorType& allocator);
 		};
 	}
 }//common::coreModule
