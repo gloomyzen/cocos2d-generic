@@ -31,16 +31,16 @@ rapidjson::Document jsonLoader::stringToJson(const std::string &jsonStr) {
 void jsonLoader::mergeJson(rapidjson::Value& target, rapidjson::Value& source, rapidjson::Value::AllocatorType& allocator) {
 	if (!target.IsObject() || !source.IsObject()) return;
 
+	std::vector<rapidjson::GenericValue<rapidjson::UTF8<char>>::MemberIterator> list;
 	for (rapidjson::Value::MemberIterator item = source.MemberBegin(); item != source.MemberEnd(); ++item) {
-		if (!item->name.IsString()) {
-			target.AddMember(item->name, item->value, allocator);
+		auto find = target.FindMember(item->name);
+		if (find != target.MemberEnd() && find->value.IsObject()) {
+			mergeJson(find->value, item->value, allocator);
 		} else {
-			auto find = target.FindMember(item->name);
-			if (find != target.MemberEnd() && find->value.IsObject()) {
-				mergeJson(find->value, item->value, allocator);
-			} else {
-				target.AddMember(item->name, item->value, allocator);
-			}
+			list.push_back(item);
 		}
+	}
+	for (const auto& item : list) {
+		target.AddMember(item->name, item->value, allocator);
 	}
 }
