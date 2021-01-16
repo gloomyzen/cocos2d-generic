@@ -115,11 +115,9 @@ namespace common {
 					}
 
 					if (found && !recursive) {
-						parseComponentsEx(node, path, recursive);
 						return;
 					}
 				}
-				parseComponentsEx(node, path, recursive);
 			}
 
 			void parseComponentsEx(cocos2d::Node* node, const std::string &path, bool recursive = false) {
