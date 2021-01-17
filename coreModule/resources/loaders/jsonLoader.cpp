@@ -35,25 +35,14 @@ rapidjson::Document jsonLoader::stringToJson(const std::string &jsonStr) {
 void jsonLoader::mergeJson(rapidjson::Value& target, rapidjson::Value& source, rapidjson::Value::AllocatorType& allocator) {
 	if (!source.IsObject()) return;
 
-	std::vector<rapidjson::GenericValue<rapidjson::UTF8<char>>::MemberIterator> list;
 	for (auto item = source.MemberBegin(); item != source.MemberEnd(); ++item) {
-		auto test = item->name.GetString();
 		auto find = target.FindMember(item->name);
 		if (find != target.MemberEnd() && find->value.IsObject()) {
 			mergeJson(target[item->name], item->value, allocator);
 		} else {
-			list.push_back(item);
+			target[item->name] = item->value;
 		}
 	}
-	for (const auto& item : list) {
-//		target.AddMember(item->name, item->value, allocator);
-//		target.CopyFrom(item->name, allocator);
-		target[item->name] = item->value;
-//		target.PushBack(item, allocator);
-	}
-//	for (auto item = source.MemberBegin(); item != source.MemberEnd(); ++item) {
-//		target.AddMember(item->name, item->value, allocator);
-//	}
 }
 
 rapidjson::Document jsonLoader::findByResolution(const std::string &path) {
