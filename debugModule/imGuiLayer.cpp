@@ -24,7 +24,7 @@ void imGuiLayer::_onStart() {
 		ImGui::SetNextWindowCollapsed(true, ImGuiCond_Once);
 		ImGui::SetNextWindowContentSize({default_width, 0});
 
-		if (ImGui::Begin("Debug", &m_enabled, ImGuiWindowFlags_NoTitleBar|ImGuiWindowFlags_NoResize|ImGuiWindowFlags_NoSavedSettings|ImGuiWindowFlags_AlwaysAutoResize)) {
+		if (ImGui::Begin("Debug", &m_enabled, ImGuiWindowFlags_NoTitleBar|ImGuiWindowFlags_NoDocking|ImGuiWindowFlags_NoResize|ImGuiWindowFlags_NoSavedSettings|ImGuiWindowFlags_AlwaysAutoResize)) {
 			if (ImGui::Button("Debug")) {
 				nodeEditorOpened = !nodeEditorOpened;
 			}
