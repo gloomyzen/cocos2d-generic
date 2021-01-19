@@ -10,9 +10,19 @@ gameManager *currentGameManager = nullptr;
 gameManager::gameManager() {
 	currentState = eGameStates::LOADING_SCREEN;
 	mainSceneIns = dynamic_cast<mainScene *>(mainScene::createScene());
+	listener = cocos2d::EventListenerTouchOneByOne::create();
+	listener->onTouchBegan = [](cocos2d::Touch* touch, cocos2d::Event* event){
+		return true;
+	};
+	listener->onTouchEnded = [](cocos2d::Touch* touch, cocos2d::Event* event){
+		return true;
+	};
+	cocos2d::Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, mainSceneIns);
 };
 
-gameManager::~gameManager() = default;
+gameManager::~gameManager() {
+	cocos2d::Director::getInstance()->getEventDispatcher()->removeEventListener(listener);
+}
 
 gameManager &gameManager::getInstance() {
 	if (currentGameManager == nullptr) {

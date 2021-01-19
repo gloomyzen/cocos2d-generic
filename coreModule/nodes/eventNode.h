@@ -3,6 +3,7 @@
 
 #include "cocos2d.h"
 #include <functional>
+#include <utility>
 
 namespace common {
 
@@ -11,11 +12,13 @@ namespace common {
 		class eventNode {
 			typedef std::function<bool(cocos2d::Touch* touch, cocos2d::Event* event)> eventTouchClb;
 		public:
+			virtual ~eventNode() = 0;
+
 			void setClickable(bool value) { clickable = value; }
 			bool isClickable() const { return clickable; }
-			void setOnTouchBegan(eventTouchClb clb) { onTouchBegan = clb; }
+			void setOnTouchBegan(eventTouchClb clb) { onTouchBegan = std::move(clb); }
 			eventTouchClb getOnTouchBegan() { return onTouchBegan; }
-			void setOnTouchEnded(eventTouchClb clb) { onTouchEnded = clb; }
+			void setOnTouchEnded(eventTouchClb clb) { onTouchEnded = std::move(clb); }
 			eventTouchClb getOnTouchEnded() { return onTouchEnded; }
 
 
