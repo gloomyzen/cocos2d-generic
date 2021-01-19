@@ -1,6 +1,7 @@
 #include "gameManager.h"
 #include "common/coreModule/scenes/mainScene.h"
 #include "common/debugModule/logManager.h"
+#include "common/coreModule/nodes/eventNode.h"
 
 using namespace common;
 using namespace common::coreModule;
@@ -12,9 +13,19 @@ gameManager::gameManager() {
 	mainSceneIns = dynamic_cast<mainScene *>(mainScene::createScene());
 	listener = cocos2d::EventListenerTouchOneByOne::create();
 	listener->onTouchBegan = [](cocos2d::Touch* touch, cocos2d::Event* event){
+		if (auto node = dynamic_cast<eventNode*>(event->getCurrentTarget())) {
+			if (auto clb = node->getOnTouchBegan()) {
+				clb(touch);
+			}
+		}
 		return true;
 	};
 	listener->onTouchEnded = [](cocos2d::Touch* touch, cocos2d::Event* event){
+		if (auto node = dynamic_cast<eventNode*>(event->getCurrentTarget())) {
+			if (auto clb = node->getOnTouchEnded()) {
+				clb(touch);
+			}
+		}
 		return true;
 	};
 	cocos2d::Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, mainSceneIns);
