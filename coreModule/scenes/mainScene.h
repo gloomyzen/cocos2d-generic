@@ -25,8 +25,7 @@ namespace common {
 			CREATE_FUNC(mainScene);
 
 		private:
-			std::vector<Node*> nodes{};
-			cocos2d::Layer* gameLayer;
+			std::vector<Node*> nodes{}ж
 		};
 	}
 }//common::coreModule
