@@ -25,7 +25,7 @@ namespace common {
 			CREATE_FUNC(mainScene);
 
 		private:
-			std::vector<Node*> nodes{}ж
+			std::vector<Node*> nodes{};
 		};
 	}
 }//common::coreModule

@@ -12,7 +12,8 @@ namespace common {
 		class eventNode {
 			typedef std::function<bool(cocos2d::Touch* touch)> eventTouchClb;
 		public:
-			virtual ~eventNode() = 0;
+			eventNode() {}
+			virtual ~eventNode() = default;
 
 			void setClickable(bool value) { clickable = value; }
 			bool isClickable() const { return clickable; }

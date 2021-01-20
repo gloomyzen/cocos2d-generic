@@ -25,7 +25,6 @@ namespace common {
 		private:
 			eGameStates currentState;
 			mainScene* mainSceneIns = nullptr;
-			cocos2d::EventListenerTouchOneByOne* listener = nullptr;
 		};
 	}
 }//common::coreModule
