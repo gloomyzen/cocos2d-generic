@@ -14,7 +14,7 @@ namespace common {
 			FLOOR = 10,
 
 			WINDOW = 20,
-			DEBUG_LAYER = 99
+			DEBUG_LAYER = 99,
 		};
 	}
 }//common::coreModule
