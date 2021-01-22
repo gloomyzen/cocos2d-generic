@@ -150,15 +150,29 @@ void nodeFactory::getComponents(Node *node, const std::string &componentName, co
 			break;
 		case SPRITE_COMPONENT: {
 			if (auto sprite = dynamic_cast<Sprite*>(node)) {
+				std::string imagePath;
 				if (object.HasMember("image") && object["image"].IsString()) {
-					sprite->initWithFile(object["image"].GetString());
+					imagePath = object["image"].GetString();
+					if (imagePath.empty()) {
+						LOG_ERROR(STRING_FORMAT("nodeFactory::getComponents: Component '%s' has invalid image path!", componentName.c_str()));
+						break;
+					}
+					if (object.HasMember("polygon") && object["polygon"].IsBool() && object["polygon"].GetBool()) {
+						auto polygon = AutoPolygon::generatePolygon(imagePath);
+						sprite->initWithPolygon(polygon);
+					} else {
+						sprite->initWithFile(imagePath);
+					}
+				} else {
+					LOG_ERROR(STRING_FORMAT("nodeFactory::getComponents: Component '%s' no has image path!", componentName.c_str()));
+					break;
 				}
 				if (object.HasMember("pixel") && object["pixel"].IsBool() && object["pixel"].GetBool()) {
 					spriteParameters::setCorrectPixelartTexture(sprite);
 				}
 				//spriteParameters
 			} else {
-				LOG_ERROR(StringUtils::format("nodeFactory::getComponents: Component '%s' no has sprite node type!", componentName.c_str()));
+				LOG_ERROR(STRING_FORMAT("nodeFactory::getComponents: Component '%s' no has sprite node type!", componentName.c_str()));
 			}
 		}
 			break;
