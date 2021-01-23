@@ -7,6 +7,7 @@
 #include "dragonBones/cocos2dx/CCDragonBonesHeaders.h"
 #include "common/coreModule/nodes/armatureHolderNode.h"
 #include "common/coreModule/nodes/spriteParameters.h"
+#include "common/coreModule/nodes/spriteNode.h"
 
 using namespace common::coreModule;
 using namespace cocos2d;
@@ -151,13 +152,18 @@ void nodeFactory::getComponents(Node *node, const std::string &componentName, co
 		case SPRITE_COMPONENT: {
 			if (auto sprite = dynamic_cast<Sprite*>(node)) {
 				std::string imagePath;
+				bool isPoly = true;
 				if (object.HasMember("image") && object["image"].IsString()) {
 					imagePath = object["image"].GetString();
 					if (imagePath.empty()) {
 						LOG_ERROR(STRING_FORMAT("nodeFactory::getComponents: Component '%s' has invalid image path!", componentName.c_str()));
 						break;
 					}
-					if (object.HasMember("polygon") && object["polygon"].IsBool() && object["polygon"].GetBool()) {
+					if (object.HasMember("polygon") && object["polygon"].IsBool()) {
+						isPoly = object["polygon"].GetBool();
+					}
+
+					if (isPoly) {
 						auto polygon = AutoPolygon::generatePolygon(imagePath);
 						sprite->initWithPolygon(polygon);
 					} else {
