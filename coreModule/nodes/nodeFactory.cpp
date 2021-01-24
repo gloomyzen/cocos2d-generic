@@ -163,9 +163,23 @@ void nodeFactory::getComponents(Node *node, const std::string &componentName, co
 					}
 
 					if (isPoly) {
-						spriteParameters::reinitWithPolygon(sprite, imagePath);
-//						auto polygon = AutoPolygon::generatePolygon(imagePath);
-//						sprite->initWithPolygon(polygon);
+						//for physics scenes
+//						spriteParameters::reinitWithPolygon(sprite, imagePath);
+						auto polygon = AutoPolygon::generatePolygon(imagePath);
+						if (object.HasMember("size")) {
+							auto size = object["size"].GetArray();
+							if (size.Size() == 2) {
+								auto _rect = cocos2d::Rect();
+								_rect.size.width = size[0].GetFloat();
+								_rect.size.height = size[1].GetFloat();
+//								sprite->setContentSize(_rect);
+								polygon.setRect(_rect);
+							} else {
+								LOG_ERROR(StringUtils::format("nodeFactory::getComponents: Component '%s' has wrong '%s' size keys!",
+															  componentName.c_str(), std::to_string(size.Size()).c_str()));
+							}
+						}
+						sprite->initWithPolygon(polygon);
 					} else {
 						sprite->initWithFile(imagePath);
 					}

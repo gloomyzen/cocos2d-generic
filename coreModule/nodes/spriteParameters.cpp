@@ -34,6 +34,6 @@ void spriteParameters::reinitWithPolygon(cocos2d::Sprite* sprite, const std::str
 	//Set the offset position of the shape
 	geo->setPositionOffset(Vec2(0, 0));
 	//Set the physical properties of the sprite and return the sprite
-//	sprite->setPhysicsBody(geo);
+	sprite->setPhysicsBody(geo);
 
 }
