@@ -7,7 +7,6 @@
 #include "dragonBones/cocos2dx/CCDragonBonesHeaders.h"
 #include "common/coreModule/nodes/armatureHolderNode.h"
 #include "common/coreModule/nodes/spriteParameters.h"
-#include "common/coreModule/nodes/spriteNode.h"
 
 using namespace common::coreModule;
 using namespace cocos2d;
@@ -164,8 +163,9 @@ void nodeFactory::getComponents(Node *node, const std::string &componentName, co
 					}
 
 					if (isPoly) {
-						auto polygon = AutoPolygon::generatePolygon(imagePath);
-						sprite->initWithPolygon(polygon);
+						spriteParameters::reinitWithPolygon(sprite, imagePath);
+//						auto polygon = AutoPolygon::generatePolygon(imagePath);
+//						sprite->initWithPolygon(polygon);
 					} else {
 						sprite->initWithFile(imagePath);
 					}

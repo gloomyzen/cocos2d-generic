@@ -7,10 +7,11 @@ namespace common {
 
 	namespace coreModule {
 
-		class spriteParameters {
+	class spriteParameters {
 		public:
 			static void setCorrectPixelartTexture(cocos2d::Sprite* sprite);
 
+			static void reinitWithPolygon(cocos2d::Sprite* sprite, const std::string& filepath, float jd = 2.0f);
 		};
 	}
 }
