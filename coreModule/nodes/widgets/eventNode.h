@@ -10,7 +10,7 @@ namespace common {
 	namespace coreModule {
 
 		class eventNode {
-			typedef std::function<bool(cocos2d::Touch* touch)> eventTouchClb;
+			typedef std::function<void(cocos2d::Touch* touch, cocos2d::Event* event)> eventTouchClb;
 		public:
 			eventNode() {}
 			virtual ~eventNode() = default;
