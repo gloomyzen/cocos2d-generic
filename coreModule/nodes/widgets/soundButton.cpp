@@ -27,11 +27,16 @@ void soundButton::setClickCallback(std::function<void()> clb) {
 		if (correctNode) {
 			if (!clickable)
 				return false;
+			auto currentAction = event->getCurrentTarget()->getActionByTag(static_cast<int>(soundButton::eSoundButtonStatus::END_CLICK));
+			if (currentAction != nullptr && !allowSpamTap && !currentAction->isDone())
+				return false;
 
 			if (soundCallback)
 				soundCallback();
 
-			event->getCurrentTarget()->runAction(cocos2d::TintTo::create(0.1f, cocos2d::Color3B(245, 245, 245)));
+			auto clickAction = cocos2d::TintTo::create(0.1f, cocos2d::Color3B(235, 235, 235));
+			clickAction->setTag(static_cast<int>(soundButton::eSoundButtonStatus::START_CLICK));
+			event->getCurrentTarget()->runAction(clickAction);
 		}
 
 		return correctNode;
@@ -46,8 +51,16 @@ void soundButton::setClickCallback(std::function<void()> clb) {
 				onClickCallback();
 		});
 
-		auto seq = cocos2d::Sequence::create(fadeOut, clb, nullptr);
-		event->getCurrentTarget()->runAction(seq);
+		auto currentAction = event->getCurrentTarget()->getActionByTag(static_cast<int>(soundButton::eSoundButtonStatus::START_CLICK));
+		if (currentAction != nullptr && !currentAction->isDone()) {
+			auto seq = cocos2d::Sequence::create(dynamic_cast<cocos2d::TintTo*>(currentAction->clone()), fadeOut, clb, nullptr);
+			seq->setTag(static_cast<int>(soundButton::eSoundButtonStatus::END_CLICK));
+			event->getCurrentTarget()->runAction(seq);
+		} else {
+			auto seq = cocos2d::Sequence::create(fadeOut, clb, nullptr);
+			seq->setTag(static_cast<int>(soundButton::eSoundButtonStatus::END_CLICK));
+			event->getCurrentTarget()->runAction(seq);
+		}
 
 		return true;
 	};
