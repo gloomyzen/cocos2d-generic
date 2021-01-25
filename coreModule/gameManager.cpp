@@ -1,7 +1,7 @@
 #include "gameManager.h"
 #include "common/coreModule/scenes/mainScene.h"
 #include "common/debugModule/logManager.h"
-#include "common/coreModule/nodes/eventNode.h"
+#include "common/coreModule/nodes/widgets/eventNode.h"
 
 using namespace common;
 using namespace common::coreModule;

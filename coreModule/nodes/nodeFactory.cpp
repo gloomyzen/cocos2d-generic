@@ -7,6 +7,7 @@
 #include "dragonBones/cocos2dx/CCDragonBonesHeaders.h"
 #include "common/coreModule/nodes/armatureHolderNode.h"
 #include "common/coreModule/nodes/spriteParameters.h"
+#include "common/coreModule/nodes/widgets/soundButton.h"
 
 using namespace common::coreModule;
 using namespace cocos2d;
@@ -54,6 +55,7 @@ nodeFactory::nodeFactory() {
 		///External types
 		nodes["dragonbones"] = []() { return new armatureHolderNode(); };
 		nodes["scrollView"] = []() { return ScrollView::create(); };
+		nodes["soundButton"] = []() { return new soundButton(); };
 	}
 }
 
