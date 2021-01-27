@@ -9,7 +9,7 @@ using namespace common::coreModule;
 gameManager *currentGameManager = nullptr;
 
 gameManager::gameManager() {
-	currentState = eGameStates::LOADING_SCREEN;
+	currentState = "loadingScreenScene";
 	mainSceneIns = dynamic_cast<mainScene *>(mainScene::createScene());
 };
 
@@ -22,47 +22,47 @@ gameManager &gameManager::getInstance() {
 	return *currentGameManager;
 }
 
-void gameManager::run(eGameStates state) {
+void gameManager::run(const std::string& state) {
 	/// Starting from state
 	changeState(state);
 	Director::getInstance()->runWithScene(mainSceneIns);
 
 	//todo remove after testing
 //	auto seq = Sequence::create(DelayTime::create(7.f), CallFunc::create([this](){
-//		changeState(eGameStates::BATTLE_SCENE);
+//		changeState("battleScene");
 //	}), nullptr);
 //	mainSceneIns->runAction(seq);
 
 //	auto seq = Sequence::create(DelayTime::create(7.f), CallFunc::create([this](){
-//		changeState(eGameStates::BATTLE_SCENE);
+//		changeState("battleScene");
 //	}),DelayTime::create(5.f), CallFunc::create([this](){
-//		changeState(eGameStates::MAIN_MENU);
+//		changeState("mainMenuScene");
 //	}),DelayTime::create(5.f), CallFunc::create([this](){
-//		changeState(eGameStates::BATTLE_SCENE);
+//		changeState("battleScene");
 //	}),DelayTime::create(5.f), CallFunc::create([this](){
-//		changeState(eGameStates::MAIN_MENU);
+//		changeState("mainMenuScene");
 //	}),DelayTime::create(5.f), CallFunc::create([this](){
-//		changeState(eGameStates::BATTLE_SCENE);
+//		changeState("battleScene");
 //	}),DelayTime::create(5.f), CallFunc::create([this](){
-//		changeState(eGameStates::MAIN_MENU);
+//		changeState("mainMenuScene");
 //	}),DelayTime::create(5.f), CallFunc::create([this](){
-//		changeState(eGameStates::BATTLE_SCENE);
+//		changeState("battleScene");
 //	}),DelayTime::create(5.f), CallFunc::create([this](){
-//		changeState(eGameStates::MAIN_MENU);
+//		changeState("mainMenuScene");
 //	}),DelayTime::create(5.f), CallFunc::create([this](){
-//		changeState(eGameStates::BATTLE_SCENE);
+//		changeState("battleScene");
 //	}),DelayTime::create(5.f), CallFunc::create([this](){
-//		changeState(eGameStates::MAIN_MENU);
+//		changeState("mainMenuScene");
 //	}),DelayTime::create(5.f), CallFunc::create([this](){
-//		changeState(eGameStates::BATTLE_SCENE);
+//		changeState("battleScene");
 //	}),DelayTime::create(5.f), CallFunc::create([this](){
-//		changeState(eGameStates::MAIN_MENU);
+//		changeState("mainMenuScene");
 //	}), nullptr);
 //	mainSceneIns->runAction(seq);
 
 }
 
-void gameManager::changeState(eGameStates state) {
+void gameManager::changeState(const std::string& state) {
 	if (mainSceneIns == nullptr) {
 		LOG_ERROR("gameManager::changeState Instance mainSceneIns is null!");
 		return;

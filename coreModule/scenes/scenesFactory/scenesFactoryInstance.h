@@ -3,7 +3,6 @@
 
 #include "cocos2d.h"
 #include "common/coreModule/enums/layersEnum.h"
-#include "common/coreModule/enums/statesEnums.h"
 #include <map>
 #include <functional>
 #include <string>
@@ -20,10 +19,12 @@ namespace common {
 			scenesFactoryInstance();
 			~scenesFactoryInstance();
 			static scenesFactoryInstance &getInstance();
-			Layer* getStateRoot(eGameStates);
-			void registerState(eGameStates, std::function<Layer*(Layer*)>);
+			Layer* getStateRoot(const std::string&);
+			bool isStateRegistered(const std::string&);
+			bool registerState(const std::string&, std::function<Layer*(Layer*)>);
 		private:
-			std::map<eGameStates, std::function<Layer*(Layer*)>> states{};
+			std::map<std::string, bool> registeredStatesMap;
+			std::map<std::string, std::function<Layer*(Layer*)>> states;
 		};
 	}
 }//common::coreModule

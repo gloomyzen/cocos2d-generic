@@ -3,21 +3,19 @@
 
 #include "cocos2d.h"
 #include "common/coreModule/nodes/nodeProperties.h"
-#include "common/coreModule/enums/statesEnums.h"
 #include <vector>
+#include <string>
 
 namespace common {
 	namespace coreModule {
 
-	using namespace cocos2d;
-
-		class mainScene : public Scene {
+	class mainScene : public cocos2d::Scene {
 		public:
 			static cocos2d::Scene *createScene();
 
 			virtual bool init();
 
-			void setRoom(eGameStates);
+			void setRoom(const std::string&);
 
 
 			void menuCloseCallback(cocos2d::Ref *pSender);
@@ -25,7 +23,7 @@ namespace common {
 			CREATE_FUNC(mainScene);
 
 		private:
-			std::vector<Node*> nodes{};
+			std::vector<cocos2d::Node*> nodes{};
 		};
 	}
 }//common::coreModule

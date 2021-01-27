@@ -1,6 +1,5 @@
 #include "scenesFactoryInstance.h"
 #include "common/debugModule/logManager.h"
-#include "common/coreModule/enums/statesEnums.h"
 #include <map>
 
 using namespace common;
@@ -20,16 +19,25 @@ scenesFactoryInstance &scenesFactoryInstance::getInstance() {
 	return *currentFactoryInstance;
 }
 
-Layer *scenesFactoryInstance::getStateRoot(eGameStates state) {
-	if (states.count(state)) {
+Layer *scenesFactoryInstance::getStateRoot(const std::string& state) {
+	if (isStateRegistered(state)) {
 		auto layer = Layer::create();
-		layer->setName(mapSceneNames[state]);
+		layer->setName(state);
 		return states[state](layer);
 	}
-	LOG_ERROR("scenesFactoryInstance::getStateRoot: Current state " + std::to_string(state) + " is not registered! Return simple layer.");
+	LOG_ERROR(STRING_FORMAT("scenesFactoryInstance::getStateRoot: Current state '%s' is not registered! Return simple layer.", state.c_str()));
 	return Layer::create();
 }
 
-void scenesFactoryInstance::registerState(eGameStates state, std::function<Layer *(Layer*)> clb) {
+bool scenesFactoryInstance::registerState(const std::string& state, std::function<Layer *(Layer*)> clb) {
+	if (isStateRegistered(state))
+		return false;
+
 	states[state] = std::move(clb);
+	registeredStatesMap[state] = true;
+	return true;
+}
+
+bool scenesFactoryInstance::isStateRegistered(const std::string& needle) {
+	return registeredStatesMap.count(needle) != 0;
 }

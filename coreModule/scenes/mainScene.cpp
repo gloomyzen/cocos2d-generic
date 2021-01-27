@@ -30,7 +30,7 @@ void mainScene::menuCloseCallback(Ref *pSender) {
 	Director::getInstance()->end();
 }
 
-void mainScene::setRoom(eGameStates state) {
+void mainScene::setRoom(const std::string& state) {
 	auto director = Director::getInstance();
 	auto visibleSize = director->getVisibleSize();
 	if (nodes.empty()) {

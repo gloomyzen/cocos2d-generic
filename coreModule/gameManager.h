@@ -3,7 +3,7 @@
 
 #include "cocos2d.h"
 #include "enums/layersEnum.h"
-#include "enums/statesEnums.h"
+#include <string>
 
 #define GET_GAME_MANAGER() common::coreModule::gameManager::getInstance()
 
@@ -18,13 +18,13 @@ namespace common {
 			~gameManager();
 			static gameManager &getInstance();
 
-			void run(eGameStates state = eGameStates::MAIN_MENU);
-			void changeState(eGameStates state);
-			eGameStates getCurrentState() { return currentState; }
+			void run(const std::string& state = "mainMenuScene");
+			void changeState(const std::string& state);
+			const std::string& getCurrentState() { return currentState; }
 			mainScene* getMainScene() { return mainSceneIns; }
 
 		private:
-			eGameStates currentState;
+			std::string currentState;
 			mainScene* mainSceneIns = nullptr;
 		};
 	}
