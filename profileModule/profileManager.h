@@ -19,7 +19,7 @@ namespace common {
 			static profileManager &getInstance();
 			void executeLoad();
 
-			bool registerBlocks(const std::string&, const std::function<profileBlockInterface*()>&);
+			bool registerBlock(const std::string&, const std::function<profileBlockInterface*()>&);
 			bool isBlockRegistered(const std::string&);
 			profileBlockInterface* getBlock(const std::string&);
 

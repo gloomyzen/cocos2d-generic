@@ -1,7 +1,6 @@
 #include "cocos2d.h"
 #include "common/debugModule/logManager.h"
 #include "profileManager.h"
-#include "profileModule/blocks/locationProfile.h"
 #include "common/coreModule/resources/resourceManager.h"
 #include "common/coreModule/resources/loaders/jsonLoader.h"
 
@@ -73,7 +72,7 @@ void profileManager::loadProfile(const rapidjson::Document &defaultData, const r
 
 }
 
-bool profileManager::registerBlocks(const std::string& key, const std::function<profileBlockInterface*()>& blockClb) {
+bool profileManager::registerBlock(const std::string& key, const std::function<profileBlockInterface*()>& blockClb) {
 	if (isBlockRegistered(key))
 		return false;
 
