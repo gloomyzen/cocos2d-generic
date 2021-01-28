@@ -12,14 +12,15 @@ profileManager *profileMgrInstance = nullptr;
 profileManager::profileManager() {}
 
 profileManager::~profileManager() {
-	save();
+	auto deleteProfile = cocos2d::UserDefault::getInstance()->getBoolForKey("deleteProfile", false);
+	if (!deleteProfile)
+		save();
 	profileBlocks.clear();
 	profileBlocksClb.clear();
 }
 
 void profileManager::executeLoad() {
 	load();
-	save();//todo only for test
 }
 
 profileManager &profileManager::getInstance() {
@@ -56,7 +57,7 @@ void profileManager::save() {
 	json.Accept(writer);
 
 	std::cout << strbuf.GetString() << std::endl;
-
+	cocos2d::UserDefault::getInstance()->setStringForKey("profile", strbuf.GetString());
 }
 
 void profileManager::loadProfile(const rapidjson::Document &defaultData, const rapidjson::Document &localData) {
