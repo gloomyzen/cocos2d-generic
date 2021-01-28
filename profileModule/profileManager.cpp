@@ -19,6 +19,7 @@ profileManager::~profileManager() {
 
 void profileManager::executeLoad() {
 	load();
+	save();
 }
 
 profileManager &profileManager::getInstance() {
@@ -38,7 +39,23 @@ void profileManager::load() {
 }
 
 void profileManager::save() {
-	//todo
+	rapidjson::Document json;
+	json.SetObject();
+	rapidjson::Document::AllocatorType& allocator = json.GetAllocator();
+	for (auto block : profileBlocks) {
+		rapidjson::Value key(block.first.c_str(), allocator);
+		rapidjson::Value value;
+		block.second->save(value, allocator);
+		json.AddMember(key, value, allocator);
+	}
+	rapidjson::StringBuffer strbuf;
+	strbuf.Clear();
+
+	rapidjson::Writer<rapidjson::StringBuffer> writer(strbuf);
+	json.Accept(writer);
+
+	std::cout << strbuf.GetString() << std::endl;
+
 }
 
 void profileManager::loadProfile(const rapidjson::Document &defaultData, const rapidjson::Document &localData) {
@@ -63,8 +80,13 @@ void profileManager::loadProfile(const rapidjson::Document &defaultData, const r
 					}
 					continue;
 				}
+			} else
+			if (!isBlockRegistered(key)) {
+				auto block = blockIt->second();
+				if (block->load(it->value.GetObjectJ())) {
+					profileBlocks[key] = blockIt->second();
+				}
 			}
-			blockIt->second()->load(it->value.GetObjectJ());
 
 		}
 	}
