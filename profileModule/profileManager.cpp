@@ -19,7 +19,7 @@ profileManager::~profileManager() {
 
 void profileManager::executeLoad() {
 	load();
-	save();
+	save();//todo only for test
 }
 
 profileManager &profileManager::getInstance() {
@@ -45,8 +45,9 @@ void profileManager::save() {
 	for (auto block : profileBlocks) {
 		rapidjson::Value key(block.first.c_str(), allocator);
 		rapidjson::Value value;
-		block.second->save(value, allocator);
-		json.AddMember(key, value, allocator);
+		if (block.second->save(value, allocator)) {
+			json.AddMember(key, value, allocator);
+		}
 	}
 	rapidjson::StringBuffer strbuf;
 	strbuf.Clear();
@@ -84,7 +85,7 @@ void profileManager::loadProfile(const rapidjson::Document &defaultData, const r
 			if (!isBlockRegistered(key)) {
 				auto block = blockIt->second();
 				if (block->load(it->value.GetObjectJ())) {
-					profileBlocks[key] = blockIt->second();
+					profileBlocks[key] = block;
 				}
 			}
 
