@@ -22,11 +22,11 @@ namespace common {
 			bool registerBlock(const std::string&, const std::function<profileBlockInterface*()>&);
 			bool isBlockRegistered(const std::string&);
 			profileBlockInterface* getBlock(const std::string&);
+			void destroyProfile();
+			void save();
 
 		private:
-
 			void load();
-			void save();
 			void loadProfile(const rapidjson::Document& defaultData, const rapidjson::Document& localData);
 
 			std::map<std::string, std::function<profileBlockInterface*()>> profileBlocksClb;
