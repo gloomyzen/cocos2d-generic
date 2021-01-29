@@ -60,6 +60,12 @@ void profileManager::save() {
 			json.AddMember(key, value, allocator);
 		}
 	}
+	rapidjson::StringBuffer strbuf;
+	strbuf.Clear();
+
+	rapidjson::Writer<rapidjson::StringBuffer> writer(strbuf);
+	json.Accept(writer);
+
 	cocos2d::UserDefault::getInstance()->setStringForKey("profile", strbuf.GetString());
 }
 
