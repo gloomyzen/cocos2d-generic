@@ -116,12 +116,6 @@ bool profileManager::isBlockRegistered(const std::string& needle) {
 	return profileBlocks.count(needle) > 0;
 }
 
-profileBlockInterface *profileManager::getBlock(const std::string& key) {
-	if (isBlockRegistered(key))
-		return profileBlocks[key];
-	return nullptr;
-}
-
 void profileManager::destroyProfile() {
 	cocos2d::UserDefault::getInstance()->deleteValueForKey("profile");
 }

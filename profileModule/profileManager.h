@@ -21,7 +21,14 @@ namespace common {
 
 			bool registerBlock(const std::string&, const std::function<profileBlockInterface*()>&);
 			bool isBlockRegistered(const std::string&);
-			profileBlockInterface* getBlock(const std::string&);
+
+			template <typename T>
+			T* getBlock(const std::string& key) {
+				if (isBlockRegistered(key))
+					return dynamic_cast<T*>(profileBlocks[key]);
+				return nullptr;
+			}
+
 			void destroyProfile();
 			void save();
 
