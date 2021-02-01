@@ -88,10 +88,10 @@ void profileManager::loadProfile(const rapidjson::Document &defaultData, const r
 					auto block = blockIt->second();
 					if (block->load(localIt->value.GetObjectJ())) {
 						profileBlocks[key] = blockIt->second();
+						continue;
 					}
-					continue;
 				}
-			} else
+			}
 			if (!isBlockRegistered(key)) {
 				auto block = blockIt->second();
 				if (block->load(it->value.GetObjectJ())) {
