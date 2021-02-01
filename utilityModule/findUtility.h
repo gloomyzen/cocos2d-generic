@@ -1,5 +1,5 @@
-#ifndef SWIPE_RPG_FINDUTILITY_H
-#define SWIPE_RPG_FINDUTILITY_H
+#ifndef COMMON_FINDUTILITY_H
+#define COMMON_FINDUTILITY_H
 
 #include <tuple>
 #include <vector>
@@ -55,4 +55,4 @@ namespace common {
 	}
 }
 
-#endif //SWIPE_RPG_FINDUTILITY_H
+#endif //COMMON_FINDUTILITY_H

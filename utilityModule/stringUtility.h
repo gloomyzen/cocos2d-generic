@@ -1,5 +1,5 @@
-#ifndef CARDS_APP_STRINGUTILITY_H
-#define CARDS_APP_STRINGUTILITY_H
+#ifndef COMMON_STRINGUTILITY_H
+#define COMMON_STRINGUTILITY_H
 
 #include <algorithm>
 #include <cctype>
@@ -32,4 +32,4 @@ namespace common {
 	}
 }
 
-#endif //CARDS_APP_STRINGUTILITY_H
+#endif //COMMON_STRINGUTILITY_H

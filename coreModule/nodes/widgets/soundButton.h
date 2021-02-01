@@ -1,5 +1,5 @@
-#ifndef SWIPE_RPG_SOUNDBUTTON_H
-#define SWIPE_RPG_SOUNDBUTTON_H
+#ifndef COMMON_SOUNDBUTTON_H
+#define COMMON_SOUNDBUTTON_H
 
 #include "cocos2d.h"
 #include "common/coreModule/nodes/nodeProperties.h"
@@ -31,4 +31,4 @@ namespace common {
 	}
 }
 
-#endif //SWIPE_RPG_SOUNDBUTTON_H
+#endif //COMMON_SOUNDBUTTON_H

@@ -1,5 +1,5 @@
-#ifndef SWIPE_RPG_DATABASEMANAGER_H
-#define SWIPE_RPG_DATABASEMANAGER_H
+#ifndef COMMON_DATABASEMANAGER_H
+#define COMMON_DATABASEMANAGER_H
 
 #include "cocos2d.h"
 #include "common/databaseModule/databaseInterface.h"
@@ -35,4 +35,4 @@ namespace common {
 }
 
 
-#endif //SWIPE_RPG_DATABASEMANAGER_H
+#endif //COMMON_DATABASEMANAGER_H

@@ -1,5 +1,5 @@
-#ifndef SWIPE_RPG_RANDOMUTILITY_H
-#define SWIPE_RPG_RANDOMUTILITY_H
+#ifndef COMMON_RANDOMUTILITY_H
+#define COMMON_RANDOMUTILITY_H
 
 #include <random>
 
@@ -33,4 +33,4 @@ namespace common {
 	}
 }
 
-#endif //SWIPE_RPG_RANDOMUTILITY_H
+#endif //COMMON_RANDOMUTILITY_H

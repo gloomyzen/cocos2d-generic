@@ -1,5 +1,5 @@
-#ifndef SWIPE_RPG_TOUCHESNODE_H
-#define SWIPE_RPG_TOUCHESNODE_H
+#ifndef COMMON_TOUCHESNODE_H
+#define COMMON_TOUCHESNODE_H
 
 #include "cocos2d.h"
 #include <functional>
@@ -32,4 +32,4 @@ namespace common {
 		};
 	}
 }
-#endif //SWIPE_RPG_TOUCHESNODE_H
+#endif //COMMON_TOUCHESNODE_H

@@ -1,5 +1,5 @@
-#ifndef SWIPE_RPG_SPRITEPOLYGON_H
-#define SWIPE_RPG_SPRITEPOLYGON_H
+#ifndef COMMON_SPRITEPOLYGON_H
+#define COMMON_SPRITEPOLYGON_H
 
 #include "cocos2d.h"
 #include "ui/CocosGUI.h"
@@ -22,4 +22,4 @@ namespace common {
 }
 
 
-#endif //SWIPE_RPG_SPRITEPOLYGON_H
+#endif //COMMON_SPRITEPOLYGON_H

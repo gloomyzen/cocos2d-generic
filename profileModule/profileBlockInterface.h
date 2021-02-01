@@ -1,5 +1,5 @@
-#ifndef SWIPE_RPG_PROFILEBLOCKINTERFACE_H
-#define SWIPE_RPG_PROFILEBLOCKINTERFACE_H
+#ifndef COMMON_PROFILEBLOCKINTERFACE_H
+#define COMMON_PROFILEBLOCKINTERFACE_H
 
 #include "json/document.h"
 #include "json/ostreamwrapper.h"
@@ -16,4 +16,4 @@ namespace common {
 	}
 }
 
-#endif //SWIPE_RPG_PROFILEBLOCKINTERFACE_H
+#endif //COMMON_PROFILEBLOCKINTERFACE_H

@@ -1,5 +1,5 @@
-#ifndef SWIPE_RPG_DATABASEINTERFACE_H
-#define SWIPE_RPG_DATABASEINTERFACE_H
+#ifndef COMMON_DATABASEINTERFACE_H
+#define COMMON_DATABASEINTERFACE_H
 
 #include "json/document.h"
 #include "json/ostreamwrapper.h"
@@ -64,4 +64,4 @@ namespace common {
 	}
 }
 
-#endif //SWIPE_RPG_DATABASEINTERFACE_H
+#endif //COMMON_DATABASEINTERFACE_H

@@ -1,5 +1,5 @@
-#ifndef SWIPE_RPG_PROFILEMANAGER_H
-#define SWIPE_RPG_PROFILEMANAGER_H
+#ifndef COMMON_PROFILEMANAGER_H
+#define COMMON_PROFILEMANAGER_H
 
 #include "common/profileModule/profileBlockInterface.h"
 #include <map>
@@ -43,4 +43,4 @@ namespace common {
 }
 
 
-#endif //SWIPE_RPG_PROFILEMANAGER_H
+#endif //COMMON_PROFILEMANAGER_H
