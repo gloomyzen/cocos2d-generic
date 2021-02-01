@@ -21,17 +21,18 @@ databaseManager &databaseManager::getInstance() {
 	return *currentDBInstance;
 }
 
-void databaseManager::registerDatabase(std::string path, databaseInterface * db) {
-	if (databasesMap.find(path) == databasesMap.end()) {
-		databasesMap.insert({path, db});
+void databaseManager::registerDatabase(std::pair<std::string, std::string> value, databaseInterface * db) {
+	const auto& [key, path] = value;
+	if (databasesMap.find(key) == databasesMap.end()) {
+		db->setPath(path);
+		databasesMap.insert({key, db});
 	}
 }
 
 void databaseManager::executeLoadData() {
-	for (const auto& [path, db] : databasesMap) {
+	for (const auto& [_, db] : databasesMap) {
 		if (db->isLoaded())
 			continue;
-		db->setPath(path);
 		db->executeLoadData();
 	}
 }
