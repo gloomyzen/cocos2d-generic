@@ -15,7 +15,6 @@ soundButton::soundButton() {
 
 soundButton::~soundButton() {
 	this->getEventDispatcher()->removeEventListener(listener);
-	Sprite::~Sprite();
 }
 
 void soundButton::initListener() {
