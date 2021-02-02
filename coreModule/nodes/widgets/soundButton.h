@@ -20,10 +20,6 @@ namespace common {
 			~soundButton() override;
 			CREATE_FUNC(soundButton);
 
-			static Node *createNode() {
-				return soundButton::create();
-			}
-
 			bool getAllowSpamTap() const { return allowSpamTap; }
 			void setAllowSpamTap(bool value) { allowSpamTap = value; }
 		private:

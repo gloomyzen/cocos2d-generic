@@ -8,6 +8,7 @@
 #include "common/coreModule/nodes/armatureHolderNode.h"
 #include "common/coreModule/nodes/spriteParameters.h"
 #include "common/coreModule/nodes/widgets/soundButton.h"
+#include "common/coreModule/nodes/widgets/gridNode.h"
 
 using namespace common::coreModule;
 using namespace cocos2d;
@@ -41,7 +42,7 @@ nodeFactory::nodeFactory() {
 		nodes["label"] = []()->Label* { return Label::create(); };
 		nodes["button"] = []()->Button* { return Button::create(); };
 		nodes["layout"] = []()->Layout* { return Layout::create(); };
-		nodes["grid"] = []()->NodeGrid* { return NodeGrid::create(); };
+		nodes["grid"] = []()->gridNode* { return gridNode::create(); };
 		nodes["clippingNode"] = []()->ClippingNode* {
 			//todo need fix this
 			ClippingNode * clipper = ClippingNode::create();

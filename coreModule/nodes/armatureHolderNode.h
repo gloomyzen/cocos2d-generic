@@ -11,9 +11,6 @@ namespace common {
 
 	class armatureHolderNode : public cocos2d::Node {
 		public:
-			static Node* createNode() {
-				return armatureHolderNode::create();
-			}
 
 			virtual bool init() {
 				if(!cocos2d::Node::init())
