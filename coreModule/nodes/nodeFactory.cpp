@@ -36,11 +36,12 @@ nodeFactory::nodeFactory() {
 	if (!inited) {
 		inited = true;
 		///Core types
-		nodes["node"] = []()->Node* { return new Node(); };
-		nodes["sprite"] = []()->Sprite* { return new Sprite(); };
-		nodes["label"] = []()->Label* { return new Label(); };
-		nodes["button"] = []()->Button* { return new Button(); };
-		nodes["layout"] = []()->Layout* { return new Layout(); };
+		nodes["node"] = []()->Node* { return Node::create(); };
+		nodes["sprite"] = []()->Sprite* { return Sprite::create(); };
+		nodes["label"] = []()->Label* { return Label::create(); };
+		nodes["button"] = []()->Button* { return Button::create(); };
+		nodes["layout"] = []()->Layout* { return Layout::create(); };
+		nodes["grid"] = []()->NodeGrid* { return NodeGrid::create(); };
 		nodes["clippingNode"] = []()->ClippingNode* {
 			//todo need fix this
 			ClippingNode * clipper = ClippingNode::create();
@@ -55,7 +56,7 @@ nodeFactory::nodeFactory() {
 		///External types
 		nodes["dragonbones"] = []() { return new armatureHolderNode(); };
 		nodes["scrollView"] = []() { return ScrollView::create(); };
-		nodes["soundButton"] = []() { return new soundButton(); };
+		nodes["soundButton"] = []() { return soundButton::create(); };
 	}
 }
 
