@@ -22,6 +22,7 @@ namespace common {
 			DRAGONBONES_COMPONENT,
 			COLOR_COMPONENT,
 			SCROLL_VIEW_COMPONENT,
+			GRID_COMPONENT,
 		};
 
 		static const std::vector<std::string> componentPriorityList = {
@@ -32,6 +33,7 @@ namespace common {
 				{"transformComponent"},
 				{"colorComponent"},
 				{"scrollViewComponent"},
+				{"gridComponent"},
 		};
 
 		class nodeFactory {

@@ -3,6 +3,8 @@
 
 #include "cocos2d.h"
 #include "common/coreModule/nodes/nodeProperties.h"
+#include <string>
+#include <map>
 
 namespace common {
 	namespace coreModule {
@@ -13,6 +15,13 @@ namespace common {
 				HORIZONTAL = 0,
 				VERTICAL,
 			};
+			enum class eGridAlign {
+				TOP = 0,
+				BOTTOM,
+				LEFT,
+				RIGHT,
+			};
+			typedef std::map<int, std::map<int, cocos2d::Node*>> gridType;
 
 			gridNode();
 			~gridNode() override;
@@ -20,6 +29,8 @@ namespace common {
 
 			void addChild(cocos2d::Node* child) override;
 			void updateTransform() override;
+
+			void updateGridTransform();
 
 			void setMarginX(int X, int Y) { marginX.first = X; marginX.second = Y; }
 			void setMarginX(std::pair<int, int> value) { marginX = value; }
@@ -30,6 +41,12 @@ namespace common {
 			void setPaddingY(int X, int Y) { paddingY.first = X; paddingY.second = Y; }
 			void setPaddingY(std::pair<int, int> value) { paddingY = value; }
 			void setDirection(eGridDirection value) { direction = value; }
+			void setAlign(eGridAlign value) { align = value; }
+			void setColumns(int value) { columns = value; }
+			void setRows(int value) { rows = value; }
+
+			static eGridDirection getGridDirectionByString(const std::string&);
+			static eGridAlign getGridAlignByString(const std::string&);
 
 
 		private:
@@ -38,6 +55,7 @@ namespace common {
 			std::pair<int, int> paddingX;
 			std::pair<int, int> paddingY;
 			eGridDirection direction = eGridDirection::VERTICAL;
+			eGridAlign align = eGridAlign::LEFT;
 			int columns = 1;
 			int rows = 1;
 		};
