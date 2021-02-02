@@ -28,9 +28,9 @@ void gridNode::addChild(Node *child) {
 }
 
 void gridNode::updateTransform() {
-	updateGridTransform();
-	for( const auto &child: _children)
+	for (const auto &child: _children)
 		child->updateTransform();
+	updateGridTransform();
 }
 
 gridNode::eGridDirection gridNode::getGridDirectionByString(const std::string& type) {
@@ -49,6 +49,23 @@ gridNode::eGridAlign gridNode::getGridAlignByString(const std::string& type) {
 
 void gridNode::updateGridTransform() {
 	gridType grid;
+	auto currentCol = 1;
+	auto currentRow = 1;
+	for (const auto& child : getChildren()) {
+		if (currentCol > columns){
+			if (direction == eGridDirection::HORIZONTAL) {
+				//todo
+			} else if (direction == eGridDirection::VERTICAL) {
+				//todo
+			}
+		}
+		if (currentRow > rows) {
+			//
+		}
+		grid[currentCol][currentRow] = child;
+		currentCol++;
+		currentRow++;
+	}
 	if (direction == eGridDirection::HORIZONTAL) {
 		//
 	} else if (direction == eGridDirection::VERTICAL) {
