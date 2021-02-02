@@ -49,27 +49,21 @@ gridNode::eGridAlign gridNode::getGridAlignByString(const std::string& type) {
 
 void gridNode::updateGridTransform() {
 	gridType grid;
-	auto currentCol = 1;
-	auto currentRow = 1;
+	auto currentCol = 0;
+	auto currentRow = 0;
 	for (const auto& child : getChildren()) {
-		if (currentCol > columns){
-			if (direction == eGridDirection::HORIZONTAL) {
-				//todo
-			} else if (direction == eGridDirection::VERTICAL) {
-				//todo
-			}
+		if (currentCol > columns && direction == eGridDirection::VERTICAL){
+			currentRow = 0;
 		}
-		if (currentRow > rows) {
-			//
+		if (currentRow > rows && direction == eGridDirection::HORIZONTAL) {
+			currentCol = 0;
 		}
 		grid[currentCol][currentRow] = child;
-		currentCol++;
-		currentRow++;
-	}
-	if (direction == eGridDirection::HORIZONTAL) {
-		//
-	} else if (direction == eGridDirection::VERTICAL) {
-		//
+		if (direction == eGridDirection::HORIZONTAL) {
+			currentCol++;
+		} else if (direction == eGridDirection::VERTICAL) {
+			currentRow++;
+		}
 	}
 }
 
