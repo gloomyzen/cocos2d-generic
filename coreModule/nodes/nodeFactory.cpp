@@ -431,9 +431,13 @@ void nodeFactory::getComponents(Node *node, const std::string &componentName, co
 					auto direction = gridNode::getGridDirectionByString(object["direction"].GetString());
 					grid->setDirection(direction);
 				}
-				if (object.HasMember("align") && object["align"].IsString()) {
-					auto align = gridNode::getGridAlignByString(object["align"].GetString());
-					grid->setAlign(align);
+				if (object.HasMember("alignX") && object["alignX"].IsString()) {
+					auto align = gridNode::getGridAlignXByString(object["alignX"].GetString());
+					grid->setAlignX(align);
+				}
+				if (object.HasMember("alignY") && object["alignY"].IsString()) {
+					auto align = gridNode::getGridAlignYByString(object["alignY"].GetString());
+					grid->setAlignY(align);
 				}
 			}
 		}

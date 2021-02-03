@@ -6,11 +6,14 @@ static std::map<std::string, gridNode::eGridDirection> gridDirectionMap = {
 		{"horizontal", gridNode::eGridDirection::HORIZONTAL},
 		{"vertical", gridNode::eGridDirection::VERTICAL},
 };
-static std::map<std::string, gridNode::eGridAlign> gridAlignMap = {
-		{"left", gridNode::eGridAlign::LEFT},
-		{"right", gridNode::eGridAlign::RIGHT},
-		{"top", gridNode::eGridAlign::TOP},
-		{"bottom", gridNode::eGridAlign::BOTTOM},
+static std::map<std::string, gridNode::eGridAlignX> gridAlignXMap = {
+		{"top", gridNode::eGridAlignX::TOP},
+		{"bottom", gridNode::eGridAlignX::BOTTOM},
+};
+
+static std::map<std::string, gridNode::eGridAlignY> gridAlignYMap = {
+		{"left", gridNode::eGridAlignY::LEFT},
+		{"right", gridNode::eGridAlignY::RIGHT},
 };
 
 gridNode::gridNode() {
@@ -40,11 +43,18 @@ gridNode::eGridDirection gridNode::getGridDirectionByString(const std::string& t
 	return gridNode::eGridDirection::VERTICAL;
 }
 
-gridNode::eGridAlign gridNode::getGridAlignByString(const std::string& type) {
-	if (gridAlignMap.find(type) != gridAlignMap.end()) {
-		return gridAlignMap[type];
+gridNode::eGridAlignX gridNode::getGridAlignXByString(const std::string& type) {
+	if (gridAlignXMap.find(type) != gridAlignXMap.end()) {
+		return gridAlignXMap[type];
 	}
-	return gridNode::eGridAlign::LEFT;
+	return gridNode::eGridAlignX::TOP;
+}
+
+gridNode::eGridAlignY gridNode::getGridAlignYByString(const std::string& type) {
+	if (gridAlignYMap.find(type) != gridAlignYMap.end()) {
+		return gridAlignYMap[type];
+	}
+	return gridNode::eGridAlignY::LEFT;
 }
 
 void gridNode::updateGridTransform() {
@@ -63,6 +73,19 @@ void gridNode::updateGridTransform() {
 			currentCol++;
 		} else if (direction == eGridDirection::VERTICAL) {
 			currentRow++;
+		}
+	}
+	//0 0
+	//0 0
+	auto startPos = getPosition();
+	for (auto itemRow = 0; itemRow < grid.size(); ++itemRow) {
+		for (auto itemCol = 0; itemCol < grid[itemRow].size(); ++itemCol) {
+			if (alignY == eGridAlignY::RIGHT) {
+				//
+			} else if (alignY == eGridAlignY::LEFT) {
+				//
+			}
+			//
 		}
 	}
 }

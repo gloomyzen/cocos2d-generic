@@ -5,6 +5,7 @@
 #include "common/coreModule/nodes/nodeProperties.h"
 #include <string>
 #include <map>
+#include <vector>
 
 namespace common {
 	namespace coreModule {
@@ -15,13 +16,15 @@ namespace common {
 				HORIZONTAL = 0,
 				VERTICAL,
 			};
-			enum class eGridAlign {
+			enum class eGridAlignX {
 				TOP = 0,
 				BOTTOM,
-				LEFT,
+			};
+			enum class eGridAlignY {
+				LEFT = 0,
 				RIGHT,
 			};
-			typedef std::map<int, std::map<int, cocos2d::Node*>> gridType;
+			typedef std::vector<std::vector<cocos2d::Node*>> gridType;
 
 			gridNode();
 			~gridNode() override;
@@ -41,12 +44,14 @@ namespace common {
 			void setPaddingY(int X, int Y) { paddingY.first = X; paddingY.second = Y; }
 			void setPaddingY(std::pair<int, int> value) { paddingY = value; }
 			void setDirection(eGridDirection value) { direction = value; }
-			void setAlign(eGridAlign value) { align = value; }
+			void setAlignX(eGridAlignX value) { alignX = value; }
+			void setAlignY(eGridAlignY value) { alignY = value; }
 			void setColumns(int value) { columns = value; }
 			void setRows(int value) { rows = value; }
 
 			static eGridDirection getGridDirectionByString(const std::string&);
-			static eGridAlign getGridAlignByString(const std::string&);
+			static eGridAlignX getGridAlignXByString(const std::string&);
+			static eGridAlignY getGridAlignYByString(const std::string&);
 
 
 		private:
@@ -55,7 +60,8 @@ namespace common {
 			std::pair<int, int> paddingX;
 			std::pair<int, int> paddingY;
 			eGridDirection direction = eGridDirection::VERTICAL;
-			eGridAlign align = eGridAlign::LEFT;
+			eGridAlignX alignX = eGridAlignX::TOP;
+			eGridAlignY alignY = eGridAlignY::LEFT;
 			int columns = 1;
 			int rows = 1;
 		};
