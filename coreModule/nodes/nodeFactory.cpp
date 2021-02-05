@@ -472,11 +472,3 @@ bool nodeFactory::registerCustomNodeType(const std::string& type, std::function<
 	}
 	return false;
 }
-
-void nodeFactory::allNodesRegisteredClb(Node *node) {
-	if (node == nullptr)
-		return;
-	if (auto grid = dynamic_cast<gridNode*>(node)) {
-		grid->updateTransform();
-	}
-}

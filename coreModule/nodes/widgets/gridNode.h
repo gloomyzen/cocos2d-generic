@@ -39,8 +39,6 @@ namespace common {
 			~gridNode() override;
 			CREATE_FUNC(gridNode);
 
-			void updateTransform() override;
-
 			void updateGridTransform();
 
 			void setMarginX(int X, int Y) { marginX.first = X; marginX.second = Y; }

@@ -51,8 +51,6 @@ namespace common {
 
 			bool registerCustomNodeType(const std::string&, std::function<Node*()>);
 
-			void allNodesRegisteredClb(Node *node);
-
 		private:
 			void init();
 			bool inited = false;

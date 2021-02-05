@@ -25,12 +25,6 @@ gridNode::gridNode() {
 
 gridNode::~gridNode() {}
 
-void gridNode::updateTransform() {
-	for (const auto &child: _children)
-		child->updateTransform();
-	updateGridTransform();
-}
-
 gridNode::eGridDirection gridNode::getGridDirectionByString(const std::string& type) {
 	if (gridDirectionMap.find(type) != gridDirectionMap.end()) {
 		return gridDirectionMap[type];
@@ -56,31 +50,42 @@ void gridNode::updateGridTransform() {
 	gridTable grid;
 	gridCells tempCols;
 	gridCells tempRows;
-	auto x = 0;
-	auto y = 0;
-	for (const auto& child : getChildren()) {
-		if (y > columns && direction == eGridDirection::VERTICAL){
-			x = 0;
-		}
-		if (x > rows && direction == eGridDirection::HORIZONTAL) {
-			y = 0;
-		}
-		auto colIt = tempCols.find(y);
-		grid[y][x] = new sGridCell(child, child->getContentSize());
-		tempCols[y] = new sGridCell(nullptr, child->getContentSize());
-		if (colIt != tempCols.end()) {
-			if (tempCols[y]->size.width < child->getContentSize().width) {
-				tempCols[y]->size.width = child->getContentSize().width;
+
+	{ //update temp grid for calculate width and height for grid
+		auto x = 0;
+		auto y = 0;
+		for (const auto& child : getChildren()) {
+			if (y > columns && direction == eGridDirection::VERTICAL){
+				x = 0;
+			}
+			if (x > rows && direction == eGridDirection::HORIZONTAL) {
+				y = 0;
+			}
+			auto colIt = tempCols.find(y);
+			auto rowIt = tempRows.find(x);
+			grid[y][x] = new sGridCell(child, child->getContentSize());
+			if (colIt != tempCols.end()) {
+				if (tempCols[y]->size.width < child->getContentSize().width) {
+					tempCols[y]->size.width = child->getContentSize().width;
+				}
+			} else {
+				tempCols[y] = new sGridCell(nullptr, child->getContentSize());
+			}
+			if (rowIt != tempRows.end()) {
+				if (tempRows[x]->size.height < child->getContentSize().height) {
+					tempRows[x]->size.height = child->getContentSize().height;
+				}
+			} else {
+				tempRows[x] = new sGridCell(nullptr, child->getContentSize());
+			}
+			if (direction == eGridDirection::HORIZONTAL) {
+				y++;
+			} else if (direction == eGridDirection::VERTICAL) {
+				x++;
 			}
 		}
-		if (direction == eGridDirection::HORIZONTAL) {
-			y++;
-		} else if (direction == eGridDirection::VERTICAL) {
-			x++;
-		}
 	}
-	//0 0
-	//0 0
+
 	auto startPos = getPosition();
 	for (auto itemRow = 0; itemRow < grid.size(); ++itemRow) {
 		for (auto itemCol = 0; itemCol < grid[itemRow].size(); ++itemCol) {
