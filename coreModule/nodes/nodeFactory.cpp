@@ -431,14 +431,14 @@ void nodeFactory::getComponents(Node *node, const std::string &componentName, co
 					auto direction = gridNode::getGridDirectionByString(object["direction"].GetString());
 					grid->setDirection(direction);
 				}
-				if (object.HasMember("alignX") && object["alignX"].IsString()) {
-					auto align = gridNode::getGridAlignXByString(object["alignX"].GetString());
-					grid->setAlignX(align);
-				}
-				if (object.HasMember("alignY") && object["alignY"].IsString()) {
-					auto align = gridNode::getGridAlignYByString(object["alignY"].GetString());
-					grid->setAlignY(align);
-				}
+//				if (object.HasMember("alignX") && object["alignX"].IsString()) {
+//					auto align = gridNode::getGridAlignXByString(object["alignX"].GetString());
+//					grid->setAlignX(align);
+//				}
+//				if (object.HasMember("alignY") && object["alignY"].IsString()) {
+//					auto align = gridNode::getGridAlignYByString(object["alignY"].GetString());
+//					grid->setAlignY(align);
+//				}
 			}
 		}
 			break;
@@ -471,4 +471,12 @@ bool nodeFactory::registerCustomNodeType(const std::string& type, std::function<
 		return true;
 	}
 	return false;
+}
+
+void nodeFactory::allNodesRegisteredClb(Node *node) {
+	if (node == nullptr)
+		return;
+	if (auto grid = dynamic_cast<gridNode*>(node)) {
+		grid->updateTransform();
+	}
 }

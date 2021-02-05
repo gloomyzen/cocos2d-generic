@@ -175,6 +175,7 @@ namespace common {
 						node->addChild(childNode);
 					}
 				}
+				GET_NODE_FACTORY().allNodesRegisteredClb(node);
 			}
 		};
 	}

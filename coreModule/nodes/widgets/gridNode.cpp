@@ -25,11 +25,6 @@ gridNode::gridNode() {
 
 gridNode::~gridNode() {}
 
-void gridNode::addChild(Node *child) {
-	Node::addChild(child);
-	updateGridTransform();
-}
-
 void gridNode::updateTransform() {
 	for (const auto &child: _children)
 		child->updateTransform();
@@ -58,21 +53,30 @@ gridNode::eGridAlignY gridNode::getGridAlignYByString(const std::string& type) {
 }
 
 void gridNode::updateGridTransform() {
-	gridType grid;
-	auto currentCol = 0;
-	auto currentRow = 0;
+	gridTable grid;
+	gridCells tempCols;
+	gridCells tempRows;
+	auto x = 0;
+	auto y = 0;
 	for (const auto& child : getChildren()) {
-		if (currentCol > columns && direction == eGridDirection::VERTICAL){
-			currentRow = 0;
+		if (y > columns && direction == eGridDirection::VERTICAL){
+			x = 0;
 		}
-		if (currentRow > rows && direction == eGridDirection::HORIZONTAL) {
-			currentCol = 0;
+		if (x > rows && direction == eGridDirection::HORIZONTAL) {
+			y = 0;
 		}
-		grid[currentCol][currentRow] = child;
+		auto colIt = tempCols.find(y);
+		grid[y][x] = new sGridCell(child, child->getContentSize());
+		tempCols[y] = new sGridCell(nullptr, child->getContentSize());
+		if (colIt != tempCols.end()) {
+			if (tempCols[y]->size.width < child->getContentSize().width) {
+				tempCols[y]->size.width = child->getContentSize().width;
+			}
+		}
 		if (direction == eGridDirection::HORIZONTAL) {
-			currentCol++;
+			y++;
 		} else if (direction == eGridDirection::VERTICAL) {
-			currentRow++;
+			x++;
 		}
 	}
 	//0 0
@@ -80,11 +84,11 @@ void gridNode::updateGridTransform() {
 	auto startPos = getPosition();
 	for (auto itemRow = 0; itemRow < grid.size(); ++itemRow) {
 		for (auto itemCol = 0; itemCol < grid[itemRow].size(); ++itemCol) {
-			if (alignY == eGridAlignY::RIGHT) {
-				//
-			} else if (alignY == eGridAlignY::LEFT) {
-				//
-			}
+//			if (alignY == eGridAlignY::RIGHT) {
+//				//
+//			} else if (alignY == eGridAlignY::LEFT) {
+//				//
+//			}
 			//
 		}
 	}

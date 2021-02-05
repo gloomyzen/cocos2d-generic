@@ -12,6 +12,14 @@ namespace common {
 
 		class gridNode : public nodeProperties<cocos2d::Node> {
 		public:
+			struct sGridCell {
+				cocos2d::Node* node = nullptr;
+				cocos2d::Size size;
+				sGridCell(cocos2d::Node* _node, cocos2d::Size _size) {
+					node = _node;
+					size = _size;
+				}
+			};
 			enum class eGridDirection {
 				HORIZONTAL = 0,
 				VERTICAL,
@@ -24,13 +32,13 @@ namespace common {
 				LEFT = 0,
 				RIGHT,
 			};
-			typedef std::vector<std::vector<cocos2d::Node*>> gridType;
+			typedef std::map<int, sGridCell*> gridCells;
+			typedef std::map<int, gridCells> gridTable;
 
 			gridNode();
 			~gridNode() override;
 			CREATE_FUNC(gridNode);
 
-			void addChild(cocos2d::Node* child) override;
 			void updateTransform() override;
 
 			void updateGridTransform();
