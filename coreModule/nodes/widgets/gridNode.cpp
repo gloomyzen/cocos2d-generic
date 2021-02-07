@@ -87,14 +87,19 @@ void gridNode::updateGridTransform() {
 	}
 
 	auto startPos = getPosition();
-	for (auto itemRow = 0; itemRow < grid.size(); ++itemRow) {
-		for (auto itemCol = 0; itemCol < grid[itemRow].size(); ++itemCol) {
+	for (auto y = 0; y < grid.size(); ++y) {
+		for (auto x = 0; x < grid[y].size(); ++x) {
 //			if (alignY == eGridAlignY::RIGHT) {
 //				//
 //			} else if (alignY == eGridAlignY::LEFT) {
 //				//
 //			}
-			//
+			auto width = tempCols[y]->size.width;
+			auto height = tempRows[x]->size.height;
+//			startPos.x =
+			if (grid[y][x]->node != nullptr) {
+				//
+			}
 		}
 	}
 }
