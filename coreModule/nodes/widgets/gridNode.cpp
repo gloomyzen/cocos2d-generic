@@ -93,16 +93,17 @@ void gridNode::updateGridTransform() {
 	for (auto y = 0; y < grid.size(); ++y) {
 		auto tempPos = startPos;
 		for (auto x = 0; x < grid[y].size(); ++x) {
+
+			auto height = tempRows[x]->size.height;
+			startPos.y -= height;
+			tempPos.y -= height;
+
 			if (grid[y][x]->node != nullptr) {
 				grid[y][x]->node->setPosition(tempPos);
 			}
-			if (x == 0) {
-				auto height = tempRows[x]->size.height;
-				startPos.y += height;
-				tempPos.y += height;
-			}
+
 			auto width = tempCols[y]->size.width;
-			tempPos.x += width;
+			tempPos.x -= width;
 		}
 	}
 }
