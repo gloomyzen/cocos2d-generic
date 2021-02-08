@@ -90,21 +90,34 @@ void gridNode::updateGridTransform() {
 	}
 
 	auto startPos = getPosition();
+	auto containerSize = getContentSize();
 	for (auto y = 0; y < grid.size(); ++y) {
 		auto tempPos = startPos;
 		for (auto x = 0; x < grid[y].size(); ++x) {
-
+			auto width = tempCols[y]->size.width;
 			auto height = tempRows[x]->size.height;
-			startPos.y -= height;
-			tempPos.y -= height;
-
-			if (grid[y][x]->node != nullptr) {
-				grid[y][x]->node->setPosition(tempPos);
+			if (x == 0) {
+				startPos.y += height;
+				containerSize.height += height;
+			}
+			if (y == 0) {
+				containerSize.width += width;
 			}
 
-			auto width = tempCols[y]->size.width;
-			tempPos.x -= width;
+			if (grid[y][x]->node != nullptr) {
+				auto cellPos = tempPos;
+				if (x == 0) {
+					cellPos.x += paddingX.first;
+				}
+				if (y == 0) {
+					cellPos.y += paddingY.first;
+				}
+				grid[y][x]->node->setPosition(cellPos);
+			}
+			tempPos.y += height;
+			tempPos.x += width;
 		}
 	}
+	setContentSize(containerSize);
 }
 
