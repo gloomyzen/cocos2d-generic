@@ -62,16 +62,20 @@ void imGuiLayer::showNodeEditor(bool *nodeEditorOpened) {
 		return;
 	}
 
-	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2, 2));
-	ImGui::Columns(2);
-	ImGui::Separator();
+	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(1, 1));
+	ImGui::Columns(2, "AB");
 
+
+	ImGui::BeginChild("left");
 	renderTree(cocos2d::Director::getInstance()->getRunningScene()->getChildren());
-	ImGui::NextColumn();
-	renderPreferences(lastTarget);
+	ImGui::EndChild();
 
-	ImGui::Columns(1);
-	ImGui::Separator();
+	ImGui::NextColumn();
+
+	ImGui::BeginChild("right");
+	renderPreferences(lastTarget);
+	ImGui::EndChild();
+
 	ImGui::PopStyleVar();
 	ImGui::End();
 };
