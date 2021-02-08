@@ -63,20 +63,23 @@ void gridNode::updateGridTransform() {
 			}
 			auto colIt = tempCols.find(y);
 			auto rowIt = tempRows.find(x);
-			grid[y][x] = new sGridCell(child, child->getContentSize());
+			auto childSize = child->getContentSize() * child->getScale();
+			childSize.width += paddingX.first + paddingX.second;
+			childSize.height += paddingY.first + paddingY.second;
+			grid[y][x] = new sGridCell(child, childSize);
 			if (colIt != tempCols.end()) {
-				if (tempCols[y]->size.width < child->getContentSize().width) {
-					tempCols[y]->size.width = child->getContentSize().width;
+				if (tempCols[y]->size.width < childSize.width) {
+					tempCols[y]->size.width = childSize.width;
 				}
 			} else {
-				tempCols[y] = new sGridCell(nullptr, child->getContentSize());
+				tempCols[y] = new sGridCell(nullptr, childSize);
 			}
 			if (rowIt != tempRows.end()) {
-				if (tempRows[x]->size.height < child->getContentSize().height) {
-					tempRows[x]->size.height = child->getContentSize().height;
+				if (tempRows[x]->size.height < childSize.height) {
+					tempRows[x]->size.height = childSize.height;
 				}
 			} else {
-				tempRows[x] = new sGridCell(nullptr, child->getContentSize());
+				tempRows[x] = new sGridCell(nullptr, childSize);
 			}
 			if (direction == eGridDirection::HORIZONTAL) {
 				y++;
@@ -88,18 +91,18 @@ void gridNode::updateGridTransform() {
 
 	auto startPos = getPosition();
 	for (auto y = 0; y < grid.size(); ++y) {
+		auto tempPos = startPos;
 		for (auto x = 0; x < grid[y].size(); ++x) {
-//			if (alignY == eGridAlignY::RIGHT) {
-//				//
-//			} else if (alignY == eGridAlignY::LEFT) {
-//				//
-//			}
-			auto width = tempCols[y]->size.width;
-			auto height = tempRows[x]->size.height;
-//			startPos.x =
 			if (grid[y][x]->node != nullptr) {
-				//
+				grid[y][x]->node->setPosition(tempPos);
 			}
+			if (x == 0) {
+				auto height = tempRows[x]->size.height;
+				startPos.y += height;
+				tempPos.y += height;
+			}
+			auto width = tempCols[y]->size.width;
+			tempPos.x += width;
 		}
 	}
 }
