@@ -55,10 +55,10 @@ void gridNode::updateGridTransform() {
 		auto x = 0;
 		auto y = 0;
 		for (const auto& child : getChildren()) {
-			if (y > columns && direction == eGridDirection::VERTICAL){
+			if (y > columns){
 				x = 0;
 			}
-			if (x > rows && direction == eGridDirection::HORIZONTAL) {
+			if (x > rows) {
 				y = 0;
 			}
 			auto colIt = tempCols.find(y);
