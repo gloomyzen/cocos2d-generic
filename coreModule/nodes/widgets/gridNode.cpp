@@ -55,37 +55,43 @@ void gridNode::updateGridTransform() {
 		auto x = 0;
 		auto y = 0;
 		for (const auto& child : getChildren()) {
-			if (y > columns){
+			if (x >= columns && y <= rows) {
 				x = 0;
-			}
-			if (x > rows) {
+				y++;
+			} else if (y >= rows && x <= columns) {
 				y = 0;
+				x++;
 			}
-			auto colIt = tempCols.find(y);
-			auto rowIt = tempRows.find(x);
+			auto colIt = tempCols.find(x);
+			auto rowIt = tempRows.find(y);
 			auto childSize = child->getContentSize() * child->getScale();
 			childSize.width += paddingX.first + paddingX.second;
 			childSize.height += paddingY.first + paddingY.second;
 			grid[y][x] = new sGridCell(child, childSize);
 			if (colIt != tempCols.end()) {
-				if (tempCols[y]->size.width < childSize.width) {
-					tempCols[y]->size.width = childSize.width;
+				if (tempCols[x]->size.width < childSize.width) {
+					tempCols[x]->size.width = childSize.width;
 				}
 			} else {
-				tempCols[y] = new sGridCell(nullptr, childSize);
+				tempCols[x] = new sGridCell(nullptr, childSize);
 			}
 			if (rowIt != tempRows.end()) {
-				if (tempRows[x]->size.height < childSize.height) {
-					tempRows[x]->size.height = childSize.height;
+				if (tempRows[y]->size.height < childSize.height) {
+					tempRows[y]->size.height = childSize.height;
 				}
 			} else {
-				tempRows[x] = new sGridCell(nullptr, childSize);
+				tempRows[y] = new sGridCell(nullptr, childSize);
 			}
-			if (direction == eGridDirection::HORIZONTAL) {
-				y++;
-			} else if (direction == eGridDirection::VERTICAL) {
+			if (x < columns) {
 				x++;
+			} else {
+				y++;
 			}
+//			if (direction == eGridDirection::HORIZONTAL) {
+//				y++;
+//			} else if (direction == eGridDirection::VERTICAL) {
+//				x++;
+//			}
 		}
 	}
 
@@ -94,8 +100,8 @@ void gridNode::updateGridTransform() {
 	for (auto y = 0; y < grid.size(); ++y) {
 		auto tempPos = startPos;
 		for (auto x = 0; x < grid[y].size(); ++x) {
-			auto width = tempCols[y]->size.width;
-			auto height = tempRows[x]->size.height;
+			auto width = tempCols[x]->size.width;
+			auto height = tempRows[y]->size.height;
 			if (x == 0) {
 				startPos.y += height;
 				containerSize.height += height;
@@ -108,9 +114,6 @@ void gridNode::updateGridTransform() {
 				auto cellPos = tempPos;
 				if (x == 0) {
 					cellPos.x += paddingX.first;
-				}
-				if (y == 0) {
-					cellPos.y += paddingY.first;
 				}
 				grid[y][x]->node->setPosition(cellPos);
 			}
