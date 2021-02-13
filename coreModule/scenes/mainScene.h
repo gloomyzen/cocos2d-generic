@@ -3,6 +3,7 @@
 
 #include "cocos2d.h"
 #include "common/coreModule/nodes/nodeProperties.h"
+#include "common/coreModule/scenes/windows/windowSystem.h"
 #include <vector>
 #include <string>
 
@@ -24,6 +25,7 @@ namespace common {
 
 		private:
 			std::vector<cocos2d::Node*> nodes{};
+			windowSystem* windowViewer = nullptr;
 		};
 	}
 }//common::coreModule

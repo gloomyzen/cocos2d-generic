@@ -22,6 +22,8 @@ bool mainScene::init() {
 	auto imGuiLayer = common::debugModule::imGuiLayer::create();
 	this->addChild(imGuiLayer, eGameLayers::DEBUG_LAYER);
 #endif
+	windowViewer = new windowSystem();
+	this->addChild(windowViewer, eGameLayers::WINDOW);
 
 	return true;
 }
