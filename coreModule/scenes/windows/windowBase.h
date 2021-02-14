@@ -24,6 +24,13 @@ namespace common::coreModule {
 			T m_data;
 		};
 	public:
+		enum class eWindowState {
+			CLOSED = 0,
+			OPENING,
+			OPENED,
+			CLOSING
+		};
+
 		windowBase();
 		~windowBase();
 		CREATE_FUNC(windowBase);
@@ -42,7 +49,10 @@ namespace common::coreModule {
 			}
 			return T();
 		}
+
+		eWindowState getCurrentState() { return currentState; }
 	private:
+		eWindowState currentState = eWindowState::CLOSED;
 		std::map<std::string, std::shared_ptr<windowBaseData>> windowData;
 	};
 }//common::coreModule

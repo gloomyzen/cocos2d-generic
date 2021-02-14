@@ -5,27 +5,23 @@
 #include "common/coreModule/nodes/nodeProperties.h"
 #include <map>
 #include <string>
+#include <vector>
 
 namespace common::coreModule {
 	class windowBase;
 
 	class windowSystem : public cocos2d::Node {
 	public:
-		enum class eWindowState {
-			CLOSED = 0,
-			OPENING,
-			OPENED,
-			CLOSING
-		};
 		windowSystem();
 		~windowSystem() = default;
 
 		CREATE_FUNC(windowSystem);
 		void registerWindow(const std::string&, const std::function<windowBase*()>&);
+		bool requestWindow(const std::string&, bool force = false);
 
 	private:
-		eWindowState currentState = eWindowState::CLOSED;
-		std::map<std::string, std::function<windowBase*()>> windowList;
+		std::map<std::string, std::function<windowBase*()>> registeredWindowList;
+		std::vector<windowBase*> windowList;
 	};
 }//common::coreModule
 
