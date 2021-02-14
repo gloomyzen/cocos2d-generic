@@ -27,6 +27,7 @@ namespace common {
 			mainScene* getMainScene() { return mainSceneIns; }
 			windowSystem* getWindowSystem();
 			void registerWindow(const std::string&, const std::function<windowBase*()>&);
+			bool requestWindow(const std::string&);
 
 		private:
 			std::string currentState;

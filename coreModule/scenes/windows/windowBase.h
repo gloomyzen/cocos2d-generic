@@ -8,7 +8,7 @@
 #include <map>
 
 namespace common::coreModule {
-	class windowBase : public nodeProperties<cocos2d::Sprite> {
+	class windowBase : public nodeProperties<cocos2d::Node> {
 		class windowBaseData {
 		public:
 			windowBaseData() = default;

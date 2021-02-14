@@ -13,6 +13,7 @@ gameManager *currentGameManager = nullptr;
 gameManager::gameManager() {
 	currentState = "loadingScreenScene";
 	mainSceneIns = dynamic_cast<mainScene *>(mainScene::createScene());
+	Director::getInstance()->runWithScene(mainSceneIns);
 };
 
 gameManager::~gameManager() {}
@@ -27,41 +28,6 @@ gameManager &gameManager::getInstance() {
 void gameManager::run(const std::string& state) {
 	/// Starting from state
 	changeState(state);
-	Director::getInstance()->runWithScene(mainSceneIns);
-
-	//todo remove after testing
-//	auto seq = Sequence::create(DelayTime::create(7.f), CallFunc::create([this](){
-//		changeState("battleScene");
-//	}), nullptr);
-//	mainSceneIns->runAction(seq);
-
-//	auto seq = Sequence::create(DelayTime::create(7.f), CallFunc::create([this](){
-//		changeState("battleScene");
-//	}),DelayTime::create(5.f), CallFunc::create([this](){
-//		changeState("mainMenuScene");
-//	}),DelayTime::create(5.f), CallFunc::create([this](){
-//		changeState("battleScene");
-//	}),DelayTime::create(5.f), CallFunc::create([this](){
-//		changeState("mainMenuScene");
-//	}),DelayTime::create(5.f), CallFunc::create([this](){
-//		changeState("battleScene");
-//	}),DelayTime::create(5.f), CallFunc::create([this](){
-//		changeState("mainMenuScene");
-//	}),DelayTime::create(5.f), CallFunc::create([this](){
-//		changeState("battleScene");
-//	}),DelayTime::create(5.f), CallFunc::create([this](){
-//		changeState("mainMenuScene");
-//	}),DelayTime::create(5.f), CallFunc::create([this](){
-//		changeState("battleScene");
-//	}),DelayTime::create(5.f), CallFunc::create([this](){
-//		changeState("mainMenuScene");
-//	}),DelayTime::create(5.f), CallFunc::create([this](){
-//		changeState("battleScene");
-//	}),DelayTime::create(5.f), CallFunc::create([this](){
-//		changeState("mainMenuScene");
-//	}), nullptr);
-//	mainSceneIns->runAction(seq);
-
 }
 
 void gameManager::changeState(const std::string& state) {
@@ -81,4 +47,8 @@ windowSystem *gameManager::getWindowSystem() {
 
 void gameManager::registerWindow(const std::string& name, const std::function<windowBase *()>& clb) {
 	getWindowSystem()->registerWindow(name, clb);
+}
+
+bool gameManager::requestWindow(const std::string& name) {
+	return getWindowSystem()->requestWindow(name);
 }
