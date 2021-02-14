@@ -23,6 +23,8 @@ namespace common {
 
 			CREATE_FUNC(mainScene);
 
+			windowSystem* getWindowNode() { return windowViewer; }
+
 		private:
 			std::vector<cocos2d::Node*> nodes{};
 			windowSystem* windowViewer = nullptr;

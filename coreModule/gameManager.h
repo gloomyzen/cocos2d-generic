@@ -11,6 +11,7 @@ namespace common {
 
 	namespace coreModule {
 		class mainScene;
+		class windowSystem;
 
 		class gameManager {
 		public:
@@ -22,6 +23,7 @@ namespace common {
 			void changeState(const std::string& state);
 			const std::string& getCurrentState() { return currentState; }
 			mainScene* getMainScene() { return mainSceneIns; }
+			windowSystem* getWindowSystem();
 
 		private:
 			std::string currentState;

@@ -2,6 +2,7 @@
 #include "common/coreModule/scenes/mainScene.h"
 #include "common/debugModule/logManager.h"
 #include "common/coreModule/nodes/widgets/eventNode.h"
+#include "common/coreModule/scenes/windows/windowSystem.h"
 
 using namespace common;
 using namespace common::coreModule;
@@ -69,4 +70,8 @@ void gameManager::changeState(const std::string& state) {
 	}
 	currentState = state;
 	mainSceneIns->setRoom(currentState);
+}
+
+windowSystem *gameManager::getWindowSystem() {
+	return mainSceneIns->getWindowNode();
 }

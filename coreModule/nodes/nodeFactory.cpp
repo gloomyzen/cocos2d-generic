@@ -163,11 +163,7 @@ void nodeFactory::getComponents(Node *node, const std::string &componentName, co
 			if (object.HasMember("stretch")) {
 				auto stretch = object["stretch"].GetArray();
 				if (stretch.Size() == 2) {
-					auto visibleSize = Director::getInstance()->getVisibleSize();
-					auto _size = cocos2d::Size();
-					_size.width = visibleSize.width * stretch[0].GetFloat();
-					_size.height = visibleSize.height * stretch[1].GetFloat();
-					node->setContentSize(_size);
+					node->setStretch(stretch[0].GetFloat(), stretch[1].GetFloat());
 				} else {
 					LOG_ERROR(StringUtils::format("nodeFactory::getComponents: Component '%s' has wrong '%s' stretch keys!",
 												  componentName.c_str(), std::to_string(stretch.Size()).c_str()));
