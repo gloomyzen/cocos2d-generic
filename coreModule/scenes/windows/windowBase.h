@@ -9,19 +9,19 @@
 
 namespace common::coreModule {
 	class windowBase : public nodeProperties<cocos2d::Sprite> {
-		template <typename T>
 		class windowBaseData {
 		public:
-			std::vector<T> value;
+			windowBaseData() = default;
+			virtual ~windowBaseData() = default;
 		};
-		class windowDataStorage {
+
+		template< typename T >
+		class TypedWindowBaseData : public windowBaseData {
 		public:
-			windowDataStorage() = default;
-			~windowDataStorage() = default;
-			template <typename T>
-			void setValue(const std::string& name, T data) {
-				//
-			}
+			explicit TypedWindowBaseData (const T& data) : windowBaseData(), m_data(data) {}
+			T getData() { return m_data; }
+		private:
+			T m_data;
 		};
 	public:
 		windowBase();
@@ -30,12 +30,20 @@ namespace common::coreModule {
 
 		template <typename T>
 		void setData (const std::string& name, T data){
-			auto storage = new windowDataStorage();
-			windowData[name] = *storage;
-			windowData[name].setValue<T>(name, data);
+			windowData[name] = std::make_shared<windowBaseData>(new TypedWindowBaseData<T>(data));
+		}
+
+		template <typename T>
+		T getData(const std::string& name) {
+			auto find = windowData.find(name);
+			if (find != windowData.end()) {
+				auto data = dynamic_cast<TypedWindowBaseData<T>>(find->second.get());
+				return data.getData();
+			}
+			return T();
 		}
 	private:
-		std::map<std::string, windowDataStorage> windowData;
+		std::map<std::string, std::shared_ptr<windowBaseData>> windowData;
 	};
 }//common::coreModule
 
