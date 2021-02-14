@@ -32,12 +32,13 @@ namespace common::coreModule {
 		};
 
 		windowBase();
+		windowBase(const std::string&);
 		~windowBase();
 		CREATE_FUNC(windowBase);
 
 		template <typename T>
 		void setData (const std::string& name, T data){
-			windowData[name] = std::make_shared<windowBaseData>(new TypedWindowBaseData<T>(data));
+			windowData[name] = std::make_shared<windowBaseData>(TypedWindowBaseData<T>(data));
 		}
 
 		template <typename T>
@@ -51,7 +52,11 @@ namespace common::coreModule {
 		}
 
 		eWindowState getCurrentState() { return currentState; }
+
+		void setWindowName(const std::string& value) { windowName = value; }
+		const std::string& getWindowName() const { return windowName; }
 	private:
+		std::string windowName;
 		eWindowState currentState = eWindowState::CLOSED;
 		std::map<std::string, std::shared_ptr<windowBaseData>> windowData;
 	};
