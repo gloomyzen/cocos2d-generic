@@ -3,6 +3,7 @@
 #include "common/debugModule/logManager.h"
 #include "common/coreModule/nodes/widgets/eventNode.h"
 #include "common/coreModule/scenes/windows/windowSystem.h"
+#include "common/coreModule/scenes/windows/windowBase.h"
 
 using namespace common;
 using namespace common::coreModule;
@@ -73,5 +74,11 @@ void gameManager::changeState(const std::string& state) {
 }
 
 windowSystem *gameManager::getWindowSystem() {
+	if (!mainSceneIns)
+		return nullptr;
 	return mainSceneIns->getWindowNode();
+}
+
+void gameManager::registerWindow(const std::string& name, const std::function<windowBase *()>& clb) {
+	getWindowSystem()->registerWindow(name, clb);
 }

@@ -4,6 +4,7 @@
 #include "cocos2d.h"
 #include "enums/layersEnum.h"
 #include <string>
+#include <functional>
 
 #define GET_GAME_MANAGER() common::coreModule::gameManager::getInstance()
 
@@ -12,6 +13,7 @@ namespace common {
 	namespace coreModule {
 		class mainScene;
 		class windowSystem;
+		class windowBase;
 
 		class gameManager {
 		public:
@@ -24,6 +26,7 @@ namespace common {
 			const std::string& getCurrentState() { return currentState; }
 			mainScene* getMainScene() { return mainSceneIns; }
 			windowSystem* getWindowSystem();
+			void registerWindow(const std::string&, const std::function<windowBase*()>&);
 
 		private:
 			std::string currentState;
