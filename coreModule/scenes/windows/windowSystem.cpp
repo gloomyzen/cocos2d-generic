@@ -27,13 +27,28 @@ void windowSystem::registerWindow(const std::string& name, const std::function<w
 
 bool windowSystem::requestWindow(const std::string& name, bool force) {
 	auto find = registeredWindowList.find(name);
-	if (force && find != registeredWindowList.end()) {
+	if (find == registeredWindowList.end()) {
+		return false;
+	}
+	auto clb = [this, name](){
+		closeWindow(name);
+	};
+	if (force || openedWindowList.empty()) {
 		auto window = registeredWindowList[name]();
-		windowList.push_back(window);
+		window->setData("safeClose", clb);
+		openedWindowList.push_back(window);
 		addChild(window);
-		//request
+		return true;
+	} else {
+		auto window = registeredWindowList[name]();
+		window->setData("safeClose", clb);
+		waitingWindowList.push_back(window);
 		return true;
 	}
 
+	return false;
+}
+
+bool windowSystem::closeWindow(const std::string &) {
 	return false;
 }

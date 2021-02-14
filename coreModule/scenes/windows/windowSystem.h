@@ -18,10 +18,12 @@ namespace common::coreModule {
 		CREATE_FUNC(windowSystem);
 		void registerWindow(const std::string&, const std::function<windowBase*()>&);
 		bool requestWindow(const std::string&, bool force = false);
+		bool closeWindow(const std::string&);
 
 	private:
 		std::map<std::string, std::function<windowBase*()>> registeredWindowList;
-		std::vector<windowBase*> windowList;
+		std::vector<windowBase*> openedWindowList;
+		std::vector<windowBase*> waitingWindowList;
 	};
 }//common::coreModule
 
