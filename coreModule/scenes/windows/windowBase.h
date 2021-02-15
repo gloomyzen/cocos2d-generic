@@ -8,7 +8,7 @@
 #include <map>
 
 namespace common::coreModule {
-	class windowBase : public nodeProperties<cocos2d::Node> {
+	class windowBase : public nodeProperties<cocos2d::Sprite> {
 		class windowBaseData {
 		public:
 			windowBaseData() = default;
@@ -56,6 +56,8 @@ namespace common::coreModule {
 		void setWindowName(const std::string& value) { windowName = value; }
 		const std::string& getWindowName() const { return windowName; }
 	private:
+		void initWindow();
+
 		std::string windowName;
 		eWindowState currentState = eWindowState::CLOSED;
 		std::map<std::string, std::shared_ptr<windowBaseData>> windowData;
