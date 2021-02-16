@@ -3,12 +3,13 @@
 
 #include "cocos2d.h"
 #include "common/coreModule/nodes/nodeProperties.h"
+#include "common/coreModule/nodes/widgets/soundButton.h"
 #include <string>
 #include <vector>
 #include <map>
 
 namespace common::coreModule {
-	class windowBase : public nodeProperties<cocos2d::Sprite> {
+	class windowBase : public soundButton {
 		class windowBaseData {
 		public:
 			windowBaseData() = default;
@@ -32,8 +33,8 @@ namespace common::coreModule {
 		};
 
 		windowBase();
-		windowBase(const std::string&);
-		~windowBase();
+		explicit windowBase(const std::string&);
+		~windowBase() override;
 		CREATE_FUNC(windowBase);
 
 		template <typename T>

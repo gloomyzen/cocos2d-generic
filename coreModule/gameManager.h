@@ -25,6 +25,7 @@ namespace common {
 			void changeState(const std::string& state);
 			const std::string& getCurrentState() { return currentState; }
 			mainScene* getMainScene() { return mainSceneIns; }
+			cocos2d::EventListenerTouchOneByOne* getListener();
 			windowSystem* getWindowSystem();
 			void registerWindow(const std::string&, const std::function<windowBase*()>&);
 			bool requestWindow(const std::string&);

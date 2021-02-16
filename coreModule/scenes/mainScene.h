@@ -10,8 +10,10 @@
 namespace common {
 	namespace coreModule {
 
-	class mainScene : public cocos2d::Scene {
+		class mainScene : public cocos2d::Scene {
 		public:
+			mainScene();
+			~mainScene();
 			static cocos2d::Scene *createScene();
 
 			virtual bool init();
@@ -25,9 +27,13 @@ namespace common {
 
 			windowSystem* getWindowNode() { return windowViewer; }
 
+			cocos2d::EventListenerTouchOneByOne* getListener();
+
 		private:
 			std::vector<cocos2d::Node*> nodes{};
 			windowSystem* windowViewer = nullptr;
+			cocos2d::EventListenerTouchOneByOne* listener = nullptr;
+			bool listenerCopy = false;
 		};
 	}
 }//common::coreModule
