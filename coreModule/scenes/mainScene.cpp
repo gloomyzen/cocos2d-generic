@@ -9,9 +9,7 @@ using namespace cocos2d;
 
 mainScene::mainScene() {}
 
-mainScene::~mainScene() {
-	this->getEventDispatcher()->removeEventListener(listener);
-}
+mainScene::~mainScene() {}
 
 Scene *mainScene::createScene() {
 	return mainScene::create();
@@ -30,8 +28,6 @@ bool mainScene::init() {
 #endif
 	windowViewer = new windowSystem();
 	this->addChild(windowViewer, eGameLayers::WINDOW);
-
-	listener = cocos2d::EventListenerTouchOneByOne::create();
 
 	return true;
 }
@@ -64,12 +60,4 @@ void mainScene::setRoom(const std::string& state) {
 	nodes.push_back(nextNode);
 	nextNode->runAction(seq);
 	director->getRunningScene()->getDefaultCamera()->setPosition(visibleSize.width/2, visibleSize.height/2);
-}
-
-cocos2d::EventListenerTouchOneByOne *mainScene::getListener() {
-	if (!listenerCopy) {
-		listenerCopy = true;
-		return listener;
-	}
-	return listener->clone();
 }

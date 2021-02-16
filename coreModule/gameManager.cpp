@@ -52,7 +52,3 @@ void gameManager::registerWindow(const std::string& name, const std::function<wi
 bool gameManager::requestWindow(const std::string& name) {
 	return getWindowSystem()->requestWindow(name);
 }
-
-cocos2d::EventListenerTouchOneByOne *gameManager::getListener() {
-	return mainSceneIns->getListener();
-}

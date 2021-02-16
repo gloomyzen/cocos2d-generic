@@ -27,13 +27,9 @@ namespace common {
 
 			windowSystem* getWindowNode() { return windowViewer; }
 
-			cocos2d::EventListenerTouchOneByOne* getListener();
-
 		private:
 			std::vector<cocos2d::Node*> nodes{};
 			windowSystem* windowViewer = nullptr;
-			cocos2d::EventListenerTouchOneByOne* listener = nullptr;
-			bool listenerCopy = false;
 		};
 	}
 }//common::coreModule
