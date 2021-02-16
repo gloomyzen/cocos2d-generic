@@ -22,6 +22,7 @@ namespace common {
 
 			bool getAllowSpamTap() const { return allowSpamTap; }
 			void setAllowSpamTap(bool value) { allowSpamTap = value; }
+			bool getTouchCollided(cocos2d::Touch* touch, cocos2d::Node* node);
 		private:
 			void initListener();
 			std::function<void()> soundCallback = nullptr;

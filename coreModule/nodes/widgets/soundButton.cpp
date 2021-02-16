@@ -20,15 +20,7 @@ soundButton::~soundButton() {
 void soundButton::initListener() {
 	listener->setSwallowTouches(true);
 	listener->onTouchBegan = [this](cocos2d::Touch* touch, cocos2d::Event* event){
-		auto touchLocation = convertToNodeSpace(touch->getLocation());
-		bool correctNode;
-		if (getRenderMode() == RenderMode::QUAD_BATCHNODE || getRenderMode() == RenderMode::POLYGON) {
-			correctNode = getTextureRect().containsPoint(touchLocation);
-		} else {
-			auto rect = cocos2d::Rect(0, 0, getContentSize().width, getContentSize().height);
-			correctNode = rect.containsPoint(touchLocation);
-		}
-		if (correctNode) {
+		if (getTouchCollided(touch, this)) {
 			if (!clickable)
 				return false;
 
@@ -52,9 +44,10 @@ void soundButton::initListener() {
 			seq->setTag(static_cast<int>(soundButton::eSoundButtonStatus::START_CLICK));
 			runAction(seq);
 
+			return true;
 		}
 
-		return correctNode;
+		return false;
 	};
 	listener->onTouchEnded = [this](cocos2d::Touch* touch, cocos2d::Event* event){
 		if (!clickable)
@@ -81,5 +74,28 @@ void soundButton::initListener() {
 		return true;
 	};
 	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
+}
+
+bool soundButton::getTouchCollided(cocos2d::Touch* touch, cocos2d::Node* node) {
+	//todo return enum
+	auto touchLocation = node->convertToNodeSpace(touch->getLocation());
+	auto sprite = dynamic_cast<cocos2d::Sprite*>(node);
+	bool correctNode;
+	if (sprite != nullptr && (sprite->getRenderMode() == RenderMode::QUAD_BATCHNODE || sprite->getRenderMode() == RenderMode::POLYGON)) {
+		correctNode = sprite->getTextureRect().containsPoint(touchLocation);
+	} else {
+		auto rect = cocos2d::Rect(0, 0, node->getContentSize().width, node->getContentSize().height);
+		correctNode = rect.containsPoint(touchLocation);
+	}
+	if (correctNode && !node->getChildren().empty()) {
+		for (const auto& item : node->getChildren()) {
+			auto childCheck = getTouchCollided(touch, item);
+			if (childCheck) {
+				return false;
+			}
+		}
+	}
+
+	return correctNode;
 }
 

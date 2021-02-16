@@ -62,6 +62,7 @@ namespace common::coreModule {
 		std::string windowName;
 		eWindowState currentState = eWindowState::CLOSED;
 		std::map<std::string, std::shared_ptr<windowBaseData>> windowData;
+		bool handleMissClick = true;
 	};
 }//common::coreModule
 
