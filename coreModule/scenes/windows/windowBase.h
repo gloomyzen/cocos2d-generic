@@ -33,35 +33,36 @@ namespace common::coreModule {
 		};
 
 		windowBase();
-		explicit windowBase(const std::string&);
+		explicit windowBase(std::string );
 		~windowBase() override;
 		CREATE_FUNC(windowBase);
 
 		template <typename T>
 		void setData (const std::string& name, T data){
-			windowData[name] = std::make_shared<windowBaseData>(TypedWindowBaseData<T>(data));
+			windowData[name] = new TypedWindowBaseData<T>(data);
 		}
 
 		template <typename T>
-		T getData(const std::string& name) {
+		T getData(const std::string& name, const T& defaultData) {
 			auto find = windowData.find(name);
 			if (find != windowData.end()) {
-				auto data = dynamic_cast<TypedWindowBaseData<T>>(find->second.get());
-				return data.getData();
+				auto data = dynamic_cast<TypedWindowBaseData<T>*>(find->second);
+				return data->getData();
 			}
-			return T();
+			return defaultData;
 		}
 
 		eWindowState getCurrentState() { return currentState; }
 
 		void setWindowName(const std::string& value) { windowName = value; }
 		const std::string& getWindowName() const { return windowName; }
+		void closeWindow();
 	private:
 		void initWindow();
 
 		std::string windowName;
 		eWindowState currentState = eWindowState::CLOSED;
-		std::map<std::string, std::shared_ptr<windowBaseData>> windowData;
+		std::map<std::string, windowBaseData*> windowData;
 		bool handleMissClick = true;
 	};
 }//common::coreModule
