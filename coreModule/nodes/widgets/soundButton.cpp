@@ -20,7 +20,8 @@ soundButton::~soundButton() {
 void soundButton::initListener() {
 	listener->setSwallowTouches(true);
 	listener->onTouchBegan = [this](cocos2d::Touch* touch, cocos2d::Event* event){
-		if (getTouchCollided(touch, this)) {
+		lastEvent = getTouchCollided(touch, this);
+		if (lastEvent == eventNode::eEventAction::COLLIDE) {
 			if (!clickable)
 				return false;
 
@@ -45,12 +46,14 @@ void soundButton::initListener() {
 			runAction(seq);
 
 			return true;
+		} else if (lastEvent == eventNode::eEventAction::COLLIDE_CHILD) {
+			return true;
 		}
 
 		return false;
 	};
 	listener->onTouchEnded = [this](cocos2d::Touch* touch, cocos2d::Event* event){
-		if (!clickable)
+		if (!clickable || lastEvent != eventNode::eEventAction::COLLIDE)
 			return false;
 
 		auto fadeOut = cocos2d::TintTo::create(0.1f, cocos2d::Color3B(255, 255, 255));
@@ -76,22 +79,21 @@ void soundButton::initListener() {
 	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
 }
 
-bool soundButton::getTouchCollided(cocos2d::Touch* touch, cocos2d::Node* node) {
-	//todo return enum
+eventNode::eEventAction soundButton::getTouchCollided(cocos2d::Touch* touch, cocos2d::Node* node) {
 	auto touchLocation = node->convertToNodeSpace(touch->getLocation());
 	auto sprite = dynamic_cast<cocos2d::Sprite*>(node);
-	bool correctNode;
+	auto correctNode = eventNode::eEventAction::NO_MATCHING;
 	if (sprite != nullptr && (sprite->getRenderMode() == RenderMode::QUAD_BATCHNODE || sprite->getRenderMode() == RenderMode::POLYGON)) {
-		correctNode = sprite->getTextureRect().containsPoint(touchLocation);
+		correctNode = sprite->getTextureRect().containsPoint(touchLocation) ? eventNode::eEventAction::COLLIDE : eventNode::eEventAction::NO_MATCHING;
 	} else {
 		auto rect = cocos2d::Rect(0, 0, node->getContentSize().width, node->getContentSize().height);
-		correctNode = rect.containsPoint(touchLocation);
+		correctNode = rect.containsPoint(touchLocation) ? eventNode::eEventAction::COLLIDE : eventNode::eEventAction::NO_MATCHING;
 	}
-	if (correctNode && !node->getChildren().empty()) {
+	if ((correctNode == eventNode::eEventAction::COLLIDE || correctNode == eventNode::eEventAction::COLLIDE_CHILD) && !node->getChildren().empty()) {
 		for (const auto& item : node->getChildren()) {
 			auto childCheck = getTouchCollided(touch, item);
-			if (childCheck) {
-				return false;
+			if (childCheck == eventNode::eEventAction::COLLIDE || childCheck == eventNode::eEventAction::COLLIDE_CHILD) {
+				return eventNode::eEventAction::COLLIDE_CHILD;
 			}
 		}
 	}

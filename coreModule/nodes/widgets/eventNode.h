@@ -10,8 +10,13 @@ namespace common {
 	namespace coreModule {
 
 		class eventNode {
-			typedef std::function<void(cocos2d::Touch* touch, cocos2d::Event* event)> eventTouchClb;
 		public:
+			enum class eEventAction {
+				COLLIDE = 0,
+				NO_MATCHING,
+				COLLIDE_CHILD
+			};
+			typedef std::function<void(cocos2d::Touch* touch, cocos2d::Event* event)> eventTouchClb;
 			eventNode() {}
 			virtual ~eventNode() = default;
 
@@ -24,7 +29,6 @@ namespace common {
 
 
 		protected:
-
 			eventTouchClb onTouchBegan = nullptr;
 			eventTouchClb onTouchEnded = nullptr;
 			bool clickable = true;
