@@ -55,23 +55,37 @@ void soundButton::initListener() {
 	listener->onTouchEnded = [this](cocos2d::Touch* touch, cocos2d::Event* event){
 		if (!clickable || lastEvent != eventNode::eEventAction::COLLIDE)
 			return false;
+		auto afterEvent = getTouchCollided(touch, this);
 
 		auto fadeOut = cocos2d::TintTo::create(0.1f, cocos2d::Color3B(255, 255, 255));
-		auto clb = cocos2d::CallFunc::create([this, touch, event](){
-			if (onTouchEnded)
-				onTouchEnded(touch, event);
-		});
 
 		auto currentAction = getActionByTag(static_cast<int>(soundButton::eSoundButtonStatus::START_CLICK));
 		auto actionSeq = dynamic_cast<cocos2d::Sequence*>(currentAction);
-		if (actionSeq != nullptr && !actionSeq->isDone()) {
-			auto seq = cocos2d::Sequence::create(actionSeq, fadeOut, clb, nullptr);
-			seq->setTag(static_cast<int>(soundButton::eSoundButtonStatus::END_CLICK));
-			runAction(seq);
+		if (afterEvent != eventNode::eEventAction::COLLIDE) {
+			if (actionSeq != nullptr && !actionSeq->isDone()) {
+				auto seq = cocos2d::Sequence::create(actionSeq, fadeOut, nullptr);
+				seq->setTag(static_cast<int>(soundButton::eSoundButtonStatus::END_CLICK));
+				runAction(seq);
+			} else {
+				auto seq = cocos2d::Sequence::create(fadeOut, nullptr);
+				seq->setTag(static_cast<int>(soundButton::eSoundButtonStatus::END_CLICK));
+				runAction(seq);
+			}
+			return false;
 		} else {
-			auto seq = cocos2d::Sequence::create(fadeOut, clb, nullptr);
-			seq->setTag(static_cast<int>(soundButton::eSoundButtonStatus::END_CLICK));
-			runAction(seq);
+			auto clb = cocos2d::CallFunc::create([this, touch, event](){
+				if (onTouchEnded)
+					onTouchEnded(touch, event);
+			});
+			if (actionSeq != nullptr && !actionSeq->isDone()) {
+				auto seq = cocos2d::Sequence::create(actionSeq, fadeOut, clb, nullptr);
+				seq->setTag(static_cast<int>(soundButton::eSoundButtonStatus::END_CLICK));
+				runAction(seq);
+			} else {
+				auto seq = cocos2d::Sequence::create(fadeOut, clb, nullptr);
+				seq->setTag(static_cast<int>(soundButton::eSoundButtonStatus::END_CLICK));
+				runAction(seq);
+			}
 		}
 
 		return true;
@@ -80,6 +94,10 @@ void soundButton::initListener() {
 }
 
 eventNode::eEventAction soundButton::getTouchCollided(cocos2d::Touch* touch, cocos2d::Node* node) {
+	auto btn = dynamic_cast<soundButton*>(node);
+	if (!btn) {
+		return eventNode::eEventAction::NO_MATCHING;
+	}
 	auto touchLocation = node->convertToNodeSpace(touch->getLocation());
 	auto sprite = dynamic_cast<cocos2d::Sprite*>(node);
 	auto correctNode = eventNode::eEventAction::NO_MATCHING;
