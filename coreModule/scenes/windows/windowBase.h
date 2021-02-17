@@ -46,8 +46,8 @@ namespace common::coreModule {
 		T getData(const std::string& name, const T& defaultData) {
 			auto find = windowData.find(name);
 			if (find != windowData.end()) {
-				auto data = dynamic_cast<TypedWindowBaseData<T>*>(find->second);
-				return data->getData();
+				if (auto data = dynamic_cast<TypedWindowBaseData<T>*>(find->second))
+					return data->getData();
 			}
 			return defaultData;
 		}

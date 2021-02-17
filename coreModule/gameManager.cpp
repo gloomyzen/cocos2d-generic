@@ -49,6 +49,6 @@ void gameManager::registerWindow(const std::string& name, const std::function<wi
 	getWindowSystem()->registerWindow(name, clb);
 }
 
-bool gameManager::requestWindow(const std::string& name) {
+windowBase* gameManager::requestWindow(const std::string& name) {
 	return getWindowSystem()->requestWindow(name);
 }

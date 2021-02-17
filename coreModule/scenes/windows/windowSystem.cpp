@@ -23,10 +23,10 @@ void windowSystem::registerWindow(const std::string& name, const std::function<w
 	}
 }
 
-bool windowSystem::requestWindow(const std::string& name, bool force) {
+windowBase* windowSystem::requestWindow(const std::string& name, bool force) {
 	auto find = registeredWindowList.find(name);
 	if (find == registeredWindowList.end()) {
-		return false;
+		return nullptr;
 	}
 	auto findOpened = std::find_if(openedWindowList.cbegin(), openedWindowList.cend(), [name](windowBase* node){
 		return node->getWindowName() == name;
@@ -43,12 +43,12 @@ bool windowSystem::requestWindow(const std::string& name, bool force) {
 	if (force || (openedWindowList.empty() && waitingWindowList.empty())) {
 		openedWindowList.push_back(window);
 		addChild(window);
-		return true;
+		return window;
 	} else if (findWaiting == waitingWindowList.end() && findOpened == openedWindowList.end()) {
 		waitingWindowList.push_back(window);
-		return true;
+		return window;
 	}
-	return false;
+	return nullptr;
 }
 
 bool windowSystem::closeWindow(const std::string& name) {

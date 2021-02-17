@@ -17,7 +17,7 @@ namespace common::coreModule {
 
 		CREATE_FUNC(windowSystem);
 		void registerWindow(const std::string&, const std::function<windowBase*()>&);
-		bool requestWindow(const std::string&, bool force = false);
+		windowBase* requestWindow(const std::string&, bool force = false);
 		bool closeWindow(const std::string&);
 
 	private:
