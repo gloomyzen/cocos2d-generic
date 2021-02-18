@@ -34,6 +34,7 @@ namespace common {
 			};
 			typedef std::map<int, sGridCell*> gridCells;
 			typedef std::map<int, gridCells> gridTable;
+			typedef std::vector<sGridCell*> gridList;
 
 			gridNode();
 			~gridNode() override;

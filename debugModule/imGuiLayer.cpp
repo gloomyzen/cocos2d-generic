@@ -125,8 +125,9 @@ ImRect imGuiLayer::renderTree(cocos2d::Vector<Node *> n) {
 
 ImRect imGuiLayer::renderPreferences(Node *node) {
 	const ImRect prefRect = ImRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax());
-	auto tempNode = dynamic_cast<Node*>(node);
-	if (node == nullptr || tempNode) {
+	auto tempNode = static_cast<Ref*>(node);
+	if (node == nullptr || tempNode->getReferenceCount() == 0u) {
+		lastTarget = nullptr;
 		return prefRect;
 	}
 
