@@ -15,8 +15,8 @@ windowBase::windowBase(std::string name) : windowName(std::move(name)) {
 windowBase::~windowBase() {
 	for (auto& item : windowData) {
 		delete item.second;
-		item.second = nullptr;
 	}
+	windowData.clear();
 }
 
 void windowBase::initWindow() {
@@ -48,7 +48,7 @@ void windowBase::closeWindow() {
 	currentState = eWindowState::CLOSING;
 	setCascadeOpacityEnabled(true);
 	auto fadeTo = FadeTo::create(0.08f, 0.0f);
-	auto scaleBy = ScaleBy::create(0.12f, 0.5f);
+	auto scaleBy = ScaleBy::create(0.12f, 0.7f);
 	auto spawn = Spawn::createWithTwoActions(scaleBy, fadeTo);
 	auto clb = cocos2d::CallFunc::create([closeClb](){
 		if (closeClb)
