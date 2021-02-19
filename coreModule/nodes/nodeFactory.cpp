@@ -185,15 +185,14 @@ void nodeFactory::getComponents(Node *node, const std::string &componentName, co
 						isPoly = object["polygon"].GetBool();
 					}
 
-//					if (isPoly) {
-//						//for physics scenes
-////						spriteParameters::reinitWithPolygon(sprite, imagePath);
-//						auto polygon = AutoPolygon::generatePolygon(imagePath);
-//						sprite->initWithPolygon(polygon);
-//					} else {
-//						sprite->initWithFile(imagePath);
-//					}
-					sprite->initWithFile(imagePath);
+					if (isPoly) {
+						//for physics scenes
+//						spriteParameters::reinitWithPolygon(sprite, imagePath);
+						auto polygon = AutoPolygon::generatePolygon(imagePath);
+						sprite->initWithPolygon(polygon);
+					} else {
+						sprite->initWithFile(imagePath);
+					}
 				} else {
 					LOG_ERROR(STRING_FORMAT("nodeFactory::getComponents: Component '%s' no has image path!", componentName.c_str()));
 					break;

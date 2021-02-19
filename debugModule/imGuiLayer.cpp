@@ -299,6 +299,13 @@ ImRect imGuiLayer::renderPreferences(Node *node) {
 			if (labelText != newLabelText) {
 				labelNode->setString(newLabelText);
 			}
+			auto labelWidth = labelNode->getMaxLineWidth();
+			auto tempWidth = labelWidth;
+			float changedWidth = labelWidth;
+			ImGui::DragFloat("Max Line Width", &changedWidth, 1.f, 0.f, 9999.f);
+			if(changedWidth != tempWidth) {
+				labelNode->setMaxLineWidth(changedWidth);
+			}
 			/*** Label Effects todo not working! */
 			/*int labelEffectsIdx = 0;
 			auto labelEffect = labelNode->getLabelEffectType();
