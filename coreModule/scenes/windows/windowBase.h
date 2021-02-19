@@ -57,6 +57,8 @@ namespace common::coreModule {
 		void setWindowName(const std::string& value) { windowName = value; }
 		const std::string& getWindowName() const { return windowName; }
 		void closeWindow();
+		bool isHandleMissClick() { return handleMissClick; }
+		void setHandleMissClick(bool value) { handleMissClick = value; }
 	private:
 		void initWindow();
 
