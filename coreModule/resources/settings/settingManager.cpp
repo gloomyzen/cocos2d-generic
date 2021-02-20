@@ -6,8 +6,16 @@
 
 using namespace common::coreModule;
 
-settingManager::settingManager() {
+settingManager::settingManager() = default;
 
+settingManager::~settingManager() {
+	for (auto [_, c] : allResolutions) {
+		delete c;
+		c = nullptr;
+	}
+	allResolutions.clear();
+	delete currentSize;
+	currentSize = nullptr;
 }
 
 void settingManager::load() {
@@ -18,14 +26,8 @@ void settingManager::load() {
 	rapidjson::Document doc;
 	doc.Parse<0>(regionStr.c_str());
 
-	if (doc.HasParseError()) {
+	if (doc.HasParseError() || doc.IsNull()) {
 		LOG_ERROR("settingManager::load: json parse error");
-		allResolutions.insert({defaultResolution->resolutionName, defaultResolution});
-		return;
-	}
-
-	if (doc.IsNull()) {
-		LOG_ERROR("settingManager::load: json is empty");
 		allResolutions.insert({defaultResolution->resolutionName, defaultResolution});
 		return;
 	}
@@ -38,12 +40,12 @@ void settingManager::load() {
 			if (!resIt->name.IsString()) {
 				continue;
 			}
-			auto key = std::string(resIt->name.GetString());
+			std::string key = resIt->name.GetString();
 			if (key == "width" && resIt->value.IsNumber()) {
-				currentResolution->size.width = resIt->value.GetInt();
+				currentResolution->size.width = static_cast<float>(resIt->value.GetInt());
 			} else
 			if (key == "height" && resIt->value.IsNumber()) {
-				currentResolution->size.height = resIt->value.GetInt();
+				currentResolution->size.height = static_cast<float>(resIt->value.GetInt());
 			} else
 			if (key == "desktopScale" && resIt->value.IsNumber()) {
 				currentResolution->scale = resIt->value.GetFloat();
@@ -81,7 +83,7 @@ void settingManager::load() {
 	}
 }
 
-sDisplaySize *settingManager::getSizeByName(std::string name) {
+sDisplaySize *settingManager::getSizeByName(const std::string& name) {
 	if (name.empty()) return nullptr;
 	auto it = allResolutions.find(name);
 	if (it != allResolutions.end())
@@ -89,7 +91,7 @@ sDisplaySize *settingManager::getSizeByName(std::string name) {
 	return nullptr;
 }
 
-void settingManager::init(bool isMobile, std::string settingName) {
+void settingManager::init(bool isMobile, const std::string& settingName) {
 	if (isMobile) {
 		using namespace common::utilityModule;
 		auto director = cocos2d::Director::getInstance();

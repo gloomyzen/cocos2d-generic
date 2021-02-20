@@ -10,7 +10,10 @@ resourceManager::resourceManager() {
 	settingManagerInstance = new settingManager();
 }
 
-resourceManager::~resourceManager() {}
+resourceManager::~resourceManager() {
+	delete settingManagerInstance;
+	settingManagerInstance = nullptr;
+}
 
 resourceManager &resourceManager::getInstance() {
 	if (currentResourceManager == nullptr) {

@@ -37,12 +37,13 @@ namespace common {
 		class settingManager {
 		public:
 			settingManager();
+			~settingManager();
 			void load();
-			void init(bool isMobile, std::string settingName = "");
+			void init(bool isMobile, const std::string& settingName = "");
 			sDisplaySize* getCurrentSize();
 
 		private:
-			sDisplaySize* getSizeByName(std::string);
+			sDisplaySize* getSizeByName(const std::string&);
 			std::map<std::string, sDisplaySize*> allResolutions;
 			sDisplaySize* currentSize = nullptr;
 		};
