@@ -6,7 +6,6 @@
 #include "ui/CocosGUI.h"
 #include "dragonBones/cocos2dx/CCDragonBonesHeaders.h"
 #include "common/coreModule/nodes/armatureHolderNode.h"
-#include "common/coreModule/nodes/spriteParameters.h"
 #include "common/coreModule/nodes/widgets/soundButton.h"
 #include "common/coreModule/nodes/widgets/gridNode.h"
 
@@ -186,8 +185,6 @@ void nodeFactory::getComponents(Node *node, const std::string &componentName, co
 					}
 
 					if (isPoly) {
-						//for physics scenes
-//						spriteParameters::reinitWithPolygon(sprite, imagePath);
 						auto polygon = AutoPolygon::generatePolygon(imagePath);
 						sprite->initWithPolygon(polygon);
 					} else {
@@ -197,10 +194,6 @@ void nodeFactory::getComponents(Node *node, const std::string &componentName, co
 					LOG_ERROR(STRING_FORMAT("nodeFactory::getComponents: Component '%s' no has image path!", componentName.c_str()));
 					break;
 				}
-				if (object.HasMember("pixel") && object["pixel"].IsBool() && object["pixel"].GetBool()) {
-					spriteParameters::setCorrectPixelartTexture(sprite);
-				}
-				//spriteParameters
 			} else {
 				LOG_ERROR(STRING_FORMAT("nodeFactory::getComponents: Component '%s' no has sprite node type!", componentName.c_str()));
 			}
