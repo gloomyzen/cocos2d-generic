@@ -42,7 +42,6 @@ nodeFactory::nodeFactory() {
 		nodes["label"] = []()->Label* { return Label::create(); };
 		nodes["button"] = []()->Button* { return Button::create(); };
 		nodes["layout"] = []()->Layout* { return Layout::create(); };
-		nodes["grid"] = []()->gridNode* { return gridNode::create(); };
 		nodes["clippingNode"] = []()->ClippingNode* {
 			//todo need fix this
 			ClippingNode * clipper = ClippingNode::create();
@@ -54,10 +53,12 @@ nodeFactory::nodeFactory() {
 			clipper->setInverted(true);
 			return clipper;
 		};
-		///External types
+		nodes["scale9sprite"] = []()->Scale9Sprite* { return Scale9Sprite::create(); };
+		///External types, in common
 		nodes["dragonbones"] = []() { return new armatureHolderNode(); };
 		nodes["scrollView"] = []() { return ScrollView::create(); };
 		nodes["soundButton"] = []() { return soundButton::create(); };
+		nodes["grid"] = []()->gridNode* { return gridNode::create(); };
 	}
 }
 
