@@ -208,10 +208,11 @@ void nodeFactory::getComponents(Node *node, const std::string &componentName, co
 					if (font.fontFilePath.empty()) {
 						font.fontFilePath = "fonts/arial.ttf";
 					}
+					font.outlineSize = 0;
 
-					TextHAlignment hAlignment = label->getTextAlignment();
 					if (object.HasMember("fontSize") && object["fontSize"].IsNumber()) {
-						font.fontSize = object["fontSize"].GetFloat();
+						font.fontSize = object["fontSize"].GetFloat() * 2;
+						label->setScale(0.5f);
 					}
 					if (object.HasMember("fontFile") && object["fontFile"].IsString()) {
 						font.fontFilePath = object["fontFile"].GetString();
@@ -220,22 +221,21 @@ void nodeFactory::getComponents(Node *node, const std::string &componentName, co
 						font.bold = object["bold"].GetBool();
 					}
 					if (object.HasMember("alight") && object["alight"].IsString()) {
+						TextHAlignment hAlignment = label->getTextAlignment();
 						auto alight = object["alight"].GetString();
 						if (alight == std::string("center")) {
 							hAlignment = TextHAlignment::CENTER;
-						} else
-						if (alight == std::string("left")) {
+						} else if (alight == std::string("left")) {
 							hAlignment = TextHAlignment::LEFT;
-						} else
-						if (alight == std::string("right")) {
+						} else if (alight == std::string("right")) {
 							hAlignment = TextHAlignment::RIGHT;
 						}
+						label->setAlignment(hAlignment);
 					}
 					if (object.HasMember("maxLineWidth") && object["maxLineWidth"].IsNumber()) {
 						label->setMaxLineWidth(object["maxLineWidth"].GetFloat());
 					}
 					label->setTTFConfig(font);
-					label->setAlignment(hAlignment);
 					if (object.HasMember("text") && object["text"].IsString()) {
 						label->setString(object["text"].GetString());
 					}
