@@ -24,6 +24,7 @@ std::map<std::string, eNodeFactory> componentsMap = {
 		{"colorComponent", eNodeFactory::COLOR_COMPONENT},
 		{"scrollViewComponent", eNodeFactory::SCROLL_VIEW_COMPONENT},
 		{"gridComponent", eNodeFactory::GRID_COMPONENT},
+		{"scale9spriteComponent", eNodeFactory::SCALE9SPRITE_COMPONENT},
 };
 std::map<std::string, std::function<Node*()>> nodes{};
 
@@ -426,6 +427,47 @@ void nodeFactory::getComponents(Node *node, const std::string &componentName, co
 //					auto align = gridNode::getGridAlignYByString(object["alignY"].GetString());
 //					grid->setAlignY(align);
 //				}
+			}
+		}
+			break;
+		case SCALE9SPRITE_COMPONENT: {
+			if (auto sprite = dynamic_cast<ui::Scale9Sprite*>(node)) {
+				cocos2d::Rect sliceRect = cocos2d::Rect::ZERO;
+				if (object.HasMember("image") && object["image"].IsString()) {
+					std::string imagePath;
+					imagePath = object["image"].GetString();
+					if (imagePath.empty()) {
+						LOG_ERROR(STRING_FORMAT("nodeFactory::getComponents: Component '%s' has invalid image path!",
+												componentName.c_str()));
+						break;
+					}
+					sprite->initWithFile(imagePath);
+				}
+				if (object.HasMember("slice9") && object["slice9"].IsObject()) {
+					auto slice9 = object["slice9"].GetObjectJ();
+					if (slice9.HasMember("x") && slice9["x"].IsNumber()) {
+						sliceRect.origin.x = slice9["x"].GetFloat();
+					}
+					if (slice9.HasMember("y") && slice9["y"].IsNumber()) {
+						sliceRect.origin.y = slice9["y"].GetFloat();
+					}
+					if (slice9.HasMember("width") && slice9["width"].IsNumber()) {
+						sliceRect.size.width = slice9["width"].GetFloat();
+					}
+					if (slice9.HasMember("height") && slice9["height"].IsNumber()) {
+						sliceRect.size.height = slice9["height"].GetFloat();
+					}
+					sprite->setCapInsets(sliceRect);
+				}
+				if (object.HasMember("size") && object["size"].IsArray()) {
+					auto _size = cocos2d::Size();
+					auto size = object["size"].GetArray();
+					if (size.Size() == 2) {
+						_size.width = size[0].GetFloat();
+						_size.height = size[1].GetFloat();
+						sprite->setContentSize(_size);
+					}
+				}
 			}
 		}
 			break;

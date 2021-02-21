@@ -23,6 +23,7 @@ namespace common {
 			COLOR_COMPONENT,
 			SCROLL_VIEW_COMPONENT,
 			GRID_COMPONENT,
+			SCALE9SPRITE_COMPONENT,
 		};
 
 		static const std::vector<std::string> componentPriorityList = {
@@ -30,6 +31,7 @@ namespace common {
 				{"spriteComponent"},
 				{"labelComponent"},
 				{"dragonbonesComponent"},
+				{"scale9spriteComponent"},
 				{"transformComponent"},
 				{"colorComponent"},
 				{"scrollViewComponent"},
