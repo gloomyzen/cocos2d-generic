@@ -29,6 +29,8 @@ namespace common {
 			std::function<void()> soundCallback = nullptr;
 			cocos2d::EventListenerTouchOneByOne* listener = nullptr;
 			bool allowSpamTap = false;
+		protected:
+			cocos2d::Node* bgNode = nullptr;
 		};
 
 	}

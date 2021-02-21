@@ -11,6 +11,7 @@ soundButton::soundButton() {
 		CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("sounds/click.wav");
 	};
 	initListener();
+	bgNode = this;
 }
 
 soundButton::~soundButton() {
@@ -25,7 +26,7 @@ void soundButton::initListener() {
 			if (!clickable)
 				return false;
 
-			auto currentAction = getActionByTag(static_cast<int>(soundButton::eSoundButtonStatus::END_CLICK));
+			auto currentAction = bgNode->getActionByTag(static_cast<int>(soundButton::eSoundButtonStatus::END_CLICK));
 			if (currentAction != nullptr && !getAllowSpamTap() && !currentAction->isDone()) {
 				return false;
 			} else if (currentAction != nullptr && getAllowSpamTap() && !currentAction->isDone()) {
@@ -43,7 +44,7 @@ void soundButton::initListener() {
 			});
 			auto seq = cocos2d::Sequence::create(clickAction, clb, nullptr);
 			seq->setTag(static_cast<int>(soundButton::eSoundButtonStatus::START_CLICK));
-			runAction(seq);
+			bgNode->runAction(seq);
 
 			return true;
 		} else if (lastEvent == eventNode::eEventAction::COLLIDE_CHILD) {
@@ -59,17 +60,17 @@ void soundButton::initListener() {
 
 		auto fadeOut = cocos2d::TintTo::create(0.1f, cocos2d::Color3B(255, 255, 255));
 
-		auto currentAction = getActionByTag(static_cast<int>(soundButton::eSoundButtonStatus::START_CLICK));
+		auto currentAction = bgNode->getActionByTag(static_cast<int>(soundButton::eSoundButtonStatus::START_CLICK));
 		auto actionSeq = dynamic_cast<cocos2d::Sequence*>(currentAction);
 		if (afterEvent != eventNode::eEventAction::COLLIDE) {
 			if (actionSeq != nullptr && !actionSeq->isDone()) {
 				auto seq = cocos2d::Sequence::create(actionSeq, fadeOut, nullptr);
 				seq->setTag(static_cast<int>(soundButton::eSoundButtonStatus::END_CLICK));
-				runAction(seq);
+				bgNode->runAction(seq);
 			} else {
 				auto seq = cocos2d::Sequence::create(fadeOut, nullptr);
 				seq->setTag(static_cast<int>(soundButton::eSoundButtonStatus::END_CLICK));
-				runAction(seq);
+				bgNode->runAction(seq);
 			}
 			return false;
 		} else {
@@ -80,11 +81,11 @@ void soundButton::initListener() {
 			if (actionSeq != nullptr && !actionSeq->isDone()) {
 				auto seq = cocos2d::Sequence::create(actionSeq, fadeOut, clb, nullptr);
 				seq->setTag(static_cast<int>(soundButton::eSoundButtonStatus::END_CLICK));
-				runAction(seq);
+				bgNode->runAction(seq);
 			} else {
 				auto seq = cocos2d::Sequence::create(fadeOut, clb, nullptr);
 				seq->setTag(static_cast<int>(soundButton::eSoundButtonStatus::END_CLICK));
-				runAction(seq);
+				bgNode->runAction(seq);
 			}
 		}
 
