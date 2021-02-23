@@ -98,7 +98,6 @@ void soundButton::initListener() {
 	listener->onTouchMoved = [this](cocos2d::Touch* touch, cocos2d::Event* event){
 		auto width = 15.f;
 		auto touchLoc = touch->getLocation();
-		LOG_ERROR(STRING_FORMAT("loc %f %f", touchLoc.x, touchLoc.y));
 		if (!(touchLoc.x < firstTouchPos.x + width &&
 			touchLoc.x + width > firstTouchPos.x &&
 			touchLoc.y < firstTouchPos.y + width &&

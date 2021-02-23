@@ -50,6 +50,8 @@ void gridNode::updateGridTransform() {
 	auto startPos = getPosition();
 	auto containerSize = getContentSize();
 	cocos2d::Vec2 pos = {static_cast<float>(paddingX.first), static_cast<float>(paddingX.second)};
+	pos.y -= marginY.first;
+	pos.x += marginX.first;
 	for (const auto& child : getChildren()) {
 		auto childSize = child->getContentSize() * child->getScale();
 		child->setPosition(pos);
@@ -67,6 +69,8 @@ void gridNode::updateGridTransform() {
 			}
 		}
 	}
+	containerSize.height += marginY.second;
+	containerSize.width += marginX.second;
 	setContentSize(containerSize);
 }
 
