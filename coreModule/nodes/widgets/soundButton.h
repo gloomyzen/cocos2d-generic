@@ -23,6 +23,7 @@ namespace common {
 			bool getAllowSpamTap() const { return allowSpamTap; }
 			void setAllowSpamTap(bool value) { allowSpamTap = value; }
 			eventNode::eEventAction getTouchCollided(cocos2d::Touch* touch, cocos2d::Node* node);
+			void setSwallowTouches(bool);
 		private:
 			void initListener();
 			eventNode::eEventAction lastEvent = eventNode::eEventAction::NO_MATCHING;
@@ -31,7 +32,8 @@ namespace common {
 			bool allowSpamTap = false;
 		protected:
 			cocos2d::Node* bgNode = nullptr;
-			cocos2d::Touch* lastTouchPos = nullptr;
+			Vec2 firstTouchPos;
+			bool touchValid = true;
 		};
 
 	}

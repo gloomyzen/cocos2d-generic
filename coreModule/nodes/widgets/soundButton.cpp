@@ -2,6 +2,7 @@
 #include "editor-support/cocostudio/SimpleAudioEngine.h"
 #include <utility>
 #include "common/coreModule/gameManager.h"
+#include "common/debugModule/logManager.h"
 
 using namespace common::coreModule;
 
@@ -19,13 +20,14 @@ soundButton::~soundButton() {
 }
 
 void soundButton::initListener() {
-	listener->setSwallowTouches(false);
+	listener->setSwallowTouches(true);
 	listener->onTouchBegan = [this](cocos2d::Touch* touch, cocos2d::Event* event){
 		lastEvent = getTouchCollided(touch, this);
 		if (lastEvent == eventNode::eEventAction::COLLIDE) {
 			if (!clickable)
 				return false;
-			lastTouchPos = touch;
+			firstTouchPos = touch->getLocation();
+			touchValid = true;
 
 			auto currentAction = bgNode->getActionByTag(static_cast<int>(soundButton::eSoundButtonStatus::END_CLICK));
 			if (currentAction != nullptr && !getAllowSpamTap() && !currentAction->isDone()) {
@@ -58,14 +60,6 @@ void soundButton::initListener() {
 		if (!clickable || lastEvent != eventNode::eEventAction::COLLIDE)
 			return false;
 		auto afterEvent = getTouchCollided(touch, this);
-//		bool touchValid = touch->getLocation().x > lastTouchPos->getLocation().x
-		auto width = 5;
-		auto test = touch->getLocation();
-		auto test2 = lastTouchPos->getLocation();
-		bool touchValid = touch->getLocation().x < lastTouchPos->getLocation().x + width &&
-			touch->getLocation().x + width > lastTouchPos->getLocation().x &&
-			touch->getLocation().y < lastTouchPos->getLocation().y + width &&
-			touch->getLocation().y + width > lastTouchPos->getLocation().y;
 
 		auto fadeOut = cocos2d::TintTo::create(0.1f, cocos2d::Color3B(255, 255, 255));
 
@@ -102,7 +96,15 @@ void soundButton::initListener() {
 	};
 
 	listener->onTouchMoved = [this](cocos2d::Touch* touch, cocos2d::Event* event){
-		lastTouchPos = touch;
+		auto width = 15.f;
+		auto touchLoc = touch->getLocation();
+		LOG_ERROR(STRING_FORMAT("loc %f %f", touchLoc.x, touchLoc.y));
+		if (!(touchLoc.x < firstTouchPos.x + width &&
+			touchLoc.x + width > firstTouchPos.x &&
+			touchLoc.y < firstTouchPos.y + width &&
+			touchLoc.y + width > firstTouchPos.y)) {
+			touchValid = false;
+		}
 		return true;
 	};
 	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
@@ -132,5 +134,9 @@ eventNode::eEventAction soundButton::getTouchCollided(cocos2d::Touch* touch, coc
 	}
 
 	return correctNode;
+}
+
+void soundButton::setSwallowTouches(bool value) {
+	listener->setSwallowTouches(value);
 }
 
