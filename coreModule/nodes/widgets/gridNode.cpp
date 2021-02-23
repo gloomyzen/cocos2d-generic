@@ -60,7 +60,7 @@ void gridNode::updateGridTransform() {
 				containerSize.height = childSize.height;
 			}
 		} else if (direction == eGridDirection::VERTICAL) {
-			pos.y += childSize.height + paddingY.first + paddingY.second;
+			pos.y -= childSize.height + paddingY.first + paddingY.second;
 			containerSize.height += childSize.height + paddingY.first + paddingY.second;
 			if (containerSize.width < childSize.width) {
 				containerSize.width = childSize.width;

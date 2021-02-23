@@ -31,6 +31,7 @@ namespace common {
 			bool allowSpamTap = false;
 		protected:
 			cocos2d::Node* bgNode = nullptr;
+			cocos2d::Touch* lastTouchPos = nullptr;
 		};
 
 	}
