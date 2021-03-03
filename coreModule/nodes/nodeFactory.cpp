@@ -222,6 +222,9 @@ void nodeFactory::getComponents(Node *node, const std::string &componentName, co
 					if (object.HasMember("bold") && object["bold"].IsBool()) {
 						font.bold = object["bold"].GetBool();
 					}
+					if (object.HasMember("italic") && object["italic"].IsBool()) {
+						font.italics = object["italic"].GetBool();
+					}
 					if (object.HasMember("alight") && object["alight"].IsString()) {
 						TextHAlignment hAlignment = label->getTextAlignment();
 						auto alight = object["alight"].GetString();
