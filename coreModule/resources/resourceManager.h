@@ -1,10 +1,10 @@
 #ifndef COMMON_RESOURCEMANAGER_H
 #define COMMON_RESOURCEMANAGER_H
 
-#include <map>
-#include <string>
 #include "common/coreModule/resources/loaders/jsonLoader.h"
 #include "common/coreModule/resources/settings/settingManager.h"
+#include <map>
+#include <string>
 
 #define GET_RESOURCE_MANAGER() common::coreModule::resourceManager::getInstance()
 #define GET_JSON_MANAGER() common::coreModule::resourceManager::getInstance().getJsonLoader()
@@ -13,22 +13,22 @@
 
 namespace common {
 
-	namespace coreModule {
-		class resourceManager {
-		public:
-			resourceManager();
-			~resourceManager();
-			static resourceManager &getInstance();
+    namespace coreModule {
+        class resourceManager {
+          public:
+            resourceManager();
+            ~resourceManager();
+            static resourceManager& getInstance();
 
-			jsonLoader* getJsonLoader();
-			settingManager* getSettingManager();
+            jsonLoader* getJsonLoader();
+            settingManager* getSettingManager();
 
-		private:
-			jsonLoader jsonLoaderInstance;
-			settingManager* settingManagerInstance = nullptr;
-		};
-	}
-}//common::coreModule
+          private:
+            jsonLoader jsonLoaderInstance;
+            settingManager* settingManagerInstance = nullptr;
+        };
+    }// namespace coreModule
+}// namespace common
 
 
-#endif //COMMON_RESOURCEMANAGER_H
+#endif// COMMON_RESOURCEMANAGER_H

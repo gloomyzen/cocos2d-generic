@@ -5,15 +5,15 @@
 #include "json/ostreamwrapper.h"
 
 namespace common {
-	namespace profileModule {
+    namespace profileModule {
 
-		class profileBlockInterface {
-		public:
-			virtual ~profileBlockInterface() = default;
-			virtual bool load(const rapidjson::GenericValue<rapidjson::UTF8<char>>::ConstObject &) = 0;
-			virtual bool save(rapidjson::Value&, rapidjson::Document::AllocatorType&) = 0;
-		};
-	}
-}
+        class profileBlockInterface {
+          public:
+            virtual ~profileBlockInterface() = default;
+            virtual bool load(const rapidjson::GenericValue<rapidjson::UTF8<char>>::ConstObject&) = 0;
+            virtual bool save(rapidjson::Value&, rapidjson::Document::AllocatorType&) = 0;
+        };
+    }// namespace profileModule
+}// namespace common
 
-#endif //COMMON_PROFILEBLOCKINTERFACE_H
+#endif// COMMON_PROFILEBLOCKINTERFACE_H

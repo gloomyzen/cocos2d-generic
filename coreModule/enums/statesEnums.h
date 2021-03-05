@@ -7,15 +7,15 @@
 
 namespace common {
 
-	namespace coreModule {
+    namespace coreModule {
 
-//		static std::map<eGameStates, std::string> mapSceneNames = {
-//				{LOADING_SCREEN, "loadingScreenScene"},
-//				{MAIN_MENU, "mainMenuScene"},
-//				{MAP_SCENE, "mapScene"},
-//				{BATTLE_SCENE, "battleScene"},
-//		};
-	}
-}//common::coreModule
+        //		static std::map<eGameStates, std::string> mapSceneNames = {
+        //				{LOADING_SCREEN, "loadingScreenScene"},
+        //				{MAIN_MENU, "mainMenuScene"},
+        //				{MAP_SCENE, "mapScene"},
+        //				{BATTLE_SCENE, "battleScene"},
+        //		};
+    }
+}// namespace common
 
-#endif //COMMON_STATESENUMS_H
+#endif// COMMON_STATESENUMS_H

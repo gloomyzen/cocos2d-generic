@@ -6,34 +6,31 @@
 #include <vector>
 
 namespace common {
-	namespace coreModule {
-		using namespace dragonBones;
+    namespace coreModule {
+        using namespace dragonBones;
 
-	class armatureHolderNode : public cocos2d::Node {
-		public:
+        class armatureHolderNode : public cocos2d::Node {
+          public:
+            virtual bool init() {
+                if (!cocos2d::Node::init()) {
+                    return false;
+                }
 
-			virtual bool init() {
-				if(!cocos2d::Node::init())
-				{
-					return false;
-				}
+                return true;
+            }
 
-				return true;
-			}
+            CREATE_FUNC(armatureHolderNode);
 
-			CREATE_FUNC(armatureHolderNode);
+            void addArmature(CCArmatureDisplay* armature) {
+                _armatureList.emplace_back(armature);
+                addChild(armature);
+            }
+            std::vector<CCArmatureDisplay*> getArmatureList() { return _armatureList; }
 
-			void addArmature(CCArmatureDisplay* armature) {
-				_armatureList.emplace_back(armature);
-				addChild(armature);
-			}
-			std::vector<CCArmatureDisplay*> getArmatureList() {
-				return _armatureList;
-			}
-		private:
-			std::vector<CCArmatureDisplay*> _armatureList{};
-		};
-	}
-}
+          private:
+            std::vector<CCArmatureDisplay*> _armatureList{};
+        };
+    }// namespace coreModule
+}// namespace common
 
-#endif //COMMON_ARMATUREHOLDERNODE_H
+#endif// COMMON_ARMATUREHOLDERNODE_H

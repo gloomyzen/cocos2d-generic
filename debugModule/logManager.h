@@ -1,10 +1,9 @@
 #ifndef COMMON_LOGMANAGER_H
 #define COMMON_LOGMANAGER_H
 
-#include <string>
 #include <iostream>
-#include <vector>
 #include <string>
+#include <vector>
 
 #define GET_LOGGER() common::debugModule::loggerInstance::getInstance()
 #define LOG_INFO(W) GET_LOGGER().info(W)
@@ -13,48 +12,43 @@
 #define LOGMANAGER_ITEMS_LIMIT 150
 
 namespace common {
-	namespace debugModule {
+    namespace debugModule {
 
-		enum class eLogTypes : size_t {
-			LOG_INFO = 0,
-			LOG_WARNING,
-			LOG_ERROR
-		};
+        enum class eLogTypes : size_t { LOG_INFO = 0, LOG_WARNING, LOG_ERROR };
 
-		struct sLogMessage {
-			eLogTypes type;
-			std::string message;
+        struct sLogMessage {
+            eLogTypes type;
+            std::string message;
 
-			sLogMessage(eLogTypes _type, std::string _message) {
-				type = _type;
-				message = _message;
-			}
-		};
+            sLogMessage(eLogTypes _type, std::string _message) {
+                type = _type;
+                message = _message;
+            }
+        };
 
-		/***
-		 * Данный класс нужен для логирования исключительных событий
-		 */
-		class logManager {
-		public:
-			void info(const std::string &message);
+        /***
+         * Данный класс нужен для логирования исключительных событий
+         */
+        class logManager {
+          public:
+            void info(const std::string& message);
 
-			void warning(const std::string &message);
+            void warning(const std::string& message);
 
-			void error(const std::string &message);
+            void error(const std::string& message);
 
-		private:
+          private:
+            void addLogMessage(sLogMessage*);
 
-			void addLogMessage(sLogMessage *);
+            std::vector<sLogMessage*> log{};
+        };
 
-			std::vector<sLogMessage *> log{};
-		};
+        class loggerInstance {
+          public:
+            static logManager& getInstance();
+        };
+    }// namespace debugModule
 
-		class loggerInstance {
-		public:
-			static logManager &getInstance();
-		};
-	}
-
-}//common::debugModule
+}// namespace common
 
 #endif// COMMON_LOGMANAGER_H

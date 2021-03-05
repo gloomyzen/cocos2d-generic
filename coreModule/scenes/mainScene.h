@@ -4,35 +4,35 @@
 #include "cocos2d.h"
 #include "common/coreModule/nodes/nodeProperties.h"
 #include "common/coreModule/scenes/windows/windowSystem.h"
-#include <vector>
 #include <string>
+#include <vector>
 
 namespace common {
-	namespace coreModule {
+    namespace coreModule {
 
-		class mainScene : public cocos2d::Scene {
-		public:
-			mainScene();
-			~mainScene();
-			static cocos2d::Scene *createScene();
+        class mainScene : public cocos2d::Scene {
+          public:
+            mainScene();
+            ~mainScene();
+            static cocos2d::Scene* createScene();
 
-			virtual bool init();
+            virtual bool init();
 
-			void setRoom(const std::string&);
-
-
-			void menuCloseCallback(cocos2d::Ref *pSender);
-
-			CREATE_FUNC(mainScene);
-
-			windowSystem* getWindowNode() { return windowViewer; }
-
-		private:
-			std::vector<cocos2d::Node*> nodes{};
-			windowSystem* windowViewer = nullptr;
-		};
-	}
-}//common::coreModule
+            void setRoom(const std::string&);
 
 
-#endif //COMMON_MAINSCENE_H
+            void menuCloseCallback(cocos2d::Ref* pSender);
+
+            CREATE_FUNC(mainScene);
+
+            windowSystem* getWindowNode() { return windowViewer; }
+
+          private:
+            std::vector<cocos2d::Node*> nodes{};
+            windowSystem* windowViewer = nullptr;
+        };
+    }// namespace coreModule
+}// namespace common
+
+
+#endif// COMMON_MAINSCENE_H

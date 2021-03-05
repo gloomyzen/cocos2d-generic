@@ -6,20 +6,19 @@
 
 namespace common {
 
-	namespace coreModule {
+    namespace coreModule {
 
-		class spritePolygon : public cocos2d::AutoPolygon {
-		public:
-			spritePolygon(const std::string &filename);
-			~spritePolygon();
-			float getWidth();
-			float getHeight();
-			void setWidth(float value);
-			void setHeight(float value);
+        class spritePolygon : public cocos2d::AutoPolygon {
+          public:
+            spritePolygon(const std::string& filename);
+            ~spritePolygon();
+            float getWidth();
+            float getHeight();
+            void setWidth(float value);
+            void setHeight(float value);
+        };
+    }// namespace coreModule
+}// namespace common
 
-		};
-	}
-}
 
-
-#endif //COMMON_SPRITEPOLYGON_H
+#endif// COMMON_SPRITEPOLYGON_H

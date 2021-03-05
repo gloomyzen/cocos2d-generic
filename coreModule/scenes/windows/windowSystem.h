@@ -8,24 +8,24 @@
 #include <vector>
 
 namespace common::coreModule {
-	class windowBase;
+    class windowBase;
 
-	class windowSystem : public cocos2d::Node {
-	public:
-		windowSystem();
-		~windowSystem() = default;
+    class windowSystem : public cocos2d::Node {
+      public:
+        windowSystem();
+        ~windowSystem() = default;
 
-		CREATE_FUNC(windowSystem);
-		void registerWindow(const std::string&, const std::function<windowBase*()>&);
-		windowBase* requestWindow(const std::string&, bool force = false);
-		bool closeWindow(const std::string&);
+        CREATE_FUNC(windowSystem);
+        void registerWindow(const std::string&, const std::function<windowBase*()>&);
+        windowBase* requestWindow(const std::string&, bool force = false);
+        bool closeWindow(const std::string&);
 
-	private:
-		std::map<std::string, std::function<windowBase*()>> registeredWindowList;
-		std::vector<windowBase*> openedWindowList;
-		std::vector<windowBase*> waitingWindowList;
-	};
-}//common::coreModule
+      private:
+        std::map<std::string, std::function<windowBase*()>> registeredWindowList;
+        std::vector<windowBase*> openedWindowList;
+        std::vector<windowBase*> waitingWindowList;
+    };
+}// namespace common::coreModule
 
 
-#endif //COMMON_WINDOWSYSTEM_H
+#endif// COMMON_WINDOWSYSTEM_H

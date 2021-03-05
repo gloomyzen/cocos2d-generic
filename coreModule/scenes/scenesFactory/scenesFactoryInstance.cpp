@@ -6,38 +6,40 @@ using namespace common;
 using namespace common::coreModule;
 using namespace cocos2d;
 
-scenesFactoryInstance *currentFactoryInstance = nullptr;
+scenesFactoryInstance* currentFactoryInstance = nullptr;
 
 scenesFactoryInstance::scenesFactoryInstance() = default;
 
 scenesFactoryInstance::~scenesFactoryInstance() = default;
 
-scenesFactoryInstance &scenesFactoryInstance::getInstance() {
-	if (currentFactoryInstance == nullptr) {
-		currentFactoryInstance = new scenesFactoryInstance();
-	}
-	return *currentFactoryInstance;
+scenesFactoryInstance& scenesFactoryInstance::getInstance() {
+    if (currentFactoryInstance == nullptr) {
+        currentFactoryInstance = new scenesFactoryInstance();
+    }
+    return *currentFactoryInstance;
 }
 
-Layer *scenesFactoryInstance::getStateRoot(const std::string& state) {
-	if (isStateRegistered(state)) {
-		auto layer = Layer::create();
-		layer->setName(state);
-		return states[state](layer);
-	}
-	LOG_ERROR(STRING_FORMAT("scenesFactoryInstance::getStateRoot: Current state '%s' is not registered! Return simple layer.", state.c_str()));
-	return Layer::create();
+Layer* scenesFactoryInstance::getStateRoot(const std::string& state) {
+    if (isStateRegistered(state)) {
+        auto layer = Layer::create();
+        layer->setName(state);
+        return states[state](layer);
+    }
+    LOG_ERROR(
+        STRING_FORMAT("scenesFactoryInstance::getStateRoot: Current state '%s' is not registered! Return simple layer.",
+                      state.c_str()));
+    return Layer::create();
 }
 
-bool scenesFactoryInstance::registerState(const std::string& state, std::function<Layer *(Layer*)> clb) {
-	if (isStateRegistered(state))
-		return false;
+bool scenesFactoryInstance::registerState(const std::string& state, std::function<Layer*(Layer*)> clb) {
+    if (isStateRegistered(state))
+        return false;
 
-	states[state] = std::move(clb);
-	registeredStatesMap[state] = true;
-	return true;
+    states[state] = std::move(clb);
+    registeredStatesMap[state] = true;
+    return true;
 }
 
 bool scenesFactoryInstance::isStateRegistered(const std::string& needle) {
-	return registeredStatesMap.count(needle) != 0;
+    return registeredStatesMap.count(needle) != 0;
 }

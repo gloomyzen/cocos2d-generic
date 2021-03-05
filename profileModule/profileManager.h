@@ -2,45 +2,45 @@
 #define COMMON_PROFILEMANAGER_H
 
 #include "common/profileModule/profileBlockInterface.h"
+#include <functional>
 #include <map>
 #include <string>
-#include <functional>
 
 #define GET_PROFILE() common::profileModule::profileManager::getInstance()
 
 namespace common {
-	namespace profileModule {
-		class locationProfile;
+    namespace profileModule {
+        class locationProfile;
 
-		class profileManager {
-		public:
-			profileManager();
-			~profileManager();
-			static profileManager &getInstance();
-			void executeLoad();
+        class profileManager {
+          public:
+            profileManager();
+            ~profileManager();
+            static profileManager& getInstance();
+            void executeLoad();
 
-			bool registerBlock(const std::string&, const std::function<profileBlockInterface*()>&);
-			bool isBlockRegistered(const std::string&);
+            bool registerBlock(const std::string&, const std::function<profileBlockInterface*()>&);
+            bool isBlockRegistered(const std::string&);
 
-			template <typename T>
-			T* getBlock(const std::string& key) {
-				if (isBlockRegistered(key))
-					return dynamic_cast<T*>(profileBlocks[key]);
-				return nullptr;
-			}
+            template<typename T>
+            T* getBlock(const std::string& key) {
+                if (isBlockRegistered(key))
+                    return dynamic_cast<T*>(profileBlocks[key]);
+                return nullptr;
+            }
 
-			void destroyProfile();
-			void save();
+            void destroyProfile();
+            void save();
 
-		private:
-			void load();
-			void loadProfile(const rapidjson::Document& defaultData, const rapidjson::Document& localData);
+          private:
+            void load();
+            void loadProfile(const rapidjson::Document& defaultData, const rapidjson::Document& localData);
 
-			std::map<std::string, std::function<profileBlockInterface*()>> profileBlocksClb;
-			std::map<std::string, profileBlockInterface*> profileBlocks;
-		};
-	}
-}
+            std::map<std::string, std::function<profileBlockInterface*()>> profileBlocksClb;
+            std::map<std::string, profileBlockInterface*> profileBlocks;
+        };
+    }// namespace profileModule
+}// namespace common
 
 
-#endif //COMMON_PROFILEMANAGER_H
+#endif// COMMON_PROFILEMANAGER_H
