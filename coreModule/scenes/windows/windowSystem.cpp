@@ -35,9 +35,8 @@ windowBase* windowSystem::requestWindow(const std::string& name, bool force) {
     auto findWaiting = std::find_if(waitingWindowList.cbegin(), waitingWindowList.cend(), [name](windowBase* node) {
         return node->getWindowName() == name;
     });
-    std::function clb = [this, name]() { closeWindow(name); };
     auto window = registeredWindowList[name]();
-    window->setData<std::function<void()>>("safeClose", clb);
+    window->setData<std::function<void()>>("safeClose", [this, name]() { closeWindow(name); });
     window->setWindowName(name);
     if (force || (openedWindowList.empty() && waitingWindowList.empty())) {
         openedWindowList.push_back(window);

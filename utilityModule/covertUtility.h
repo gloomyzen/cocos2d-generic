@@ -1,5 +1,5 @@
-#ifndef CARDS_APP_COVERTUTILITY_H
-#define CARDS_APP_COVERTUTILITY_H
+#ifndef COMMON_COVERTUTILITY_H
+#define COMMON_COVERTUTILITY_H
 
 #include "cocos2d.h"
 
@@ -21,4 +21,4 @@ namespace common::utilityModule {
     };
 }// namespace common::utilityModule
 
-#endif// CARDS_APP_COVERTUTILITY_H
+#endif// COMMON_COVERTUTILITY_H
