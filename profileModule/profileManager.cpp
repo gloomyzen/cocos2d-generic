@@ -105,6 +105,7 @@ bool profileManager::registerBlock(const std::string& key, const std::function<p
         return false;
 
     profileBlocksClb[key] = blockClb;
+    return true;
 }
 
 bool profileManager::isBlockRegistered(const std::string& needle) { return profileBlocks.count(needle) > 0; }
