@@ -31,6 +31,7 @@ namespace common {
 
             void destroyProfile();
             void save();
+            void cleanup();
 
           private:
             void load();

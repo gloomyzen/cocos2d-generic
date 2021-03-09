@@ -12,11 +12,7 @@ profileManager* profileMgrInstance = nullptr;
 profileManager::profileManager() {}
 
 profileManager::~profileManager() {
-    auto deleteProfile = cocos2d::UserDefault::getInstance()->getBoolForKey("deleteProfile", false);
-    if (!deleteProfile)
-        save();
-    profileBlocks.clear();
-    profileBlocksClb.clear();
+    cleanup();
 }
 
 void profileManager::executeLoad() { load(); }
@@ -58,10 +54,10 @@ void profileManager::save() {
             json.AddMember(key, value, allocator);
         }
     }
-    rapidjson::StringBuffer strbuf;
+    rapidjson::StringBuffer strBuf;
     strbuf.Clear();
 
-    rapidjson::Writer<rapidjson::StringBuffer> writer(strbuf);
+    rapidjson::Writer<rapidjson::StringBuffer> writer(strBuf);
     json.Accept(writer);
 
     cocos2d::UserDefault::getInstance()->setStringForKey("profile", strbuf.GetString());
@@ -108,6 +104,19 @@ bool profileManager::registerBlock(const std::string& key, const std::function<p
     return true;
 }
 
-bool profileManager::isBlockRegistered(const std::string& needle) { return profileBlocks.count(needle) > 0; }
+bool profileManager::isBlockRegistered(const std::string& needle) {
+    return profileBlocks.count(needle) > 0;
+}
 
 void profileManager::destroyProfile() { cocos2d::UserDefault::getInstance()->deleteValueForKey("profile"); }
+
+void profileManager::cleanup() {
+    auto deleteProfile = cocos2d::UserDefault::getInstance()->getBoolForKey("deleteProfile", false);
+    if (!deleteProfile)
+        save();
+    for (auto item : profileBlocks) {
+        delete item.second;
+    }
+    profileBlocks.clear();
+    profileBlocksClb.clear();
+}
