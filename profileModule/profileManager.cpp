@@ -31,12 +31,12 @@ void profileManager::load() {
     auto localProfile = GET_JSON_MANAGER()->stringToJson(profile);
 #ifdef DEBUG
     if (!localProfile.HasParseError() && !localProfile.IsNull()) {
-        rapidjson::StringBuffer strbuf;
-        strbuf.Clear();
+        rapidjson::StringBuffer strBuf;
+        strBuf.Clear();
 
-        rapidjson::Writer<rapidjson::StringBuffer> writer(strbuf);
+        rapidjson::Writer<rapidjson::StringBuffer> writer(strBuf);
         localProfile.Accept(writer);
-        std::cout << STRING_FORMAT("local profile: %s", strbuf.GetString()) << std::endl;
+        std::cout << STRING_FORMAT("local profile: %s", strBuf.GetString()) << std::endl;
     }
 #endif
     loadProfile(defaultProfile, localProfile);
@@ -55,12 +55,15 @@ void profileManager::save() {
         }
     }
     rapidjson::StringBuffer strBuf;
-    strbuf.Clear();
+    strBuf.Clear();
 
     rapidjson::Writer<rapidjson::StringBuffer> writer(strBuf);
     json.Accept(writer);
+#ifdef DEBUG
+    std::cout << STRING_FORMAT("save local profile: %s", strBuf.GetString()) << std::endl;
+#endif
 
-    cocos2d::UserDefault::getInstance()->setStringForKey("profile", strbuf.GetString());
+    cocos2d::UserDefault::getInstance()->setStringForKey("profile", strBuf.GetString());
 }
 
 void profileManager::loadProfile(const rapidjson::Document& defaultData, const rapidjson::Document& localData) {
@@ -81,7 +84,7 @@ void profileManager::loadProfile(const rapidjson::Document& defaultData, const r
                 if (localIt != localData.MemberEnd() && localIt->value.IsObject()) {
                     auto block = blockIt->second();
                     if (block->load(localIt->value.GetObjectJ())) {
-                        profileBlocks[key] = blockIt->second();
+                        profileBlocks[key] = block;
                         continue;
                     }
                 }
