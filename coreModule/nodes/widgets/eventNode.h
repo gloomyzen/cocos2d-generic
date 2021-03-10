@@ -18,15 +18,12 @@ namespace common {
 
             void setClickable(bool value) { clickable = value; }
             bool isClickable() const { return clickable; }
-            void setOnTouchBegan(eventTouchClb clb) { onTouchBegan = std::move(clb); }
-            eventTouchClb getOnTouchBegan() { return onTouchBegan; }
-            void setOnTouchEnded(eventTouchClb clb) { onTouchEnded = std::move(clb); }
-            eventTouchClb getOnTouchEnded() { return onTouchEnded; }
+            void setOnTouch(eventTouchClb clb) { onTouch = std::move(clb); }
+            eventTouchClb getOnTouch() { return onTouch; }
 
 
           protected:
-            eventTouchClb onTouchBegan = nullptr;
-            eventTouchClb onTouchEnded = nullptr;
+            eventTouchClb onTouch = nullptr;
             bool clickable = true;
         };
     }// namespace coreModule

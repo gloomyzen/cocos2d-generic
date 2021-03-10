@@ -22,16 +22,13 @@ void soundButton::initListener() {
         lastEvent = getTouchCollided(touch, this);
         if (lastEvent == eventNode::eEventAction::COLLIDE) {
             if (!clickable)
-                return false;
+                return true;
             firstTouchPos = touch->getLocation();
             touchValid = true;
 
             auto currentAction = bgNode->getActionByTag(static_cast<int>(soundButton::eSoundButtonStatus::END_CLICK));
             if (currentAction != nullptr && !getAllowSpamTap() && !currentAction->isDone()) {
                 return false;
-            } else if (currentAction != nullptr && getAllowSpamTap() && !currentAction->isDone()) {
-                if (onTouchBegan)
-                    onTouchBegan(touch, event);
             }
 
             if (soundCallback)
@@ -40,11 +37,7 @@ void soundButton::initListener() {
             defaultColor = bgNode->getColor();
             auto nextColor = utilityModule::convertUtility::changeColorByPercent(defaultColor, 0.93);
             auto clickAction = cocos2d::TintTo::create(0.1f, nextColor);
-            auto clb = cocos2d::CallFunc::create([this, touch, event]() {
-                if (onTouchBegan)
-                    onTouchBegan(touch, event);
-            });
-            auto seq = cocos2d::Sequence::create(clickAction, clb, nullptr);
+            auto seq = cocos2d::Sequence::create(clickAction, nullptr);
             seq->setTag(static_cast<int>(soundButton::eSoundButtonStatus::START_CLICK));
             bgNode->runAction(seq);
 
@@ -66,8 +59,8 @@ void soundButton::initListener() {
         auto actionSeq = dynamic_cast<cocos2d::Sequence*>(currentAction);
         if (afterEvent == eventNode::eEventAction::COLLIDE && touchValid) {
             auto clb = cocos2d::CallFunc::create([this, touch, event]() {
-                if (onTouchEnded)
-                    onTouchEnded(touch, event);
+                if (onTouch)
+                    onTouch(touch, event);
             });
             if (actionSeq != nullptr && !actionSeq->isDone()) {
                 auto seq = cocos2d::Sequence::create(actionSeq, fadeOut, clb, nullptr);

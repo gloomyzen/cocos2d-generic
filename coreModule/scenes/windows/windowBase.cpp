@@ -16,7 +16,7 @@ windowBase::~windowBase() {
 void windowBase::initWindow() {
     this->setName("windowBase");
     loadProperty(STRING_FORMAT("windows/%s", this->getName().c_str()), dynamic_cast<Node*>(this));
-    setOnTouchEnded([this](cocos2d::Touch* touch, cocos2d::Event* event) {
+    setOnTouch([this](cocos2d::Touch* touch, cocos2d::Event* event) {
         if (handleMissClick) {
             closeWindow();
         }
