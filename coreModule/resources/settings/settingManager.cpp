@@ -57,6 +57,8 @@ void settingManager::load() {
 #else
                 currentResolution->showStats = false;
 #endif
+            } else if (key == "pixel" && resIt->value.IsBool()) {
+                currentResolution->spritePixel = resIt->value.GetBool();
             }
         }
         allResolutions.insert({ resName, currentResolution });

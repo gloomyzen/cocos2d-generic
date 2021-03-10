@@ -17,6 +17,7 @@ namespace common {
             std::string parentName;
             sDisplaySize* parent = nullptr;
             bool showStats = false;
+            bool spritePixel = false;
             sDisplaySize() = default;
             sDisplaySize(std::string name, float width, float height, float desktopScale) {
                 resolutionName = std::move(name);
