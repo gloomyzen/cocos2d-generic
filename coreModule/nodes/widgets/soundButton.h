@@ -39,6 +39,7 @@ namespace common {
             cocos2d::Node* bgNode = nullptr;
             Vec2 firstTouchPos;
             bool touchValid = true;
+            cocos2d::Color3B defaultColor;
         };
 
     }// namespace coreModule

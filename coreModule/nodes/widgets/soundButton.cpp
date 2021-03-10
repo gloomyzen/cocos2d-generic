@@ -3,6 +3,7 @@
 #include "common/debugModule/logManager.h"
 #include "editor-support/cocostudio/SimpleAudioEngine.h"
 #include <utility>
+#include "common/utilityModule/covertUtility.h"
 
 using namespace common::coreModule;
 
@@ -36,7 +37,9 @@ void soundButton::initListener() {
             if (soundCallback)
                 soundCallback();
 
-            auto clickAction = cocos2d::TintTo::create(0.1f, cocos2d::Color3B(235, 235, 235));
+            defaultColor = bgNode->getColor();
+            auto nextColor = utilityModule::convertUtility::changeColorByPercent(defaultColor, 0.93);
+            auto clickAction = cocos2d::TintTo::create(0.1f, nextColor);
             auto clb = cocos2d::CallFunc::create([this, touch, event]() {
                 if (onTouchBegan)
                     onTouchBegan(touch, event);
@@ -57,7 +60,7 @@ void soundButton::initListener() {
             return false;
         auto afterEvent = getTouchCollided(touch, this);
 
-        auto fadeOut = cocos2d::TintTo::create(0.1f, cocos2d::Color3B(255, 255, 255));
+        auto fadeOut = cocos2d::TintTo::create(0.1f, defaultColor);
 
         auto currentAction = bgNode->getActionByTag(static_cast<int>(soundButton::eSoundButtonStatus::START_CLICK));
         auto actionSeq = dynamic_cast<cocos2d::Sequence*>(currentAction);
