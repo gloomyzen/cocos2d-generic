@@ -77,9 +77,10 @@ void profileManager::loadProfile(const rapidjson::Document& defaultData, const r
         if (it->name.IsString() && it->value.IsObject()) {
             auto key = it->name.GetString();
             auto blockIt = profileBlocksClb.find(key);
-            auto findBlock = blockIt != profileBlocksClb.end();
+            if (blockIt == profileBlocksClb.end())
+                continue;
 
-            if (!isBlockRegistered(key) && localProfileValid && findBlock) {
+            if (!isBlockRegistered(key) && localProfileValid) {
                 auto localIt = localData.FindMember(key);
                 if (localIt != localData.MemberEnd() && localIt->value.IsObject()) {
                     auto block = blockIt->second();
