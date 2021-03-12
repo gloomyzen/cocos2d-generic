@@ -51,20 +51,23 @@ bool windowSystem::closeWindow(const std::string& name) {
     auto find = std::find_if(openedWindowList.cbegin(), openedWindowList.cend(), [name](windowBase* node) {
         return node->getWindowName() == name;
     });
-    this->scheduleOnce([this, find](float){
-           if (find != openedWindowList.end()) {
-               (*find)->removeFromParentAndCleanup(true);
-               delete *find;
-               openedWindowList.erase(find);
-           }
-           if (!waitingWindowList.empty()) {
-               auto window = waitingWindowList.begin();
-               openedWindowList.push_back(*window);
-               addChild(*window);
-               waitingWindowList.erase(window);
-           }
-           return true;
-    }, 0.f, "closeWindowTask");
+    this->scheduleOnce(
+        [this, find](float) {
+            if (find != openedWindowList.end()) {
+                (*find)->removeFromParentAndCleanup(true);
+//                delete *find;
+                openedWindowList.erase(find);
+            }
+            if (!waitingWindowList.empty()) {
+                auto window = waitingWindowList.begin();
+                openedWindowList.push_back(*window);
+                addChild(*window);
+                waitingWindowList.erase(window);
+            }
+            return true;
+        },
+        0.f,
+        "closeWindowTask");
 
     return true;
 }
