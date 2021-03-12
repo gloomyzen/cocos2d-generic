@@ -10,8 +10,6 @@ windowSystem::windowSystem() {
     this->setStretch(1.f, 1.f);
     this->setAnchorPoint({ 0.5f, 0.5f });
     this->setPivotPoint({ 0.5f, 0.5f });
-    //	todo
-    //	 1 opening animation% opening, close
 }
 
 void windowSystem::registerWindow(const std::string& name, const std::function<windowBase*()>& clb) {
@@ -36,7 +34,7 @@ windowBase* windowSystem::requestWindow(const std::string& name, bool force) {
         return node->getWindowName() == name;
     });
     auto window = registeredWindowList[name]();
-    window->setData<std::function<void()>>("safeClose", [this, name]() { closeWindow(name); });
+    window->setCallback("safeClose", [this, name]() { closeWindow(name); });
     window->setWindowName(name);
     if ((force && findOpened == openedWindowList.end()) || (openedWindowList.empty() && waitingWindowList.empty())) {
         openedWindowList.push_back(window);
@@ -53,16 +51,20 @@ bool windowSystem::closeWindow(const std::string& name) {
     auto find = std::find_if(openedWindowList.cbegin(), openedWindowList.cend(), [name](windowBase* node) {
         return node->getWindowName() == name;
     });
-    if (find != openedWindowList.end()) {
-        (*find)->removeFromParent();
-        delete *find;
-        openedWindowList.erase(find);
-    }
-    if (!waitingWindowList.empty()) {
-        auto window = waitingWindowList.begin();
-        openedWindowList.push_back(*window);
-        addChild(*window);
-        waitingWindowList.erase(window);
-    }
-    return false;
+    this->scheduleOnce([this, find](float){
+           if (find != openedWindowList.end()) {
+               (*find)->removeFromParentAndCleanup(true);
+               delete *find;
+               openedWindowList.erase(find);
+           }
+           if (!waitingWindowList.empty()) {
+               auto window = waitingWindowList.begin();
+               openedWindowList.push_back(*window);
+               addChild(*window);
+               waitingWindowList.erase(window);
+           }
+           return true;
+    }, 0.f, "closeWindowTask");
+
+    return true;
 }

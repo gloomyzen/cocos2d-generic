@@ -38,7 +38,7 @@ void windowBase::initWindow() {
 }
 
 void windowBase::closeWindow() {
-    auto closeClb = getData<std::function<void()>>("safeClose", []() {});
+    auto closeClb = getCallback("safeClose");
     currentState = eWindowState::CLOSING;
     setCascadeOpacityEnabled(true);
     auto fadeTo = FadeTo::create(0.08f, 0.0f);

@@ -6,6 +6,7 @@
 #include "common/coreModule/nodes/widgets/soundButton.h"
 #include <map>
 #include <string>
+#include <utility>
 #include <vector>
 
 namespace common::coreModule {
@@ -49,6 +50,17 @@ namespace common::coreModule {
             return defaultData;
         }
 
+        void setCallback(const std::string& name, std::function<void()> clb) {
+            windowCallbacks[name] = std::move(clb);
+        }
+        std::function<void()> getCallback(const std::string& name) {
+            auto clb = windowCallbacks.find(name);
+            if (clb != windowCallbacks.end()) {
+                return clb->second;
+            }
+            return nullptr;
+        }
+
         eWindowState getCurrentState() { return currentState; }
 
         void setWindowName(const std::string& value) { windowName = value; }
@@ -63,6 +75,7 @@ namespace common::coreModule {
         std::string windowName;
         eWindowState currentState = eWindowState::CLOSED;
         std::map<std::string, windowBaseData*> windowData;
+        std::map<std::string, std::function<void()>> windowCallbacks;
         bool handleMissClick = true;
     };
 }// namespace common::coreModule
