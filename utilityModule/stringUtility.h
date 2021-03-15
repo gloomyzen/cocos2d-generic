@@ -8,6 +8,8 @@
 #include <locale>
 #include <string>
 #include <utility>
+#include <vector>
+#include <functional>
 
 namespace common::utilityModule {
     class stringUtility {
@@ -50,6 +52,21 @@ namespace common::utilityModule {
             for (auto it = line.begin(); it != line.end(); ++it) { *it = std::tolower(*it); }
             return line;
         };
+
+        static std::vector<std::string> explodeString(const std::string& str, std::function<std::string(std::string)> clb = nullptr) {
+            std::vector<std::string> result;
+            std::stringstream ssitem(str);
+            while (ssitem.good()){
+                std::string line;
+                ssitem >> line;
+                if (clb) {
+                    line = clb(line);
+                }
+                result.push_back(line);
+            }
+
+            return result;
+        }
     };
 }// namespace common::utilityModule
 
