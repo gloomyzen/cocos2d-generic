@@ -127,6 +127,5 @@ void settingManager::init(bool isMobile, const std::string& settingName) {
 sDisplaySize* settingManager::getCurrentSize() {
     if (currentSize != nullptr)
         return currentSize;
-    LOG_ERROR("settingManager::getCurrentSize: Current resolution not inited!");
     return nullptr;
 }
