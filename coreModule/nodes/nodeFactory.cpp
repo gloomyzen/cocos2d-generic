@@ -287,14 +287,14 @@ void nodeFactory::getComponents(Node* node,
         if (auto dragonbones = dynamic_cast<armatureHolderNode*>(node)) {
             if (object.HasMember("texFile") && object.HasMember("skeFile")) {
                 if (usedArmature.find(object["name"].GetString()) == usedArmature.end()) {
-                    auto test = CCFactory::getFactory()->loadDragonBonesData(object["skeFile"].GetString());
                     auto textData = CCFactory::getFactory()->loadTextureAtlasData(object["texFile"].GetString());
+                    CCFactory::getFactory()->loadDragonBonesData(object["skeFile"].GetString());
                     usedArmature[textData->name] = true;
                 }
                 auto bone = CCFactory::getFactory()->buildArmatureDisplay(object["name"].GetString());
                 if (bone->getArmature()) {
                     // todo get attr: frameRate, animationName, skinName, isLoop
-                    bone->getArmature()->setCacheFrameRate(24);
+                    bone->getArmature()->setCacheFrameRate(30);
                     bone->getAnimation()->play("Idle", 9999);
                     dragonbones->addArmature(bone);
                 } else {
