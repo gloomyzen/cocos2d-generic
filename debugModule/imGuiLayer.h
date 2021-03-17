@@ -12,6 +12,7 @@
 #include <imgui_internal.h>
 #include <list>
 #include <vector>
+#include "common/coreModule/nodes/armatureHolderNode.h"
 
 namespace common {
     namespace debugModule {
@@ -95,9 +96,8 @@ namespace common {
                 // Actions
                 classList[typeid(cocos2d::Action).name()] = "[Action]";
                 // TODO add DragonBones node
-                classList[typeid(dragonBones::CCArmatureDisplay).name()] = "[DBRoot]";
-                classList[typeid(dragonBones::DragonBones).name()] = "[DBPart]";
-                classList[typeid(dragonBones::Armature).name()] = "[DBArmature]";
+                classList[typeid(dragonBones::CCArmatureDisplay).name()] = "[DBArmature]";
+                classList[typeid(common::coreModule::armatureHolderNode).name()] = "[DBHolder]";
 
                 _onStart();
                 scheduleUpdate();

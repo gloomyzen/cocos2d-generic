@@ -5,6 +5,7 @@
 
 using namespace common;
 using namespace common::debugModule;
+using namespace common::coreModule;
 
 void imGuiLayer::_onStart() {
     std::string layerName = "ImGUILayer";
@@ -302,6 +303,29 @@ ImRect imGuiLayer::renderPreferences(Node* node) {
     if (auto spriteNode = dynamic_cast<cocos2d::Sprite*>(node)) {
         if (ImGui::CollapsingHeader("Sprite component")) {
             ImGui::Text("Image \"%s\"", spriteNode->getResourceName().c_str());
+        }
+    }
+    if (auto dragonbonesNode = dynamic_cast<common::coreModule::armatureHolderNode*>(node)) {
+        if (ImGui::CollapsingHeader("DragonBones component")) {
+            //animation sections
+            if (auto armature = dragonbonesNode->getArmatureNode()) {
+                auto animNames = armature->getAnimation()->getAnimationNames();
+                auto lastAnimation = armature->getAnimation()->getLastAnimationName();
+                const char* items[animNames.size()];
+                int itemCurrent = 1;
+                for (int i = 0; i < animNames.size(); ++i) {
+                    auto test = std::string("");
+                    items[i] = animNames[i].c_str();
+                    if (lastAnimation == animNames[i]) {
+                        itemCurrent = i;
+                    }
+                }
+                int tempItem = itemCurrent;
+                ImGui::Combo("Animation", &itemCurrent, items, IM_ARRAYSIZE(items));
+                if (tempItem != itemCurrent) {
+                    armature->getAnimation()->play(items[itemCurrent]);
+                }
+            }
         }
     }
     if (auto labelNode = dynamic_cast<cocos2d::Label*>(node)) {

@@ -7,28 +7,26 @@
 
 namespace common {
     namespace coreModule {
-        using namespace dragonBones;
 
         class armatureHolderNode : public cocos2d::Node {
           public:
-            virtual bool init() {
-                if (!cocos2d::Node::init()) {
-                    return false;
-                }
-
-                return true;
-            }
-
             CREATE_FUNC(armatureHolderNode);
 
-            void addArmature(CCArmatureDisplay* armature) {
-                _armatureList.emplace_back(armature);
-                addChild(armature);
+            virtual void setDebug(bool value) override {
+                Node::setDebug(value);
+                for (auto item : getChildren()) {
+                    item->setDebug(value);
+                }
             }
-            std::vector<CCArmatureDisplay*> getArmatureList() { return _armatureList; }
 
-          private:
-            std::vector<CCArmatureDisplay*> _armatureList{};
+            dragonBones::CCArmatureDisplay* getArmatureNode() {
+                for (auto item : getChildren()) {
+                    if (auto armature = dynamic_cast<dragonBones::CCArmatureDisplay*>(item)) {
+                        return armature;
+                    }
+                }
+                return nullptr;
+            }
         };
     }// namespace coreModule
 }// namespace common
