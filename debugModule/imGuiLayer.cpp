@@ -323,6 +323,10 @@ ImRect imGuiLayer::renderPreferences(Node* node) {
                 int tempItem = itemCurrent;
                 ImGui::Combo("Animation", &itemCurrent, items, IM_ARRAYSIZE(items));
                 if (tempItem != itemCurrent) {
+//                    auto cfg = new dragonBones::AnimationConfig();
+//                    cfg->actionEnabled = true;
+//                    cfg->animation = items[itemCurrent];
+//                    armature->getAnimation()->playConfig(cfg);
                     armature->getAnimation()->play(items[itemCurrent]);
                 }
             }
