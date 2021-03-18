@@ -295,8 +295,8 @@ void nodeFactory::getComponents(Node* node,
                 auto bone = CCFactory::getFactory()->buildArmatureDisplay(object["name"].GetString());
                 if (bone->getArmature()) {
 //                    // todo get attr: frameRate, animationName, skinName, isLoop
-                    bone->getArmature()->setCacheFrameRate(24);
-                    bone->getAnimation()->play("Idle", 0);
+                    bone->getArmature()->setCacheFrameRate(60);
+                    bone->getAnimation()->play("run", 0);
                     dragonbones->addChild(bone);
                 } else {
                     LOG_ERROR(StringUtils::format("nodeFactory::getComponents: Can't get any armature from factory!"));
