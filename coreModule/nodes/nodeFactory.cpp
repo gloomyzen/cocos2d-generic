@@ -297,14 +297,17 @@ void nodeFactory::getComponents(Node* node,
                     if (object.HasMember("frameRate") && object["frameRate"].IsNumber()) {
                         bone->getArmature()->setCacheFrameRate(object["frameRate"].GetInt());
                     }
-                    auto cfg = new dragonBones::AnimationConfig();
-                    if (object.HasMember("animation") && object["animation"].IsString()) {
-                        cfg->animation = object["animation"].GetString();
-                    }
+                    int playTimes = -1;
+                    float fadeInTime = -1.f;
                     if (object.HasMember("playTimes") && object["playTimes"].IsNumber()) {
-                        cfg->playTimes = object["playTimes"].GetInt();
+                        playTimes = object["playTimes"].GetInt();
                     }
-                    bone->getAnimation()->playConfig(cfg);
+                    if (object.HasMember("fadeInTime") && object["fadeInTime"].IsNumber()) {
+                        fadeInTime = object["fadeInTime"].GetFloat();
+                    }
+                    if (object.HasMember("animation") && object["animation"].IsString()) {
+                        bone->getAnimation()->fadeIn(object["animation"].GetString(), fadeInTime, playTimes);
+                    }
                     dragonbones->addChild(bone);
                 } else {
                     LOG_ERROR(StringUtils::format("nodeFactory::getComponents: Can't get any armature from factory!"));

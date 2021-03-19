@@ -1,6 +1,7 @@
 #ifdef DEBUG
 #include "imGuiLayer.h"
 #include "common/coreModule/nodes/nodeProperties.h"
+#include "common/debugModule/logManager.h"
 #include <imgui/misc/cpp/imgui_stdlib.h>
 
 using namespace common;
@@ -329,6 +330,7 @@ ImRect imGuiLayer::renderPreferences(Node* node) {
 //                    armature->getAnimation()->playConfig(cfg);
 //                    armature->getAnimation()->play(items[itemCurrent]);
                     auto state = armature->getAnimation()->fadeIn(items[itemCurrent]);
+                    LOG_ERROR("test");
                 }
             }
         }
