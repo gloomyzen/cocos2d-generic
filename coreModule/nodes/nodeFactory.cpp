@@ -294,18 +294,22 @@ void nodeFactory::getComponents(Node* node,
                 }
                 auto bone = CCFactory::getFactory()->buildArmatureDisplay(object["name"].GetString());
                 if (bone->getArmature()) {
-//                    // todo get attr: frameRate, animationName, skinName, isLoop
-//                    bone->getArmature()->setCacheFrameRate(60);
+                    if (object.HasMember("frameRate") && object["frameRate"].IsNumber()) {
+                        bone->getArmature()->setCacheFrameRate(object["frameRate"].GetInt());
+                    }
                     auto cfg = new dragonBones::AnimationConfig();
-                    cfg->animation = "walk";
+                    if (object.HasMember("animation") && object["animation"].IsString()) {
+                        cfg->animation = object["animation"].GetString();
+                    }
+                    if (object.HasMember("playTimes") && object["playTimes"].IsNumber()) {
+                        cfg->playTimes = object["playTimes"].GetInt();
+                    }
                     bone->getAnimation()->playConfig(cfg);
                     dragonbones->addChild(bone);
                 } else {
                     LOG_ERROR(StringUtils::format("nodeFactory::getComponents: Can't get any armature from factory!"));
                 }
 
-            } else if (object.HasMember("file")) {
-                // todo get from file
             }
         } else {
             LOG_ERROR(StringUtils::format("nodeFactory::getComponents: Component '%s' no has DragonBones node type!",
