@@ -327,7 +327,8 @@ ImRect imGuiLayer::renderPreferences(Node* node) {
 //                    cfg->actionEnabled = true;
 //                    cfg->animation = items[itemCurrent];
 //                    armature->getAnimation()->playConfig(cfg);
-                    armature->getAnimation()->play(items[itemCurrent]);
+//                    armature->getAnimation()->play(items[itemCurrent]);
+                    armature->getAnimation()->fadeIn(items[itemCurrent]);
                 }
             }
         }
