@@ -330,7 +330,6 @@ ImRect imGuiLayer::renderPreferences(Node* node) {
 //                    armature->getAnimation()->playConfig(cfg);
 //                    armature->getAnimation()->play(items[itemCurrent]);
                     auto state = armature->getAnimation()->fadeIn(items[itemCurrent]);
-                    LOG_ERROR("test");
                 }
             }
         }

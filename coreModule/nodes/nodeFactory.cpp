@@ -1,5 +1,5 @@
 #include "nodeFactory.h"
-#include "common/coreModule/nodes/armatureHolderNode.h"
+#include "common/coreModule/nodes/widgets/armatureHolderNode.h"
 #include "common/coreModule/nodes/widgets/gridNode.h"
 #include "common/coreModule/nodes/widgets/soundButton.h"
 #include "common/debugModule/logManager.h"
@@ -308,6 +308,12 @@ void nodeFactory::getComponents(Node* node,
                     if (object.HasMember("animation") && object["animation"].IsString()) {
                         bone->getAnimation()->fadeIn(object["animation"].GetString(), fadeInTime, playTimes);
                     }
+                    bone->getEventDispatcher()->setEnabled(true);
+                    bone->getEventDispatcher()->addCustomEventListener(dragonBones::EventObject::FRAME_EVENT, [](EventCustom* event) {
+                        if (auto data = static_cast<dragonBones::EventObject*>(event->getUserData())) {
+                            CCLOG("event name %s", data->name.c_str());
+                        }
+                    });
                     dragonbones->addChild(bone);
                 } else {
                     LOG_ERROR(StringUtils::format("nodeFactory::getComponents: Can't get any armature from factory!"));
