@@ -1,5 +1,5 @@
 #include "nodeFactory.h"
-#include "common/coreModule/nodes/widgets/armatureHolderNode.h"
+#include "common/coreModule/nodes/widgets/armatureNode.h"
 #include "common/coreModule/nodes/widgets/gridNode.h"
 #include "common/coreModule/nodes/widgets/soundButton.h"
 #include "common/debugModule/logManager.h"
@@ -55,7 +55,7 @@ nodeFactory::nodeFactory() {
         };
         nodes["scale9sprite"] = []() -> Scale9Sprite* { return Scale9Sprite::create(); };
         /// External types, in common
-        nodes["dragonbones"] = []() { return new armatureHolderNode(); };
+        nodes["dragonbones"] = []() { return new armatureNode(); };
         nodes["scrollView"] = []() { return ScrollView::create(); };
         nodes["soundButton"] = []() { return soundButton::create(); };
         nodes["grid"] = []() -> gridNode* { return gridNode::create(); };
@@ -284,7 +284,7 @@ void nodeFactory::getComponents(Node* node,
         }
     } break;
     case DRAGONBONES_COMPONENT: {
-        if (auto dragonbones = dynamic_cast<armatureHolderNode*>(node)) {
+        if (auto dragonbones = dynamic_cast<armatureNode*>(node)) {
             if (object.HasMember("texFile") && object.HasMember("skeFile")) {
                 if (usedArmature.find(object["name"].GetString()) == usedArmature.end()) {
                     //todo check file exists
@@ -306,7 +306,11 @@ void nodeFactory::getComponents(Node* node,
                         fadeInTime = object["fadeInTime"].GetFloat();
                     }
                     if (object.HasMember("animation") && object["animation"].IsString()) {
-                        bone->getAnimation()->fadeIn(object["animation"].GetString(), fadeInTime, playTimes);
+                        if (bone->getAnimation()->hasAnimation(object["animation"].GetString())) {
+                            bone->getAnimation()->fadeIn(object["animation"].GetString(), fadeInTime, playTimes);
+                        } else {
+                            LOG_ERROR(STRING_FORMAT("nodeFactory::getComponents: Can't find animation '%s'", object["animation"].GetString()));
+                        }
                     }
                     dragonbones->addChild(bone);
                 } else {

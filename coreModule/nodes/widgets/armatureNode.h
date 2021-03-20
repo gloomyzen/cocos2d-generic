@@ -11,7 +11,7 @@
 namespace common {
     namespace coreModule {
 
-        class armatureHolderNode : public cocos2d::Node {
+        class armatureNode : public cocos2d::Node {
           public:
             enum class eArmatureState {
                 START = 0,
@@ -25,7 +25,7 @@ namespace common {
                 SOUND_EVENT,
             };
 
-            CREATE_FUNC(armatureHolderNode);
+            CREATE_FUNC(armatureNode);
 
             void setDebug(bool value) override;
             void addChild(Node * child) override;

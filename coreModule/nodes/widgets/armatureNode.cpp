@@ -1,27 +1,27 @@
-#include "armatureHolderNode.h"
+#include "armatureNode.h"
 #include "common/debugModule/logManager.h"
 #include <map>
 
 using namespace common::coreModule;
 
-static std::map<armatureHolderNode::eArmatureState, const char*> statesMap = {
-    { armatureHolderNode::eArmatureState::START, dragonBones::EventObject::START },
-    { armatureHolderNode::eArmatureState::LOOP_COMPLETE, dragonBones::EventObject::LOOP_COMPLETE },
-    { armatureHolderNode::eArmatureState::COMPLETE, dragonBones::EventObject::COMPLETE },
-    { armatureHolderNode::eArmatureState::FADE_IN, dragonBones::EventObject::FADE_IN },
-    { armatureHolderNode::eArmatureState::FADE_IN_COMPLETE, dragonBones::EventObject::FADE_IN_COMPLETE },
-    { armatureHolderNode::eArmatureState::FADE_OUT, dragonBones::EventObject::FADE_OUT },
-    { armatureHolderNode::eArmatureState::FADE_OUT_COMPLETE, dragonBones::EventObject::FADE_OUT_COMPLETE },
-    { armatureHolderNode::eArmatureState::FRAME_EVENT, dragonBones::EventObject::FRAME_EVENT },
-    { armatureHolderNode::eArmatureState::SOUND_EVENT, dragonBones::EventObject::SOUND_EVENT }
+static std::map<armatureNode::eArmatureState, const char*> statesMap = {
+    { armatureNode::eArmatureState::START, dragonBones::EventObject::START },
+    { armatureNode::eArmatureState::LOOP_COMPLETE, dragonBones::EventObject::LOOP_COMPLETE },
+    { armatureNode::eArmatureState::COMPLETE, dragonBones::EventObject::COMPLETE },
+    { armatureNode::eArmatureState::FADE_IN, dragonBones::EventObject::FADE_IN },
+    { armatureNode::eArmatureState::FADE_IN_COMPLETE, dragonBones::EventObject::FADE_IN_COMPLETE },
+    { armatureNode::eArmatureState::FADE_OUT, dragonBones::EventObject::FADE_OUT },
+    { armatureNode::eArmatureState::FADE_OUT_COMPLETE, dragonBones::EventObject::FADE_OUT_COMPLETE },
+    { armatureNode::eArmatureState::FRAME_EVENT, dragonBones::EventObject::FRAME_EVENT },
+    { armatureNode::eArmatureState::SOUND_EVENT, dragonBones::EventObject::SOUND_EVENT }
 };
 
-void armatureHolderNode::setDebug(bool value) {
+void armatureNode::setDebug(bool value) {
     Node::setDebug(value);
     for (auto item : getChildren()) { item->setDebug(value); }
 }
 
-dragonBones::CCArmatureDisplay* armatureHolderNode::getArmatureNode() {
+dragonBones::CCArmatureDisplay* armatureNode::getArmatureNode() {
     if (boneNode) {
         return boneNode;
     }
@@ -34,36 +34,36 @@ dragonBones::CCArmatureDisplay* armatureHolderNode::getArmatureNode() {
     return nullptr;
 }
 
-void armatureHolderNode::setAnimation(const std::string& name, std::function<void(cocos2d::EventCustom*)> clb) {
+void armatureNode::setAnimation(const std::string& name, std::function<void(cocos2d::EventCustom*)> clb) {
     if (auto node = getArmatureNode()) {
         node->getAnimation()->fadeIn(name);
     } else {
-        LOG_ERROR(STRING_FORMAT("armatureHolderNode::setAnimation: animation %s not found!", name.c_str()));
+        LOG_ERROR(STRING_FORMAT("armatureNode::setAnimation: animation %s not found!", name.c_str()));
     }
 }
 
-void armatureHolderNode::addChild(cocos2d::Node* child) {
+void armatureNode::addChild(cocos2d::Node* child) {
     Node::addChild(child);
     if (auto armature = dynamic_cast<dragonBones::CCArmatureDisplay*>(child)) {
         boneNode = armature;
     }
 }
 
-void armatureHolderNode::addChild(cocos2d::Node* child, int localZOrder) {
+void armatureNode::addChild(cocos2d::Node* child, int localZOrder) {
     Node::addChild(child, localZOrder);
     if (auto armature = dynamic_cast<dragonBones::CCArmatureDisplay*>(child)) {
         boneNode = armature;
     }
 }
 
-void armatureHolderNode::addChild(cocos2d::Node* child, int localZOrder, int tag) {
+void armatureNode::addChild(cocos2d::Node* child, int localZOrder, int tag) {
     Node::addChild(child, localZOrder, tag);
     if (auto armature = dynamic_cast<dragonBones::CCArmatureDisplay*>(child)) {
         boneNode = armature;
     }
 }
 
-void armatureHolderNode::addChild(cocos2d::Node* child, int localZOrder, const std::string& name) {
+void armatureNode::addChild(cocos2d::Node* child, int localZOrder, const std::string& name) {
     Node::addChild(child, localZOrder, name);
     if (auto armature = dynamic_cast<dragonBones::CCArmatureDisplay*>(child)) {
         boneNode = armature;
@@ -72,41 +72,41 @@ void armatureHolderNode::addChild(cocos2d::Node* child, int localZOrder, const s
 
 /*
  * Example usage:
- * node->setAnimationCallback(armatureHolderNode::eArmatureState::COMPLETE, [](auto){});
+ * node->setAnimationCallback(armatureNode::eArmatureState::COMPLETE, [](auto){});
  */
-void armatureHolderNode::setAnimationCallback(armatureHolderNode::eArmatureState state, std::function<void(cocos2d::EventCustom*)> clb) {
+void armatureNode::setAnimationCallback(armatureNode::eArmatureState state, std::function<void(cocos2d::EventCustom*)> clb) {
     if (auto node = getArmatureNode()) {
         if (auto eventType = getEventType(state)) {
             setEventsEnabled(true);
             node->getEventDispatcher()->addCustomEventListener(eventType, clb);
         }
     } else {
-        //todo log
+        LOG_ERROR("armatureNode::setAnimationCallback: bones not found");
     }
 }
 
-void armatureHolderNode::removeAnimationCallback(armatureHolderNode::eArmatureState state) {
+void armatureNode::removeAnimationCallback(armatureNode::eArmatureState state) {
     if (auto node = getArmatureNode()) {
         if (auto eventType = getEventType(state)) {
             node->getEventDispatcher()->removeCustomEventListeners(eventType);
         }
     } else {
-        //todo log
+        LOG_ERROR("armatureNode::removeAnimationCallback: bones not found");
     }
 }
 
-bool armatureHolderNode::isEventsEnable() const { return handleEvents; }
+bool armatureNode::isEventsEnable() const { return handleEvents; }
 
-void armatureHolderNode::setEventsEnabled(bool value) {
+void armatureNode::setEventsEnabled(bool value) {
     if (auto node = getArmatureNode()) {
         node->getEventDispatcher()->setEnabled(value);
         handleEvents = value;
     } else {
-        //todo log
+        LOG_ERROR("armatureNode::setEventsEnabled: bones not found");
     }
 }
 
-const char* armatureHolderNode::getEventType(armatureHolderNode::eArmatureState state) {
+const char* armatureNode::getEventType(armatureNode::eArmatureState state) {
     auto item = statesMap.find(state);
     if (item != statesMap.end()) {
         return item->second;
@@ -119,7 +119,7 @@ const char* armatureHolderNode::getEventType(armatureHolderNode::eArmatureState 
  * node->setCustomAnimationCallback("eventAttack", [](auto){});
  * "eventAttack" is custom event from dragonbones timeline
  */
-void armatureHolderNode::setCustomAnimationCallback(const std::string& eventName, const std::function<void(cocos2d::EventCustom*)>& clb) {
+void armatureNode::setCustomAnimationCallback(const std::string& eventName, const std::function<void(cocos2d::EventCustom*)>& clb) {
     if (auto node = getArmatureNode()) {
         setEventsEnabled(true);
         customCallbacksMap[eventName] = clb;
@@ -133,11 +133,11 @@ void armatureHolderNode::setCustomAnimationCallback(const std::string& eventName
                }
         });
     } else {
-        //todo log
+        LOG_ERROR("armatureNode::setCustomAnimationCallback: bones not found");
     }
 }
 
-void armatureHolderNode::removeCustomAnimationCallback(const std::string& eventName) {
+void armatureNode::removeCustomAnimationCallback(const std::string& eventName) {
     auto find = customCallbacksMap.find(eventName);
     if (find != customCallbacksMap.end()) {
         customCallbacksMap.erase(find);

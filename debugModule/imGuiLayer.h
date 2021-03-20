@@ -5,6 +5,7 @@
 
 #include "CCImGuiLayer.h"
 #include "cocos2d.h"
+#include "common/coreModule/nodes/widgets/armatureNode.h"
 #include "dragonBones/cocos2dx/CCDragonBonesHeaders.h"
 #include "ui/CocosGUI.h"
 #include <CCIMGUI.h>
@@ -12,7 +13,6 @@
 #include <imgui_internal.h>
 #include <list>
 #include <vector>
-#include "common/coreModule/nodes/widgets/armatureHolderNode.h"
 
 namespace common {
     namespace debugModule {
@@ -97,7 +97,7 @@ namespace common {
                 classList[typeid(cocos2d::Action).name()] = "[Action]";
                 // TODO add DragonBones node
                 classList[typeid(dragonBones::CCArmatureDisplay).name()] = "[DBArmature]";
-                classList[typeid(common::coreModule::armatureHolderNode).name()] = "[DBHolder]";
+                classList[typeid(common::coreModule::armatureNode).name()] = "[DBHolder]";
 
                 _onStart();
                 scheduleUpdate();
