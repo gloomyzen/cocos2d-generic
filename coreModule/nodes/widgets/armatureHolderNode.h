@@ -6,6 +6,7 @@
 #include <vector>
 #include <string>
 #include <functional>
+#include <map>
 
 namespace common {
     namespace coreModule {
@@ -26,17 +27,19 @@ namespace common {
 
             CREATE_FUNC(armatureHolderNode);
 
-            virtual void setDebug(bool value) override;
-            virtual void addChild(Node * child) override;
-            virtual void addChild(Node * child, int localZOrder) override;
-            virtual void addChild(Node* child, int localZOrder, int tag) override;
-            virtual void addChild(Node* child, int localZOrder, const std::string &name) override;
+            void setDebug(bool value) override;
+            void addChild(Node * child) override;
+            void addChild(Node * child, int localZOrder) override;
+            void addChild(Node* child, int localZOrder, int tag) override;
+            void addChild(Node* child, int localZOrder, const std::string &name) override;
 
             dragonBones::CCArmatureDisplay* getArmatureNode();
 
             void setAnimation(const std::string& name, std::function<void(cocos2d::EventCustom*)> clb = nullptr);
             void setAnimationCallback(eArmatureState, std::function<void(cocos2d::EventCustom*)>);
             void removeAnimationCallback(eArmatureState);
+            void setCustomAnimationCallback(const std::string&, const std::function<void(cocos2d::EventCustom*)>&);
+            void removeCustomAnimationCallback(const std::string&);
             bool isEventsEnable() const;
             void setEventsEnabled(bool);
 
@@ -46,6 +49,7 @@ namespace common {
           protected:
             bool handleEvents = false;
             dragonBones::CCArmatureDisplay* boneNode = nullptr;
+            std::map<std::string, std::function<void(cocos2d::EventCustom*)>> customCallbacksMap;
         };
     }// namespace coreModule
 }// namespace common

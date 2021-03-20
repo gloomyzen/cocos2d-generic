@@ -12,7 +12,7 @@
 #include <imgui_internal.h>
 #include <list>
 #include <vector>
-#include "common/coreModule/nodes/armatureHolderNode.h"
+#include "common/coreModule/nodes/widgets/armatureHolderNode.h"
 
 namespace common {
     namespace debugModule {

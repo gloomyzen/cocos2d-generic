@@ -70,18 +70,30 @@ void armatureHolderNode::addChild(cocos2d::Node* child, int localZOrder, const s
     }
 }
 
-void armatureHolderNode::setAnimationCallback(armatureHolderNode::eArmatureState, std::function<void(cocos2d::EventCustom*)>) {
+/*
+ * Example usage:
+ * node->setAnimationCallback(armatureHolderNode::eArmatureState::COMPLETE, [](auto){});
+ */
+void armatureHolderNode::setAnimationCallback(armatureHolderNode::eArmatureState state, std::function<void(cocos2d::EventCustom*)> clb) {
     if (auto node = getArmatureNode()) {
-        setEventsEnabled(true);
-        node->getEventDispatcher()->addCustomEventListener(dragonBones::EventObject::FRAME_EVENT, [](cocos2d::EventCustom* event) {
-               if (auto data = static_cast<dragonBones::EventObject*>(event->getUserData())) {
-                   CCLOG("event name %s", data->name.c_str());
-               }
-        });
+        if (auto eventType = getEventType(state)) {
+            setEventsEnabled(true);
+            node->getEventDispatcher()->addCustomEventListener(eventType, clb);
+        }
+    } else {
+        //todo log
     }
 }
 
-void armatureHolderNode::removeAnimationCallback(armatureHolderNode::eArmatureState) {}
+void armatureHolderNode::removeAnimationCallback(armatureHolderNode::eArmatureState state) {
+    if (auto node = getArmatureNode()) {
+        if (auto eventType = getEventType(state)) {
+            node->getEventDispatcher()->removeCustomEventListeners(eventType);
+        }
+    } else {
+        //todo log
+    }
+}
 
 bool armatureHolderNode::isEventsEnable() const { return handleEvents; }
 
@@ -89,6 +101,8 @@ void armatureHolderNode::setEventsEnabled(bool value) {
     if (auto node = getArmatureNode()) {
         node->getEventDispatcher()->setEnabled(value);
         handleEvents = value;
+    } else {
+        //todo log
     }
 }
 
@@ -98,4 +112,34 @@ const char* armatureHolderNode::getEventType(armatureHolderNode::eArmatureState 
         return item->second;
     }
     return nullptr;
+}
+
+/*
+ * Example usage:
+ * node->setCustomAnimationCallback("eventAttack", [](auto){});
+ * "eventAttack" is custom event from dragonbones timeline
+ */
+void armatureHolderNode::setCustomAnimationCallback(const std::string& eventName, const std::function<void(cocos2d::EventCustom*)>& clb) {
+    if (auto node = getArmatureNode()) {
+        setEventsEnabled(true);
+        customCallbacksMap[eventName] = clb;
+        node->getEventDispatcher()->addCustomEventListener(dragonBones::EventObject::FRAME_EVENT, [this](cocos2d::EventCustom* event) {
+               if (auto data = static_cast<dragonBones::EventObject*>(event->getUserData())) {
+                   auto find = customCallbacksMap.find(data->name);
+                   if (find != customCallbacksMap.end()) {
+                       LOG_INFO(STRING_FORMAT("Node %s, founded event: %s, start callback", getName().c_str(), data->name.c_str()));
+                       find->second(event);
+                   }
+               }
+        });
+    } else {
+        //todo log
+    }
+}
+
+void armatureHolderNode::removeCustomAnimationCallback(const std::string& eventName) {
+    auto find = customCallbacksMap.find(eventName);
+    if (find != customCallbacksMap.end()) {
+        customCallbacksMap.erase(find);
+    }
 }
