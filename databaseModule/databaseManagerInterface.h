@@ -7,8 +7,6 @@
 #include <string>
 #include <tuple>
 
-#define GET_DATABASE_MANAGER() common::databaseModule::databaseManagerInterface::getInstance()
-
 namespace common::databaseModule {
 
     class databaseManagerInterface {
