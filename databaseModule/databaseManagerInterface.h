@@ -9,45 +9,42 @@
 
 #define GET_DATABASE_MANAGER() common::databaseModule::databaseManagerInterface::getInstance()
 
-namespace common {
-    namespace databaseModule {
+namespace common::databaseModule {
 
-        class databaseManagerInterface {
-          public:
-            virtual ~databaseManagerInterface() = default;
+    class databaseManagerInterface {
+      public:
+        virtual ~databaseManagerInterface() = default;
 
-            void executeLoadData() {
-                for (const auto& [_, db] : databasesMap) {
-                    if (db->isLoaded())
-                        continue;
-                    db->executeLoadData();
-                }
+        void executeLoadData() {
+            for (const auto& [_, db] : databasesMap) {
+                if (db->isLoaded())
+                    continue;
+                db->executeLoadData();
             }
+        }
 
-            virtual void cleanup() = 0;
+        virtual void cleanup() = 0;
 
-          protected:
-
-            void registerDatabase(std::pair<int, std::string> value, databaseInterface* db) {
-                const auto& [key, path] = value;
-                if (databasesMap.find(key) == databasesMap.end()) {
-                    db->setPath(path);
-                    databasesMap.insert({ key, db });
-                }
+      protected:
+        void registerDatabase(const std::pair<int, std::string>& value, databaseInterface* db) {
+            const auto& [key, path] = value;
+            if (databasesMap.find(key) == databasesMap.end()) {
+                db->setPath(path);
+                databasesMap.insert({ key, db });
             }
+        }
 
-            template<typename T>
-            T* getRegisteredDatabase(int key) {
-                if (databasesMap.find(key) != databasesMap.end()) {
-                    return dynamic_cast<T*>(databasesMap[key]);
-                }
-                return nullptr;
+        template<typename T>
+        T* getRegisteredDatabase(int key) {
+            if (databasesMap.find(key) != databasesMap.end()) {
+                return dynamic_cast<T*>(databasesMap[key]);
             }
+            return nullptr;
+        }
 
-            std::map<int, databaseInterface*> databasesMap;
-        };
-    }// namespace databaseModule
-}// namespace common
+        std::map<int, databaseInterface*> databasesMap;
+    };
+}// namespace common::databaseModule
 
 
 #endif// COMMON_DATABASEMANAGER_H
