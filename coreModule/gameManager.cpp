@@ -14,7 +14,8 @@ gameManager::gameManager() {
     currentState = "loadingScreenScene";
     mainSceneIns = dynamic_cast<mainScene*>(mainScene::createScene());
     Director::getInstance()->runWithScene(mainSceneIns);
-};
+    mainSceneIns->getDefaultCamera()->setName("CameraNode");
+}
 
 gameManager::~gameManager() {}
 

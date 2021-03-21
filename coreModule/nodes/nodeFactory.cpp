@@ -40,6 +40,7 @@ nodeFactory::nodeFactory() {
         /// Core types
         nodes["node"] = []() -> Node* { return Node::create(); };
         nodes["sprite"] = []() -> Sprite* { return Sprite::create(); };
+        nodes["sprite3d"] = []() -> Sprite3D* { return Sprite3D::create(); };
         nodes["label"] = []() -> Label* { return Label::create(); };
         nodes["button"] = []() -> Button* { return Button::create(); };
         nodes["layout"] = []() -> Layout* { return Layout::create(); };
@@ -168,6 +169,17 @@ void nodeFactory::getComponents(Node* node,
         if (object.HasMember("rotation") && object["rotation"].IsNumber()) {
             node->setRotation(object["rotation"].GetFloat());
         }
+        if (object.HasMember("rotation3d")) {
+            auto rotation3d = object["rotation3d"].GetArray();
+            if (rotation3d.Size() == 3) {
+                node->setRotation3D(cocos2d::Vec3(rotation3d[0].GetFloat(), rotation3d[1].GetFloat(), rotation3d[2].GetFloat()));
+            } else {
+                LOG_ERROR(
+                    StringUtils::format("nodeFactory::getComponents: Component '%s' has wrong '%s' position keys!",
+                                        componentName.c_str(),
+                                        std::to_string(rotation3d.Size()).c_str()));
+            }
+        }
         if (object.HasMember("stretch")) {
             auto stretch = object["stretch"].GetArray();
             if (stretch.Size() == 2) {
@@ -180,7 +192,11 @@ void nodeFactory::getComponents(Node* node,
         }
     } break;
     case SPRITE_COMPONENT: {
-        if (auto sprite = dynamic_cast<Sprite*>(node)) {
+        if (auto sprite3d = dynamic_cast<Sprite3D*>(node)) {
+            if (object.HasMember("image") && object["image"].IsString()) {
+                sprite3d->initWithFile(object["image"].GetString());
+            }
+        } else if (auto sprite = dynamic_cast<Sprite*>(node)) {
             std::string imagePath;
             bool isPoly = true;
             if (object.HasMember("image") && object["image"].IsString()) {
