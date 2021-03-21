@@ -301,6 +301,14 @@ ImRect imGuiLayer::renderPreferences(Node* node) {
             node->setColor(nodeColor);
         }
     }
+    if (ImGui::CollapsingHeader("Z-Order component")) {
+        auto local = node->getLocalZOrder();
+        int changedLocal = local;
+        ImGui::DragInt("Local z-order", &changedLocal, 1, -999, 999);
+        if (changedLocal != local) {
+            node->setLocalZOrder(static_cast<std::int32_t>(changedLocal));
+        }
+    }
     if (auto spriteNode = dynamic_cast<cocos2d::Sprite*>(node)) {
         if (ImGui::CollapsingHeader("Sprite component")) {
             ImGui::Text("Image \"%s\"", spriteNode->getResourceName().c_str());

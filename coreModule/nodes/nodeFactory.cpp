@@ -44,6 +44,7 @@ nodeFactory::nodeFactory() {
         nodes["label"] = []() -> Label* { return Label::create(); };
         nodes["button"] = []() -> Button* { return Button::create(); };
         nodes["layout"] = []() -> Layout* { return Layout::create(); };
+        nodes["layer"] = []() -> Layer* { return Layer::create(); };
         nodes["clippingNode"] = []() -> ClippingNode* {
             // todo need fix this
             ClippingNode* clipper = ClippingNode::create();
@@ -195,6 +196,8 @@ void nodeFactory::getComponents(Node* node,
         if (auto sprite3d = dynamic_cast<Sprite3D*>(node)) {
             if (object.HasMember("image") && object["image"].IsString()) {
                 sprite3d->initWithFile(object["image"].GetString());
+                sprite3d->setForce2DQueue(true);
+                sprite3d->setBlendFunc(BlendFunc::ALPHA_PREMULTIPLIED);
             }
         } else if (auto sprite = dynamic_cast<Sprite*>(node)) {
             std::string imagePath;
