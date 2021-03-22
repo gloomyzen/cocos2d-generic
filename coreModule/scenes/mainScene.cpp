@@ -30,14 +30,13 @@ bool mainScene::init() {
     return true;
 }
 
-void mainScene::menuCloseCallback(Ref* pSender) { Director::getInstance()->end(); }
-
 void mainScene::setRoom(const std::string& state) {
     auto director = Director::getInstance();
     auto visibleSize = director->getVisibleSize();
     if (nodes.empty()) {
         auto currentNode = scenesFactoryInstance::getInstance().getStateRoot(state);
         this->addChild(currentNode, eGameLayers::ROOT);
+        initTaskLoading(currentNode);
         nodes.push_back(currentNode);
         return;
     }
@@ -55,7 +54,18 @@ void mainScene::setRoom(const std::string& state) {
                                 nullptr);
     nextNode->setContentSize(visibleSize);
     this->addChild(nextNode, eGameLayers::ROOT);
+    initTaskLoading(nextNode);
     nodes.push_back(nextNode);
     nextNode->runAction(seq);
     director->getRunningScene()->getDefaultCamera()->setPosition(visibleSize.width / 2, visibleSize.height / 2);
+}
+
+void mainScene::initTaskLoading(cocos2d::Layer* layer) {
+    if (auto item = dynamic_cast<taskHolder*>(layer)) {
+        auto atp = cocos2d::AsyncTaskPool::getInstance();
+        atp->enqueue(cocos2d::AsyncTaskPool::TaskType::TASK_OTHER, [](void*){}, nullptr,
+                     [item]() {
+                            item->executeTasks();
+                     });
+    }
 }

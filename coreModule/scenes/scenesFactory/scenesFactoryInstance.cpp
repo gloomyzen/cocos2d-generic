@@ -1,5 +1,7 @@
 #include "scenesFactoryInstance.h"
 #include "common/debugModule/logManager.h"
+#include "common/coreModule/gameManager.h"
+#include "common/coreModule/scenes/mainScene.h"
 #include <map>
 
 using namespace common;
@@ -21,9 +23,7 @@ scenesFactoryInstance& scenesFactoryInstance::getInstance() {
 
 Layer* scenesFactoryInstance::getStateRoot(const std::string& state) {
     if (isStateRegistered(state)) {
-        auto layer = Layer::create();
-        layer->setName(state);
-        return states[state](layer);
+		return states[state]();
     }
     LOG_ERROR(
         STRING_FORMAT("scenesFactoryInstance::getStateRoot: Current state '%s' is not registered! Return simple layer.",
@@ -31,7 +31,7 @@ Layer* scenesFactoryInstance::getStateRoot(const std::string& state) {
     return Layer::create();
 }
 
-bool scenesFactoryInstance::registerState(const std::string& state, std::function<Layer*(Layer*)> clb) {
+bool scenesFactoryInstance::registerState(const std::string& state, std::function<Layer*()> clb) {
     if (isStateRegistered(state))
         return false;
 

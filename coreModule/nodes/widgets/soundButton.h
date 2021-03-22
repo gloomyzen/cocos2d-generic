@@ -37,7 +37,7 @@ namespace common {
 
           protected:
             cocos2d::Node* bgNode = nullptr;
-            Vec2 firstTouchPos;
+            cocos2d::Vec2 firstTouchPos;
             bool touchValid = true;
             cocos2d::Color3B defaultColor;
         };

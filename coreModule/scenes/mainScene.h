@@ -20,14 +20,13 @@ namespace common {
 
             void setRoom(const std::string&);
 
-
-            void menuCloseCallback(cocos2d::Ref* pSender);
-
             CREATE_FUNC(mainScene);
 
             windowSystem* getWindowNode() { return windowViewer; }
 
           private:
+            void initTaskLoading(cocos2d::Layer* layer);
+
             std::vector<cocos2d::Node*> nodes{};
             windowSystem* windowViewer = nullptr;
         };

@@ -21,11 +21,11 @@ namespace common {
             static scenesFactoryInstance& getInstance();
             Layer* getStateRoot(const std::string&);
             bool isStateRegistered(const std::string&);
-            bool registerState(const std::string&, std::function<Layer*(Layer*)>);
+            bool registerState(const std::string&, std::function<Layer*()>);
 
           private:
             std::map<std::string, bool> registeredStatesMap;
-            std::map<std::string, std::function<Layer*(Layer*)>> states;
+            std::map<std::string, std::function<Layer*()>> states;
         };
     }// namespace coreModule
 }// namespace common

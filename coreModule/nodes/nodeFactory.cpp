@@ -94,7 +94,7 @@ void nodeFactory::getComponents(Node* node,
             auto positions = object["position"].GetArray();
             if (positions.Size() == 2) {
                 node->setPosition(positions[0].GetFloat(), positions[1].GetFloat());
-            } else if (positions.Size() == 2) {
+            } else if (positions.Size() == 3) {
                 node->setPosition3D(cocos2d::Vec3(positions[0].GetFloat(), positions[1].GetFloat(), positions[2].GetFloat()));
             } else {
                 LOG_ERROR(
