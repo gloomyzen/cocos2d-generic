@@ -2,6 +2,7 @@
 #include "common/coreModule/nodes/widgets/armatureNode.h"
 #include "common/coreModule/nodes/widgets/gridNode.h"
 #include "common/coreModule/nodes/widgets/soundButton.h"
+#include "common/coreModule/nodes/widgets/node3d.h"
 #include "common/debugModule/logManager.h"
 #include "dragonBones/cocos2dx/CCDragonBonesHeaders.h"
 #include "ui/CocosGUI.h"
@@ -61,6 +62,7 @@ nodeFactory::nodeFactory() {
         nodes["scrollView"] = []() { return ScrollView::create(); };
         nodes["soundButton"] = []() { return soundButton::create(); };
         nodes["grid"] = []() -> gridNode* { return gridNode::create(); };
+        nodes["node3d"] = []() -> node3d* { return node3d::create(); };
     }
 }
 
@@ -92,6 +94,8 @@ void nodeFactory::getComponents(Node* node,
             auto positions = object["position"].GetArray();
             if (positions.Size() == 2) {
                 node->setPosition(positions[0].GetFloat(), positions[1].GetFloat());
+            } else if (positions.Size() == 2) {
+                node->setPosition3D(cocos2d::Vec3(positions[0].GetFloat(), positions[1].GetFloat(), positions[2].GetFloat()));
             } else {
                 LOG_ERROR(
                     StringUtils::format("nodeFactory::getComponents: Component '%s' has wrong '%s' position keys!",
@@ -176,7 +180,7 @@ void nodeFactory::getComponents(Node* node,
                 node->setRotation3D(cocos2d::Vec3(rotation3d[0].GetFloat(), rotation3d[1].GetFloat(), rotation3d[2].GetFloat()));
             } else {
                 LOG_ERROR(
-                    StringUtils::format("nodeFactory::getComponents: Component '%s' has wrong '%s' position keys!",
+                    StringUtils::format("nodeFactory::getComponents: Component '%s' has wrong '%s' rotation3d keys!",
                                         componentName.c_str(),
                                         std::to_string(rotation3d.Size()).c_str()));
             }
