@@ -34,7 +34,7 @@ namespace common {
 
                 auto json = GET_JSON(pathNodes);
                 if (json.HasParseError() || !json.IsObject()) {
-                    LOG_ERROR("nodeProperties::loadProperty Json file '" + pathNodes + "' has erroes or not found!");
+                    LOG_ERROR("nodeProperties::loadProperty Json file '" + pathNodes + "' has errors or not found!");
                     return;
                 }
                 if (!json.HasMember("type") || !json.HasMember("name") || !json["type"].IsString()
