@@ -11,7 +11,8 @@ namespace common {
     namespace coreModule {
 
         class soundButton
-            : public nodeProperties<cocos2d::Sprite>
+            : public nodeProperties
+            , public cocos2d::Sprite
             , public common::coreModule::eventNode {
             enum class eSoundButtonStatus {
                 START_CLICK = 0,

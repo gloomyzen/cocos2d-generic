@@ -10,7 +10,9 @@
 namespace common {
     namespace coreModule {
 
-        class gridNode : public nodeProperties<cocos2d::Node> {
+        class gridNode
+            : public nodeProperties
+            , public cocos2d::Node {
           public:
             struct sGridCell {
                 cocos2d::Node* node = nullptr;
