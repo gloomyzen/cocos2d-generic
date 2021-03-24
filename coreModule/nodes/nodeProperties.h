@@ -15,6 +15,10 @@ namespace common::coreModule {
     template<typename T>
     class nodeProperties : public T {
       public:
+        ~nodeProperties() {
+            propertyData.EraseMember(propertyData.MemberBegin(), propertyData.MemberEnd());
+            pathProperties.clear();
+        }
         /***
          * Парсинг параметров из json файла
          * Полный парсинг нод и следом параметров каждой ноды
@@ -28,6 +32,8 @@ namespace common::coreModule {
                 LOG_ERROR("Node::loadProperty Node is null or node has no identifier!");
                 return;
             }
+            pathProperties = StringUtils::format("properties/nodeProperties/%s", path.c_str());
+            propertyData = GET_JSON(pathProperties);
             std::string pathNodes = "properties/nodes/" + path;
 
             auto json = GET_JSON(pathNodes);
@@ -56,17 +62,16 @@ namespace common::coreModule {
                 parseData(usedNode, json["child"].GetArray());
             }
 
-            parseComponents(usedNode, path, true);
+            parseComponents(usedNode, usedNode->getName());
         }
 
         /***
          * Парсинг параметров из json файла
          * Парсинг только параметров одной ноды
-         * @param path relative path to file
          * @param node Node instance
-         * @param recursive parse params for node and child
+         * @param name
          */
-        void loadComponent(const std::string& path, cocos2d::Node* node = nullptr, bool recursive = true) {
+        void loadComponent(cocos2d::Node* node = nullptr, const std::string& name = std::string()) {
             if (node == nullptr) {
                 node = this;
             }
@@ -74,37 +79,27 @@ namespace common::coreModule {
                 LOG_ERROR("Node::loadProperty Node has no identifier!");
                 return;
             }
-            parseComponents(node, path, recursive);
+            parseComponents(node, name);
+        }
+
+        void removeJsonData() {
+            propertyData.EraseMember(propertyData.MemberBegin(), propertyData.MemberEnd());
+            pathProperties.clear();
         }
 
       private:
-        // todo нужно переработать метод чтобы рекурсивно добавлять ноды и потомков
-        // сейчас есть баг что потомки с одинаковым именем не загружаются
-        void parseComponents(cocos2d::Node* node, const std::string& path, bool recursive = false) {
-            std::string pathProperties = StringUtils::format("properties/nodeProperties/%s", path.c_str());
-            auto propJson = GET_JSON(pathProperties);
 
-            if (propJson.HasParseError() || !propJson.IsObject()) {
+        void parseComponents(cocos2d::Node* node, const std::string& name = std::string()) {
+            if (propertyData.HasParseError() || !propertyData.IsObject()) {
                 LOG_ERROR(
                     StringUtils::format("nodeProperties::parseProperty Json file '%s' contains errors or not found!",
                                         pathProperties.c_str()));
                 return;
             }
-            bool found = false;
-            for (auto& propList : propJson.GetObjectJ()) {
-                auto nodeName = propList.name.GetString();
-                if (!recursive && nodeName != node->getName()) {
-                    continue;
-                } else if (!recursive && nodeName == node->getName()) {
-                    found = true;
-                }
-                if (!propJson[nodeName].IsObject()) {
-                    continue;
-                }
-                auto targetNode = node->findNode(nodeName);
-                if (targetNode == nullptr)
-                    continue;
-
+            auto nodeName = !name.empty() ? name : node->getName();
+            auto propJson = propertyData.GetObjectJ();
+            if (propJson.HasMember(nodeName.c_str()) && propJson[nodeName.c_str()].IsObject()) {
+                auto propObj = propJson[nodeName.c_str()].GetObjectJ();
                 for (const auto& component : componentPriorityList) {
                     if (component.empty()) {
                         LOG_ERROR(StringUtils::format(
@@ -112,70 +107,18 @@ namespace common::coreModule {
                             component.c_str()));
                         continue;
                     }
-                    const auto componentItr = propJson[nodeName].FindMember(component.c_str());
-                    if (componentItr != propJson[nodeName].MemberEnd()) {
+                    const auto componentItr = propObj.FindMember(component.c_str());
+                    if (componentItr != propObj.MemberEnd()) {
                         if (componentItr->value.IsObject()) {
-                            GET_NODE_FACTORY().getComponents(targetNode, component, componentItr->value.GetObjectJ());
+                            GET_NODE_FACTORY().getComponents(node, component, componentItr->value.GetObjectJ());
                         }
                     }
-                }
-
-                if (found && !recursive) {
-                    return;
-                }
-            }
-        }
-
-        void parseComponentsEx(cocos2d::Node* node, const std::string& path, bool recursive = false) {
-            if (GET_RESOLUTION_SETTING()->getCurrentSize() == nullptr
-                || GET_RESOLUTION_SETTING()->getCurrentSize()->getPath().empty()) {
-                return;
-            }
-            std::string resolutionPath = GET_RESOLUTION_SETTING()->getCurrentSize()->getPath();
-            std::string pathProperties =
-                StringUtils::format("%s/properties/nodeProperties/%s", resolutionPath.c_str(), path.c_str());
-            auto propJson = GET_JSON(pathProperties);
-
-            if (propJson.HasParseError() || !propJson.IsObject()) {
-                return;
-            }
-            bool found = false;
-            for (auto& propList : propJson.GetObjectJ()) {
-                auto nodeName = propList.name.GetString();
-                if (!recursive && nodeName != node->getName()) {
-                    continue;
-                } else if (!recursive && nodeName == node->getName()) {
-                    found = true;
-                }
-                if (!propJson[nodeName].IsObject()) {
-                    continue;
-                }
-                auto* targetNode = node->findNode(nodeName);
-                if (targetNode == nullptr)
-                    continue;
-
-                for (const auto& component : componentPriorityList) {
-                    if (component.empty()) {
-                        LOG_ERROR(StringUtils::format(
-                            "nodeProperties::parseProperty bad property '%s' in 'componentPriorityList'",
-                            component.c_str()));
-                        continue;
-                    }
-                    const auto componentItr = propJson[nodeName].FindMember(component.c_str());
-                    if (componentItr != propJson[nodeName].MemberEnd()) {
-                        if (componentItr->value.IsObject()) {
-                            GET_NODE_FACTORY().getComponents(targetNode, component, componentItr->value.GetObjectJ());
-                        }
-                    }
-                }
-
-                if (found && !recursive) {
-                    return;
                 }
             }
         }
 
         void parseData(cocos2d::Node* node, const rapidjson::GenericValue<rapidjson::UTF8<char>>::Array& array) {
+            parseComponents(node, node->getName());
             for (auto& item : array) {
                 if (item["type"].IsString() && item["name"].IsString()) {
                     auto childNode = GET_NODE_FACTORY().createNodeWithType(item["type"].GetString());
@@ -184,9 +127,14 @@ namespace common::coreModule {
                         parseData(childNode, item["child"].GetArray());
                     }
                     node->addChild(childNode);
+                    parseComponents(childNode, childNode->getName());
                 }
             }
         }
+
+        rapidjson::Document propertyData;
+        std::string pathProperties;
+
     };
 }// namespace common::coreModule
 
