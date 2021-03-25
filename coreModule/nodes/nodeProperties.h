@@ -33,6 +33,8 @@ namespace common::coreModule {
 
         void removeJsonData();
 
+        void loadJson(const std::string&);
+
       private:
 
         void parseComponents(cocos2d::Node* node, const std::string& name = std::string());
@@ -43,6 +45,9 @@ namespace common::coreModule {
         std::string pathProperties;
 
     };
+
+    template<typename T>
+    class nodeWithProperties : public T, public nodeProperties {};
 }// namespace common::coreModule
 
 #endif// COMMON_NODEPROPERTIES_H

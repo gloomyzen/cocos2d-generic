@@ -14,8 +14,8 @@ void nodeProperties::loadProperty(const std::string& path, cocos2d::Node* node) 
         LOG_ERROR("Node::loadProperty Node is null or node has no identifier!");
         return;
     }
-    pathProperties = StringUtils::format("properties/nodeProperties/%s", path.c_str());
-    propertyData = GET_JSON(pathProperties);
+    loadJson(path);
+
     std::string pathNodes = "properties/nodes/" + path;
 
     auto json = GET_JSON(pathNodes);
@@ -61,6 +61,11 @@ void nodeProperties::loadComponent(cocos2d::Node* node, const std::string& name)
 void nodeProperties::removeJsonData() {
     propertyData.EraseMember(propertyData.MemberBegin(), propertyData.MemberEnd());
     pathProperties.clear();
+}
+
+void nodeProperties::loadJson(const std::string& path) {
+    pathProperties = StringUtils::format("properties/nodeProperties/%s", path.c_str());
+    propertyData = GET_JSON(pathProperties);
 }
 
 void nodeProperties::parseComponents(cocos2d::Node* node, const std::string& name) {
