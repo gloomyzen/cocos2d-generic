@@ -148,7 +148,7 @@ namespace common {
             bool m_enabled = true;
             float default_width = 0.0f;
             /***
-             * Debug button properties
+             * Debug buttonNode properties
              */
             int debugBtnW = 65;
             int debugBtnH = 80;

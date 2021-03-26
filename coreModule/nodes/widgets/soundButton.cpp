@@ -58,9 +58,9 @@ void soundButton::initListener() {
         auto currentAction = bgNode->getActionByTag(static_cast<int>(soundButton::eSoundButtonStatus::START_CLICK));
         auto actionSeq = dynamic_cast<cocos2d::Sequence*>(currentAction);
         if (afterEvent == eventNode::eEventAction::COLLIDE && touchValid) {
-            auto clb = cocos2d::CallFunc::create([this, touch, event]() {
+            auto clb = cocos2d::CallFunc::create([this]() {
                 if (onTouch)
-                    onTouch(touch, event);
+                    onTouch();
             });
             if (actionSeq != nullptr && !actionSeq->isDone()) {
                 auto seq = cocos2d::Sequence::create(actionSeq, fadeOut, clb, nullptr);
@@ -106,7 +106,7 @@ eventNode::eEventAction soundButton::getTouchCollided(cocos2d::Touch* touch, coc
     }
     auto touchLocation = node->convertToNodeSpace(touch->getLocation());
     auto sprite = dynamic_cast<cocos2d::Sprite*>(node);
-    auto correctNode = eventNode::eEventAction::NO_MATCHING;
+    eventNode::eEventAction correctNode;
     if (sprite != nullptr
         && (sprite->getRenderMode() == RenderMode::QUAD_BATCHNODE || sprite->getRenderMode() == RenderMode::POLYGON)) {
         correctNode = sprite->getTextureRect().containsPoint(touchLocation) ? eventNode::eEventAction::COLLIDE

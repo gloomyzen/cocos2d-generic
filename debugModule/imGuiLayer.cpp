@@ -51,7 +51,7 @@ void imGuiLayer::_onStart() {
             /*if (nodeEditorOpened) {
                 CCIMGUI::getInstance()->addCallback([=](){
                     ImGui::Text("Hello, world!");
-                    // create button with Sprite, auto pushID / popID with texture id
+                    // create buttonNode with Sprite, auto pushID / popID with texture id
     //				CCIMGUI::getInstance()->imageButton(sp, ImVec2(0, 0));
                 }, "hello");
             } else {

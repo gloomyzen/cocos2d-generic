@@ -12,7 +12,7 @@ namespace common {
         class eventNode {
           public:
             enum class eEventAction { COLLIDE = 0, NO_MATCHING, COLLIDE_CHILD };
-            typedef std::function<void(cocos2d::Touch* touch, cocos2d::Event* event)> eventTouchClb;
+            typedef std::function<void()> eventTouchClb;
             eventNode() {}
             virtual ~eventNode() = default;
 

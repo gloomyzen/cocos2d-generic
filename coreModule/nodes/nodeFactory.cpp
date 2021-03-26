@@ -1,8 +1,9 @@
 #include "nodeFactory.h"
 #include "common/coreModule/nodes/widgets/armatureNode.h"
+#include "common/coreModule/nodes/widgets/buttonNode.h"
 #include "common/coreModule/nodes/widgets/gridNode.h"
-#include "common/coreModule/nodes/widgets/soundButton.h"
 #include "common/coreModule/nodes/widgets/node3d.h"
+#include "common/coreModule/nodes/widgets/soundButton.h"
 #include "common/debugModule/logManager.h"
 #include "dragonBones/cocos2dx/CCDragonBonesHeaders.h"
 #include "ui/CocosGUI.h"
@@ -12,7 +13,6 @@
 
 using namespace common::coreModule;
 using namespace cocos2d;
-using namespace cocos2d::ui;
 using namespace dragonBones;
 
 std::map<std::string, eNodeFactory> componentsMap = {
@@ -43,8 +43,8 @@ nodeFactory::nodeFactory() {
         nodes["sprite"] = []() -> Sprite* { return Sprite::create(); };
         nodes["sprite3d"] = []() -> Sprite3D* { return Sprite3D::create(); };
         nodes["label"] = []() -> Label* { return Label::create(); };
-        nodes["button"] = []() -> Button* { return Button::create(); };
-        nodes["layout"] = []() -> Layout* { return Layout::create(); };
+        nodes["buttonNode"] = []() -> buttonNode* { return buttonNode::create(); };
+        nodes["layout"] = []() -> ui::Layout* { return ui::Layout::create(); };
         nodes["layer"] = []() -> Layer* { return Layer::create(); };
         nodes["clippingNode"] = []() -> ClippingNode* {
             // todo need fix this
@@ -56,10 +56,10 @@ nodeFactory::nodeFactory() {
             clipper->setInverted(true);
             return clipper;
         };
-        nodes["scale9sprite"] = []() -> Scale9Sprite* { return Scale9Sprite::create(); };
+        nodes["scale9sprite"] = []() -> ui::Scale9Sprite* { return ui::Scale9Sprite::create(); };
         /// External types, in common
         nodes["dragonbones"] = []() { return new armatureNode(); };
-        nodes["scrollView"] = []() { return ScrollView::create(); };
+        nodes["scrollView"] = []() { return ui::ScrollView::create(); };
         nodes["soundButton"] = []() { return soundButton::create(); };
         nodes["grid"] = []() -> gridNode* { return gridNode::create(); };
         nodes["node3d"] = []() -> node3d* { return node3d::create(); };
@@ -284,28 +284,31 @@ void nodeFactory::getComponents(Node* node,
         }
     } break;
     case BUTTON_COMPONENT: {
-        if (auto button = dynamic_cast<Button*>(node)) {
-            std::string normalImg{};
-            std::string selectedImg{};
-            std::string disabledImg{};
-            if (object.HasMember("normalImage") && object["normalImage"].IsString()) {
-                normalImg = object["normalImage"].GetString();
-            }
-            if (object.HasMember("selectedImage") && object["selectedImage"].IsString()) {
-                selectedImg = object["selectedImage"].GetString();
-            }
-            if (object.HasMember("disabledImage") && object["disabledImage"].IsString()) {
-                disabledImg = object["disabledImage"].GetString();
-            }
-            if (!normalImg.empty()) {
-                button->init(
-                    normalImg, !selectedImg.empty() ? selectedImg : "", !disabledImg.empty() ? disabledImg : "");
-            }
-        } else {
-            LOG_ERROR(StringUtils::format("nodeFactory::getComponents: Component '%s' no has button node type!",
-                                          componentName.c_str()));
-        }
+        if (auto button = dynamic_cast<buttonNode*>(node)) {}
     } break;
+//    case BUTTON_COMPONENT: {
+//        if (auto buttonNode = dynamic_cast<ui::Button*>(node)) {
+//            std::string normalImg{};
+//            std::string selectedImg{};
+//            std::string disabledImg{};
+//            if (object.HasMember("normalImage") && object["normalImage"].IsString()) {
+//                normalImg = object["normalImage"].GetString();
+//            }
+//            if (object.HasMember("selectedImage") && object["selectedImage"].IsString()) {
+//                selectedImg = object["selectedImage"].GetString();
+//            }
+//            if (object.HasMember("disabledImage") && object["disabledImage"].IsString()) {
+//                disabledImg = object["disabledImage"].GetString();
+//            }
+//            if (!normalImg.empty()) {
+//                buttonNode->init(
+//                    normalImg, !selectedImg.empty() ? selectedImg : "", !disabledImg.empty() ? disabledImg : "");
+//            }
+//        } else {
+//            LOG_ERROR(StringUtils::format("nodeFactory::getComponents: Component '%s' no has buttonNode node type!",
+//                                          componentName.c_str()));
+//        }
+//    } break;
     case DRAGONBONES_COMPONENT: {
         if (auto dragonbones = dynamic_cast<armatureNode*>(node)) {
             if (object.HasMember("texFile") && object.HasMember("skeFile")) {
