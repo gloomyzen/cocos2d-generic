@@ -39,14 +39,14 @@ nodeFactory::nodeFactory() {
     if (!inited) {
         inited = true;
         /// Core types
-        nodes["node"] = [](){ return Node::create(); };
-        nodes["sprite"] = [](){ return Sprite::create(); };
-        nodes["sprite3d"] = [](){ return Sprite3D::create(); };
-        nodes["label"] = [](){ return Label::create(); };
-        nodes["buttonNode"] = [](){ return buttonNode::create(); };
-        nodes["layout"] = [](){ return ui::Layout::create(); };
-        nodes["layer"] = [](){ return Layer::create(); };
-        nodes["clippingNode"] = [](){
+        nodes["node"] = []() { return Node::create(); };
+        nodes["sprite"] = []() { return Sprite::create(); };
+        nodes["sprite3d"] = []() { return Sprite3D::create(); };
+        nodes["label"] = []() { return Label::create(); };
+        nodes["buttonNode"] = []() { return buttonNode::create(); };
+        nodes["layout"] = []() { return ui::Layout::create(); };
+        nodes["layer"] = []() { return Layer::create(); };
+        nodes["clippingNode"] = []() {
             // todo need fix this
             ClippingNode* clipper = ClippingNode::create();
             DrawNode* stencil = DrawNode::create();
@@ -61,8 +61,8 @@ nodeFactory::nodeFactory() {
         nodes["dragonbones"] = []() { return new armatureNode(); };
         nodes["scrollView"] = []() { return ui::ScrollView::create(); };
         nodes["soundButton"] = []() { return soundButton::create(); };
-        nodes["grid"] = [](){ return gridNode::create(); };
-        nodes["node3d"] = [](){ return node3d::create(); };
+        nodes["grid"] = []() { return gridNode::create(); };
+        nodes["node3d"] = []() { return node3d::create(); };
     }
 }
 
@@ -95,7 +95,8 @@ void nodeFactory::getComponents(Node* node,
             if (positions.Size() == 2) {
                 node->setPosition(positions[0].GetFloat(), positions[1].GetFloat());
             } else if (positions.Size() == 3) {
-                node->setPosition3D(cocos2d::Vec3(positions[0].GetFloat(), positions[1].GetFloat(), positions[2].GetFloat()));
+                node->setPosition3D(
+                    cocos2d::Vec3(positions[0].GetFloat(), positions[1].GetFloat(), positions[2].GetFloat()));
             } else {
                 LOG_ERROR(
                     StringUtils::format("nodeFactory::getComponents: Component '%s' has wrong '%s' position keys!",
@@ -177,7 +178,8 @@ void nodeFactory::getComponents(Node* node,
         if (object.HasMember("rotation3d")) {
             auto rotation3d = object["rotation3d"].GetArray();
             if (rotation3d.Size() == 3) {
-                node->setRotation3D(cocos2d::Vec3(rotation3d[0].GetFloat(), rotation3d[1].GetFloat(), rotation3d[2].GetFloat()));
+                node->setRotation3D(
+                    cocos2d::Vec3(rotation3d[0].GetFloat(), rotation3d[1].GetFloat(), rotation3d[2].GetFloat()));
             } else {
                 LOG_ERROR(
                     StringUtils::format("nodeFactory::getComponents: Component '%s' has wrong '%s' rotation3d keys!",
@@ -299,21 +301,15 @@ void nodeFactory::getComponents(Node* node,
     } break;
     case BUTTON_COMPONENT: {
         if (auto button = dynamic_cast<buttonNode*>(node)) {
-            std::string normalImg{};
-            std::string selectedImg{};
-            std::string disabledImg{};
+            button->init();
             if (object.HasMember("image") && object["image"].IsString()) {
-                normalImg = object["image"].GetString();
+                button->loadTextureNormal(object["image"].GetString());
             }
-            if (object.HasMember("selected") && object["selected"].IsString()) {
-                selectedImg = object["selected"].GetString();
+            if (object.HasMember("pressed") && object["pressed"].IsString()) {
+                button->loadTexturePressed(object["pressed"].GetString());
             }
             if (object.HasMember("disabled") && object["disabled"].IsString()) {
-                disabledImg = object["disabled"].GetString();
-            }
-            if (!normalImg.empty()) {
-                button->init(
-                    normalImg, !selectedImg.empty() ? selectedImg : "", !disabledImg.empty() ? disabledImg : "");
+                button->loadTextureDisabled(object["disabled"].GetString());
             }
         } else {
             LOG_ERROR(StringUtils::format("nodeFactory::getComponents: Component '%s' no has buttonNode node type!",
@@ -324,7 +320,7 @@ void nodeFactory::getComponents(Node* node,
         if (auto dragonbones = dynamic_cast<armatureNode*>(node)) {
             if (object.HasMember("texFile") && object.HasMember("skeFile")) {
                 if (usedArmature.find(object["name"].GetString()) == usedArmature.end()) {
-                    //todo check file exists
+                    // todo check file exists
                     CCFactory::getFactory()->loadTextureAtlasData(object["texFile"].GetString());
                     CCFactory::getFactory()->loadDragonBonesData(object["skeFile"].GetString());
                     usedArmature[object["name"].GetString()] = true;
@@ -346,14 +342,14 @@ void nodeFactory::getComponents(Node* node,
                         if (bone->getAnimation()->hasAnimation(object["animation"].GetString())) {
                             bone->getAnimation()->fadeIn(object["animation"].GetString(), fadeInTime, playTimes);
                         } else {
-                            LOG_ERROR(STRING_FORMAT("nodeFactory::getComponents: Can't find animation '%s'", object["animation"].GetString()));
+                            LOG_ERROR(STRING_FORMAT("nodeFactory::getComponents: Can't find animation '%s'",
+                                                    object["animation"].GetString()));
                         }
                     }
                     dragonbones->addChild(bone);
                 } else {
                     LOG_ERROR(StringUtils::format("nodeFactory::getComponents: Can't get any armature from factory!"));
                 }
-
             }
         } else {
             LOG_ERROR(StringUtils::format("nodeFactory::getComponents: Component '%s' no has DragonBones node type!",

@@ -24,6 +24,8 @@ namespace common::coreModule {
         ~buttonNode();
         CREATE_FUNC(buttonNode);
 
+        bool init() override;
+
         bool getAllowSpamTap() const { return allowSpamTap; }
         void setAllowSpamTap(bool value) { allowSpamTap = value; }
         bool getAllowSizeAction() const { return allowSizeAction; }

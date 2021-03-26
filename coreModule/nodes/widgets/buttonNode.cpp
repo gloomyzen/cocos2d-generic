@@ -72,7 +72,17 @@ void buttonNode::onPressStateChangedToPressed() {
     if (allowSizeAction)
         Button::onPressStateChangedToPressed();
 }
+
 void buttonNode::onPressStateChangedToDisabled() {
     if (allowSizeAction)
         Button::onPressStateChangedToDisabled();
+}
+
+bool buttonNode::init() {
+    auto init = Button::init();
+    if (_buttonNormalRenderer) removeProtectedChild(_buttonNormalRenderer, true);
+    if (_buttonClickedRenderer) removeProtectedChild(_buttonClickedRenderer, true);
+    if (_buttonDisabledRenderer) removeProtectedChild(_buttonDisabledRenderer, true);
+    Button::initRenderer();
+    return init;
 }
