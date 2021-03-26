@@ -29,7 +29,7 @@ void buttonNode::initListener() {
 
                defaultColor = getColor();
                auto nextColor = utilityModule::convertUtility::changeColorByPercent(defaultColor, 0.93);
-               auto clickAction = cocos2d::TintTo::create(0.1f, nextColor);
+               auto clickAction = cocos2d::TintTo::create(0.01f, nextColor);
                auto seq = cocos2d::Sequence::create(clickAction, nullptr);
                seq->setTag(static_cast<int>(buttonNode::eButtonStatus::START_CLICK));
                runAction(seq);

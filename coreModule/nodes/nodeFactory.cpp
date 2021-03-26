@@ -223,6 +223,20 @@ void nodeFactory::getComponents(Node* node,
                 } else {
                     sprite->initWithFile(imagePath);
                 }
+                if (object.HasMember("alphaMode") && object["alphaMode"].IsNumber()) {
+                    switch (object["alphaMode"].GetInt()) {
+                    case 1:
+                        sprite->setBlendFunc(BlendFunc::ADDITIVE);
+                    case 2:
+                        sprite->setBlendFunc(BlendFunc::ALPHA_PREMULTIPLIED);
+                    case 3:
+                        sprite->setBlendFunc(BlendFunc::ALPHA_NON_PREMULTIPLIED);
+                    case 4:
+                        sprite->setBlendFunc(BlendFunc::DISABLE);
+                    default:
+                        break;
+                    }
+                }
             } else {
                 LOG_ERROR(STRING_FORMAT("nodeFactory::getComponents: Component '%s' no has image path!",
                                         componentName.c_str()));
