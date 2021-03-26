@@ -35,13 +35,15 @@ void buttonNode::initListener() {
                runAction(seq);
            }
                break;
-           case ui::Widget::TouchEventType::ENDED: {
+           case ui::Widget::TouchEventType::ENDED:
+           case ui::Widget::TouchEventType::CANCELED:
+           {
                auto fadeOut = cocos2d::TintTo::create(0.1f, defaultColor);
 
                auto currentAction = getActionByTag(static_cast<int>(buttonNode::eButtonStatus::START_CLICK));
                auto actionSeq = dynamic_cast<cocos2d::Sequence*>(currentAction);
-               auto clb = cocos2d::CallFunc::create([this]() {
-                      if (onTouch)
+               auto clb = cocos2d::CallFunc::create([this, type]() {
+                      if (type == ui::Widget::TouchEventType::ENDED && onTouch)
                           onTouch();
                });
                if (actionSeq != nullptr && !actionSeq->isDone()) {
