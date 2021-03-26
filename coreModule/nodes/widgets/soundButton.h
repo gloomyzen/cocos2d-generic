@@ -3,47 +3,25 @@
 
 #include "cocos2d.h"
 #include "common/coreModule/nodes/nodeProperties.h"
+#include "common/coreModule/nodes/widgets/buttonNode.h"
 #include "common/coreModule/nodes/widgets/eventNode.h"
 #include <functional>
-#include <string>
+#include <utility>
 
-namespace common {
-    namespace coreModule {
+namespace common::coreModule {
 
-        class soundButton
-            : public nodeProperties
-            , public cocos2d::Sprite
-            , public common::coreModule::eventNode {
-            enum class eSoundButtonStatus {
-                START_CLICK = 0,
-                END_CLICK,
-            };
+    class soundButton : public common::coreModule::buttonNode {
+      public:
+        soundButton();
+        ~soundButton();
 
-          public:
-            soundButton();
-            ~soundButton() override;
-            CREATE_FUNC(soundButton);
+        void setSoundCallback(std::function<void()> value) { soundCallback = std::move(value); }
+        eventTouchClb getOnTouchBegan() override;
 
-            bool getAllowSpamTap() const { return allowSpamTap; }
-            void setAllowSpamTap(bool value) { allowSpamTap = value; }
-            void setSwallowTouches(bool);
+      protected:
+        std::function<void()> soundCallback = nullptr;
+    };
 
-          private:
-            eventNode::eEventAction getTouchCollided(cocos2d::Touch* touch, cocos2d::Node* node);
-            void initListener();
-            eventNode::eEventAction lastEvent = eventNode::eEventAction::NO_MATCHING;
-            std::function<void()> soundCallback = nullptr;
-            cocos2d::EventListenerTouchOneByOne* listener = nullptr;
-            bool allowSpamTap = false;
-
-          protected:
-            cocos2d::Node* bgNode = nullptr;
-            cocos2d::Vec2 firstTouchPos;
-            bool touchValid = true;
-            cocos2d::Color3B defaultColor;
-        };
-
-    }// namespace coreModule
-}// namespace common
+}// namespace common::coreModule
 
 #endif// COMMON_SOUNDBUTTON_H

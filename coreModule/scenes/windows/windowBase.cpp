@@ -16,7 +16,7 @@ windowBase::~windowBase() {
 void windowBase::initWindow() {
     this->setName("windowBase");
     loadProperty(STRING_FORMAT("windows/%s", this->getName().c_str()), dynamic_cast<Node*>(this));
-    setOnTouch([this]() {
+    setOnTouchEnded([this]() {
         if (handleMissClick) {
             closeWindow();
         }

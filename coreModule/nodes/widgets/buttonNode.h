@@ -18,6 +18,7 @@ namespace common::coreModule {
             START_CLICK = 0,
             END_CLICK,
         };
+
       public:
         buttonNode();
         ~buttonNode();
@@ -30,7 +31,6 @@ namespace common::coreModule {
 
       private:
         void initListener();
-        std::function<void()> soundCallback = nullptr;
         bool allowSpamTap = false;
         bool allowSizeAction = false;
 

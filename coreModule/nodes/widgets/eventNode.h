@@ -16,14 +16,17 @@ namespace common {
             eventNode() {}
             virtual ~eventNode() = default;
 
-            void setClickable(bool value) { clickable = value; }
-            bool isClickable() const { return clickable; }
-            void setOnTouch(eventTouchClb clb) { onTouch = std::move(clb); }
-            eventTouchClb getOnTouch() { return onTouch; }
+            virtual void setClickable(bool value) { clickable = value; }
+            virtual bool isClickable() const { return clickable; }
+            virtual void setOnTouchBegan(eventTouchClb clb) { touchBeganClb = std::move(clb); }
+            virtual eventTouchClb getOnTouchBegan() { return touchBeganClb; }
+            virtual void setOnTouchEnded(eventTouchClb clb) { touchEndedClb = std::move(clb); }
+            virtual eventTouchClb getOnTouchEnded() { return touchEndedClb; }
 
 
           protected:
-            eventTouchClb onTouch = nullptr;
+            eventTouchClb touchBeganClb = nullptr;
+            eventTouchClb touchEndedClb = nullptr;
             bool clickable = true;
         };
     }// namespace coreModule

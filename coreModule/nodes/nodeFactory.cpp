@@ -39,14 +39,14 @@ nodeFactory::nodeFactory() {
     if (!inited) {
         inited = true;
         /// Core types
-        nodes["node"] = []() -> Node* { return Node::create(); };
-        nodes["sprite"] = []() -> Sprite* { return Sprite::create(); };
-        nodes["sprite3d"] = []() -> Sprite3D* { return Sprite3D::create(); };
-        nodes["label"] = []() -> Label* { return Label::create(); };
-        nodes["buttonNode"] = []() -> buttonNode* { return buttonNode::create(); };
-        nodes["layout"] = []() -> ui::Layout* { return ui::Layout::create(); };
-        nodes["layer"] = []() -> Layer* { return Layer::create(); };
-        nodes["clippingNode"] = []() -> ClippingNode* {
+        nodes["node"] = [](){ return Node::create(); };
+        nodes["sprite"] = [](){ return Sprite::create(); };
+        nodes["sprite3d"] = [](){ return Sprite3D::create(); };
+        nodes["label"] = [](){ return Label::create(); };
+        nodes["buttonNode"] = [](){ return buttonNode::create(); };
+        nodes["layout"] = [](){ return ui::Layout::create(); };
+        nodes["layer"] = [](){ return Layer::create(); };
+        nodes["clippingNode"] = [](){
             // todo need fix this
             ClippingNode* clipper = ClippingNode::create();
             DrawNode* stencil = DrawNode::create();
@@ -61,8 +61,8 @@ nodeFactory::nodeFactory() {
         nodes["dragonbones"] = []() { return new armatureNode(); };
         nodes["scrollView"] = []() { return ui::ScrollView::create(); };
         nodes["soundButton"] = []() { return soundButton::create(); };
-        nodes["grid"] = []() -> gridNode* { return gridNode::create(); };
-        nodes["node3d"] = []() -> node3d* { return node3d::create(); };
+        nodes["grid"] = [](){ return gridNode::create(); };
+        nodes["node3d"] = [](){ return node3d::create(); };
     }
 }
 
