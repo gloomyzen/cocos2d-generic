@@ -284,31 +284,28 @@ void nodeFactory::getComponents(Node* node,
         }
     } break;
     case BUTTON_COMPONENT: {
-        if (auto button = dynamic_cast<buttonNode*>(node)) {}
+        if (auto button = dynamic_cast<buttonNode*>(node)) {
+            std::string normalImg{};
+            std::string selectedImg{};
+            std::string disabledImg{};
+            if (object.HasMember("image") && object["image"].IsString()) {
+                normalImg = object["image"].GetString();
+            }
+            if (object.HasMember("selected") && object["selected"].IsString()) {
+                selectedImg = object["selected"].GetString();
+            }
+            if (object.HasMember("disabled") && object["disabled"].IsString()) {
+                disabledImg = object["disabled"].GetString();
+            }
+            if (!normalImg.empty()) {
+                button->init(
+                    normalImg, !selectedImg.empty() ? selectedImg : "", !disabledImg.empty() ? disabledImg : "");
+            }
+        } else {
+            LOG_ERROR(StringUtils::format("nodeFactory::getComponents: Component '%s' no has buttonNode node type!",
+                                          componentName.c_str()));
+        }
     } break;
-//    case BUTTON_COMPONENT: {
-//        if (auto buttonNode = dynamic_cast<ui::Button*>(node)) {
-//            std::string normalImg{};
-//            std::string selectedImg{};
-//            std::string disabledImg{};
-//            if (object.HasMember("normalImage") && object["normalImage"].IsString()) {
-//                normalImg = object["normalImage"].GetString();
-//            }
-//            if (object.HasMember("selectedImage") && object["selectedImage"].IsString()) {
-//                selectedImg = object["selectedImage"].GetString();
-//            }
-//            if (object.HasMember("disabledImage") && object["disabledImage"].IsString()) {
-//                disabledImg = object["disabledImage"].GetString();
-//            }
-//            if (!normalImg.empty()) {
-//                buttonNode->init(
-//                    normalImg, !selectedImg.empty() ? selectedImg : "", !disabledImg.empty() ? disabledImg : "");
-//            }
-//        } else {
-//            LOG_ERROR(StringUtils::format("nodeFactory::getComponents: Component '%s' no has buttonNode node type!",
-//                                          componentName.c_str()));
-//        }
-//    } break;
     case DRAGONBONES_COMPONENT: {
         if (auto dragonbones = dynamic_cast<armatureNode*>(node)) {
             if (object.HasMember("texFile") && object.HasMember("skeFile")) {

@@ -25,14 +25,20 @@ namespace common::coreModule {
 
         bool getAllowSpamTap() const { return allowSpamTap; }
         void setAllowSpamTap(bool value) { allowSpamTap = value; }
+        bool getAllowSizeAction() const { return allowSizeAction; }
+        void setAllowSizeAction(bool value) { allowSizeAction = value; }
 
       private:
         void initListener();
         std::function<void()> soundCallback = nullptr;
         bool allowSpamTap = false;
+        bool allowSizeAction = false;
 
       protected:
         void adaptRenderers() override;
+        void onPressStateChangedToNormal() override;
+        void onPressStateChangedToPressed() override;
+        void onPressStateChangedToDisabled() override;
 
         cocos2d::Color3B defaultColor;
     };

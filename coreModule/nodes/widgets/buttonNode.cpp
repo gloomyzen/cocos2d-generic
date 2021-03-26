@@ -2,17 +2,17 @@
 #include "common/utilityModule/covertUtility.h"
 #include "editor-support/cocostudio/SimpleAudioEngine.h"
 #include <utility>
+#include "cocos-ext.h"
 
 using namespace common::coreModule;
 
 buttonNode::buttonNode() {
     soundCallback = []() { CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("sounds/click.wav"); };
     initListener();
+    setPressedActionEnabled(false);
 }
 
-buttonNode::~buttonNode() {
-    //this->getEventDispatcher()->removeEventListener(listener);
-}
+buttonNode::~buttonNode() {}
 
 void buttonNode::initListener() {
     addTouchEventListener([&](Ref* sender, Widget::TouchEventType type){
@@ -64,4 +64,16 @@ void buttonNode::initListener() {
 void buttonNode::adaptRenderers() {
     if (_buttonNormalRenderer)
         Button::adaptRenderers();
+}
+void buttonNode::onPressStateChangedToNormal() {
+    if (allowSizeAction)
+        Button::onPressStateChangedToNormal();
+}
+void buttonNode::onPressStateChangedToPressed() {
+    if (allowSizeAction)
+        Button::onPressStateChangedToPressed();
+}
+void buttonNode::onPressStateChangedToDisabled() {
+    if (allowSizeAction)
+        Button::onPressStateChangedToDisabled();
 }
