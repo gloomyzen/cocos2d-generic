@@ -35,6 +35,10 @@ namespace common::coreModule {
 
         void loadJson(const std::string&);
 
+        const rapidjson::Document& getPropertyData() {
+            return propertyData;
+        }
+
       private:
 
         void parseComponents(cocos2d::Node* node, const std::string& name = std::string());
