@@ -13,7 +13,7 @@ namespace common::coreModule {
     class soundButton : public common::coreModule::buttonNode {
       public:
         soundButton();
-        ~soundButton();
+        ~soundButton() override;
 
         void setSoundCallback(std::function<void()> value) { soundCallback = std::move(value); }
         eventTouchClb getOnTouchBegan() override;

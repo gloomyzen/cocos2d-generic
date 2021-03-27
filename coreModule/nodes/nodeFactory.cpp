@@ -301,15 +301,8 @@ void nodeFactory::getComponents(Node* node,
     } break;
     case BUTTON_COMPONENT: {
         if (auto button = dynamic_cast<buttonNode*>(node)) {
-            button->init();
             if (object.HasMember("image") && object["image"].IsString()) {
-                button->loadTextureNormal(object["image"].GetString());
-            }
-            if (object.HasMember("pressed") && object["pressed"].IsString()) {
-                button->loadTexturePressed(object["pressed"].GetString());
-            }
-            if (object.HasMember("disabled") && object["disabled"].IsString()) {
-                button->loadTextureDisabled(object["disabled"].GetString());
+                button->loadTexture(object["image"].GetString());
             }
         } else {
             LOG_ERROR(StringUtils::format("nodeFactory::getComponents: Component '%s' no has buttonNode node type!",

@@ -1,17 +1,17 @@
 #include "buttonNode.h"
-#include "cocos-ext.h"
 #include "common/utilityModule/covertUtility.h"
 
 using namespace common::coreModule;
 
 buttonNode::buttonNode() {
+    setFocusEnabled(false);
     initListener();
-    setPressedActionEnabled(false);
 }
 
-buttonNode::~buttonNode() {}
+buttonNode::~buttonNode() = default;
 
 void buttonNode::initListener() {
+    setTouchEnabled(true);
     addTouchEventListener([&](Ref* sender, Widget::TouchEventType type) {
         switch (type) {
         case ui::Widget::TouchEventType::BEGAN: {
@@ -26,6 +26,7 @@ void buttonNode::initListener() {
 
             defaultColor = getColor();
             auto nextColor = utilityModule::convertUtility::changeColorByPercent(defaultColor, 0.93);
+            setCascadeColorEnabled(true);
             auto clickAction = cocos2d::TintTo::create(0.01f, nextColor);
             auto seq = cocos2d::Sequence::create(clickAction, nullptr);
             seq->setTag(static_cast<int>(buttonNode::eButtonStatus::START_CLICK));
@@ -57,32 +58,16 @@ void buttonNode::initListener() {
         default:
             break;
         }
+        return true;
     });
 }
 
-void buttonNode::adaptRenderers() {
-    if (_buttonNormalRenderer)
-        Button::adaptRenderers();
-}
-void buttonNode::onPressStateChangedToNormal() {
-    if (allowSizeAction)
-        Button::onPressStateChangedToNormal();
-}
-void buttonNode::onPressStateChangedToPressed() {
-    if (allowSizeAction)
-        Button::onPressStateChangedToPressed();
-}
-
-void buttonNode::onPressStateChangedToDisabled() {
-    if (allowSizeAction)
-        Button::onPressStateChangedToDisabled();
-}
-
-bool buttonNode::init() {
-    auto init = Button::init();
-    if (_buttonNormalRenderer) removeProtectedChild(_buttonNormalRenderer, true);
-    if (_buttonClickedRenderer) removeProtectedChild(_buttonClickedRenderer, true);
-    if (_buttonDisabledRenderer) removeProtectedChild(_buttonDisabledRenderer, true);
-    Button::initRenderer();
-    return init;
+void buttonNode::loadTexture(const std::string& image) {
+    if (sprite == nullptr) {
+        sprite = cocos2d::Sprite::create();
+        sprite->setName("sprite");
+        addChild(sprite);
+    }
+    sprite->initWithFile(image);
+    sprite->setAnchorPoint(cocos2d::Vec2::ZERO);
 }

@@ -7,7 +7,7 @@ soundButton::soundButton() {
     soundCallback = []() { CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("sounds/click.wav"); };
 }
 
-soundButton::~soundButton() {}
+soundButton::~soundButton() = default;
 
 eventNode::eventTouchClb soundButton::getOnTouchBegan() {
     auto clb = [this]() {
