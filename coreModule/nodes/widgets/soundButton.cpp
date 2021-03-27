@@ -1,10 +1,11 @@
 #include "soundButton.h"
-#include "editor-support/cocostudio/SimpleAudioEngine.h"
 
 using namespace common::coreModule;
 
 soundButton::soundButton() {
-    soundCallback = []() { CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("sounds/click.wav"); };
+    soundCallback = []() {
+        CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("sounds/click.wav");
+    };
 }
 
 soundButton::~soundButton() = default;
