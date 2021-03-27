@@ -20,22 +20,22 @@ namespace common::audioModule {
         static audioEngine& getInstance();
         void cleanup();
 
-        unsigned int playEffect(const std::string& fileName,
+        void playEffect(const std::string& name,
                                 bool loop = false,
                                 float pitch = 1.0f,
                                 float pan = 0.0f,
                                 float gain = 1.0f);
-        void pauseEffect(unsigned int soundId);
+        void pauseEffect(const std::string& name);
         void pauseAllEffects();
-        void resumeEffect(unsigned int soundId);
+        void resumeEffect(const std::string& name);
         void resumeAllEffects();
-        void stopEffect(unsigned int soundId);
+        void stopEffect(const std::string& name);
         void stopAllEffects();
-        void preloadEffect(const std::string& filePath);
-        void unloadEffect(const char* filePath);
+        void preloadEffect(const std::string& name);
+        void unloadEffect(const std::string& name);
 
-        void preloadBackgroundMusic(const char* filePath);
-        void playBackgroundMusic(const char* filePath, bool loop = false);
+        void preloadBackgroundMusic(const char* name);
+        void playBackgroundMusic(const char* name, bool loop = false);
         void stopBackgroundMusic(bool releaseData = false);
         void pauseBackgroundMusic();
         void resumeBackgroundMusic();

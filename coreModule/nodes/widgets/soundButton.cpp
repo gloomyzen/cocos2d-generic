@@ -1,10 +1,11 @@
 #include "soundButton.h"
+#include "common/audioModule/audioEngine.h"
 
 using namespace common::coreModule;
 
 soundButton::soundButton() {
     soundCallback = []() {
-        CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("sounds/click.wav");
+        GET_AUDIO_ENGINE().playEffect("ui.click");
     };
 }
 
