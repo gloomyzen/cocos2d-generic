@@ -34,8 +34,8 @@ namespace common::audioModule {
         void preloadEffect(const std::string& name);
         void unloadEffect(const std::string& name);
 
-        void preloadBackgroundMusic(const char* name);
-        void playBackgroundMusic(const char* name, bool loop = false);
+        void preloadBackgroundMusic(const std::string& name);
+        void playBackgroundMusic(const std::string& name, bool loop = false);
         void stopBackgroundMusic(bool releaseData = false);
         void pauseBackgroundMusic();
         void resumeBackgroundMusic();
@@ -43,8 +43,8 @@ namespace common::audioModule {
         bool willPlayBackgroundMusic();
 
       private:
-        std::map<std::string, std::pair<std::string, unsigned int>> musics;// key, file, id
-        std::map<std::string, std::pair<std::string, unsigned int>> effects;// key, file, id
+        std::map<std::string, std::string> musics;// key, filePath
+        std::map<std::string, std::pair<std::string, unsigned int>> effects;// key, filePath, id
     };
 }// namespace common::audioModule
 

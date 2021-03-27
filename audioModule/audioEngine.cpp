@@ -24,8 +24,8 @@ audioEngine::audioEngine() {
         for (auto value = effectIt->value.MemberBegin(); value != effectIt->value.MemberEnd(); ++value) {
             if (value->name.IsString() && value->value.IsString()) {
                 auto path = std::string(AUDIO_ENGINE_SOUND_DIR) + value->value.GetString();
-                effects.insert({value->name.GetString(), { path.c_str(), AUDIO_ENGINE_INVALID_TAG } });
-                preloadEffect(path.c_str());
+                effects.insert({value->name.GetString(), { path, AUDIO_ENGINE_INVALID_TAG } });
+                preloadEffect(path);
             }
         }
     }
@@ -34,8 +34,8 @@ audioEngine::audioEngine() {
         for (auto value = musicIt->value.MemberBegin(); value != musicIt->value.MemberEnd(); ++value) {
             if (value->name.IsString() && value->value.IsString()) {
                 auto path = std::string(AUDIO_ENGINE_SOUND_DIR) + value->value.GetString();
-                musics.insert({value->name.GetString(), { path.c_str(), AUDIO_ENGINE_INVALID_TAG } });
-                preloadBackgroundMusic(path.c_str());
+                musics.insert({value->name.GetString(), path });
+                preloadBackgroundMusic(path);
             }
         }
     }
@@ -120,4 +120,38 @@ void audioEngine::unloadEffect(const std::string& name) {
         CocosDenshion::SimpleAudioEngine::getInstance()->unloadEffect(item->second.first.c_str());
         effects.erase(item);
     }
+}
+
+void audioEngine::preloadBackgroundMusic(const std::string& name) {
+    auto item = musics.find(name);
+    if (item != musics.end()) {
+        CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic(item->second.c_str());
+    }
+}
+
+void audioEngine::playBackgroundMusic(const std::string& name, bool loop) {
+    auto item = musics.find(name);
+    if (item != musics.end()) {
+        CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic(item->second.c_str(), loop);
+    }
+}
+
+void audioEngine::stopBackgroundMusic(bool releaseData) {
+    CocosDenshion::SimpleAudioEngine::getInstance()->stopBackgroundMusic(releaseData);
+}
+
+void audioEngine::pauseBackgroundMusic() {
+    CocosDenshion::SimpleAudioEngine::getInstance()->pauseBackgroundMusic();
+}
+
+void audioEngine::resumeBackgroundMusic() {
+    CocosDenshion::SimpleAudioEngine::getInstance()->resumeBackgroundMusic();
+}
+
+void audioEngine::rewindBackgroundMusic() {
+    CocosDenshion::SimpleAudioEngine::getInstance()->rewindBackgroundMusic();
+}
+
+bool audioEngine::willPlayBackgroundMusic() {
+    return CocosDenshion::SimpleAudioEngine::getInstance()->willPlayBackgroundMusic();
 }
