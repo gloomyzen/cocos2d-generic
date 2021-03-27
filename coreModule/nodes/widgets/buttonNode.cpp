@@ -64,9 +64,13 @@ void buttonNode::initListener() {
 
 void buttonNode::loadTexture(const std::string& image) {
     if (sprite == nullptr) {
-        sprite = cocos2d::Sprite::create();
-        sprite->setName("sprite");
-        addChild(sprite);
+        if (auto node = dynamic_cast<cocos2d::Sprite*>(findNode("buttonNode"))) {
+            sprite = node;
+        } else {
+            sprite = cocos2d::Sprite::create();
+            sprite->setName("buttonNode");
+            addChild(sprite);
+        }
     }
     sprite->initWithFile(image);
     sprite->setAnchorPoint(cocos2d::Vec2::ZERO);

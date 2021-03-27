@@ -236,6 +236,7 @@ void nodeFactory::getComponents(Node* node,
                     case 4:
                         sprite->setBlendFunc(BlendFunc::DISABLE);
                     default:
+                        sprite->setBlendFunc(BlendFunc::ALPHA_PREMULTIPLIED);
                         break;
                     }
                 }
