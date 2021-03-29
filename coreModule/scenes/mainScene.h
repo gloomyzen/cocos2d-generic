@@ -6,6 +6,7 @@
 #include "common/coreModule/scenes/windows/windowSystem.h"
 #include <string>
 #include <vector>
+#include "common/debugModule/imGuiLayer.h"
 
 namespace common {
     namespace coreModule {
@@ -24,11 +25,18 @@ namespace common {
 
             windowSystem* getWindowNode() { return windowViewer; }
 
+#ifdef DEBUG
+            common::debugModule::imGuiLayer* getImGuiLayer() { return imGuiLayer; }
+#endif
           private:
             void initTaskLoading(cocos2d::Layer* layer);
 
             std::vector<cocos2d::Node*> nodes{};
             windowSystem* windowViewer = nullptr;
+
+#ifdef DEBUG
+            common::debugModule::imGuiLayer* imGuiLayer = nullptr;
+#endif
         };
     }// namespace coreModule
 }// namespace common
