@@ -111,7 +111,9 @@ void imGuiLayer::_onStart() {
                     if (ImGui::Button("Editor")) {
                         nodeEditorOpened = !nodeEditorOpened;
                     }
-                    // todo
+                    for (const auto& item : debugModules) {
+                        if (item != nullptr) item();
+                    }
                     if (ImGui::Button("Close")) {
                         closeAll = !closeAll;
                     }
@@ -458,6 +460,14 @@ void imGuiLayer::debugToggleRow(cocos2d::Node* node) {
             node->setDebug(active);
         }
     }
+}
+
+void imGuiLayer::resetDebugModules() {
+    debugModules.clear();
+}
+
+void imGuiLayer::addDebugModules(std::function<void()> clb) {
+    debugModules.push_back(clb);
 }
 
 #endif// DEBUG

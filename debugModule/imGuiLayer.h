@@ -13,6 +13,7 @@
 #include <imgui_internal.h>
 #include <list>
 #include <vector>
+#include <functional>
 
 namespace common::debugModule {
     class imGuiLayer : public cocos2d::Layer {
@@ -27,11 +28,18 @@ namespace common::debugModule {
 
       public:
         imGuiLayer() {}
-        ~imGuiLayer() = default;
+        ~imGuiLayer() {
+            resetDebugModules();
+            classList.clear();
+        };
 
         CREATE_FUNC(imGuiLayer);
 
         bool init() override;
+
+        void resetDebugModules();
+
+        void addDebugModules(std::function<void()>);
 
       private:
         /// Debug data
@@ -57,6 +65,7 @@ namespace common::debugModule {
         int nodeEditorW = 430;
         int nodeEditorH = 450;
         Node* lastTarget = nullptr;
+        std::vector<std::function<void()>> debugModules;
     };
 }// namespace common::debugModule
 
