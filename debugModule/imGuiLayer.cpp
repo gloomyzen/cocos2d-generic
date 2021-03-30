@@ -206,6 +206,7 @@ ImRect imGuiLayer::renderPreferences(Node* node) {
         lastTarget = nullptr;
         return prefRect;
     }
+    ImGui::PushID(node->getName().c_str());
 
     ImGui::SetNextItemOpen(true, ImGuiCond_Once);
     if (ImGui::CollapsingHeader("General info")) {
@@ -368,6 +369,16 @@ ImRect imGuiLayer::renderPreferences(Node* node) {
             node->setColor(nodeColor);
         }
     }
+    if (auto light = dynamic_cast<cocos2d::DirectionLight*>(node)) {
+        if (ImGui::CollapsingHeader("DirectionLight component")) {
+            auto local = light->getDirection();
+            float changedLocal[3] = { local.x, local.y, local.z };
+            ImGui::DragFloat3("Direction", changedLocal, .01f, -1, 1);
+            if (changedLocal[0] != local.x || changedLocal[1] != local.y || changedLocal[2] != local.y) {
+                light->setDirection(cocos2d::Vec3(changedLocal[0], changedLocal[1], changedLocal[2]));
+            }
+        }
+    }
     if (ImGui::CollapsingHeader("Z-Order component")) {
         auto local = node->getLocalZOrder();
         int changedLocal = local;
@@ -447,6 +458,7 @@ ImRect imGuiLayer::renderPreferences(Node* node) {
         }
     }
 
+    ImGui::PopID();
 
     return prefRect;
 }

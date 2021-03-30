@@ -42,6 +42,9 @@ namespace common::audioModule {
         void rewindBackgroundMusic();
         bool willPlayBackgroundMusic();
 
+        std::map<std::string, std::string> getAllMusics() { return musics; }
+        std::map<std::string, std::pair<std::string, unsigned int>> getAllEffects() { return effects; }
+
       private:
         std::map<std::string, std::string> musics;// key, filePath
         std::map<std::string, std::pair<std::string, unsigned int>> effects;// key, filePath, id
