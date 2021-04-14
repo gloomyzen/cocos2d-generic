@@ -2,7 +2,7 @@
 #define COMMON_NODEFACTORY_H
 
 #include "cocos2d.h"
-#include "json/document.h"
+#include "rapidjson/document.h"
 #include <functional>
 #include <map>
 #include <string>

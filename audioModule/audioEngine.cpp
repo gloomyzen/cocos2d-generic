@@ -1,7 +1,7 @@
 #include "audioEngine.h"
 #include "editor-support/cocostudio/SimpleAudioEngine.h"
-#include "json/document.h"
-#include "json/ostreamwrapper.h"
+#include "rapidjson/document.h"
+#include "rapidjson/ostreamwrapper.h"
 #include "cocos2d.h"
 #include "common/debugModule/logManager.h"
 

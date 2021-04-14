@@ -1,11 +1,11 @@
 #ifndef COMMON_JSONLOADER_H
 #define COMMON_JSONLOADER_H
 
-#include "json/document.h"
-#include "json/istreamwrapper.h"
-#include "json/ostreamwrapper.h"
-#include "json/stringbuffer.h"
-#include "json/writer.h"
+#include "rapidjson/document.h"
+#include "rapidjson/istreamwrapper.h"
+#include "rapidjson/ostreamwrapper.h"
+#include "rapidjson/stringbuffer.h"
+#include "rapidjson/writer.h"
 #include <fstream>
 #include <string>
 
