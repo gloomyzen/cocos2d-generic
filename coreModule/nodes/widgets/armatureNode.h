@@ -2,7 +2,8 @@
 #define COMMON_ARMATUREHOLDERNODE_H
 
 #include "cocos2d.h"
-#include "dragonBones/cocos2dx/CCDragonBonesHeaders.h"
+#include "DragonBones/CCDragonBonesHeaders.h"
+#include "cocos-ext.h"
 #include <vector>
 #include <string>
 #include <functional>
@@ -27,7 +28,7 @@ namespace common {
 
             CREATE_FUNC(armatureNode);
 
-            void setDebug(bool value) override;
+//            void setDebug(bool value) override;
             void addChild(Node * child) override;
             void addChild(Node * child, int localZOrder) override;
             void addChild(Node* child, int localZOrder, int tag) override;

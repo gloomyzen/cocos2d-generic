@@ -1,5 +1,6 @@
 #include "armatureNode.h"
 #include "common/debugModule/logManager.h"
+#include "common/utilityModule/stringUtility.h"
 #include <map>
 
 using namespace common::coreModule;
@@ -16,10 +17,10 @@ static std::map<armatureNode::eArmatureState, const char*> statesMap = {
     { armatureNode::eArmatureState::SOUND_EVENT, dragonBones::EventObject::SOUND_EVENT }
 };
 
-void armatureNode::setDebug(bool value) {
-    Node::setDebug(value);
-    for (auto item : getChildren()) { item->setDebug(value); }
-}
+//void armatureNode::setDebug(bool value) {
+//    Node::setDebug(value);
+//    for (auto item : getChildren()) { item->setDebug(value); }
+//}
 
 dragonBones::CCArmatureDisplay* armatureNode::getArmatureNode() {
     if (boneNode) {

@@ -11,63 +11,26 @@
 #include <vector>
 #include <functional>
 
+#define STRING_FORMAT(string, ...) cocos2d::StringUtils::format(string, ##__VA_ARGS__)
+
 namespace common::utilityModule {
-    class stringUtility {
-      public:
-        static inline std::string ltrim(std::string s) {
-            s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char ch) { return !std::isspace(ch); }));
-            return s;
-        }
 
-        static inline std::string rtrim(std::string s) {
-            s.erase(std::find_if(s.rbegin(), s.rend(), [](unsigned char ch) { return !std::isspace(ch); }).base(),
-                    s.end());
-            return s;
-        }
+	std::string ltrim(std::string s);
 
-        static inline std::string trim(std::string s) { return ltrim(rtrim(std::move(s))); }
+	std::string rtrim(std::string s);
 
-        static std::wstring utf8_to_wstring(const std::string& str) {
-            std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
-            return conv.from_bytes(str);
-        }
+	std::string trim(std::string s);
 
-        static std::string wstring_to_utf8(const std::wstring& str) {
-            std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
-            return conv.to_bytes(str);
-        }
+	std::wstring utf8_to_wstring(const std::string& str);
 
-        static std::string capitalizeString(std::string line) {
-            for (auto it = line.begin(); it != line.end(); ++it) {
-                if (it == line.begin()) {
-                    *it = std::toupper(*it);
-                } else {
-                    *it = std::tolower(*it);
-                }
-            }
-            return line;
-        };
+	std::string wstring_to_utf8(const std::wstring& str);
 
-        static std::string toLowerString(std::string line) {
-            for (auto it = line.begin(); it != line.end(); ++it) { *it = std::tolower(*it); }
-            return line;
-        };
+	std::string capitalizeString(std::string line);
 
-        static std::vector<std::string> explodeString(const std::string& str, std::function<std::string(std::string)> clb = nullptr) {
-            std::vector<std::string> result;
-            std::stringstream ssitem(str);
-            while (ssitem.good()){
-                std::string line;
-                ssitem >> line;
-                if (clb) {
-                    line = clb(line);
-                }
-                result.push_back(line);
-            }
+	std::string toLowerString(std::string line);
 
-            return result;
-        }
-    };
+	std::vector<std::string> explodeString(const std::string& str, std::function<std::string(std::string)> clb = nullptr);
+
 }// namespace common::utilityModule
 
 #endif// COMMON_STRINGUTILITY_H
