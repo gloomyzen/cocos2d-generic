@@ -76,9 +76,9 @@ void nodeProperties::parseComponents(cocos2d::Node* node, const std::string& nam
         return;
     }
     auto nodeName = !name.empty() ? name : node->getName();
-    auto propJson = propertyData.GetObjectJ();
+    auto propJson = propertyData.GetObject();
     if (propJson.HasMember(nodeName.c_str()) && propJson[nodeName.c_str()].IsObject()) {
-        auto propObj = propJson[nodeName.c_str()].GetObjectJ();
+        auto propObj = propJson[nodeName.c_str()].GetObject();
         for (const auto& component : componentPriorityList) {
             if (component.empty()) {
                 LOG_ERROR(StringUtils::format(
@@ -89,7 +89,7 @@ void nodeProperties::parseComponents(cocos2d::Node* node, const std::string& nam
             const auto componentItr = propObj.FindMember(component.c_str());
             if (componentItr != propObj.MemberEnd()) {
                 if (componentItr->value.IsObject()) {
-                    GET_NODE_FACTORY().getComponents(node, component, componentItr->value.GetObjectJ());
+                    GET_NODE_FACTORY().getComponents(node, component, componentItr->value.GetObject());
                 }
             }
         }

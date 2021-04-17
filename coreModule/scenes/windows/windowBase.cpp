@@ -1,4 +1,5 @@
 #include "windowBase.h"
+#include "common/utilityModule/stringUtility.h"
 
 #include <utility>
 

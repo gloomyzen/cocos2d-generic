@@ -1,6 +1,7 @@
 #include "windowSystem.h"
 #include "common/coreModule/scenes/windows/windowBase.h"
 #include "common/debugModule/logManager.h"
+#include "common/utilityModule/stringUtility.h"
 
 using namespace common::coreModule;
 using namespace cocos2d;

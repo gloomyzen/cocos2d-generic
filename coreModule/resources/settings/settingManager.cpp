@@ -32,11 +32,11 @@ void settingManager::load() {
         return;
     }
 
-    for (auto it = doc.GetObjectJ().begin(); it != doc.GetObjectJ().end(); ++it) {
+    for (auto it = doc.GetObject().begin(); it != doc.GetObject().end(); ++it) {
         auto resName = it->name.GetString();
         auto currentResolution = new sDisplaySize();
         currentResolution->resolutionName = resName;
-        for (auto resIt = it->value.GetObjectJ().begin(); resIt != it->value.GetObjectJ().end(); ++resIt) {
+        for (auto resIt = it->value.GetObject().begin(); resIt != it->value.GetObject().end(); ++resIt) {
             if (!resIt->name.IsString()) {
                 continue;
             }

@@ -2,6 +2,7 @@
 #include "common/debugModule/logManager.h"
 #include "common/coreModule/gameManager.h"
 #include "common/coreModule/scenes/mainScene.h"
+#include "common/utilityModule/stringUtility.h"
 #include <map>
 
 using namespace common;
