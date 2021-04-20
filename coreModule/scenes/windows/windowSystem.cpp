@@ -2,15 +2,12 @@
 #include "common/coreModule/scenes/windows/windowBase.h"
 #include "common/debugModule/logManager.h"
 #include "common/utilityModule/stringUtility.h"
-#include "common/coreModule/nodes/components/pivotComponent.h"
 
 using namespace common::coreModule;
 using namespace cocos2d;
 
 windowSystem::windowSystem() {
     this->setName("windowViewer");
-	this->addComponent(new pivotComponent());
-	this->getComponent("pivotComponent");//todo wip
     this->setStretch(1.f, 1.f);
     this->setAnchorPoint({ 0.5f, 0.5f });
     this->setPivotPoint({ 0.5f, 0.5f });
