@@ -1,16 +1,11 @@
 #include "audioEngine.h"
+
+#include <utility>
 #include "cocos2d.h"
 #include "common/debugModule/logManager.h"
 #include "extensions/cocos-ext.h"
 #include "extensions/cocostudio/CocoStudio.h"
 #include "rapidjson/document.h"
-#include "rapidjson/ostreamwrapper.h"
-
-#define USE_AUDIO_ENGINE 1
-
-#if USE_AUDIO_ENGINE && USE_SIMPLE_AUDIO_ENGINE
-#error "Don't use AudioEngine and SimpleAudioEngine at the same time. Please just select one in your game!"
-#endif
 
 using namespace common::audioModule;
 
@@ -26,23 +21,13 @@ audioEngine::audioEngine() {
         LOG_ERROR("audioEngine::audioEngine: json parse error");
         return;
     }
-    auto effectIt = data.FindMember("effects");
+    auto effectIt = data.FindMember("sounds");
     if (effectIt != data.MemberEnd() && effectIt->value.IsObject()) {
         for (auto value = effectIt->value.MemberBegin(); value != effectIt->value.MemberEnd(); ++value) {
             if (value->name.IsString() && value->value.IsString()) {
                 auto path = std::string(AUDIO_ENGINE_SOUND_DIR) + value->value.GetString();
-                effects.insert({value->name.GetString(), { path, AUDIO_ENGINE_INVALID_TAG } });
-                preloadEffect(path);
-            }
-        }
-    }
-    auto musicIt = data.FindMember("musics");
-    if (musicIt != data.MemberEnd() && musicIt->value.IsObject()) {
-        for (auto value = musicIt->value.MemberBegin(); value != musicIt->value.MemberEnd(); ++value) {
-            if (value->name.IsString() && value->value.IsString()) {
-                auto path = std::string(AUDIO_ENGINE_SOUND_DIR) + value->value.GetString();
-                musics.insert({value->name.GetString(), path });
-                preloadBackgroundMusic(path);
+                sounds.insert({value->name.GetString(), { path, AUDIO_ENGINE_INVALID_TAG } });
+                preload(path);
             }
         }
     }
@@ -60,108 +45,77 @@ audioEngine& audioEngine::getInstance() {
 }
 
 void audioEngine::cleanup() {
-    musics.clear();
-    effects.clear();
+    sounds.clear();
     cocos2d::AudioEngine::end();
 }
 
-void audioEngine::playEffect(const std::string& name, bool loop, float volume, const cocos2d::AudioProfile *profile) {
-    auto item = effects.find(name);
-    if (item != effects.end()) {
+void audioEngine::play(const std::string& name, bool loop, float volume, const cocos2d::AudioProfile *profile) {
+    auto item = sounds.find(name);
+    if (item != sounds.end()) {
         auto id = cocos2d::AudioEngine::play2d(item->second.first, loop, volume, profile);
         if (id != AUDIO_ENGINE_INVALID_TAG) {
-            effects[name].second = id;
+            sounds[name].second = id;
         }
     }
 }
 
-void audioEngine::pauseEffect(const std::string& name) {
-    auto item = effects.find(name);
-    if (item != effects.end()) {
+void audioEngine::pause(const std::string& name) {
+    auto item = sounds.find(name);
+    if (item != sounds.end()) {
         if (item->second.second != AUDIO_ENGINE_INVALID_TAG) {
             cocos2d::AudioEngine::pause(item->second.second);
         }
     }
 }
 
-void audioEngine::pauseAllEffects() {
-    for (auto [key, item] : effects) {
-        cocos2d::AudioEngine::pause(item.second);
+void audioEngine::pauseAll() {
+    for (const auto& item : sounds) {
+        cocos2d::AudioEngine::pause(item.second.second);
     }
 }
 
-void audioEngine::resumeEffect(const std::string& name) {
-    auto item = effects.find(name);
-    if (item != effects.end()) {
+void audioEngine::resume(const std::string& name) {
+    auto item = sounds.find(name);
+    if (item != sounds.end()) {
         if (item->second.second != AUDIO_ENGINE_INVALID_TAG) {
             cocos2d::AudioEngine::resume(item->second.second);
         }
     }
 }
 
-void audioEngine::resumeAllEffects() {
-    CocosDenshion::SimpleAudioEngine::getInstance()->resumeAllEffects();
+void audioEngine::resumeAll() {
+    for (const auto& item : sounds) {
+        cocos2d::AudioEngine::resume(item.second.second);
+    }
 }
 
-void audioEngine::stopEffect(const std::string& name) {
-    auto item = effects.find(name);
-    if (item != effects.end()) {
+void audioEngine::stop(const std::string& name) {
+    auto item = sounds.find(name);
+    if (item != sounds.end()) {
         if (item->second.second != AUDIO_ENGINE_INVALID_TAG) {
-            CocosDenshion::SimpleAudioEngine::getInstance()->stopEffect(item->second.second);
+            cocos2d::AudioEngine::stop(item->second.second);
         }
-        effects[name].second = AUDIO_ENGINE_INVALID_TAG;
+        sounds[name].second = AUDIO_ENGINE_INVALID_TAG;
     }
 }
 
-void audioEngine::stopAllEffects() {
-    CocosDenshion::SimpleAudioEngine::getInstance()->stopAllEffects();
-}
-
-void audioEngine::preloadEffect(const std::string& name) {
-    auto item = effects.find(name);
-    if (item != effects.end()) {
-        CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect(item->second.first.c_str());
+void audioEngine::stopAll() {
+    for (const auto& item : sounds) {
+        cocos2d::AudioEngine::stop(item.second.second);
     }
 }
 
-void audioEngine::unloadEffect(const std::string& name) {
-    auto item = effects.find(name);
-    if (item != effects.end()) {
-        CocosDenshion::SimpleAudioEngine::getInstance()->unloadEffect(item->second.first.c_str());
-        effects.erase(item);
+void audioEngine::preload(const std::string& name, const std::function<void(bool)>& clb) {
+    auto item = sounds.find(name);
+    if (item != sounds.end()) {
+        cocos2d::AudioEngine::preload(item->second.first, clb);
     }
 }
 
-void audioEngine::preloadBackgroundMusic(const std::string& name) {
-    auto item = musics.find(name);
-    if (item != musics.end()) {
-        CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic(item->second.c_str());
+void audioEngine::unload(const std::string& name) {
+    auto item = sounds.find(name);
+    if (item != sounds.end()) {
+        cocos2d::AudioEngine::uncache(item->second.first);
+        sounds.erase(item);
     }
-}
-
-void audioEngine::playBackgroundMusic(const std::string& name, bool loop) {
-    auto item = musics.find(name);
-    if (item != musics.end()) {
-        CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic(item->second.c_str(), loop);
-    }
-}
-
-void audioEngine::stopBackgroundMusic(bool releaseData) {
-    CocosDenshion::SimpleAudioEngine::getInstance()->stopBackgroundMusic(releaseData);
-}
-
-void audioEngine::pauseBackgroundMusic() {
-    CocosDenshion::SimpleAudioEngine::getInstance()->pauseBackgroundMusic();
-}
-
-void audioEngine::resumeBackgroundMusic() {
-    CocosDenshion::SimpleAudioEngine::getInstance()->resumeBackgroundMusic();
-}
-
-void audioEngine::rewindBackgroundMusic() {
-    CocosDenshion::SimpleAudioEngine::getInstance()->rewindBackgroundMusic();
-}
-
-bool audioEngine::willPlayBackgroundMusic() {
-    return CocosDenshion::SimpleAudioEngine::getInstance()->willPlayBackgroundMusic();
 }

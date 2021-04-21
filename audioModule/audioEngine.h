@@ -21,30 +21,20 @@ namespace common::audioModule {
         static audioEngine& getInstance();
         void cleanup();
 
-        void playEffect(const std::string& filePath, bool loop = false, float volume = 1.0f, const cocos2d::AudioProfile *profile = nullptr);
-        void pauseEffect(const std::string& name);
-        void pauseAllEffects();
-        void resumeEffect(const std::string& name);
-        void resumeAllEffects();
-        void stopEffect(const std::string& name);
-        void stopAllEffects();
-        void preloadEffect(const std::string& name);
-        void unloadEffect(const std::string& name);
+        void play(const std::string& filePath, bool loop = false, float volume = 1.0f, const cocos2d::AudioProfile *profile = nullptr);
+        void pause(const std::string& name);
+        void pauseAll();
+        void resume(const std::string& name);
+        void resumeAll();
+        void stop(const std::string& name);
+        void stopAll();
+        void preload(const std::string& name, const std::function<void(bool isSuccess)>& clb = nullptr);
+        void unload(const std::string& name);
 
-        void preloadBackgroundMusic(const std::string& name);
-        void playBackgroundMusic(const std::string& name, bool loop = false);
-        void stopBackgroundMusic(bool releaseData = false);
-        void pauseBackgroundMusic();
-        void resumeBackgroundMusic();
-        void rewindBackgroundMusic();
-        bool willPlayBackgroundMusic();
-
-        std::map<std::string, std::string> getAllMusics() { return musics; }
-        std::map<std::string, std::pair<std::string, unsigned int>> getAllEffects() { return effects; }
+        std::map<std::string, std::pair<std::string, unsigned int>> getAll() { return sounds; }
 
       private:
-        std::map<std::string, std::string> musics;// key, filePath
-        std::map<std::string, std::pair<std::string, unsigned int>> effects;// key, filePath, id
+        std::map<std::string, std::pair<std::string, unsigned int>> sounds;// key, filePath, id
     };
 }// namespace common::audioModule
 

@@ -4,8 +4,7 @@
 using namespace common::coreModule;
 
 soundButton::soundButton() {
-    soundCallback = []() {
-        GET_AUDIO_ENGINE().playEffect("ui.click");
+    soundCallback = []() { GET_AUDIO_ENGINE().play("ui.click");
     };
 }
 
