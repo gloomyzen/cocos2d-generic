@@ -1,9 +1,9 @@
 #ifdef DEBUG
 #include "imGuiLayer.h"
+#include "ImGuiEXT/imgui/misc/cpp/imgui_stdlib.h"
 #include "common/coreModule/nodes/nodeProperties.h"
 #include "common/debugModule/logManager.h"
 #include "common/utilityModule/stringUtility.h"
-#include "ImGuiEXT/imgui/misc/cpp/imgui_stdlib.h"
 
 using namespace common;
 using namespace common::debugModule;
@@ -13,12 +13,6 @@ bool imGuiLayer::init() {
     if (!Layer::init()) {
         return false;
     }
-
-    // Resize (expand) window
-    static Size resourceSize(1280, 720);
-    auto director = Director::getInstance();
-    GLViewImpl* view = (GLViewImpl*)Director::getInstance()->getOpenGLView();
-    view->setWindowed(resourceSize.width, resourceSize.height);
 
     // General
     classList[typeid(cocos2d::Camera).name()] = "[Camera]";
@@ -82,17 +76,19 @@ bool imGuiLayer::init() {
     classList[typeid(dragonBones::CCArmatureDisplay).name()] = "[DBArmature]";
     classList[typeid(common::coreModule::armatureNode).name()] = "[DBHolder]";
 
-    _onStart();
+    setName("ImGUILayer");
+
+    // Resize (expand) window
+    auto director = Director::getInstance();
+    GLViewImpl* view = (GLViewImpl*)Director::getInstance()->getOpenGLView();
+    view->setWindowed(director->getVisibleSize().width, director->getVisibleSize().height);
+    cocos2d::extension::ImGuiEXT::getInstance()->addFont(FileUtils::getInstance()->fullPathForFilename("fonts/arial.ttf"));
+    cocos2d::extension::ImGuiEXT::getInstance()->addRenderLoop("#test", CC_CALLBACK_0(imGuiLayer::drawImgui, this), director->getRunningScene());
 
     return true;
 }
 
-void imGuiLayer::_onStart() {
-    setName("ImGUILayer");
-    //todo remove after testing
-//    auto layer = imGuiLayer::create();
-//    this->addChild(layer, INT_MAX, "ImGUILayer");
-
+void imGuiLayer::drawImgui() {
     // Buttons
     static bool closeAll = false;
     static bool debugOpened = false;
@@ -117,7 +113,8 @@ void imGuiLayer::_onStart() {
                 nodeEditorOpened = !nodeEditorOpened;
             }
             for (const auto& item : debugModules) {
-                if (item != nullptr) item();
+                if (item != nullptr)
+                    item();
             }
             if (ImGui::Button("Close")) {
                 closeAll = !closeAll;
@@ -477,12 +474,8 @@ void imGuiLayer::debugToggleRow(cocos2d::Node* node) {
     }
 }
 
-void imGuiLayer::resetDebugModules() {
-    debugModules.clear();
-}
+void imGuiLayer::resetDebugModules() { debugModules.clear(); }
 
-void imGuiLayer::addDebugModules(std::function<void()> clb) {
-    debugModules.push_back(clb);
-}
+void imGuiLayer::addDebugModules(std::function<void()> clb) { debugModules.push_back(clb); }
 
 #endif// DEBUG

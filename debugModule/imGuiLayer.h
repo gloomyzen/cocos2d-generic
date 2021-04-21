@@ -5,22 +5,19 @@
 
 #include "DragonBones/CCDragonBonesHeaders.h"
 #include "ImGuiEXT/CCImGuiEXT.h"
+#include "ImGuiEXT/imgui/imgui.h"
+#include "ImGuiEXT/imgui/imgui_internal.h"
 #include "cocos2d.h"
 #include "common/coreModule/nodes/widgets/armatureNode.h"
 #include "platform/CCPlatformConfig.h"
 #include "ui/CocosGUI.h"
-#include "ImGuiEXT/imgui/imgui.h"
-#include "ImGuiEXT/imgui/imgui_internal.h"
 #include <functional>
 #include <list>
 #include <vector>
-#include <functional>
 
 namespace common::debugModule {
     class imGuiLayer : public cocos2d::Layer {
       protected:
-        void _onStart();
-
         void update(float dt) override {
             if (!this->isVisible()) {
                 this->setVisible(true);
@@ -41,6 +38,8 @@ namespace common::debugModule {
         void resetDebugModules();
 
         void addDebugModules(std::function<void()>);
+
+        void drawImgui();
 
       private:
         /// Debug data
