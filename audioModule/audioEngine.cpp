@@ -1,9 +1,10 @@
 #include "audioEngine.h"
-#include "editor-support/cocostudio/SimpleAudioEngine.h"
-#include "rapidjson/document.h"
-#include "rapidjson/ostreamwrapper.h"
 #include "cocos2d.h"
 #include "common/debugModule/logManager.h"
+#include "extensions/cocos-ext.h"
+#include "extensions/cocostudio/CocoStudio.h"
+#include "rapidjson/document.h"
+#include "rapidjson/ostreamwrapper.h"
 
 #define USE_AUDIO_ENGINE 1
 
@@ -61,13 +62,13 @@ audioEngine& audioEngine::getInstance() {
 void audioEngine::cleanup() {
     musics.clear();
     effects.clear();
-    CocosDenshion::SimpleAudioEngine::getInstance()->end();
+    cocos2d::AudioEngine::end();
 }
 
-void audioEngine::playEffect(const std::string& name, bool loop, float pitch, float pan, float gain) {
+void audioEngine::playEffect(const std::string& name, bool loop, float volume, const cocos2d::AudioProfile *profile) {
     auto item = effects.find(name);
     if (item != effects.end()) {
-        auto id = CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(item->second.first.c_str(), loop, pitch, pan, gain);
+        auto id = cocos2d::AudioEngine::play2d(item->second.first, loop, volume, profile);
         if (id != AUDIO_ENGINE_INVALID_TAG) {
             effects[name].second = id;
         }
@@ -78,20 +79,22 @@ void audioEngine::pauseEffect(const std::string& name) {
     auto item = effects.find(name);
     if (item != effects.end()) {
         if (item->second.second != AUDIO_ENGINE_INVALID_TAG) {
-            CocosDenshion::SimpleAudioEngine::getInstance()->pauseEffect(item->second.second);
+            cocos2d::AudioEngine::pause(item->second.second);
         }
     }
 }
 
 void audioEngine::pauseAllEffects() {
-    CocosDenshion::SimpleAudioEngine::getInstance()->pauseAllEffects();
+    for (auto [key, item] : effects) {
+        cocos2d::AudioEngine::pause(item.second);
+    }
 }
 
 void audioEngine::resumeEffect(const std::string& name) {
     auto item = effects.find(name);
     if (item != effects.end()) {
         if (item->second.second != AUDIO_ENGINE_INVALID_TAG) {
-            CocosDenshion::SimpleAudioEngine::getInstance()->resumeEffect(item->second.second);
+            cocos2d::AudioEngine::resume(item->second.second);
         }
     }
 }

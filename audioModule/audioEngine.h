@@ -5,6 +5,7 @@
 #include <map>
 #include <string>
 #include <tuple>
+#include "cocos/audio/include/AudioEngine.h"
 
 #define GET_AUDIO_ENGINE() common::audioModule::audioEngine::getInstance()
 #define AUDIO_ENGINE_SOUND_DIR "sounds/"
@@ -20,11 +21,7 @@ namespace common::audioModule {
         static audioEngine& getInstance();
         void cleanup();
 
-        void playEffect(const std::string& name,
-                                bool loop = false,
-                                float pitch = 1.0f,
-                                float pan = 0.0f,
-                                float gain = 1.0f);
+        void playEffect(const std::string& filePath, bool loop = false, float volume = 1.0f, const cocos2d::AudioProfile *profile = nullptr);
         void pauseEffect(const std::string& name);
         void pauseAllEffects();
         void resumeEffect(const std::string& name);
