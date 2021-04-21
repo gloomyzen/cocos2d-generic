@@ -5,7 +5,8 @@
 #include "common/coreModule/nodes/widgets/node3d.h"
 #include "common/coreModule/nodes/widgets/soundButton.h"
 #include "common/debugModule/logManager.h"
-#include "dragonBones/cocos2dx/CCDragonBonesHeaders.h"
+#include "common/utilityModule/stringUtility.h"
+#include "DragonBones/CCDragonBonesHeaders.h"
 #include "ui/CocosGUI.h"
 #include <map>
 #include <string>
@@ -492,7 +493,7 @@ void nodeFactory::getComponents(Node* node,
                 sprite->initWithFile(imagePath);
             }
             if (object.HasMember("slice9") && object["slice9"].IsObject()) {
-                auto slice9 = object["slice9"].GetObjectJ();
+                auto slice9 = object["slice9"].GetObject();
                 if (slice9.HasMember("x") && slice9["x"].IsNumber()) {
                     sliceRect.origin.x = slice9["x"].GetFloat();
                 }
