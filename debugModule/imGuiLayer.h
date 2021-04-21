@@ -3,14 +3,15 @@
 
 #ifdef DEBUG
 
-#include "CCImGuiLayer.h"
+#include "DragonBones/CCDragonBonesHeaders.h"
+#include "ImGuiEXT/CCImGuiEXT.h"
 #include "cocos2d.h"
 #include "common/coreModule/nodes/widgets/armatureNode.h"
-#include "dragonBones/cocos2dx/CCDragonBonesHeaders.h"
+#include "platform/CCPlatformConfig.h"
 #include "ui/CocosGUI.h"
-#include <CCIMGUI.h>
-#include <imgui.h>
-#include <imgui_internal.h>
+#include "ImGuiEXT/imgui/imgui.h"
+#include "ImGuiEXT/imgui/imgui_internal.h"
+#include <functional>
 #include <list>
 #include <vector>
 #include <functional>

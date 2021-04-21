@@ -3,6 +3,7 @@
 #include "common/coreModule/resources/loaders/jsonLoader.h"
 #include "common/coreModule/resources/resourceManager.h"
 #include "common/debugModule/logManager.h"
+#include "common/utilityModule/stringUtility.h"
 
 using namespace common;
 using namespace common::profileModule;

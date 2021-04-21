@@ -31,7 +31,7 @@ namespace common::audioModule {
         void preload(const std::string& name, const std::function<void(bool isSuccess)>& clb = nullptr);
         void unload(const std::string& name);
 
-        std::map<std::string, std::pair<std::string, unsigned int>> getAll() { return sounds; }
+        std::map<std::string, std::pair<std::string, unsigned int>> getAllSounds() { return sounds; }
 
       private:
         std::map<std::string, std::pair<std::string, unsigned int>> sounds;// key, filePath, id

@@ -2,7 +2,8 @@
 #include "imGuiLayer.h"
 #include "common/coreModule/nodes/nodeProperties.h"
 #include "common/debugModule/logManager.h"
-#include <imgui/misc/cpp/imgui_stdlib.h>
+#include "common/utilityModule/stringUtility.h"
+#include "ImGuiEXT/imgui/misc/cpp/imgui_stdlib.h"
 
 using namespace common;
 using namespace common::debugModule;
@@ -12,6 +13,12 @@ bool imGuiLayer::init() {
     if (!Layer::init()) {
         return false;
     }
+
+    // Resize (expand) window
+    static Size resourceSize(1280, 720);
+    auto director = Director::getInstance();
+    GLViewImpl* view = (GLViewImpl*)Director::getInstance()->getOpenGLView();
+    view->setWindowed(resourceSize.width, resourceSize.height);
 
     // General
     classList[typeid(cocos2d::Camera).name()] = "[Camera]";
@@ -81,51 +88,47 @@ bool imGuiLayer::init() {
 }
 
 void imGuiLayer::_onStart() {
-    std::string layerName = "ImGUILayer";
-    auto order = INT_MAX;
-    auto layer = ImGuiLayer::create();
-    this->addChild(layer, order, layerName);
+    setName("ImGUILayer");
+    //todo remove after testing
+//    auto layer = imGuiLayer::create();
+//    this->addChild(layer, INT_MAX, "ImGUILayer");
 
     // Buttons
-    CCIMGUI::getInstance()->addCallback(
-        [this]() {
-            static bool closeAll = false;
-            static bool debugOpened = false;
-            static bool nodeEditorOpened = false;
-            auto text_size = ImGui::CalcTextSize("Debug");
-            default_width = text_size.x * 1.5f;
+    static bool closeAll = false;
+    static bool debugOpened = false;
+    static bool nodeEditorOpened = false;
+    auto text_size = ImGui::CalcTextSize("Debug");
+    default_width = text_size.x * 1.5f;
 
 
-            ImGui::SetNextWindowCollapsed(true, ImGuiCond_Once);
-            ImGui::SetNextWindowContentSize({ default_width, 0 });
+    ImGui::SetNextWindowCollapsed(true, ImGuiCond_Once);
+    ImGui::SetNextWindowContentSize({ default_width, 0 });
 
-            if (!closeAll
-                && ImGui::Begin("Debug",
-                                &m_enabled,
-                                ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoResize
-                                    | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_AlwaysAutoResize)) {
-                if (ImGui::Button("Debug")) {
-                    debugOpened = !debugOpened;
-                }
-                if (debugOpened) {
-                    if (ImGui::Button("Editor")) {
-                        nodeEditorOpened = !nodeEditorOpened;
-                    }
-                    for (const auto& item : debugModules) {
-                        if (item != nullptr) item();
-                    }
-                    if (ImGui::Button("Close")) {
-                        closeAll = !closeAll;
-                    }
-                }
-
-                ImGui::End();
+    if (!closeAll
+        && ImGui::Begin("Debug",
+                        &m_enabled,
+                        ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoResize
+                        | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_AlwaysAutoResize)) {
+        if (ImGui::Button("Debug")) {
+            debugOpened = !debugOpened;
+        }
+        if (debugOpened) {
+            if (ImGui::Button("Editor")) {
+                nodeEditorOpened = !nodeEditorOpened;
             }
+            for (const auto& item : debugModules) {
+                if (item != nullptr) item();
+            }
+            if (ImGui::Button("Close")) {
+                closeAll = !closeAll;
+            }
+        }
 
-            if (nodeEditorOpened)
-                showNodeEditor(&nodeEditorOpened);
-        },
-        "buttons");
+        ImGui::End();
+    }
+
+    if (nodeEditorOpened)
+        showNodeEditor(&nodeEditorOpened);
 }
 
 void imGuiLayer::showNodeEditor(bool* nodeEditorOpened) {
