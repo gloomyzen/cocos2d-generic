@@ -5,14 +5,15 @@
 #include "cocos2d.h"
 #include "common/coreModule/nodes/nodeProperties.h"
 #include "common/coreModule/nodes/widgets/eventNode.h"
+#include "common/coreModule/nodes/widgets/buttonBase.h"
 #include <functional>
 #include <string>
 
 namespace common::coreModule {
 
     class buttonNode
-        : public nodeProperties
-        , public cocos2d::ui::Widget
+        : public common::coreModule::nodeProperties
+        , public common::coreModule::buttonBase
         , public common::coreModule::eventNode {
         enum class eButtonStatus {
             START_CLICK = 0,
@@ -26,7 +27,6 @@ namespace common::coreModule {
 
         bool getAllowSpamTap() const { return allowSpamTap; }
         void setAllowSpamTap(bool value) { allowSpamTap = value; }
-        void loadTexture(const std::string&);
 
       private:
         void initListener();
@@ -34,7 +34,6 @@ namespace common::coreModule {
 
       protected:
         cocos2d::Color3B defaultColor;
-        cocos2d::Sprite* sprite = nullptr;
     };
 }// namespace common::coreModule
 

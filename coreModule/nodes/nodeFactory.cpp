@@ -1,5 +1,6 @@
 #include "nodeFactory.h"
 #include "common/coreModule/nodes/widgets/armatureNode.h"
+#include "common/coreModule/nodes/widgets/buttonBase.h"
 #include "common/coreModule/nodes/widgets/buttonNode.h"
 #include "common/coreModule/nodes/widgets/gridNode.h"
 #include "common/coreModule/nodes/widgets/node3d.h"
@@ -302,7 +303,7 @@ void nodeFactory::getComponents(Node* node,
         }
     } break;
     case BUTTON_COMPONENT: {
-        if (auto button = dynamic_cast<buttonNode*>(node)) {
+        if (auto button = dynamic_cast<buttonBase*>(node)) {
             if (object.HasMember("image") && object["image"].IsString()) {
                 button->loadTexture(object["image"].GetString());
             }
