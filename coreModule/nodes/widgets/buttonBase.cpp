@@ -14,9 +14,26 @@ void buttonBase::loadTexture(const std::string& image) {
             sprite = cocos2d::Sprite::create();
             sprite->setName("buttonNode");
             addChild(sprite);
+            sprite->setLocalZOrder(0);
         }
     }
     sprite->initWithFile(image);
     sprite->setAnchorPoint(cocos2d::Vec2::ZERO);
 }
 
+void buttonBase::setButtonBgSprite(cocos2d::Sprite* pSprite) {
+    std::int32_t pos = 0;
+    if (sprite == nullptr) {
+        if (auto node = dynamic_cast<cocos2d::Sprite*>(findNode("buttonNode"))) {
+            pos = node->getLocalZOrder();
+            node->removeFromParent();
+        }
+    } else {
+        pos = sprite->getLocalZOrder();
+        sprite->removeFromParent();
+    }
+    sprite = pSprite;
+    sprite->setName("buttonNode");
+    addChild(sprite);
+    sprite->setLocalZOrder(pos);
+}

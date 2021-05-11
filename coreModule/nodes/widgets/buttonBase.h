@@ -12,6 +12,7 @@ namespace common::coreModule {
         ~buttonBase() override;
 
         void loadTexture(const std::string&);
+        void setButtonBgSprite(cocos2d::Sprite*);
 
       private:
         cocos2d::Sprite* sprite = nullptr;
