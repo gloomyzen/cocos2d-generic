@@ -22,7 +22,7 @@ void buttonBase::loadTexture(const std::string& image) {
 }
 
 void buttonBase::setButtonBgSprite(cocos2d::Sprite* pSprite) {
-    std::int32_t pos = 0;
+    std::int32_t pos = -1;
     if (sprite == nullptr) {
         if (auto node = dynamic_cast<cocos2d::Sprite*>(findNode("buttonNode"))) {
             pos = node->getLocalZOrder();
