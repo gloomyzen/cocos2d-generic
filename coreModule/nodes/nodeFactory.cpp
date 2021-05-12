@@ -22,7 +22,6 @@ std::map<std::string, eNodeFactory> componentsMap = {
     { "spriteComponent", eNodeFactory::SPRITE_COMPONENT },
     { "animspriteComponent", eNodeFactory::ANIMSPRITE_COMPONENT },
     { "labelComponent", eNodeFactory::LABEL_COMPONENT },
-    { "buttonComponent", eNodeFactory::BUTTON_COMPONENT },
     { "dragonbonesComponent", eNodeFactory::DRAGONBONES_COMPONENT },
     { "colorComponent", eNodeFactory::COLOR_COMPONENT },
     { "scrollViewComponent", eNodeFactory::SCROLL_VIEW_COMPONENT },
@@ -201,7 +200,11 @@ void nodeFactory::getComponents(Node* node,
         }
     } break;
     case SPRITE_COMPONENT: {
-        if (auto sprite3d = dynamic_cast<Sprite3D*>(node)) {
+        if (auto button = dynamic_cast<buttonBase*>(node)) {
+            if (object.HasMember("image") && object["image"].IsString()) {
+                button->loadTexture(object["image"].GetString());
+            }
+        } else if (auto sprite3d = dynamic_cast<Sprite3D*>(node)) {
             if (object.HasMember("image") && object["image"].IsString()) {
                 sprite3d->initWithFile(object["image"].GetString());
                 sprite3d->setForce2DQueue(true);
@@ -253,6 +256,7 @@ void nodeFactory::getComponents(Node* node,
         }
     } break;
     case ANIMSPRITE_COMPONENT:
+        //todo
         break;
     case LABEL_COMPONENT: {
         if (auto label = dynamic_cast<Label*>(node)) {
@@ -299,16 +303,6 @@ void nodeFactory::getComponents(Node* node,
             }
         } else {
             LOG_ERROR(StringUtils::format("nodeFactory::getComponents: Component '%s' no has label node type!",
-                                          componentName.c_str()));
-        }
-    } break;
-    case BUTTON_COMPONENT: {
-        if (auto button = dynamic_cast<buttonBase*>(node)) {
-            if (object.HasMember("image") && object["image"].IsString()) {
-                button->loadTexture(object["image"].GetString());
-            }
-        } else {
-            LOG_ERROR(StringUtils::format("nodeFactory::getComponents: Component '%s' no has buttonNode node type!",
                                           componentName.c_str()));
         }
     } break;

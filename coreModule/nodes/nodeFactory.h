@@ -18,7 +18,6 @@ namespace common {
             SPRITE_COMPONENT,
             ANIMSPRITE_COMPONENT,
             LABEL_COMPONENT,
-            BUTTON_COMPONENT,
             DRAGONBONES_COMPONENT,
             COLOR_COMPONENT,
             SCROLL_VIEW_COMPONENT,
@@ -27,9 +26,8 @@ namespace common {
         };
 
         static const std::vector<std::string> componentPriorityList = {
-            { "buttonComponent" },      { "spriteComponent" },       { "labelComponent" },
-            { "dragonbonesComponent" }, { "scale9spriteComponent" }, { "transformComponent" },
-            { "colorComponent" },       { "scrollViewComponent" },   { "gridComponent" },
+            { "spriteComponent" },    { "labelComponent" }, { "dragonbonesComponent" }, { "scale9spriteComponent" },
+            { "transformComponent" }, { "colorComponent" }, { "scrollViewComponent" },  { "gridComponent" },
         };
 
         class nodeFactory {
