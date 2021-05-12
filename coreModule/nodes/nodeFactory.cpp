@@ -200,11 +200,7 @@ void nodeFactory::getComponents(Node* node,
         }
     } break;
     case SPRITE_COMPONENT: {
-        if (auto button = dynamic_cast<buttonBase*>(node)) {
-            if (object.HasMember("image") && object["image"].IsString()) {
-                button->loadTexture(object["image"].GetString());
-            }
-        } else if (auto sprite3d = dynamic_cast<Sprite3D*>(node)) {
+        if (auto sprite3d = dynamic_cast<Sprite3D*>(node)) {
             if (object.HasMember("image") && object["image"].IsString()) {
                 sprite3d->initWithFile(object["image"].GetString());
                 sprite3d->setForce2DQueue(true);
