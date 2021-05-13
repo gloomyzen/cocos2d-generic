@@ -14,6 +14,7 @@ namespace common::coreModule {
       public:
         soundButton();
         ~soundButton() override;
+        CREATE_FUNC(soundButton);
 
         void setSoundCallback(std::function<void()> value) { soundCallback = std::move(value); }
         eventTouchClb getOnTouchBegan() override;
