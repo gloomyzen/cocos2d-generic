@@ -29,6 +29,11 @@ namespace common::coreModule {
 
       public:
         enum class eWindowState { CLOSED = 0, OPENING, OPENED, CLOSING };
+        enum class eWindowAnim {
+            DEFAULT,
+            SCALE,
+            FADE,
+        };
 
         windowBase();
         explicit windowBase(std::string);
@@ -68,12 +73,15 @@ namespace common::coreModule {
         void closeWindow();
         bool isHandleMissClick() { return handleMissClick; }
         void setHandleMissClick(bool value) { handleMissClick = value; }
+        eWindowAnim getCloseAnim() { return closeAnim; }
+        void setCloseAnim(eWindowAnim anim) { closeAnim = anim; }
 
       private:
         void initWindow();
 
         std::string windowName;
         eWindowState currentState = eWindowState::CLOSED;
+        eWindowAnim closeAnim = eWindowAnim::DEFAULT;
         std::map<std::string, windowBaseData*> windowData;
         std::map<std::string, std::function<void()>> windowCallbacks;
         bool handleMissClick = true;
