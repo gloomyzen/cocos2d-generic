@@ -36,12 +36,18 @@ windowBase* windowSystem::requestWindow(const std::string& name, bool force) {
     });
     auto window = registeredWindowList[name]();
     window->setWindowName(name);
-    auto nodeFindResult = findNode(window->getName());
-    if ((force && findOpened == openedWindowList.end() && !nodeFindResult) || (openedWindowList.empty() && waitingWindowList.empty())) {
+    auto taskProcess = this->isScheduled(STRING_FORMAT("closeWindowTask_%s_%u", name.c_str(), this->_ID));
+    if ((force && findOpened == openedWindowList.end() && !taskProcess) || (openedWindowList.empty() && waitingWindowList.empty())) {
         openedWindowList.push_back(window);
-        addChild(window);
+        this->scheduleOnce(
+            [this, window](float) {
+                   addChild(window);
+                   return true;
+            },
+            0.f,
+            STRING_FORMAT("openWindow_%s", name.c_str()));
         return window;
-    } else if (findWaiting == waitingWindowList.end() && findOpened == openedWindowList.end() && nodeFindResult) {
+    } else if (findWaiting == waitingWindowList.end() && findOpened == openedWindowList.end()) {
         waitingWindowList.push_back(window);
         return window;
     }
@@ -52,18 +58,25 @@ bool windowSystem::closeWindow(const std::string& name) {
     auto find = std::find_if(openedWindowList.begin(), openedWindowList.end(), [name](windowBase* node) {
         return node->getWindowName() == name;
     });
-    auto taskName = STRING_FORMAT("closeWindowTask_%s", name.c_str());
+    auto taskName = STRING_FORMAT("closeWindowTask_%s_%u", name.c_str(), this->_ID);
     if (!this->isScheduled(taskName)) {
         this->scheduleOnce(
-            [this, find](float) {
+            [this, find, name](float) {
                    if (find != openedWindowList.end()) {
                        (*find)->removeFromParentAndCleanup(true);
                        openedWindowList.erase(find);
                    }
-                   if (!waitingWindowList.empty()) {
+                   auto taskName = STRING_FORMAT("openWindow_%s", name.c_str());
+                   if (!waitingWindowList.empty() && !this->isScheduled(taskName)) {
                        auto window = waitingWindowList.begin();
                        openedWindowList.push_back(*window);
-                       addChild(*window);
+                       this->scheduleOnce(
+                           [this, window](float) {
+                                  addChild(*window);
+                                  return true;
+                           },
+                           0.f,
+                           taskName);
                        waitingWindowList.erase(window);
                    }
                    return true;
