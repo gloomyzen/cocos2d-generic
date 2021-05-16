@@ -20,6 +20,9 @@ windowBase::~windowBase() {
 void windowBase::initWindow() {
     this->setName("windowBase");
     loadProperty(STRING_FORMAT("windows/%s", this->getName().c_str()), dynamic_cast<Node*>(this));
+    if (auto bgNode = dynamic_cast<cocos2d::Sprite*>(findNode("buttonNode"))) {
+        setButtonBgSprite(bgNode);
+    }
     setOnTouchEnded([this]() {
         if (handleMissClick) {
             closeWindow();

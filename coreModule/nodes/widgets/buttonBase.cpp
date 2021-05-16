@@ -34,6 +34,8 @@ void buttonBase::setButtonBgSprite(cocos2d::Sprite* pSprite) {
     }
     sprite = pSprite;
     sprite->setName("buttonNode");
-    addChild(sprite);
+    if (sprite->getParent() == nullptr) {
+        addChild(sprite);
+    }
     sprite->setLocalZOrder(pos);
 }
