@@ -42,6 +42,7 @@ namespace common::debugModule {
         void drawImgui();
 
       private:
+        void initEvents();
         /// Debug data
         void debugToggleRow(Node*);
         /// Node editor
@@ -50,7 +51,9 @@ namespace common::debugModule {
         ImRect renderTree(cocos2d::Vector<Node*> n);
         ImRect renderPreferences(Node*);
 
+        cocos2d::EventListenerKeyboard* keyboardListener = nullptr;
 
+        bool pickNodeEnabled = false;
         bool m_enabled = true;
         float default_width = 0.0f;
         /***
