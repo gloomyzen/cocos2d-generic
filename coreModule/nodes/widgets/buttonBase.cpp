@@ -19,6 +19,7 @@ void buttonBase::loadTexture(const std::string& image) {
     }
     sprite->initWithFile(image);
     sprite->setAnchorPoint(cocos2d::Vec2::ZERO);
+    setContentSize(sprite->getContentSize());
 }
 
 void buttonBase::setButtonBgSprite(cocos2d::Sprite* pSprite) {

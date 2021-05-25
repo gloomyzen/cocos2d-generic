@@ -89,6 +89,9 @@ void nodeFactory::getComponents(Node* node,
 
     eNodeFactory needle = componentsMap[componentName];
 
+    node->setCascadeOpacityEnabled(true);
+    node->setCascadeColorEnabled(true);
+
     switch (needle) {
     case TRANSFORM_COMPONENT: {
         if (object.HasMember("position")) {
