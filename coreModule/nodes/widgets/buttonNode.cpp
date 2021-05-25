@@ -1,5 +1,6 @@
 #include "buttonNode.h"
 #include "common/utilityModule/covertUtility.h"
+#include "common/utilityModule/stringUtility.h"
 
 using namespace common::coreModule;
 
@@ -26,21 +27,25 @@ void buttonNode::initListener() {
 
             defaultColor = getColor();
             auto nextColor = utilityModule::convertUtility::changeColorByPercent(defaultColor, 0.93);
-            setCascadeColorEnabled(true);
             auto clickAction = cocos2d::TintTo::create(0.01f, nextColor);
             auto seq = cocos2d::Sequence::create(clickAction, nullptr);
             seq->setTag(static_cast<int>(buttonNode::eButtonStatus::START_CLICK));
             runAction(seq);
+            moveTimes = 0;
+        } break;
+        case ui::Widget::TouchEventType::MOVED: {
+            ++moveTimes;
         } break;
         case ui::Widget::TouchEventType::ENDED:
         case ui::Widget::TouchEventType::CANCELED: {
+
             auto fadeOut = cocos2d::TintTo::create(0.1f, defaultColor);
 
             auto currentAction = getActionByTag(static_cast<int>(buttonNode::eButtonStatus::START_CLICK));
             auto actionSeq = dynamic_cast<cocos2d::Sequence*>(currentAction);
             auto clb = cocos2d::CallFunc::create([this, type]() {
                 if (auto fn = getOnTouchEnded()) {
-                    if (type == ui::Widget::TouchEventType::ENDED) {
+                    if (type == ui::Widget::TouchEventType::ENDED && moveTimes < 3) {
                         fn();
                     }
                 }

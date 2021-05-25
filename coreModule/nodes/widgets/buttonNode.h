@@ -34,6 +34,7 @@ namespace common::coreModule {
 
       protected:
         cocos2d::Color3B defaultColor;
+        int moveTimes;
     };
 }// namespace common::coreModule
 
