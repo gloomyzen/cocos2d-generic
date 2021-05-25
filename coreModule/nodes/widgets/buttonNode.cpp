@@ -45,7 +45,7 @@ void buttonNode::initListener() {
             auto actionSeq = dynamic_cast<cocos2d::Sequence*>(currentAction);
             auto clb = cocos2d::CallFunc::create([this, type]() {
                 if (auto fn = getOnTouchEnded()) {
-                    if (type == ui::Widget::TouchEventType::ENDED && moveTimes < 3) {
+                    if (type == ui::Widget::TouchEventType::ENDED && moveTimes < 8) {
                         fn();
                     }
                 }
