@@ -17,7 +17,7 @@ void buttonNode::initListener() {
         switch (type) {
         case ui::Widget::TouchEventType::BEGAN: {
             auto currentAction = getActionByTag(static_cast<int>(buttonNode::eButtonStatus::END_CLICK));
-            if (currentAction != nullptr && !getAllowSpamTap() && !currentAction->isDone()) {
+            if ((currentAction != nullptr && !getAllowSpamTap() && !currentAction->isDone()) || !getAllowClick()) {
                 return false;
             }
 
@@ -39,6 +39,10 @@ void buttonNode::initListener() {
         case ui::Widget::TouchEventType::ENDED:
         case ui::Widget::TouchEventType::CANCELED: {
 
+            if (!getAllowClick()) {
+                return false;
+            }
+
             auto fadeOut = cocos2d::TintTo::create(0.1f, defaultColor);
 
             auto currentAction = getActionByTag(static_cast<int>(buttonNode::eButtonStatus::START_CLICK));
@@ -59,6 +63,7 @@ void buttonNode::initListener() {
                 seq->setTag(static_cast<int>(buttonNode::eButtonStatus::END_CLICK));
                 runAction(seq);
             }
+            return true;
         } break;
         default:
             break;

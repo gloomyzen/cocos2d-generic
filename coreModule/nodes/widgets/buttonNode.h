@@ -4,8 +4,8 @@
 #include "cocos/ui/CocosGUI.h"
 #include "cocos2d.h"
 #include "common/coreModule/nodes/nodeProperties.h"
-#include "common/coreModule/nodes/widgets/eventNode.h"
 #include "common/coreModule/nodes/widgets/buttonBase.h"
+#include "common/coreModule/nodes/widgets/eventNode.h"
 #include <functional>
 #include <string>
 
@@ -20,19 +20,31 @@ namespace common::coreModule {
             END_CLICK,
         };
 
-      public:
+    public:
         buttonNode();
         ~buttonNode() override;
         CREATE_FUNC(buttonNode);
 
-        bool getAllowSpamTap() const { return allowSpamTap; }
-        void setAllowSpamTap(bool value) { allowSpamTap = value; }
+        bool getAllowSpamTap() const {
+            return allowSpamTap;
+        }
+        void setAllowSpamTap(bool value) {
+            allowSpamTap = value;
+        }
 
-      private:
+        bool getAllowClick() const {
+            return allowClick;
+        }
+        void setAllowClick(bool value) {
+            allowClick = value;
+        }
+
+    private:
         void initListener();
         bool allowSpamTap = false;
+        bool allowClick = true;
 
-      protected:
+    protected:
         cocos2d::Color3B defaultColor;
         int moveTimes;
     };

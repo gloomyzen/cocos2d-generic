@@ -1,19 +1,25 @@
 #include "windowBase.h"
-#include "common/utilityModule/stringUtility.h"
-#include "common/debugModule/logManager.h"
 #include "common/coreModule/scenes/windows/windowSystem.h"
+#include "common/debugModule/logManager.h"
+#include "common/utilityModule/stringUtility.h"
 
 #include <utility>
 
 using namespace common::coreModule;
 using namespace cocos2d;
 
-windowBase::windowBase() { initWindow(); }
-windowBase::windowBase(std::string name) : windowName(std::move(name)) { initWindow(); }
+windowBase::windowBase() {
+    initWindow();
+}
+windowBase::windowBase(std::string name) : windowName(std::move(name)) {
+    initWindow();
+}
 
 windowBase::~windowBase() {
     this->unscheduleAllCallbacks();
-    for (auto& item : windowData) { delete item.second; }
+    for (auto& item : windowData) {
+        delete item.second;
+    }
     windowData.clear();
 }
 
@@ -48,9 +54,9 @@ void windowBase::closeWindow() {
     auto closeClb = getCallback("safeClose");
     currentState = eWindowState::CLOSING;
     auto clb = cocos2d::CallFunc::create([this, closeClb]() {
-           if (closeClb)
-               closeClb();
-           GET_GAME_MANAGER().getWindowSystem()->closeWindow(getWindowName());
+        if (closeClb)
+            closeClb();
+        GET_GAME_MANAGER().getWindowSystem()->closeWindow(getWindowName());
     });
     setCascadeOpacityEnabled(true);
     switch (closeAnim) {
@@ -60,19 +66,16 @@ void windowBase::closeWindow() {
         auto spawn = Spawn::createWithTwoActions(scaleBy, fadeTo);
         auto seq = Sequence::create(spawn, clb, nullptr);
         runAction(seq);
-    }
-        break;
+    } break;
     case eWindowAnim::SCALE: {
         auto scaleBy = ScaleBy::create(0.08f, 0.8f);
         auto seq = Sequence::create(scaleBy, clb, nullptr);
         runAction(seq);
-    }
-        break;
+    } break;
     case eWindowAnim::FADE: {
         auto fadeTo = FadeTo::create(0.08f, 0.0f);
         auto seq = Sequence::create(fadeTo, clb, nullptr);
         runAction(seq);
-    }
-        break;
+    } break;
     }
 }
