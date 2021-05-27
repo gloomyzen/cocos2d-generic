@@ -36,8 +36,7 @@ windowBase* windowSystem::requestWindow(const std::string& name, bool force) {
     });
     auto window = registeredWindowList[name]();
     window->setWindowName(name);
-    auto taskProcess = this->isScheduled(STRING_FORMAT("closeWindowTask_%s_%u", name.c_str(), this->_ID));
-    if ((force && findOpened == openedWindowList.end() && !taskProcess) || (openedWindowList.empty() && waitingWindowList.empty())) {
+    if ((force && findOpened == openedWindowList.end()) || (openedWindowList.empty() && waitingWindowList.empty())) {
         openedWindowList.push_back(window);
         this->scheduleOnce(
             [this, window](float) {

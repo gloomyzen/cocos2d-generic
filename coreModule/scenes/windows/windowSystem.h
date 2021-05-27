@@ -24,6 +24,7 @@ namespace common::coreModule {
         std::map<std::string, std::function<windowBase*()>> registeredWindowList;
         std::vector<windowBase*> openedWindowList;
         std::vector<windowBase*> waitingWindowList;
+        std::string lastTask;
     };
 }// namespace common::coreModule
 
