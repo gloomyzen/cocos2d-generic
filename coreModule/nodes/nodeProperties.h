@@ -39,6 +39,23 @@ namespace common::coreModule {
             return propertyData;
         }
 
+        bool hasPropertyObject(const std::string& name) {
+            if (propertyData.HasParseError() || !propertyData.IsObject()) {
+                return false;
+            }
+            return propertyData.HasMember(name.c_str());
+        }
+
+        rapidjson::GenericValue<rapidjson::UTF8<char>>::Object getPropertyObject(const std::string& name) {
+            if (!hasPropertyObject(name)) {
+                rapidjson::Document document{};
+                document.SetObject();
+                return document.GetObject();
+            }
+            auto obj = propertyData.FindMember(name.c_str());
+            return obj->value.GetObject();
+        }
+
       private:
 
         void parseComponents(cocos2d::Node* node, const std::string& name = std::string());

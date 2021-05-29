@@ -3,8 +3,7 @@
 using namespace common::coreModule;
 
 nodeProperties::~nodeProperties() {
-    propertyData.EraseMember(propertyData.MemberBegin(), propertyData.MemberEnd());
-    pathProperties.clear();
+    removeJsonData();
 }
 
 void nodeProperties::loadProperty(const std::string& path, cocos2d::Node* node) {
