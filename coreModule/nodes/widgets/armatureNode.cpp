@@ -17,11 +17,6 @@ static std::map<armatureNode::eArmatureState, const char*> statesMap = {
     { armatureNode::eArmatureState::SOUND_EVENT, dragonBones::EventObject::SOUND_EVENT }
 };
 
-//void armatureNode::setDebug(bool value) {
-//    Node::setDebug(value);
-//    for (auto item : getChildren()) { item->setDebug(value); }
-//}
-
 dragonBones::CCArmatureDisplay* armatureNode::getArmatureNode() {
     if (boneNode) {
         return boneNode;
@@ -75,7 +70,8 @@ void armatureNode::addChild(cocos2d::Node* child, int localZOrder, const std::st
  * Example usage:
  * node->setAnimationCallback(armatureNode::eArmatureState::COMPLETE, [](auto){});
  */
-void armatureNode::setAnimationCallback(armatureNode::eArmatureState state, std::function<void(cocos2d::EventCustom*)> clb) {
+void armatureNode::setAnimationCallback(armatureNode::eArmatureState state,
+                                        std::function<void(cocos2d::EventCustom*)> clb) {
     if (auto node = getArmatureNode()) {
         if (auto eventType = getEventType(state)) {
             setEventsEnabled(true);
@@ -96,7 +92,9 @@ void armatureNode::removeAnimationCallback(armatureNode::eArmatureState state) {
     }
 }
 
-bool armatureNode::isEventsEnable() const { return handleEvents; }
+bool armatureNode::isEventsEnable() const {
+    return handleEvents;
+}
 
 void armatureNode::setEventsEnabled(bool value) {
     if (auto node = getArmatureNode()) {
@@ -120,19 +118,22 @@ const char* armatureNode::getEventType(armatureNode::eArmatureState state) {
  * node->setCustomAnimationCallback("eventAttack", [](auto){});
  * "eventAttack" is custom event from dragonbones timeline
  */
-void armatureNode::setCustomAnimationCallback(const std::string& eventName, const std::function<void(cocos2d::EventCustom*)>& clb) {
+void armatureNode::setCustomAnimationCallback(const std::string& eventName,
+                                              const std::function<void(cocos2d::EventCustom*)>& clb) {
     if (auto node = getArmatureNode()) {
         setEventsEnabled(true);
         customCallbacksMap[eventName] = clb;
-        node->getEventDispatcher()->addCustomEventListener(dragonBones::EventObject::FRAME_EVENT, [this](cocos2d::EventCustom* event) {
-               if (auto data = static_cast<dragonBones::EventObject*>(event->getUserData())) {
-                   auto find = customCallbacksMap.find(data->name);
-                   if (find != customCallbacksMap.end()) {
-                       LOG_INFO(STRING_FORMAT("Node %s, founded event: %s, start callback", getName().c_str(), data->name.c_str()));
-                       find->second(event);
-                   }
-               }
-        });
+        node->getEventDispatcher()->addCustomEventListener(
+            dragonBones::EventObject::FRAME_EVENT, [this](cocos2d::EventCustom* event) {
+                if (auto data = static_cast<dragonBones::EventObject*>(event->getUserData())) {
+                    auto find = customCallbacksMap.find(data->name);
+                    if (find != customCallbacksMap.end()) {
+                        LOG_INFO(STRING_FORMAT(
+                            "Node %s, founded event: %s, start callback", getName().c_str(), data->name.c_str()));
+                        find->second(event);
+                    }
+                }
+            });
     } else {
         LOG_ERROR("armatureNode::setCustomAnimationCallback: bones not found");
     }
