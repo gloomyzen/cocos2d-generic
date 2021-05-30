@@ -472,10 +472,25 @@ ImRect imGuiLayer::renderPreferences(Node* node) {
                         ImGui::Combo("Skins", &itemCurrent, items, IM_ARRAYSIZE(items));
                     }
                 }
-                //todo get skeleton scale
-//                skeleton->getScaleX()
-                //todo print list of slots
-//                skeleton->getSlots()
+                {
+                    //skeleton scale section
+                    float skeletonScale[2] = { skeleton->getScaleX(), skeleton->getScaleY() };
+                    ImGui::DragFloat2("Skeleton scale", skeletonScale, .01f, -1, 1);
+                    if (skeletonScale[0] != skeleton->getScaleX() || skeletonScale[1] != skeleton->getScaleY()) {
+                        skeleton->setScaleX(skeletonScale[0]);
+                        skeleton->setScaleY(skeletonScale[1]);
+                    }
+                }
+                {
+                    //skeleton slots section
+                    auto slots = skeleton->getSlots();
+                    const char* items[slots.size()];
+                    int itemCurrent = 1;
+                    for (auto i = 0; i < slots.size(); ++i) {
+                        items[i] = slots[i]->getData().getName().buffer();
+                    }
+                    ImGui::Combo("Slots", &itemCurrent, items, IM_ARRAYSIZE(items));
+                }
             }
         }
     }
