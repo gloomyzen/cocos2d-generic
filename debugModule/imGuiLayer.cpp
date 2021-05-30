@@ -492,6 +492,42 @@ ImRect imGuiLayer::renderPreferences(Node* node) {
                     ImGui::Combo("Slots", &itemCurrent, items, IM_ARRAYSIZE(items));
                 }
             }
+            {
+                //debug bones section
+                auto debugBones = spine->getDebugBonesEnabled();
+                auto tempDebugBones = debugBones;
+                ImGui::Checkbox("Bones debug", &debugBones);
+                if (tempDebugBones != debugBones) {
+                    spine->setDebugBonesEnabled(debugBones);
+                }
+            }
+            {
+                //debug bounding rect section
+                auto debugBones = spine->getDebugBoundingRectEnabled();
+                auto tempDebugBones = debugBones;
+                ImGui::Checkbox("BoundingRect debug", &debugBones);
+                if (tempDebugBones != debugBones) {
+                    spine->setDebugBoundingRectEnabled(debugBones);
+                }
+            }
+            {
+                //debug Meshes section
+                auto debugBones = spine->getDebugMeshesEnabled();
+                auto tempDebugBones = debugBones;
+                ImGui::Checkbox("Meshes debug", &debugBones);
+                if (tempDebugBones != debugBones) {
+                    spine->setDebugMeshesEnabled(debugBones);
+                }
+            }
+            {
+                //debug Slots section
+                auto debugBones = spine->getDebugSlotsEnabled();
+                auto tempDebugBones = debugBones;
+                ImGui::Checkbox("Slots debug", &debugBones);
+                if (tempDebugBones != debugBones) {
+                    spine->setDebugSlotsEnabled(debugBones);
+                }
+            }
         }
     }
     if (auto labelNode = dynamic_cast<cocos2d::Label*>(node)) {
