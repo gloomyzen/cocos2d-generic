@@ -432,28 +432,45 @@ ImRect imGuiLayer::renderPreferences(Node* node) {
         if (ImGui::CollapsingHeader("Spine component")) {
             if (auto skeleton = spine->getSkeleton()) {
                 if (auto data = skeleton->getData()) {
-                    // animation sections
-                    auto animations = data->getAnimations();
-                    std::string lastAnimation;
-                    if (auto track = spine->getState()->getCurrent(1)) {
-                        lastAnimation = track->getAnimation()->getName().buffer();
-                    }
-                    const char* items[animations.size()];
-                    int itemCurrent = 1;
-                    for (auto i = 0; i < animations.size(); ++i) {
-                        items[i] = animations[i]->getName().buffer();
-                        if (lastAnimation == items[i]) {
-                            itemCurrent = i;
+                    {
+                        // animation sections
+                        auto isLoop = false;
+                        auto animations = data->getAnimations();
+                        std::string lastAnimation;
+                        if (auto track = spine->getState()->getCurrent(1)) {
+                            lastAnimation = track->getAnimation()->getName().buffer();
+                            isLoop = track->getLoop();
+                            auto tempLoop = isLoop;
+                            ImGui::Checkbox("Loop animation", &isLoop);
+                            if (tempLoop != isLoop) {
+                                track->setLoop(isLoop);
+                            }
+                        }
+                        const char* items[animations.size()];
+                        int itemCurrent = 1;
+                        for (auto i = 0; i < animations.size(); ++i) {
+                            items[i] = animations[i]->getName().buffer();
+                            if (lastAnimation == items[i]) {
+                                itemCurrent = i;
+                            }
+                        }
+                        int tempItem = itemCurrent;
+                        ImGui::Combo("Animation", &itemCurrent, items, IM_ARRAYSIZE(items));
+                        if (tempItem != itemCurrent) {
+                            spine->setAnimation(1, std::string(items[itemCurrent]), isLoop);
                         }
                     }
-                    int tempItem = itemCurrent;
-                    ImGui::Combo("Animation", &itemCurrent, items, IM_ARRAYSIZE(items));
-                    if (tempItem != itemCurrent) {
-                        spine->setAnimation(1, std::string(items[itemCurrent]), true);
+
+                    {
+                        //skins section
+                        auto skins = data->getSkins();
+                        const char* items[skins.size()];
+                        int itemCurrent = 1;
+                        for (auto i = 0; i < skins.size(); ++i) {
+                            items[i] = skins[i]->getName().buffer();
+                        }
+                        ImGui::Combo("Skins", &itemCurrent, items, IM_ARRAYSIZE(items));
                     }
-//                    data->getAnimations()
-                    //todo print list of skins
-//                    data->getSkins()
                 }
                 //todo get skeleton scale
 //                skeleton->getScaleX()
