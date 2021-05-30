@@ -5,6 +5,7 @@
 #include "common/coreModule/nodes/widgets/gridNode.h"
 #include "common/coreModule/nodes/widgets/node3d.h"
 #include "common/coreModule/nodes/widgets/soundButton.h"
+#include "common/coreModule/nodes/widgets/spineNode.h"
 #include "common/debugModule/logManager.h"
 #include "common/utilityModule/stringUtility.h"
 #include "DragonBones/CCDragonBonesHeaders.h"
@@ -20,13 +21,13 @@ using namespace dragonBones;
 std::map<std::string, eNodeFactory> componentsMap = {
     { "transformComponent", eNodeFactory::TRANSFORM_COMPONENT },
     { "spriteComponent", eNodeFactory::SPRITE_COMPONENT },
-    { "animspriteComponent", eNodeFactory::ANIMSPRITE_COMPONENT },
     { "labelComponent", eNodeFactory::LABEL_COMPONENT },
     { "dragonbonesComponent", eNodeFactory::DRAGONBONES_COMPONENT },
     { "colorComponent", eNodeFactory::COLOR_COMPONENT },
     { "scrollViewComponent", eNodeFactory::SCROLL_VIEW_COMPONENT },
     { "gridComponent", eNodeFactory::GRID_COMPONENT },
     { "scale9spriteComponent", eNodeFactory::SCALE9SPRITE_COMPONENT },
+    { "spineComponent", eNodeFactory::SPINE_COMPONENT }
 };
 std::map<std::string, std::function<Node*()>> nodes{};
 
@@ -60,6 +61,7 @@ nodeFactory::nodeFactory() {
         nodes["scale9sprite"] = []() -> ui::Scale9Sprite* { return ui::Scale9Sprite::create(); };
         /// External types, in common
         nodes["dragonbones"] = []() { return new armatureNode(); };
+        nodes["spine"] = []() { return new spineNode(); };
         nodes["scrollView"] = []() { return ui::ScrollView::create(); };
         nodes["soundButton"] = []() { return soundButton::create(); };
         nodes["grid"] = []() { return gridNode::create(); };
@@ -93,7 +95,7 @@ void nodeFactory::getComponents(Node* node,
     node->setCascadeColorEnabled(true);
 
     switch (needle) {
-    case TRANSFORM_COMPONENT: {
+    case eNodeFactory::TRANSFORM_COMPONENT: {
         if (object.HasMember("position")) {
             auto positions = object["position"].GetArray();
             if (positions.Size() == 2) {
@@ -202,7 +204,7 @@ void nodeFactory::getComponents(Node* node,
             }
         }
     } break;
-    case SPRITE_COMPONENT: {
+    case eNodeFactory::SPRITE_COMPONENT: {
         if (auto button = dynamic_cast<buttonBase*>(node)) {
             if (object.HasMember("image") && object["image"].IsString()) {
                 button->loadTexture(object["image"].GetString());
@@ -258,10 +260,7 @@ void nodeFactory::getComponents(Node* node,
                                     node->getName().c_str(), componentName.c_str()));
         }
     } break;
-    case ANIMSPRITE_COMPONENT:
-        //todo
-        break;
-    case LABEL_COMPONENT: {
+    case eNodeFactory::LABEL_COMPONENT: {
         if (auto label = dynamic_cast<Label*>(node)) {
             if (object.HasMember("fontType") && object["fontType"].IsString()
                 && object["fontType"].GetString() == std::string("ttf")) {
@@ -309,7 +308,7 @@ void nodeFactory::getComponents(Node* node,
                                           componentName.c_str()));
         }
     } break;
-    case DRAGONBONES_COMPONENT: {
+    case eNodeFactory::DRAGONBONES_COMPONENT: {
         if (auto dragonbones = dynamic_cast<armatureNode*>(node)) {
             if (object.HasMember("texFile") && object.HasMember("skeFile")) {
                 if (usedArmature.find(object["name"].GetString()) == usedArmature.end()) {
@@ -349,7 +348,54 @@ void nodeFactory::getComponents(Node* node,
                                           componentName.c_str()));
         }
     } break;
-    case COLOR_COMPONENT: {
+    case eNodeFactory::SPINE_COMPONENT: {
+        if (auto spine = dynamic_cast<spineNode*>(node)) {
+            auto scale = 1.f;
+            if (object.HasMember("scale") && object["scale"].IsNumber()) {
+                scale = object["scale"].GetFloat();
+            }
+            if (object.HasMember("file") && object["file"].IsString()) {
+                auto atlas = STRING_FORMAT("%s.atlas", object["file"].GetString());
+                auto skel = STRING_FORMAT("%s.skel", object["file"].GetString());
+                auto json = STRING_FORMAT("%s.json", object["file"].GetString());
+                if (cocos2d::FileUtils::getInstance()->isFileExist(atlas) && cocos2d::FileUtils::getInstance()->isFileExist(skel)) {
+                    spine->initWithBinaryFile(skel, atlas, scale);
+                    spine->autorelease();
+                } else if (cocos2d::FileUtils::getInstance()->isFileExist(atlas) && cocos2d::FileUtils::getInstance()->isFileExist(json)) {
+                    spine->initWithJsonFile(json, atlas, scale);
+                    spine->autorelease();
+                } else {
+                    LOG_ERROR(StringUtils::format("nodeFactory::getComponents: Can't get atlas or binary file for spine '%s'!", node->getName().c_str()));
+                }
+            }
+            auto loop = false;
+            if (object.HasMember("loop") && object["loop"].IsBool()) {
+                loop = object["loop"].GetBool();
+            }
+            if (object.HasMember("animation") && object["animation"].IsString()) {
+                auto animation = object["animation"].GetString();
+                if (auto skeleton = spine->getSkeleton()) {
+                    if (auto data = skeleton->getData()) {
+                        auto animations = data->getAnimations();
+
+                        for (auto i = 0; i < animations.size(); ++i) {
+                            if (animations[i]->getName() == animation) {
+                                spine->setAnimation(1, animation, loop);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            if (object.HasMember("skin") && object["skin"].IsString()) {
+                spine->setSkin(object["skin"].GetString());
+            }
+        } else {
+            LOG_ERROR(StringUtils::format("nodeFactory::getComponents: Component '%s' no has DragonBones node type!",
+                                          componentName.c_str()));
+        }
+    } break;
+    case eNodeFactory::COLOR_COMPONENT: {
         if (object.HasMember("color") && object["color"].IsArray()) {
             auto color = object["color"].GetArray();
             if (color.Size() >= 3 && color.Size() <= 4) {
@@ -368,7 +414,7 @@ void nodeFactory::getComponents(Node* node,
             }
         }
     } break;
-    case SCROLL_VIEW_COMPONENT: {
+    case eNodeFactory::SCROLL_VIEW_COMPONENT: {
         if (auto scrollNode = dynamic_cast<ui::ScrollView*>(node)) {
             // direction
             auto direction = ui::ScrollView::Direction::NONE;
@@ -431,7 +477,7 @@ void nodeFactory::getComponents(Node* node,
             }
         }
     }
-    case GRID_COMPONENT: {
+    case eNodeFactory::GRID_COMPONENT: {
         if (auto grid = dynamic_cast<gridNode*>(node)) {
             if (object.HasMember("marginX") && object["marginX"].IsArray()) {
                 auto array = object["marginX"].GetArray();
@@ -477,7 +523,7 @@ void nodeFactory::getComponents(Node* node,
             //				}
         }
     } break;
-    case SCALE9SPRITE_COMPONENT: {
+    case eNodeFactory::SCALE9SPRITE_COMPONENT: {
         if (auto sprite = dynamic_cast<ui::Scale9Sprite*>(node)) {
             cocos2d::Rect sliceRect = cocos2d::Rect::ZERO;
             if (object.HasMember("image") && object["image"].IsString()) {

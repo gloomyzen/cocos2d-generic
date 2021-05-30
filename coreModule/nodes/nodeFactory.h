@@ -13,21 +13,21 @@ namespace common {
     namespace coreModule {
         using namespace cocos2d;
 
-        enum eNodeFactory : size_t {
+        enum class eNodeFactory {
             TRANSFORM_COMPONENT,
             SPRITE_COMPONENT,
-            ANIMSPRITE_COMPONENT,
             LABEL_COMPONENT,
             DRAGONBONES_COMPONENT,
+            SPINE_COMPONENT,
             COLOR_COMPONENT,
             SCROLL_VIEW_COMPONENT,
             GRID_COMPONENT,
-            SCALE9SPRITE_COMPONENT,
+            SCALE9SPRITE_COMPONENT
         };
 
         static const std::vector<std::string> componentPriorityList = {
-            { "spriteComponent" },    { "labelComponent" }, { "dragonbonesComponent" }, { "scale9spriteComponent" },
-            { "transformComponent" }, { "colorComponent" }, { "scrollViewComponent" },  { "gridComponent" },
+            { "spriteComponent" },    { "labelComponent" }, { "dragonbonesComponent" }, { "spineComponent" }, { "scale9spriteComponent" },
+            { "transformComponent" }, { "colorComponent" }, { "scrollViewComponent" },  { "gridComponent" }
         };
 
         class nodeFactory {
