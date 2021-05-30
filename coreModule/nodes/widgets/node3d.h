@@ -7,7 +7,7 @@
 
 namespace common::coreModule {
     class node3d : public cocos2d::Node {
-      public:
+    public:
         node3d() = default;
         ~node3d() override = default;
         CREATE_FUNC(node3d);
@@ -32,7 +32,7 @@ namespace common::coreModule {
 
             if (!_children.empty()) {
                 std::sort(std::begin(_children), std::end(_children), [](Node* n1, Node* n2) {
-                       return (n1->getPositionY() > n2->getPositionY());
+                    return (n1->getPositionY() > n2->getPositionY());
                 });
                 // draw children zOrder < 0
                 for (auto size = _children.size(); i < size; i++) {

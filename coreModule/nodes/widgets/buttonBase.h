@@ -7,14 +7,14 @@
 
 namespace common::coreModule {
     class buttonBase : public cocos2d::ui::Widget {
-      public:
+    public:
         buttonBase();
         ~buttonBase() override;
 
         void loadTexture(const std::string&);
         void setButtonBgSprite(cocos2d::Sprite*);
 
-      private:
+    private:
         cocos2d::Sprite* sprite = nullptr;
     };
 }// namespace common::coreModule

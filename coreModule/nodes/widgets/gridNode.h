@@ -13,7 +13,7 @@ namespace common {
         class gridNode
             : public nodeProperties
             , public cocos2d::Node {
-          public:
+        public:
             struct sGridCell {
                 cocos2d::Node* node = nullptr;
                 cocos2d::Size size;
@@ -48,34 +48,52 @@ namespace common {
                 marginX.first = X;
                 marginX.second = Y;
             }
-            void setMarginX(std::pair<int, int> value) { marginX = value; }
+            void setMarginX(std::pair<int, int> value) {
+                marginX = value;
+            }
             void setMarginY(int X, int Y) {
                 marginY.first = X;
                 marginY.second = Y;
             }
-            void setMarginY(std::pair<int, int> value) { marginY = value; }
+            void setMarginY(std::pair<int, int> value) {
+                marginY = value;
+            }
             void setPaddingX(int X, int Y) {
                 paddingX.first = X;
                 paddingX.second = Y;
             }
-            void setPaddingX(std::pair<int, int> value) { paddingX = value; }
+            void setPaddingX(std::pair<int, int> value) {
+                paddingX = value;
+            }
             void setPaddingY(int X, int Y) {
                 paddingY.first = X;
                 paddingY.second = Y;
             }
-            void setPaddingY(std::pair<int, int> value) { paddingY = value; }
-            void setDirection(eGridDirection value) { direction = value; }
-            void setAlignX(eGridAlignX value) { alignX = value; }
-            void setAlignY(eGridAlignY value) { alignY = value; }
-            void setColumns(int value) { columns = value; }
-            void setRows(int value) { rows = value; }
+            void setPaddingY(std::pair<int, int> value) {
+                paddingY = value;
+            }
+            void setDirection(eGridDirection value) {
+                direction = value;
+            }
+            void setAlignX(eGridAlignX value) {
+                alignX = value;
+            }
+            void setAlignY(eGridAlignY value) {
+                alignY = value;
+            }
+            void setColumns(int value) {
+                columns = value;
+            }
+            void setRows(int value) {
+                rows = value;
+            }
 
             static eGridDirection getGridDirectionByString(const std::string&);
             static eGridAlignX getGridAlignXByString(const std::string&);
             static eGridAlignY getGridAlignYByString(const std::string&);
 
 
-          private:
+        private:
             std::pair<int, int> marginX;
             std::pair<int, int> marginY;
             std::pair<int, int> paddingX;

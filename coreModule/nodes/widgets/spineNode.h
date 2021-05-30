@@ -2,8 +2,11 @@
 #define SLAYER_ESCAPE_SPINENODE_H
 
 #include "cocos2d.h"
+#include "spine/spine-cocos2dx.h"
 
-class spineNode {};
+namespace common::coreModule {
+    class spineNode {};
+}
 
 
 #endif// SLAYER_ESCAPE_SPINENODE_H
