@@ -2,6 +2,7 @@
 #include "imGuiLayer.h"
 #include "ImGuiEXT/imgui/misc/cpp/imgui_stdlib.h"
 #include "common/coreModule/nodes/nodeProperties.h"
+#include "common/coreModule/nodes/widgets/spineNode.h"
 #include "common/debugModule/logManager.h"
 #include "common/utilityModule/stringUtility.h"
 
@@ -76,6 +77,7 @@ bool imGuiLayer::init() {
         // DragonBones node
         classList[typeid(dragonBones::CCArmatureDisplay).name()] = "[DBArmature]";
         classList[typeid(common::coreModule::armatureNode).name()] = "[DBHolder]";
+        classList[typeid(spineNode).name()] = "[spine]";
     }
 
     setName("ImGUILayer");
@@ -408,7 +410,6 @@ ImRect imGuiLayer::renderPreferences(Node* node) {
                 const char* items[animNames.size()];
                 int itemCurrent = 1;
                 for (int i = 0; i < animNames.size(); ++i) {
-                    auto test = std::string("");
                     items[i] = animNames[i].c_str();
                     if (lastAnimation == animNames[i]) {
                         itemCurrent = i;
@@ -424,6 +425,40 @@ ImRect imGuiLayer::renderPreferences(Node* node) {
                     //                    armature->getAnimation()->play(items[itemCurrent]);
                     auto state = armature->getAnimation()->fadeIn(items[itemCurrent]);
                 }
+            }
+        }
+    }
+    if (auto spine = dynamic_cast<spineNode*>(node)) {
+        if (ImGui::CollapsingHeader("Spine component")) {
+            if (auto skeleton = spine->getSkeleton()) {
+                if (auto data = skeleton->getData()) {
+                    // animation sections
+                    auto animations = data->getAnimations();
+                    std::string lastAnimation;
+                    if (auto track = spine->getState()->getCurrent(1)) {
+                        lastAnimation = track->getAnimation()->getName().buffer();
+                    }
+                    const char* items[animations.size()];
+                    int itemCurrent = 1;
+                    for (auto i = 0; i < animations.size(); ++i) {
+                        items[i] = animations[i]->getName().buffer();
+                        if (lastAnimation == items[i]) {
+                            itemCurrent = i;
+                        }
+                    }
+                    int tempItem = itemCurrent;
+                    ImGui::Combo("Animation", &itemCurrent, items, IM_ARRAYSIZE(items));
+                    if (tempItem != itemCurrent) {
+                        spine->setAnimation(1, std::string(items[itemCurrent]), true);
+                    }
+//                    data->getAnimations()
+                    //todo print list of skins
+//                    data->getSkins()
+                }
+                //todo get skeleton scale
+//                skeleton->getScaleX()
+                //todo print list of slots
+//                skeleton->getSlots()
             }
         }
     }

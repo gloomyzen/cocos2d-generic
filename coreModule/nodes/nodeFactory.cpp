@@ -374,18 +374,7 @@ void nodeFactory::getComponents(Node* node,
             }
             if (object.HasMember("animation") && object["animation"].IsString()) {
                 auto animation = object["animation"].GetString();
-                if (auto skeleton = spine->getSkeleton()) {
-                    if (auto data = skeleton->getData()) {
-                        auto animations = data->getAnimations();
-
-                        for (auto i = 0; i < animations.size(); ++i) {
-                            if (animations[i]->getName() == animation) {
-                                spine->setAnimation(1, animation, loop);
-                                break;
-                            }
-                        }
-                    }
-                }
+                spine->setAnimation(1, animation, loop);
             }
             if (object.HasMember("skin") && object["skin"].IsString()) {
                 spine->setSkin(object["skin"].GetString());
