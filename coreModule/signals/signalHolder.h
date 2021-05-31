@@ -6,14 +6,22 @@
 #include <tuple>
 #include <vector>
 
+#define GET_SIGNAL() common::signal::signalInstance::getInstance()
+
 namespace common::signal {
 
+    class basedSignal {
+    public:
+        basedSignal() = default;
+        virtual ~basedSignal() = default;
+    };
+
     template<typename... Args>
-    class signalHolder {
+    class signalHolder : public basedSignal {
 
     public:
         signalHolder() = default;
-        ~signalHolder() = default;
+        ~signalHolder() override = default;
 
         signalHolder(signalHolder const& /*unused*/) {}
 
