@@ -100,7 +100,9 @@ void imGuiLayer::drawImgui() {
     static bool debugOpened = false;
     static bool nodeEditorOpened = false;
     auto text_size = ImGui::CalcTextSize("Debug");
-    default_width = text_size.x * 1.5f;
+    if (default_width == 0.f) {
+        default_width = text_size.x + 8.f;
+    }
 
     if (nodeEditorOpened != pickNodeEnabled) {
         nodeEditorOpened = pickNodeEnabled;
@@ -118,16 +120,22 @@ void imGuiLayer::drawImgui() {
             debugOpened = !debugOpened;
         }
         if (debugOpened) {
+            auto temp_size = default_width;
             if (ImGui::Button("Editor")) {
                 nodeEditorOpened = !nodeEditorOpened;
             }
             for (const auto& item : debugModules) {
-                if (item != nullptr)
-                    item();
+                if (item.second != nullptr) {
+                    item.second();
+                    auto labelSize = ImGui::CalcTextSize(item.first.c_str());
+                    if (labelSize.x + 8.f > default_width) default_width = labelSize.x + 8.f;
+                }
             }
             if (ImGui::Button("Close")) {
                 closeAll = !closeAll;
             }
+        } else {
+            default_width = 0.f;
         }
 
         ImGui::End();
@@ -586,7 +594,7 @@ void imGuiLayer::debugToggleRow(cocos2d::Node* node) {
 
 void imGuiLayer::resetDebugModules() { debugModules.clear(); }
 
-void imGuiLayer::addDebugModules(std::function<void()> clb) { debugModules.push_back(clb); }
+void imGuiLayer::addDebugModules(std::pair<std::string, std::function<void()>> item) { debugModules.push_back(item); }
 
 void imGuiLayer::initEvents() {
     keyboardListener = cocos2d::EventListenerKeyboard::create();

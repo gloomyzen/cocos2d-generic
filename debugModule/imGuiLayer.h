@@ -14,6 +14,8 @@
 #include <functional>
 #include <list>
 #include <vector>
+#include <string>
+#include <tuple>
 
 namespace common::debugModule {
     class imGuiLayer : public cocos2d::Layer {
@@ -37,7 +39,7 @@ namespace common::debugModule {
 
         void resetDebugModules();
 
-        void addDebugModules(std::function<void()>);
+        void addDebugModules(std::pair<std::string, std::function<void()>>);
 
         void drawImgui();
 
@@ -68,7 +70,7 @@ namespace common::debugModule {
         int nodeEditorW = 430;
         int nodeEditorH = 450;
         Node* lastTarget = nullptr;
-        std::vector<std::function<void()>> debugModules;
+        std::vector<std::pair<std::string, std::function<void()>>> debugModules;
     };
 }// namespace common::debugModule
 
