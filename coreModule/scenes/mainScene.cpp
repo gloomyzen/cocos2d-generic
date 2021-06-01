@@ -2,6 +2,7 @@
 #include "common/coreModule/gameManager.h"
 #include "common/coreModule/scenes/scenesFactory/scenesFactoryInstance.h"
 #include "common/debugModule/logManager.h"
+#include "ui/CocosGUI.h"
 
 using namespace common::coreModule;
 using namespace cocos2d;
@@ -17,6 +18,9 @@ bool mainScene::init() {
         return false;
     }
     LOG_INFO("mainScene::init()");
+
+    auto bg = new bgSceneNode();
+    this->addChild(bg);
 
     windowViewer = new windowSystem();
     this->addChild(windowViewer, eGameLayers::WINDOW);
@@ -68,4 +72,9 @@ void mainScene::initTaskLoading(cocos2d::Layer* layer) {
                             item->executeTasks();
                      });
     }
+}
+
+bgSceneNode::bgSceneNode() {
+    this->setName("blackBg");
+    loadProperty("scenes/" + this->getName(), dynamic_cast<Node*>(this));
 }

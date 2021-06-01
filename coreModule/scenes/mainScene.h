@@ -2,6 +2,7 @@
 #define COMMON_MAINSCENE_H
 
 #include "cocos2d.h"
+#include "ui/CocosGUI.h"
 #include "common/coreModule/nodes/nodeProperties.h"
 #include "common/coreModule/scenes/windows/windowSystem.h"
 #include <string>
@@ -37,6 +38,11 @@ namespace common {
 #ifdef DEBUG
             common::debugModule::imGuiLayer* imGuiLayer = nullptr;
 #endif
+        };
+
+        class bgSceneNode : public cocos2d::ui::Scale9Sprite, public nodeProperties {
+        public:
+            bgSceneNode();
         };
     }// namespace coreModule
 }// namespace common
