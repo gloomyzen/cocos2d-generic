@@ -4,9 +4,6 @@
 #include "common/coreModule/resources/resourceManager.h"
 #include "common/debugModule/logManager.h"
 #include "common/utilityModule/stringUtility.h"
-#ifdef GetObject
-#undef GetObject
-#endif
 
 using namespace common;
 using namespace common::profileModule;

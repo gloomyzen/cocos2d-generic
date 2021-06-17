@@ -13,9 +13,6 @@
 #include <map>
 #include <string>
 #include <utility>
-#ifdef GetObject
-#undef GetObject
-#endif
 
 using namespace common::coreModule;
 using namespace cocos2d;
