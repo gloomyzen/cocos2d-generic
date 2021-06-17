@@ -1,8 +1,7 @@
 #include "settingManager.h"
 #include "common/debugModule/logManager.h"
 #include "common/utilityModule/findUtility.h"
-#include "rapidjson/document.h"
-#include "rapidjson/ostreamwrapper.h"
+#include "common/utilityModule/jsonHelper.h"
 
 using namespace common::coreModule;
 

@@ -1,8 +1,7 @@
 #ifndef COMMON_PROFILEBLOCKINTERFACE_H
 #define COMMON_PROFILEBLOCKINTERFACE_H
 
-#include "rapidjson/document.h"
-#include "rapidjson/ostreamwrapper.h"
+#include "common/utilityModule/jsonHelper.h"
 
 namespace common {
     namespace profileModule {

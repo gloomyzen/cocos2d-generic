@@ -7,7 +7,7 @@
 #include "common/coreModule/resources/resourceManager.h"
 #include "common/coreModule/resources/settings/settingManager.h"
 #include "common/debugModule/logManager.h"
-#include "rapidjson/document.h"
+#include "common/utilityModule/jsonHelper.h"
 #include <string>
 
 namespace common::coreModule {

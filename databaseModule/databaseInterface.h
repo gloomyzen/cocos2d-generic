@@ -3,8 +3,7 @@
 
 #include "cocos2d.h"
 #include "common/debugModule/logManager.h"
-#include "rapidjson/document.h"
-#include "rapidjson/ostreamwrapper.h"
+#include "common/utilityModule/jsonHelper.h"
 #include <string>
 
 namespace common::databaseModule {
