@@ -415,23 +415,24 @@ ImRect imGuiLayer::renderPreferences(Node* node) {
             if (auto armature = dragonbonesNode->getArmatureNode()) {
                 auto animNames = armature->getAnimation()->getAnimationNames();
                 auto lastAnimation = armature->getAnimation()->getLastAnimationName();
-                const char* items[animNames.size()];
                 int itemCurrent = 1;
+                std::string text;
                 for (int i = 0; i < animNames.size(); ++i) {
-                    items[i] = animNames[i].c_str();
+                    text += STRING_FORMAT("%s\0", animNames[i].c_str());
                     if (lastAnimation == animNames[i]) {
                         itemCurrent = i;
                     }
                 }
+                const char* items = text.c_str();
                 int tempItem = itemCurrent;
-                ImGui::Combo("Animation", &itemCurrent, items, IM_ARRAYSIZE(items));
+                ImGui::Combo("Animation", &itemCurrent, items);
                 if (tempItem != itemCurrent) {
                     //                    auto cfg = new dragonBones::AnimationConfig();
                     //                    cfg->actionEnabled = true;
                     //                    cfg->animation = items[itemCurrent];
                     //                    armature->getAnimation()->playConfig(cfg);
                     //                    armature->getAnimation()->play(items[itemCurrent]);
-                    auto state = armature->getAnimation()->fadeIn(items[itemCurrent]);
+                    auto state = armature->getAnimation()->fadeIn(animNames[itemCurrent]);
                 }
             }
         }
@@ -454,30 +455,32 @@ ImRect imGuiLayer::renderPreferences(Node* node) {
                                 track->setLoop(isLoop);
                             }
                         }
-                        const char* items[animations.size()];
                         int itemCurrent = 1;
+                        std::string text;
                         for (auto i = 0; i < animations.size(); ++i) {
-                            items[i] = animations[i]->getName().buffer();
-                            if (lastAnimation == items[i]) {
+                            text += STRING_FORMAT("%s\0", animations[i]->getName().buffer());
+                            if (lastAnimation == animations[i]->getName().buffer()) {
                                 itemCurrent = i;
                             }
                         }
+                        const char* items = text.c_str();
                         int tempItem = itemCurrent;
-                        ImGui::Combo("Animation", &itemCurrent, items, IM_ARRAYSIZE(items));
+                        ImGui::Combo("Animation", &itemCurrent, items);
                         if (tempItem != itemCurrent) {
-                            spine->setAnimation(1, std::string(items[itemCurrent]), isLoop);
+                            spine->setAnimation(1, std::string(animations[itemCurrent]->getName().buffer()), isLoop);
                         }
                     }
 
                     {
                         //skins section
                         auto skins = data->getSkins();
-                        const char* items[skins.size()];
                         int itemCurrent = 1;
+                        std::string text;
                         for (auto i = 0; i < skins.size(); ++i) {
-                            items[i] = skins[i]->getName().buffer();
+                            text += STRING_FORMAT("%s\0", skins[i]->getName().buffer());
                         }
-                        ImGui::Combo("Skins", &itemCurrent, items, IM_ARRAYSIZE(items));
+                        const char* items = text.c_str();
+                        ImGui::Combo("Skins", &itemCurrent, items);
                     }
                 }
                 {
@@ -492,12 +495,13 @@ ImRect imGuiLayer::renderPreferences(Node* node) {
                 {
                     //skeleton slots section
                     auto slots = skeleton->getSlots();
-                    const char* items[slots.size()];
                     int itemCurrent = 1;
+                    std::string text;
                     for (auto i = 0; i < slots.size(); ++i) {
-                        items[i] = slots[i]->getData().getName().buffer();
+                        text += STRING_FORMAT("%s\0", slots[i]->getData().getName().buffer());
                     }
-                    ImGui::Combo("Slots", &itemCurrent, items, IM_ARRAYSIZE(items));
+                    const char* items = text.c_str();
+                    ImGui::Combo("Slots", &itemCurrent, items);
                 }
             }
             {
