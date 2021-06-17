@@ -3,6 +3,9 @@
 #include "common/utilityModule/findUtility.h"
 #include "rapidjson/document.h"
 #include "rapidjson/ostreamwrapper.h"
+#ifdef GetObject
+#undef GetObject
+#endif
 
 using namespace common::coreModule;
 

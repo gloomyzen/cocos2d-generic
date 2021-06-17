@@ -1,4 +1,7 @@
 #include "nodeProperties.h"
+#ifdef GetObject
+#undef GetObject
+#endif
 
 using namespace common::coreModule;
 

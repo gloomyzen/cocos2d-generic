@@ -9,6 +9,9 @@
 #include "common/debugModule/logManager.h"
 #include "rapidjson/document.h"
 #include <string>
+#ifdef GetObject
+#undef GetObject
+#endif
 
 namespace common::coreModule {
 
