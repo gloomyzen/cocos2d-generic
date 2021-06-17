@@ -4,6 +4,7 @@
 #include "common/coreModule/resources/resourceManager.h"
 #include "common/debugModule/logManager.h"
 #include "common/utilityModule/stringUtility.h"
+#include "common/utilityModule/jsonHelper.h"
 
 using namespace common;
 using namespace common::profileModule;
