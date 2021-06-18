@@ -39,7 +39,7 @@ namespace common::debugModule {
 
         void resetDebugModules();
 
-        void addDebugModules(std::pair<std::string, std::function<void()>>);
+        void addDebugModules(const std::pair<std::string, std::function<void()>>&);
 
         void drawImgui();
 
@@ -49,13 +49,12 @@ namespace common::debugModule {
         void debugToggleRow(Node*);
         /// Node editor
         std::map<std::string, std::string> classList;
-        void showNodeEditor(bool* p_open);
+        void showNodeEditor(bool* editorOpened);
         ImRect renderTree(cocos2d::Vector<Node*> n);
         ImRect renderPreferences(Node*);
 
         cocos2d::EventListenerKeyboard* keyboardListener = nullptr;
 
-        bool pickNodeEnabled = false;
         bool m_enabled = true;
         float default_width = 0.0f;
         /***

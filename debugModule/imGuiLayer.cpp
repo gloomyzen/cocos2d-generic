@@ -3,12 +3,15 @@
 #include "ImGuiEXT/imgui/misc/cpp/imgui_stdlib.h"
 #include "common/coreModule/nodes/nodeProperties.h"
 #include "common/coreModule/nodes/widgets/spineNode.h"
-#include "common/debugModule/logManager.h"
 #include "common/utilityModule/stringUtility.h"
 
 using namespace common;
 using namespace common::debugModule;
 using namespace common::coreModule;
+
+static bool closeAll = false;
+static bool debugOpened = false;
+static bool nodeEditorOpened = false;
 
 bool imGuiLayer::init() {
     if (!Layer::init()) {
@@ -96,16 +99,9 @@ bool imGuiLayer::init() {
 
 void imGuiLayer::drawImgui() {
     // Buttons
-    static bool closeAll = false;
-    static bool debugOpened = false;
-    static bool nodeEditorOpened = false;
     auto text_size = ImGui::CalcTextSize("Debug");
     if (default_width == 0.f) {
         default_width = text_size.x + 8.f;
-    }
-
-    if (nodeEditorOpened != pickNodeEnabled) {
-        nodeEditorOpened = pickNodeEnabled;
     }
 
     ImGui::SetNextWindowCollapsed(true, ImGuiCond_Once);
@@ -145,10 +141,10 @@ void imGuiLayer::drawImgui() {
         showNodeEditor(&nodeEditorOpened);
 }
 
-void imGuiLayer::showNodeEditor(bool* nodeEditorOpened) {
+void imGuiLayer::showNodeEditor(bool* editorOpened) {
     ImGui::SetNextWindowSize(ImVec2(static_cast<float>(nodeEditorW), static_cast<float>(nodeEditorH)),
                              ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Property editor", reinterpret_cast<bool*>(nodeEditorOpened))) {
+    if (!ImGui::Begin("Property editor", reinterpret_cast<bool*>(editorOpened))) {
         ImGui::End();
         return;
     }
@@ -169,7 +165,7 @@ void imGuiLayer::showNodeEditor(bool* nodeEditorOpened) {
 
     ImGui::PopStyleVar();
     ImGui::End();
-};
+}
 
 ImRect imGuiLayer::renderTree(cocos2d::Vector<Node*> n) {
     const ImRect nodeRect = ImRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax());
@@ -418,7 +414,7 @@ ImRect imGuiLayer::renderPreferences(Node* node) {
                 int itemCurrent = 1;
                 std::string text;
                 for (int i = 0; i < animNames.size(); ++i) {
-                    text += STRING_FORMAT("%s\0", animNames[i].c_str());
+                    text += text.empty() ? animNames[i] : STRING_FORMAT("\0%s", animNames[i].c_str());
                     if (lastAnimation == animNames[i]) {
                         itemCurrent = i;
                     }
@@ -458,7 +454,7 @@ ImRect imGuiLayer::renderPreferences(Node* node) {
                         int itemCurrent = 1;
                         std::string text;
                         for (auto i = 0; i < animations.size(); ++i) {
-                            text += STRING_FORMAT("%s\0", animations[i]->getName().buffer());
+                            text += text.empty() ? animations[i]->getName().buffer() : STRING_FORMAT("\0%s", animations[i]->getName().buffer());
                             if (lastAnimation == animations[i]->getName().buffer()) {
                                 itemCurrent = i;
                             }
@@ -477,7 +473,7 @@ ImRect imGuiLayer::renderPreferences(Node* node) {
                         int itemCurrent = 1;
                         std::string text;
                         for (auto i = 0; i < skins.size(); ++i) {
-                            text += STRING_FORMAT("%s\0", skins[i]->getName().buffer());
+                            text += text.empty() ? skins[i]->getName().buffer() : STRING_FORMAT("\0%s", skins[i]->getName().buffer());
                         }
                         const char* items = text.c_str();
                         ImGui::Combo("Skins", &itemCurrent, items);
@@ -498,7 +494,7 @@ ImRect imGuiLayer::renderPreferences(Node* node) {
                     int itemCurrent = 1;
                     std::string text;
                     for (auto i = 0; i < slots.size(); ++i) {
-                        text += STRING_FORMAT("%s\0", slots[i]->getData().getName().buffer());
+                        text += text.empty() ? slots[i]->getData().getName().buffer() : STRING_FORMAT("\0%s", slots[i]->getData().getName().buffer());
                     }
                     const char* items = text.c_str();
                     ImGui::Combo("Slots", &itemCurrent, items);
@@ -598,13 +594,13 @@ void imGuiLayer::debugToggleRow(cocos2d::Node* node) {
 
 void imGuiLayer::resetDebugModules() { debugModules.clear(); }
 
-void imGuiLayer::addDebugModules(std::pair<std::string, std::function<void()>> item) { debugModules.push_back(item); }
+void imGuiLayer::addDebugModules(const std::pair<std::string, std::function<void()>>& item) { debugModules.push_back(item); }
 
 void imGuiLayer::initEvents() {
     keyboardListener = cocos2d::EventListenerKeyboard::create();
-    keyboardListener->onKeyPressed = [this](cocos2d::EventKeyboard::KeyCode core, cocos2d::Event*) {
+    keyboardListener->onKeyPressed = [](cocos2d::EventKeyboard::KeyCode core, cocos2d::Event*) {
         if (core == cocos2d::EventKeyboard::KeyCode::KEY_CTRL) {
-            pickNodeEnabled = !pickNodeEnabled;
+            nodeEditorOpened = !nodeEditorOpened;
         }
     };
     keyboardListener->onKeyReleased = [](cocos2d::EventKeyboard::KeyCode core, cocos2d::Event*) {};
