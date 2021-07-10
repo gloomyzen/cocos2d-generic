@@ -2,34 +2,34 @@
 #define COMMON_MAINSCENE_H
 
 #include "cocos2d.h"
-#include "ui/CocosGUI.h"
 #include "common/coreModule/nodes/nodeProperties.h"
 #include "common/coreModule/scenes/windows/windowSystem.h"
+#include "common/debugModule/imGuiLayer.h"
+#include "ui/CocosGUI.h"
 #include <string>
 #include <vector>
-#include "common/debugModule/imGuiLayer.h"
 
 namespace common {
     namespace coreModule {
 
         class mainScene : public cocos2d::Scene {
-          public:
+        public:
             mainScene();
             ~mainScene();
             static cocos2d::Scene* createScene();
-
             virtual bool init();
-
             void setRoom(const std::string&);
-
             CREATE_FUNC(mainScene);
-
-            windowSystem* getWindowNode() { return windowViewer; }
+            windowSystem* getWindowNode() {
+                return windowViewer;
+            }
 
 #ifdef DEBUG
-            common::debugModule::imGuiLayer* getImGuiLayer() { return imGuiLayer; }
+            common::debugModule::imGuiLayer* getImGuiLayer() {
+                return imGuiLayer;
+            }
 #endif
-          private:
+        private:
             void initTaskLoading(cocos2d::Layer* layer);
 
             std::vector<cocos2d::Node*> nodes{};
@@ -38,11 +38,6 @@ namespace common {
 #ifdef DEBUG
             common::debugModule::imGuiLayer* imGuiLayer = nullptr;
 #endif
-        };
-
-        class bgSceneNode : public cocos2d::ui::Scale9Sprite, public nodeProperties {
-        public:
-            bgSceneNode();
         };
     }// namespace coreModule
 }// namespace common

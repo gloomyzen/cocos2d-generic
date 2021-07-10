@@ -11,7 +11,9 @@ mainScene::mainScene() {}
 
 mainScene::~mainScene() {}
 
-Scene* mainScene::createScene() { return mainScene::create(); }
+Scene* mainScene::createScene() {
+    return mainScene::create();
+}
 
 bool mainScene::init() {
     if (!Scene::init()) {
@@ -19,7 +21,9 @@ bool mainScene::init() {
     }
     LOG_INFO("mainScene::init()");
 
-    auto bg = new bgSceneNode();
+    auto bg = new LayerColor();
+    bg->setColor(Color3B::BLACK);
+    bg->setContentSize(Director::getInstance()->getVisibleSize());
     this->addChild(bg);
 
     windowViewer = new windowSystem();
@@ -72,9 +76,4 @@ void mainScene::initTaskLoading(cocos2d::Layer* layer) {
                             item->executeTasks();
                      });
     }
-}
-
-bgSceneNode::bgSceneNode() {
-    this->setName("blackBg");
-    loadProperty("scenes/" + this->getName(), dynamic_cast<Node*>(this));
 }
