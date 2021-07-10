@@ -39,8 +39,8 @@ void nodeProperties::loadProperty(const std::string& path, cocos2d::Node* node) 
         usedNode = node;
     }
     if (json.HasMember("settings") && json["settings"].IsObject()) {
-        if (auto nodeWithProperties = dynamic_cast<nodeProperties*>(usedNode)) {
-            nodeWithProperties->setSettingsData(json["settings"].GetObject());
+        if (auto nodeWithProps = dynamic_cast<nodeProperties*>(usedNode)) {
+            nodeWithProps->setSettingsData(json["settings"].GetObject());
         }
     }
 
@@ -107,8 +107,8 @@ void nodeProperties::parseData(cocos2d::Node* node, const rapidjson::GenericValu
             auto childNode = GET_NODE_FACTORY().createNodeWithType(item["type"].GetString());
             childNode->setName(item["name"].GetString());
             if (item.HasMember("settings") && item["settings"].IsObject()) {
-                if (auto nodeWithProperties = dynamic_cast<nodeProperties*>(childNode)) {
-                    nodeWithProperties->setSettingsData(item["settings"].GetObject());
+                if (auto nodeWithProps = dynamic_cast<nodeProperties*>(childNode)) {
+                    nodeWithProps->setSettingsData(item["settings"].GetObject());
                 }
             }
             node->addChild(childNode);

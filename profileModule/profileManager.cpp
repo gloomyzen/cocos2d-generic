@@ -9,6 +9,12 @@
 using namespace common;
 using namespace common::profileModule;
 
+#ifdef CMAKE_APP_NAME
+const std::string APP_NAME = CMAKE_APP_NAME;
+#else
+const std::string APP_NAME = "defaultAppName";
+#endif
+
 profileManager* profileMgrInstance = nullptr;
 
 profileManager::profileManager() {}
@@ -29,7 +35,7 @@ profileManager& profileManager::getInstance() {
 void profileManager::load() {
     const std::string& path = "config/user_profile";
     auto defaultProfile = GET_JSON_MANAGER()->loadJson(path);
-    auto profile = cocos2d::UserDefault::getInstance()->getStringForKey("profile", std::string());
+    auto profile = cocos2d::UserDefault::getInstance()->getStringForKey(STRING_FORMAT("profile_%s", APP_NAME.c_str()).c_str(), std::string());
     auto localProfile = GET_JSON_MANAGER()->stringToJson(profile);
 #ifdef DEBUG
     if (!localProfile.HasParseError() && !localProfile.IsNull()) {

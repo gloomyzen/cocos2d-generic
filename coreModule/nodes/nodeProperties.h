@@ -51,6 +51,9 @@ namespace common::coreModule {
         std::string pathProperties;
     };
 
+    template<typename T>
+    class nodeWithProperties : public T, public nodeProperties {};
+
 }// namespace common::coreModule
 
 #endif// COMMON_NODEPROPERTIES_H
