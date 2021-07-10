@@ -142,5 +142,10 @@ void nodeProperties::setSettingsData(const rapidjson::GenericValue<rapidjson::UT
 }
 
 rapidjson::Value nodeProperties::getSettingsData() {
+    if (!settingsData.IsObject()) {
+        rapidjson::Value data;
+        data.SetObject();
+        return data.GetObject();
+    }
     return settingsData.GetObject();
 }
