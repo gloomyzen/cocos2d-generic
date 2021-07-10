@@ -54,8 +54,8 @@ rapidjson::Document jsonLoader::findByResolution(const std::string& path) {
         || GET_RESOLUTION_SETTING()->getCurrentSize()->getPath().empty()) {
         return nullptr;
     }
-    std::string resolutionPath = GET_RESOLUTION_SETTING()->getCurrentSize()->getPath();
-    std::string pathProperties = STRING_FORMAT("%s/%s.json", resolutionPath.c_str(), path.c_str());
+    auto resolutionPath = GET_RESOLUTION_SETTING()->getCurrentSize()->getPath();
+    auto pathProperties = STRING_FORMAT("%s/%s.json", resolutionPath.c_str(), path.c_str());
 
     if (!cocos2d::FileUtils::getInstance()->isFileExist(pathProperties)) {
         return nullptr;

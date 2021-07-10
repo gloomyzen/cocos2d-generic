@@ -13,7 +13,7 @@
 namespace common::coreModule {
 
     class nodeProperties {
-      public:
+    public:
         ~nodeProperties();
         /***
          * Парсинг параметров из json файла
@@ -30,45 +30,27 @@ namespace common::coreModule {
          * @param name
          */
         void loadComponent(cocos2d::Node* node, const std::string& name = std::string());
-
         void removeJsonData();
-
         void loadJson(const std::string&);
-
         const rapidjson::Document& getPropertyData() {
             return propertyData;
         }
+        bool hasPropertyObject(const std::string& name);
+        rapidjson::GenericValue<rapidjson::UTF8<char>>::Object getPropertyObject(const std::string& name);
 
-        bool hasPropertyObject(const std::string& name) {
-            if (propertyData.HasParseError() || !propertyData.IsObject()) {
-                return false;
-            }
-            return propertyData.HasMember(name.c_str());
-        }
+        void setSettingsData(const rapidjson::GenericValue<rapidjson::UTF8<char>>::Object& object);
+        rapidjson::Value getSettingsData();
 
-        rapidjson::GenericValue<rapidjson::UTF8<char>>::Object getPropertyObject(const std::string& name) {
-            if (!hasPropertyObject(name)) {
-                rapidjson::Document document{};
-                document.SetObject();
-                return document.GetObject();
-            }
-            auto obj = propertyData.FindMember(name.c_str());
-            return obj->value.GetObject();
-        }
 
-      private:
-
+    private:
         void parseComponents(cocos2d::Node* node, const std::string& name = std::string());
-
         void parseData(cocos2d::Node* node, const rapidjson::GenericValue<rapidjson::UTF8<char>>::Array& array);
 
+        rapidjson::Value settingsData;
         rapidjson::Document propertyData;
         std::string pathProperties;
-
     };
 
-    template<typename T>
-    class nodeWithProperties : public T, public nodeProperties {};
 }// namespace common::coreModule
 
 #endif// COMMON_NODEPROPERTIES_H

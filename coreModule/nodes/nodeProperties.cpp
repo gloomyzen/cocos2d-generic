@@ -38,6 +38,11 @@ void nodeProperties::loadProperty(const std::string& path, cocos2d::Node* node) 
     } else {
         usedNode = node;
     }
+    if (json.HasMember("settings") && json["settings"].IsObject()) {
+        if (auto nodeWithProperties = dynamic_cast<nodeProperties*>(usedNode)) {
+            nodeWithProperties->setSettingsData(json["settings"].GetObject());
+        }
+    }
 
     if (json.HasMember("child") && json["child"].IsArray()) {
         parseData(usedNode, json["child"].GetArray());
@@ -101,11 +106,41 @@ void nodeProperties::parseData(cocos2d::Node* node, const rapidjson::GenericValu
         if (item["type"].IsString() && item["name"].IsString()) {
             auto childNode = GET_NODE_FACTORY().createNodeWithType(item["type"].GetString());
             childNode->setName(item["name"].GetString());
-            if (item.HasMember("child")) {
-                parseData(childNode, item["child"].GetArray());
+            if (item.HasMember("settings") && item["settings"].IsObject()) {
+                if (auto nodeWithProperties = dynamic_cast<nodeProperties*>(childNode)) {
+                    nodeWithProperties->setSettingsData(item["settings"].GetObject());
+                }
             }
             node->addChild(childNode);
             parseComponents(childNode, childNode->getName());
+            if (item.HasMember("child")) {
+                parseData(childNode, item["child"].GetArray());
+            }
         }
     }
+}
+
+rapidjson::GenericValue<rapidjson::UTF8<char>>::Object nodeProperties::getPropertyObject(const std::string& name) {
+    if (!hasPropertyObject(name)) {
+        rapidjson::Document document{};
+        document.SetObject();
+        return document.GetObject();
+    }
+    auto obj = propertyData.FindMember(name.c_str());
+    return obj->value.GetObject();
+}
+
+bool nodeProperties::hasPropertyObject(const std::string& name) {
+    if (propertyData.HasParseError() || !propertyData.IsObject()) {
+        return false;
+    }
+    return propertyData.HasMember(name.c_str());
+}
+
+void nodeProperties::setSettingsData(const rapidjson::GenericValue<rapidjson::UTF8<char>>::Object& object) {
+    settingsData = object;
+}
+
+rapidjson::Value nodeProperties::getSettingsData() {
+    return settingsData.GetObject();
 }
