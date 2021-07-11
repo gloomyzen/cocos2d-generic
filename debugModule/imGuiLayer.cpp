@@ -238,7 +238,7 @@ ImRect imGuiLayer::renderPreferences(Node* node) {
     debugToggleRow(node);
 
     ImGui::SetNextItemOpen(true, ImGuiCond_Once);
-    if (ImGui::CollapsingHeader("Transform component")) {
+    if (ImGui::CollapsingHeader("Transform")) {
         /**
          * Height and Width
          */
@@ -336,7 +336,7 @@ ImRect imGuiLayer::renderPreferences(Node* node) {
             node->setOpacity(static_cast<uint8_t>(changedOpacity));
         }
     }
-    if (ImGui::CollapsingHeader("Color component")) {
+    if (ImGui::CollapsingHeader("Color")) {
         /**
          * Set cascade opacity
          */
@@ -383,7 +383,7 @@ ImRect imGuiLayer::renderPreferences(Node* node) {
         }
     }
     if (auto light = dynamic_cast<cocos2d::DirectionLight*>(node)) {
-        if (ImGui::CollapsingHeader("DirectionLight component")) {
+        if (ImGui::CollapsingHeader("DirectionLight node")) {
             auto local = light->getDirection();
             float changedLocal[3] = { local.x, local.y, local.z };
             ImGui::DragFloat3("Direction", changedLocal, .01f, -1, 1);
@@ -392,7 +392,7 @@ ImRect imGuiLayer::renderPreferences(Node* node) {
             }
         }
     }
-    if (ImGui::CollapsingHeader("Z-Order component")) {
+    if (ImGui::CollapsingHeader("Z-Order")) {
         auto local = node->getLocalZOrder();
         int changedLocal = local;
         ImGui::DragInt("Local z-order", &changedLocal, 1, -999, 999);
@@ -401,12 +401,12 @@ ImRect imGuiLayer::renderPreferences(Node* node) {
         }
     }
     if (auto spriteNode = dynamic_cast<cocos2d::Sprite*>(node)) {
-        if (ImGui::CollapsingHeader("Sprite component")) {
-            ImGui::Text("Image \"%s\"", spriteNode->getResourceName().c_str());
+        if (ImGui::CollapsingHeader("Sprite")) {
+            ImGui::Text("Image path \"%s\"", spriteNode->getResourceName().c_str());
         }
     }
     if (auto dragonbonesNode = dynamic_cast<common::coreModule::armatureNode*>(node)) {
-        if (ImGui::CollapsingHeader("DragonBones component")) {
+        if (ImGui::CollapsingHeader("DragonBones node")) {
             // animation sections
             if (auto armature = dragonbonesNode->getArmatureNode()) {
                 auto animNames = armature->getAnimation()->getAnimationNames();
@@ -434,11 +434,11 @@ ImRect imGuiLayer::renderPreferences(Node* node) {
         }
     }
     if (auto spine = dynamic_cast<spineNode*>(node)) {
-        if (ImGui::CollapsingHeader("Spine component")) {
+        if (ImGui::CollapsingHeader("Spine node")) {
             if (auto skeleton = spine->getSkeleton()) {
                 if (auto data = skeleton->getData()) {
                     {
-                        // animation sections
+                        //a new
                         auto isLoop = false;
                         auto animations = data->getAnimations();
                         std::string lastAnimation;
@@ -453,18 +453,20 @@ ImRect imGuiLayer::renderPreferences(Node* node) {
                         }
                         int itemCurrent = 1;
                         std::string text;
+                        std::vector<std::string> items;
                         for (auto i = 0; i < animations.size(); ++i) {
-                            text += text.empty() ? animations[i]->getName().buffer() : STRING_FORMAT("\0%s", animations[i]->getName().buffer());
+                            items.emplace_back(animations[i]->getName().buffer());
                             if (lastAnimation == animations[i]->getName().buffer()) {
                                 itemCurrent = i;
                             }
                         }
-                        const char* items = text.c_str();
+
                         int tempItem = itemCurrent;
-                        ImGui::Combo("Animation", &itemCurrent, items);
+                        Combo("Animation", &itemCurrent, items, static_cast<int>(items.size()));
                         if (tempItem != itemCurrent) {
                             spine->setAnimation(1, std::string(animations[itemCurrent]->getName().buffer()), isLoop);
                         }
+
                     }
 
                     {
@@ -539,7 +541,7 @@ ImRect imGuiLayer::renderPreferences(Node* node) {
         }
     }
     if (auto labelNode = dynamic_cast<cocos2d::Label*>(node)) {
-        if (ImGui::CollapsingHeader("Label component")) {
+        if (ImGui::CollapsingHeader("Label node")) {
             // todo lh ls color text font shadow
             /*** Text */
             auto labelText = labelNode->getString();
@@ -605,6 +607,17 @@ void imGuiLayer::initEvents() {
     };
     keyboardListener->onKeyReleased = [](cocos2d::EventKeyboard::KeyCode core, cocos2d::Event*) {};
     this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(keyboardListener, this);
+}
+
+bool imGuiLayer::Combo(const char* label, int* current_item, const std::vector<std::string>& items, int items_count, int height_in_items) {
+    return ImGui::Combo(label, current_item,[](void* data, int idx, const char** out_text) {
+            auto strVec = static_cast<const std::vector<std::string>*>(data);
+            *out_text = (*strVec)[idx].c_str();
+            return true;
+        },
+        (void*)&items,
+        items_count,
+        height_in_items);
 }
 
 #endif// DEBUG

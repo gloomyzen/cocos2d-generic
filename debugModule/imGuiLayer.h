@@ -32,16 +32,13 @@ namespace common::debugModule {
             resetDebugModules();
             classList.clear();
         };
-
         CREATE_FUNC(imGuiLayer);
-
         bool init() override;
-
         void resetDebugModules();
-
         void addDebugModules(const std::pair<std::string, std::function<void()>>&);
-
         void drawImgui();
+
+        static bool Combo(const char* label, int* current_item, const std::vector<std::string>& items, int items_count, int height_in_items = -1);
 
       private:
         void initEvents();
