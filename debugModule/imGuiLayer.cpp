@@ -412,22 +412,22 @@ ImRect imGuiLayer::renderPreferences(Node* node) {
                 auto animNames = armature->getAnimation()->getAnimationNames();
                 auto lastAnimation = armature->getAnimation()->getLastAnimationName();
                 int itemCurrent = 1;
-                std::string text;
+                std::vector<std::string> items;
+                items.reserve(animNames.size());
                 for (int i = 0; i < animNames.size(); ++i) {
-                    text += text.empty() ? animNames[i] : STRING_FORMAT("\0%s", animNames[i].c_str());
+                    items.emplace_back(animNames[i]);
                     if (lastAnimation == animNames[i]) {
                         itemCurrent = i;
                     }
                 }
-                const char* items = text.c_str();
                 int tempItem = itemCurrent;
-                ImGui::Combo("Animation", &itemCurrent, items);
+                Combo("Animation", &itemCurrent, items, static_cast<int>(items.size()));
                 if (tempItem != itemCurrent) {
-                    //                    auto cfg = new dragonBones::AnimationConfig();
-                    //                    cfg->actionEnabled = true;
-                    //                    cfg->animation = items[itemCurrent];
-                    //                    armature->getAnimation()->playConfig(cfg);
-                    //                    armature->getAnimation()->play(items[itemCurrent]);
+//                    auto cfg = new dragonBones::AnimationConfig();
+//                    cfg->actionEnabled = true;
+//                    cfg->animation = items[itemCurrent];
+//                    armature->getAnimation()->playConfig(cfg);
+//                    armature->getAnimation()->play(items[itemCurrent]);
                     auto state = armature->getAnimation()->fadeIn(animNames[itemCurrent]);
                 }
             }
@@ -452,8 +452,8 @@ ImRect imGuiLayer::renderPreferences(Node* node) {
                             }
                         }
                         int itemCurrent = 1;
-                        std::string text;
                         std::vector<std::string> items;
+                        items.reserve(animations.size());
                         for (auto i = 0; i < animations.size(); ++i) {
                             items.emplace_back(animations[i]->getName().buffer());
                             if (lastAnimation == animations[i]->getName().buffer()) {
@@ -473,12 +473,12 @@ ImRect imGuiLayer::renderPreferences(Node* node) {
                         //skins section
                         auto skins = data->getSkins();
                         int itemCurrent = 1;
-                        std::string text;
+                        std::vector<std::string> items;
+                        items.reserve(skins.size());
                         for (auto i = 0; i < skins.size(); ++i) {
-                            text += text.empty() ? skins[i]->getName().buffer() : STRING_FORMAT("\0%s", skins[i]->getName().buffer());
+                            items.emplace_back(skins[i]->getName().buffer());
                         }
-                        const char* items = text.c_str();
-                        ImGui::Combo("Skins", &itemCurrent, items);
+                        Combo("Skins", &itemCurrent, items, static_cast<int>(items.size()));
                     }
                 }
                 {
@@ -494,12 +494,12 @@ ImRect imGuiLayer::renderPreferences(Node* node) {
                     //skeleton slots section
                     auto slots = skeleton->getSlots();
                     int itemCurrent = 1;
-                    std::string text;
+                    std::vector<std::string> items;
+                    items.reserve(slots.size());
                     for (auto i = 0; i < slots.size(); ++i) {
-                        text += text.empty() ? slots[i]->getData().getName().buffer() : STRING_FORMAT("\0%s", slots[i]->getData().getName().buffer());
+                        items.emplace_back(slots[i]->getData().getName().buffer());
                     }
-                    const char* items = text.c_str();
-                    ImGui::Combo("Slots", &itemCurrent, items);
+                    Combo("Slots", &itemCurrent, items, static_cast<int>(items.size()));
                 }
             }
             {
