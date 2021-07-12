@@ -1,6 +1,9 @@
 #include "nodeProperties.h"
+#include "common/utilityModule/stringUtility.h"
 
 using namespace common::coreModule;
+
+const std::string defaultNodesPath = "properties/nodes/";
 
 nodeProperties::~nodeProperties() {
     removeJsonData();
@@ -15,13 +18,15 @@ void nodeProperties::loadProperty(const std::string& path, cocos2d::Node* node) 
     }
     loadJson(path);
 
-    std::string pathNodes = "properties/nodes/" + path;
-
-    auto json = GET_JSON(pathNodes);
-    if (json.HasParseError() || !json.IsObject()) {
-        LOG_ERROR("nodeProperties::loadProperty Json file '" + pathNodes + "' has errors or not found!");
+    if (propertyData.HasParseError() || !propertyData.IsObject()) {
+        LOG_ERROR(STRING_FORMAT("nodeProperties::loadProperty Json file for node '%s' has errors or not found!", node->getName().c_str()));
         return;
     }
+    if (propertyData.HasMember("struct") && propertyData["struct"].IsObject()) {
+        auto strObject = propertyData["struct"].GetObject();
+    }
+
+    //todo
     if (!json.HasMember("type") || !json.HasMember("name") || !json["type"].IsString()
         || !json["name"].IsString()) {
         LOG_ERROR("nodeProperties::loadProperty Json file '" + pathNodes + "' not has 'type' and 'name'!");
@@ -67,9 +72,11 @@ void nodeProperties::removeJsonData() {
     pathProperties.clear();
 }
 
-void nodeProperties::loadJson(const std::string& path) {
-    pathProperties = StringUtils::format("properties/nodeProperties/%s", path.c_str());
-    propertyData = GET_JSON(pathProperties);
+void nodeProperties::loadJson(const std::string& path, bool force) {
+    if (force || propertyData.HasParseError() || !propertyData.IsObject()) {
+        pathProperties = StringUtils::format("%s%s", defaultNodesPath.c_str(), path.c_str());
+        propertyData = GET_JSON(pathProperties);
+    }
 }
 
 void nodeProperties::parseComponents(cocos2d::Node* node, const std::string& name) {

@@ -31,7 +31,7 @@ namespace common::coreModule {
          */
         void loadComponent(cocos2d::Node* node, const std::string& name = std::string());
         void removeJsonData();
-        void loadJson(const std::string&);
+        void loadJson(const std::string&, bool force = false);
         const rapidjson::Document& getPropertyData() {
             return propertyData;
         }
