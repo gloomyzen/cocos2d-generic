@@ -19,41 +19,40 @@ void nodeProperties::loadProperty(const std::string& path, cocos2d::Node* node) 
     loadJson(path);
 
     if (propertyData.HasParseError() || !propertyData.IsObject()) {
-        LOG_ERROR(STRING_FORMAT("nodeProperties::loadProperty Json file for node '%s' has errors or not found!", node->getName().c_str()));
+        LOG_ERROR(STRING_FORMAT("nodeProperties::loadProperty Json file '%s' for node '%s' has errors or not found!", pathProperties.c_str(), node->getName().c_str()));
         return;
     }
     if (propertyData.HasMember("struct") && propertyData["struct"].IsObject()) {
         auto strObject = propertyData["struct"].GetObject();
-    }
-
-    //todo
-    if (!json.HasMember("type") || !json.HasMember("name") || !json["type"].IsString()
-        || !json["name"].IsString()) {
-        LOG_ERROR("nodeProperties::loadProperty Json file '" + pathNodes + "' not has 'type' and 'name'!");
-        return;
-    }
-
-    /// If the first named element is different from the current node, add the new node as a child to the
-    /// current node
-    cocos2d::Node* usedNode;
-    if (json["name"].GetString() != node->getName()) {
-        usedNode = GET_NODE_FACTORY().createNodeWithType(json["type"].GetString());
-        usedNode->setName(json["name"].GetString());
-        node->addChild(usedNode);
-    } else {
-        usedNode = node;
-    }
-    if (json.HasMember("settings") && json["settings"].IsObject()) {
-        if (auto nodeWithProps = dynamic_cast<nodeProperties*>(usedNode)) {
-            nodeWithProps->setSettingsData(json["settings"].GetObject());
+        if (!strObject.HasMember("type") || !strObject.HasMember("name")
+            || !strObject["type"].IsString() || !strObject["name"].IsString()) {
+            LOG_ERROR(STRING_FORMAT("nodeProperties::loadProperty Json file '%s' for node '%s' not has 'type' and 'name'!", pathProperties.c_str(), node->getName().c_str()));
+            return;
         }
+
+        /// If the first named element is different from the current node, add the new node as a child to the
+        /// current node
+        cocos2d::Node* usedNode;
+        if (strObject["name"].GetString() != node->getName()) {
+            usedNode = GET_NODE_FACTORY().createNodeWithType(strObject["type"].GetString());
+            usedNode->setName(strObject["name"].GetString());
+            node->addChild(usedNode);
+        } else {
+            usedNode = node;
+        }
+        if (strObject.HasMember("settings") && strObject["settings"].IsObject()) {
+            if (auto nodeWithProps = dynamic_cast<nodeProperties*>(usedNode)) {
+                nodeWithProps->setSettingsData(strObject["settings"].GetObject());
+            }
+        }
+
+        if (strObject.HasMember("child") && strObject["child"].IsArray()) {
+            parseData(usedNode, strObject["child"].GetArray());
+        }
+
+        parseComponents(usedNode, usedNode->getName());
     }
 
-    if (json.HasMember("child") && json["child"].IsArray()) {
-        parseData(usedNode, json["child"].GetArray());
-    }
-
-    parseComponents(usedNode, usedNode->getName());
 }
 
 void nodeProperties::loadComponent(cocos2d::Node* node, const std::string& name) {
@@ -74,20 +73,22 @@ void nodeProperties::removeJsonData() {
 
 void nodeProperties::loadJson(const std::string& path, bool force) {
     if (force || propertyData.HasParseError() || !propertyData.IsObject()) {
-        pathProperties = StringUtils::format("%s%s", defaultNodesPath.c_str(), path.c_str());
+        pathProperties = STRING_FORMAT("%s%s", defaultNodesPath.c_str(), path.c_str());
         propertyData = GET_JSON(pathProperties);
     }
 }
 
 void nodeProperties::parseComponents(cocos2d::Node* node, const std::string& name) {
     if (propertyData.HasParseError() || !propertyData.IsObject()) {
-        LOG_ERROR(
-            StringUtils::format("nodeProperties::parseProperty Json file '%s' contains errors or not found!",
-                                pathProperties.c_str()));
+        LOG_ERROR(STRING_FORMAT("nodeProperties::parseProperty Json file '%s' contains errors or not found!", pathProperties.c_str()));
         return;
     }
+    if (!propertyData.HasMember("props") || !propertyData["props"].IsObject()) {
+        LOG_ERROR(STRING_FORMAT("nodeProperties::parseProperty Json file '%s' don't have 'props' object!", pathProperties.c_str()));
+        return;
+    }
+    auto propJson = propertyData["props"].GetObject();
     auto nodeName = !name.empty() ? name : node->getName();
-    auto propJson = propertyData.GetObject();
     if (propJson.HasMember(nodeName.c_str()) && propJson[nodeName.c_str()].IsObject()) {
         auto propObj = propJson[nodeName.c_str()].GetObject();
         for (const auto& component : componentPriorityList) {
