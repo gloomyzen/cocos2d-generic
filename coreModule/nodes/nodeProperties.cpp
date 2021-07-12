@@ -134,7 +134,8 @@ rapidjson::GenericValue<rapidjson::UTF8<char>>::Object nodeProperties::getProper
         document.SetObject();
         return document.GetObject();
     }
-    auto obj = propertyData.FindMember(name.c_str());
+
+    auto obj = propertyData["props"].FindMember(name.c_str());
     return obj->value.GetObject();
 }
 
@@ -142,7 +143,10 @@ bool nodeProperties::hasPropertyObject(const std::string& name) {
     if (propertyData.HasParseError() || !propertyData.IsObject()) {
         return false;
     }
-    return propertyData.HasMember(name.c_str());
+    if (!propertyData.HasMember("props") || !propertyData["props"].IsObject()) {
+        return false;
+    }
+    return propertyData["props"].HasMember(name.c_str());
 }
 
 void nodeProperties::setSettingsData(const rapidjson::GenericValue<rapidjson::UTF8<char>>::Object& object) {
