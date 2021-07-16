@@ -7,6 +7,7 @@ const std::string defaultNodesPath = "properties/nodes/";
 
 nodeProperties::~nodeProperties() {
     removeJsonData();
+    removeSettingsData();
 }
 
 void nodeProperties::loadProperty(const std::string& path, cocos2d::Node* node) {
