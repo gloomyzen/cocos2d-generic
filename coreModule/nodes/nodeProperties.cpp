@@ -67,15 +67,16 @@ void nodeProperties::loadComponent(cocos2d::Node* node, const std::string& name)
 }
 
 void nodeProperties::removeJsonData() {
-    propertyData.EraseMember(propertyData.MemberBegin(), propertyData.MemberEnd());
+    if (!propertyData.HasParseError() && propertyData.IsObject()) {
+        propertyData.RemoveAllMembers();
+    }
     pathProperties.clear();
 }
 
-void nodeProperties::loadJson(const std::string& path, bool force) {
-    if (force || propertyData.HasParseError() || !propertyData.IsObject()) {
-        pathProperties = STRING_FORMAT("%s%s", defaultNodesPath.c_str(), path.c_str());
-        propertyData = GET_JSON(pathProperties);
-    }
+void nodeProperties::loadJson(const std::string& path) {
+    removeJsonData();
+    pathProperties = STRING_FORMAT("%s%s", defaultNodesPath.c_str(), path.c_str());
+    propertyData = GET_JSON(pathProperties);
 }
 
 void nodeProperties::parseComponents(cocos2d::Node* node, const std::string& name) {
@@ -160,4 +161,10 @@ rapidjson::Value nodeProperties::getSettingsData() {
         return data.GetObject();
     }
     return settingsData.GetObject();
+}
+
+void nodeProperties::removeSettingsData() {
+    if (settingsData.IsObject()) {
+        settingsData.RemoveAllMembers();
+    }
 }

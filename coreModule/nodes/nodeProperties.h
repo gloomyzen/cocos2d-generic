@@ -31,12 +31,13 @@ namespace common::coreModule {
          */
         void loadComponent(cocos2d::Node* node, const std::string& name = std::string());
         void removeJsonData();
-        void loadJson(const std::string&, bool force = false);
+        void loadJson(const std::string&);
         bool hasPropertyObject(const std::string& name);
         rapidjson::GenericValue<rapidjson::UTF8<char>>::Object getPropertyObject(const std::string& name);
 
         void setSettingsData(const rapidjson::GenericValue<rapidjson::UTF8<char>>::Object& object);
         rapidjson::Value getSettingsData();
+        void removeSettingsData();
 
 
     private:
