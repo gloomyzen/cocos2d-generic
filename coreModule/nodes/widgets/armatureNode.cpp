@@ -3,7 +3,7 @@
 #include "generic/utilityModule/stringUtility.h"
 #include <map>
 
-using namespace common::coreModule;
+using namespace generic::coreModule;
 
 static std::map<armatureNode::eArmatureState, const char*> statesMap = {
     { armatureNode::eArmatureState::START, dragonBones::EventObject::START },

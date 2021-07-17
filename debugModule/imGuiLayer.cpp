@@ -405,7 +405,7 @@ ImRect imGuiLayer::renderPreferences(Node* node) {
             ImGui::Text("Image path \"%s\"", spriteNode->getResourceName().c_str());
         }
     }
-    if (auto dragonbonesNode = dynamic_cast<common::coreModule::armatureNode*>(node)) {
+    if (auto dragonbonesNode = dynamic_cast<generic::coreModule::armatureNode*>(node)) {
         if (ImGui::CollapsingHeader("DragonBones node")) {
             // animation sections
             if (auto armature = dragonbonesNode->getArmatureNode()) {
