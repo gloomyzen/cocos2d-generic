@@ -2,7 +2,7 @@
 #include "imGuiLayer.h"
 #include "ImGuiEXT/imgui/misc/cpp/imgui_stdlib.h"
 #include "generic/coreModule/nodes/nodeProperties.h"
-#include "generic/coreModule/nodes/widgets/spineNode.h"
+#include "spine/spine-cocos2dx.h"
 #include "generic/utilityModule/stringUtility.h"
 
 using namespace generic;
@@ -80,7 +80,7 @@ bool imGuiLayer::init() {
         // DragonBones node
         classList[typeid(dragonBones::CCArmatureDisplay).name()] = "[DBArmature]";
         classList[typeid(generic::coreModule::armatureNode).name()] = "[DBHolder]";
-        classList[typeid(spineNode).name()] = "[spine]";
+        classList[typeid(spine::SkeletonAnimation).name()] = "[spine]";
     }
 
     setName("ImGUILayer");
@@ -433,7 +433,7 @@ ImRect imGuiLayer::renderPreferences(Node* node) {
             }
         }
     }
-    if (auto spine = dynamic_cast<spineNode*>(node)) {
+    if (auto spine = dynamic_cast<spine::SkeletonAnimation*>(node)) {
         if (ImGui::CollapsingHeader("Spine node")) {
             if (auto skeleton = spine->getSkeleton()) {
                 if (auto data = skeleton->getData()) {

@@ -5,7 +5,7 @@
 #include "generic/coreModule/nodes/widgets/gridNode.h"
 #include "generic/coreModule/nodes/widgets/node3d.h"
 #include "generic/coreModule/nodes/widgets/soundButton.h"
-#include "generic/coreModule/nodes/widgets/spineNode.h"
+#include "spine/spine-cocos2dx.h"
 #include "generic/debugModule/logManager.h"
 #include "generic/utilityModule/stringUtility.h"
 #include "DragonBones/CCDragonBonesHeaders.h"
@@ -61,7 +61,7 @@ nodeFactory::nodeFactory() {
         nodes["scale9sprite"] = []() -> ui::Scale9Sprite* { return ui::Scale9Sprite::create(); };
         /// External types, in generic
         nodes["dragonbones"] = []() { return new armatureNode(); };
-        nodes["spine"] = []() { return new spineNode(); };
+        nodes["spine"] = []() { return new spine::SkeletonAnimation(); };
         nodes["scrollView"] = []() { return ui::ScrollView::create(); };
         nodes["soundButton"] = []() { return soundButton::create(); };
         nodes["grid"] = []() { return gridNode::create(); };
@@ -349,7 +349,7 @@ void nodeFactory::getComponents(Node* node,
         }
     } break;
     case eNodeFactory::SPINE_COMPONENT: {
-        if (auto spine = dynamic_cast<spineNode*>(node)) {
+        if (auto spine = dynamic_cast<spine::SkeletonAnimation*>(node)) {
             auto scale = 1.f;
             if (object.HasMember("scale") && object["scale"].IsNumber()) {
                 scale = object["scale"].GetFloat();
