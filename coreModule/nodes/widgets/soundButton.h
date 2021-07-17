@@ -1,16 +1,16 @@
-#ifndef COMMON_SOUNDBUTTON_H
-#define COMMON_SOUNDBUTTON_H
+#ifndef GENERIC_SOUNDBUTTON_H
+#define GENERIC_SOUNDBUTTON_H
 
 #include "cocos2d.h"
-#include "common/coreModule/nodes/nodeProperties.h"
-#include "common/coreModule/nodes/widgets/buttonNode.h"
-#include "common/coreModule/nodes/widgets/eventNode.h"
+#include "generic/coreModule/nodes/nodeProperties.h"
+#include "generic/coreModule/nodes/widgets/buttonNode.h"
+#include "generic/coreModule/nodes/widgets/eventNode.h"
 #include <functional>
 #include <utility>
 
-namespace common::coreModule {
+namespace generic::coreModule {
 
-    class soundButton : public common::coreModule::buttonNode {
+    class soundButton : public generic::coreModule::buttonNode {
     public:
         soundButton();
         ~soundButton() override;
@@ -25,6 +25,6 @@ namespace common::coreModule {
         std::function<void()> soundCallback = nullptr;
     };
 
-}// namespace common::coreModule
+}// namespace generic::coreModule
 
-#endif// COMMON_SOUNDBUTTON_H
+#endif// GENERIC_SOUNDBUTTON_H

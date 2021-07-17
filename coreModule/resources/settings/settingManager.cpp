@@ -1,9 +1,9 @@
 #include "settingManager.h"
-#include "common/debugModule/logManager.h"
-#include "common/utilityModule/findUtility.h"
-#include "common/utilityModule/jsonHelper.h"
+#include "generic/debugModule/logManager.h"
+#include "generic/utilityModule/findUtility.h"
+#include "generic/utilityModule/jsonHelper.h"
 
-using namespace common::coreModule;
+using namespace generic::coreModule;
 
 settingManager::settingManager() = default;
 
@@ -90,7 +90,7 @@ sDisplaySize* settingManager::getSizeByName(const std::string& name) {
 
 void settingManager::init(bool isMobile, const std::string& settingName) {
     if (isMobile) {
-        using namespace common::utilityModule;
+        using namespace generic::utilityModule;
         auto director = cocos2d::Director::getInstance();
         auto glView = director->getOpenGLView();
         auto currentRes = glView->getDesignResolutionSize();

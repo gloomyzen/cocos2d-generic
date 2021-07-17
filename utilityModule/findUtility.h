@@ -1,11 +1,11 @@
-#ifndef COMMON_FINDUTILITY_H
-#define COMMON_FINDUTILITY_H
+#ifndef GENERIC_FINDUTILITY_H
+#define GENERIC_FINDUTILITY_H
 
 #include "randomUtility.h"
 #include <tuple>
 #include <vector>
 
-namespace common {
+namespace generic {
     namespace utilityModule {
 
         class findUtility {
@@ -56,6 +56,6 @@ namespace common {
             };
         };
     }// namespace utilityModule
-}// namespace common
+}// namespace generic
 
-#endif// COMMON_FINDUTILITY_H
+#endif// GENERIC_FINDUTILITY_H

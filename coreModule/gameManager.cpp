@@ -1,12 +1,12 @@
 #include "gameManager.h"
-#include "common/coreModule/nodes/widgets/eventNode.h"
-#include "common/coreModule/scenes/mainScene.h"
-#include "common/coreModule/scenes/windows/windowBase.h"
-#include "common/coreModule/scenes/windows/windowSystem.h"
-#include "common/debugModule/logManager.h"
+#include "generic/coreModule/nodes/widgets/eventNode.h"
+#include "generic/coreModule/scenes/mainScene.h"
+#include "generic/coreModule/scenes/windows/windowBase.h"
+#include "generic/coreModule/scenes/windows/windowSystem.h"
+#include "generic/debugModule/logManager.h"
 
-using namespace common;
-using namespace common::coreModule;
+using namespace generic;
+using namespace generic::coreModule;
 
 gameManager* currentGameManager = nullptr;
 

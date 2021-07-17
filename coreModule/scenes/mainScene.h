@@ -1,15 +1,15 @@
-#ifndef COMMON_MAINSCENE_H
-#define COMMON_MAINSCENE_H
+#ifndef GENERIC_MAINSCENE_H
+#define GENERIC_MAINSCENE_H
 
 #include "cocos2d.h"
-#include "common/coreModule/nodes/nodeProperties.h"
-#include "common/coreModule/scenes/windows/windowSystem.h"
-#include "common/debugModule/imGuiLayer.h"
+#include "generic/coreModule/nodes/nodeProperties.h"
+#include "generic/coreModule/scenes/windows/windowSystem.h"
+#include "generic/debugModule/imGuiLayer.h"
 #include "ui/CocosGUI.h"
 #include <string>
 #include <vector>
 
-namespace common {
+namespace generic {
     namespace coreModule {
 
         class mainScene : public cocos2d::Scene {
@@ -25,7 +25,7 @@ namespace common {
             }
 
 #ifdef DEBUG
-            common::debugModule::imGuiLayer* getImGuiLayer() {
+            generic::debugModule::imGuiLayer* getImGuiLayer() {
                 return imGuiLayer;
             }
 #endif
@@ -36,11 +36,11 @@ namespace common {
             windowSystem* windowViewer = nullptr;
 
 #ifdef DEBUG
-            common::debugModule::imGuiLayer* imGuiLayer = nullptr;
+            generic::debugModule::imGuiLayer* imGuiLayer = nullptr;
 #endif
         };
     }// namespace coreModule
-}// namespace common
+}// namespace generic
 
 
-#endif// COMMON_MAINSCENE_H
+#endif// GENERIC_MAINSCENE_H

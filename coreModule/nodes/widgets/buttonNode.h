@@ -1,20 +1,20 @@
-#ifndef MERCENARY_BATTLES_BUTTONNODE_H
-#define MERCENARY_BATTLES_BUTTONNODE_H
+#ifndef GENERIC_BUTTONNODE_H
+#define GENERIC_BUTTONNODE_H
 
 #include "cocos/ui/CocosGUI.h"
 #include "cocos2d.h"
-#include "common/coreModule/nodes/nodeProperties.h"
-#include "common/coreModule/nodes/widgets/buttonBase.h"
-#include "common/coreModule/nodes/widgets/eventNode.h"
+#include "generic/coreModule/nodes/nodeProperties.h"
+#include "generic/coreModule/nodes/widgets/buttonBase.h"
+#include "generic/coreModule/nodes/widgets/eventNode.h"
 #include <functional>
 #include <string>
 
-namespace common::coreModule {
+namespace generic::coreModule {
 
     class buttonNode
-        : public common::coreModule::nodeProperties
-        , public common::coreModule::buttonBase
-        , public common::coreModule::eventNode {
+        : public generic::coreModule::nodeProperties
+        , public generic::coreModule::buttonBase
+        , public generic::coreModule::eventNode {
         enum class eButtonStatus {
             START_CLICK = 0,
             END_CLICK,
@@ -48,7 +48,7 @@ namespace common::coreModule {
         cocos2d::Color3B defaultColor;
         int moveTimes;
     };
-}// namespace common::coreModule
+}// namespace generic::coreModule
 
 
-#endif// MERCENARY_BATTLES_BUTTONNODE_H
+#endif// GENERIC_BUTTONNODE_H

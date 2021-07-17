@@ -1,9 +1,9 @@
-#ifndef COMMON_RANDOMUTILITY_H
-#define COMMON_RANDOMUTILITY_H
+#ifndef GENERIC_RANDOMUTILITY_H
+#define GENERIC_RANDOMUTILITY_H
 
 #include <random>
 
-namespace common {
+namespace generic {
     namespace utilityModule {
         class randomUtility {
 
@@ -29,6 +29,6 @@ namespace common {
             }
         };
     }// namespace utilityModule
-}// namespace common
+}// namespace generic
 
-#endif// COMMON_RANDOMUTILITY_H
+#endif// GENERIC_RANDOMUTILITY_H

@@ -1,12 +1,12 @@
-#ifndef COMMON_DATABASEINTERFACE_H
-#define COMMON_DATABASEINTERFACE_H
+#ifndef GENERIC_DATABASEINTERFACE_H
+#define GENERIC_DATABASEINTERFACE_H
 
 #include "cocos2d.h"
-#include "common/debugModule/logManager.h"
-#include "common/utilityModule/jsonHelper.h"
+#include "generic/debugModule/logManager.h"
+#include "generic/utilityModule/jsonHelper.h"
 #include <string>
 
-namespace common::databaseModule {
+namespace generic::databaseModule {
     class databaseInterface {
       public:
         databaseInterface() = default;
@@ -52,6 +52,6 @@ namespace common::databaseModule {
         std::string jsonPath;
         bool loaded = false;
     };
-}// namespace common::databaseModule
+}// namespace generic::databaseModule
 
-#endif// COMMON_DATABASEINTERFACE_H
+#endif// GENERIC_DATABASEINTERFACE_H

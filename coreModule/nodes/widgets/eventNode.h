@@ -1,11 +1,11 @@
-#ifndef COMMON_TOUCHESNODE_H
-#define COMMON_TOUCHESNODE_H
+#ifndef GENERIC_TOUCHESNODE_H
+#define GENERIC_TOUCHESNODE_H
 
 #include "cocos2d.h"
 #include <functional>
 #include <utility>
 
-namespace common::coreModule {
+namespace generic::coreModule {
     class eventNode {
     public:
         enum class eEventAction { COLLIDE = 0, NO_MATCHING, COLLIDE_CHILD };
@@ -38,5 +38,5 @@ namespace common::coreModule {
         eventTouchClb touchEndedClb = nullptr;
         bool clickable = true;
     };
-}// namespace common::coreModule
-#endif// COMMON_TOUCHESNODE_H
+}// namespace generic::coreModule
+#endif// GENERIC_TOUCHESNODE_H

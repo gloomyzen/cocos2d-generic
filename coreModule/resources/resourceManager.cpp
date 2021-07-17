@@ -1,8 +1,8 @@
 #include "resourceManager.h"
 #include "cocos2d.h"
-#include "common/debugModule/logManager.h"
+#include "generic/debugModule/logManager.h"
 
-using namespace common::coreModule;
+using namespace generic::coreModule;
 
 resourceManager* currentResourceManager = nullptr;
 

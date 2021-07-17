@@ -1,17 +1,17 @@
-#ifndef COMMON_RESOURCEMANAGER_H
-#define COMMON_RESOURCEMANAGER_H
+#ifndef GENERIC_RESOURCEMANAGER_H
+#define GENERIC_RESOURCEMANAGER_H
 
-#include "common/coreModule/resources/loaders/jsonLoader.h"
-#include "common/coreModule/resources/settings/settingManager.h"
+#include "generic/coreModule/resources/loaders/jsonLoader.h"
+#include "generic/coreModule/resources/settings/settingManager.h"
 #include <map>
 #include <string>
 
-#define GET_RESOURCE_MANAGER() common::coreModule::resourceManager::getInstance()
-#define GET_JSON_MANAGER() common::coreModule::resourceManager::getInstance().getJsonLoader()
-#define GET_RESOLUTION_SETTING() common::coreModule::resourceManager::getInstance().getSettingManager()
+#define GET_RESOURCE_MANAGER() generic::coreModule::resourceManager::getInstance()
+#define GET_JSON_MANAGER() generic::coreModule::resourceManager::getInstance().getJsonLoader()
+#define GET_RESOLUTION_SETTING() generic::coreModule::resourceManager::getInstance().getSettingManager()
 #define GET_JSON(L) GET_JSON_MANAGER()->loadJson(L)
 
-namespace common {
+namespace generic {
 
     namespace coreModule {
         class resourceManager {
@@ -28,7 +28,7 @@ namespace common {
             settingManager* settingManagerInstance = nullptr;
         };
     }// namespace coreModule
-}// namespace common
+}// namespace generic
 
 
-#endif// COMMON_RESOURCEMANAGER_H
+#endif// GENERIC_RESOURCEMANAGER_H

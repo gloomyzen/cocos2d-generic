@@ -3,7 +3,7 @@
 #include <map>
 #include <string>
 
-using namespace common::debugModule;
+using namespace generic::debugModule;
 
 void logManager::info(const std::string& message) {
 #ifdef DEBUG

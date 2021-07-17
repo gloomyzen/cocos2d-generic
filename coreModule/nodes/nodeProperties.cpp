@@ -1,7 +1,7 @@
 #include "nodeProperties.h"
-#include "common/utilityModule/stringUtility.h"
+#include "generic/utilityModule/stringUtility.h"
 
-using namespace common::coreModule;
+using namespace generic::coreModule;
 
 const std::string defaultNodesPath = "properties/nodes/";
 

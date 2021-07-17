@@ -1,12 +1,12 @@
-#ifndef COMMON_SETTINGMANAGER_H
-#define COMMON_SETTINGMANAGER_H
+#ifndef GENERIC_SETTINGMANAGER_H
+#define GENERIC_SETTINGMANAGER_H
 
 #include "cocos2d.h"
 #include <map>
 #include <string>
 #include <utility>
 
-namespace common {
+namespace generic {
     namespace coreModule {
 
         struct sDisplaySize {
@@ -49,7 +49,7 @@ namespace common {
             sDisplaySize* currentSize = nullptr;
         };
     }// namespace coreModule
-}// namespace common
+}// namespace generic
 
 
-#endif// COMMON_SETTINGMANAGER_H
+#endif// GENERIC_SETTINGMANAGER_H

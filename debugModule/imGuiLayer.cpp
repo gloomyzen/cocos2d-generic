@@ -1,13 +1,13 @@
 #ifdef DEBUG
 #include "imGuiLayer.h"
 #include "ImGuiEXT/imgui/misc/cpp/imgui_stdlib.h"
-#include "common/coreModule/nodes/nodeProperties.h"
-#include "common/coreModule/nodes/widgets/spineNode.h"
-#include "common/utilityModule/stringUtility.h"
+#include "generic/coreModule/nodes/nodeProperties.h"
+#include "generic/coreModule/nodes/widgets/spineNode.h"
+#include "generic/utilityModule/stringUtility.h"
 
-using namespace common;
-using namespace common::debugModule;
-using namespace common::coreModule;
+using namespace generic;
+using namespace generic::debugModule;
+using namespace generic::coreModule;
 
 static bool closeAll = false;
 static bool debugOpened = false;
@@ -79,7 +79,7 @@ bool imGuiLayer::init() {
         classList[typeid(cocos2d::Action).name()] = "[Action]";
         // DragonBones node
         classList[typeid(dragonBones::CCArmatureDisplay).name()] = "[DBArmature]";
-        classList[typeid(common::coreModule::armatureNode).name()] = "[DBHolder]";
+        classList[typeid(generic::coreModule::armatureNode).name()] = "[DBHolder]";
         classList[typeid(spineNode).name()] = "[spine]";
     }
 

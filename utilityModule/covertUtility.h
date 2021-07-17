@@ -1,9 +1,9 @@
-#ifndef COMMON_COVERTUTILITY_H
-#define COMMON_COVERTUTILITY_H
+#ifndef GENERIC_COVERTUTILITY_H
+#define GENERIC_COVERTUTILITY_H
 
 #include "cocos2d.h"
 
-namespace common::utilityModule {
+namespace generic::utilityModule {
     class convertUtility {
       public:
         static cocos2d::Color3B changeColorFromTo(const cocos2d::Color3B& from, const cocos2d::Color3B& to, float percent) {
@@ -36,6 +36,6 @@ namespace common::utilityModule {
             return result;
         }
     };
-}// namespace common::utilityModule
+}// namespace generic::utilityModule
 
-#endif// COMMON_COVERTUTILITY_H
+#endif// GENERIC_COVERTUTILITY_H

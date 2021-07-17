@@ -1,9 +1,9 @@
 #include "windowSystem.h"
-#include "common/coreModule/scenes/windows/windowBase.h"
-#include "common/debugModule/logManager.h"
-#include "common/utilityModule/stringUtility.h"
+#include "generic/coreModule/scenes/windows/windowBase.h"
+#include "generic/debugModule/logManager.h"
+#include "generic/utilityModule/stringUtility.h"
 
-using namespace common::coreModule;
+using namespace generic::coreModule;
 using namespace cocos2d;
 
 windowSystem::windowSystem() {

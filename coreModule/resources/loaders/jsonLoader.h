@@ -1,11 +1,11 @@
-#ifndef COMMON_JSONLOADER_H
-#define COMMON_JSONLOADER_H
+#ifndef GENERIC_JSONLOADER_H
+#define GENERIC_JSONLOADER_H
 
-#include "common/utilityModule/jsonHelper.h"
+#include "generic/utilityModule/jsonHelper.h"
 #include <fstream>
 #include <string>
 
-namespace common {
+namespace generic {
 
     namespace coreModule {
         class jsonLoader {
@@ -27,7 +27,7 @@ namespace common {
             rapidjson::Document findByResolution(const std::string& path);
         };
     }// namespace coreModule
-}// namespace common
+}// namespace generic
 
 
-#endif// COMMON_JSONLOADER_H
+#endif// GENERIC_JSONLOADER_H

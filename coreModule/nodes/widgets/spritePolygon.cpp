@@ -1,6 +1,6 @@
 #include "spritePolygon.h"
 
-using namespace common::coreModule;
+using namespace generic::coreModule;
 
 spritePolygon::spritePolygon(const std::string& filename)
     : AutoPolygon(filename){

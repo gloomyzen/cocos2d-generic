@@ -1,5 +1,5 @@
-#ifndef COMMON_IMGUILAYER_H
-#define COMMON_IMGUILAYER_H
+#ifndef GENERIC_IMGUILAYER_H
+#define GENERIC_IMGUILAYER_H
 
 #ifdef DEBUG
 
@@ -8,7 +8,7 @@
 #include "ImGuiEXT/imgui/imgui.h"
 #include "ImGuiEXT/imgui/imgui_internal.h"
 #include "cocos2d.h"
-#include "common/coreModule/nodes/widgets/armatureNode.h"
+#include "generic/coreModule/nodes/widgets/armatureNode.h"
 #include "platform/CCPlatformConfig.h"
 #include "ui/CocosGUI.h"
 #include <functional>
@@ -17,7 +17,7 @@
 #include <string>
 #include <tuple>
 
-namespace common::debugModule {
+namespace generic::debugModule {
     class imGuiLayer : public cocos2d::Layer {
       protected:
         void update(float dt) override {
@@ -68,7 +68,7 @@ namespace common::debugModule {
         Node* lastTarget = nullptr;
         std::vector<std::pair<std::string, std::function<void()>>> debugModules;
     };
-}// namespace common::debugModule
+}// namespace generic::debugModule
 
 #endif// DEBUG
-#endif// COMMON_IMGUILAYER_H
+#endif// GENERIC_IMGUILAYER_H

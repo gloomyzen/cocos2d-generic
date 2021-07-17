@@ -1,13 +1,13 @@
-#ifndef COMMON_DATABASEMANAGER_H
-#define COMMON_DATABASEMANAGER_H
+#ifndef GENERIC_DATABASEMANAGER_H
+#define GENERIC_DATABASEMANAGER_H
 
 #include "cocos2d.h"
-#include "common/databaseModule/databaseInterface.h"
+#include "generic/databaseModule/databaseInterface.h"
 #include <map>
 #include <string>
 #include <tuple>
 
-namespace common::databaseModule {
+namespace generic::databaseModule {
 
     class databaseManagerInterface {
       public:
@@ -42,7 +42,7 @@ namespace common::databaseModule {
 
         std::map<int, databaseInterface*> databasesMap;
     };
-}// namespace common::databaseModule
+}// namespace generic::databaseModule
 
 
-#endif// COMMON_DATABASEMANAGER_H
+#endif// GENERIC_DATABASEMANAGER_H

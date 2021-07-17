@@ -1,15 +1,15 @@
-#ifndef COMMON_WINDOWBASE_H
-#define COMMON_WINDOWBASE_H
+#ifndef GENERIC_WINDOWBASE_H
+#define GENERIC_WINDOWBASE_H
 
 #include "cocos2d.h"
-#include "common/coreModule/nodes/nodeProperties.h"
-#include "common/coreModule/nodes/widgets/soundButton.h"
+#include "generic/coreModule/nodes/nodeProperties.h"
+#include "generic/coreModule/nodes/widgets/soundButton.h"
 #include <map>
 #include <string>
 #include <utility>
 #include <vector>
 
-namespace common::coreModule {
+namespace generic::coreModule {
     class windowBase : public soundButton {
         class windowBaseData {
         public:
@@ -101,7 +101,7 @@ namespace common::coreModule {
         std::map<std::string, std::function<void()>> windowCallbacks;
         bool handleMissClick = true;
     };
-}// namespace common::coreModule
+}// namespace generic::coreModule
 
 
-#endif// COMMON_WINDOWBASE_H
+#endif// GENERIC_WINDOWBASE_H

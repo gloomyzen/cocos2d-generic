@@ -1,11 +1,11 @@
-#ifndef COMMON_BUTTONBASE_H
-#define COMMON_BUTTONBASE_H
+#ifndef GENERIC_BUTTONBASE_H
+#define GENERIC_BUTTONBASE_H
 
 #include "cocos/ui/CocosGUI.h"
 #include "cocos2d.h"
 
 
-namespace common::coreModule {
+namespace generic::coreModule {
     class buttonBase : public cocos2d::ui::Widget {
     public:
         buttonBase();
@@ -17,7 +17,7 @@ namespace common::coreModule {
     private:
         cocos2d::Sprite* sprite = nullptr;
     };
-}// namespace common::coreModule
+}// namespace generic::coreModule
 
 
-#endif// COMMON_BUTTONBASE_H
+#endif// GENERIC_BUTTONBASE_H

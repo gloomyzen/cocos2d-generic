@@ -1,20 +1,20 @@
 #include "nodeFactory.h"
-#include "common/coreModule/nodes/widgets/armatureNode.h"
-#include "common/coreModule/nodes/widgets/buttonBase.h"
-#include "common/coreModule/nodes/widgets/buttonNode.h"
-#include "common/coreModule/nodes/widgets/gridNode.h"
-#include "common/coreModule/nodes/widgets/node3d.h"
-#include "common/coreModule/nodes/widgets/soundButton.h"
-#include "common/coreModule/nodes/widgets/spineNode.h"
-#include "common/debugModule/logManager.h"
-#include "common/utilityModule/stringUtility.h"
+#include "generic/coreModule/nodes/widgets/armatureNode.h"
+#include "generic/coreModule/nodes/widgets/buttonBase.h"
+#include "generic/coreModule/nodes/widgets/buttonNode.h"
+#include "generic/coreModule/nodes/widgets/gridNode.h"
+#include "generic/coreModule/nodes/widgets/node3d.h"
+#include "generic/coreModule/nodes/widgets/soundButton.h"
+#include "generic/coreModule/nodes/widgets/spineNode.h"
+#include "generic/debugModule/logManager.h"
+#include "generic/utilityModule/stringUtility.h"
 #include "DragonBones/CCDragonBonesHeaders.h"
 #include "ui/CocosGUI.h"
 #include <map>
 #include <string>
 #include <utility>
 
-using namespace common::coreModule;
+using namespace generic::coreModule;
 using namespace cocos2d;
 using namespace dragonBones;
 
@@ -59,7 +59,7 @@ nodeFactory::nodeFactory() {
             return clipper;
         };
         nodes["scale9sprite"] = []() -> ui::Scale9Sprite* { return ui::Scale9Sprite::create(); };
-        /// External types, in common
+        /// External types, in generic
         nodes["dragonbones"] = []() { return new armatureNode(); };
         nodes["spine"] = []() { return new spineNode(); };
         nodes["scrollView"] = []() { return ui::ScrollView::create(); };

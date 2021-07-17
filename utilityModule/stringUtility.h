@@ -1,5 +1,5 @@
-#ifndef COMMON_STRINGUTILITY_H
-#define COMMON_STRINGUTILITY_H
+#ifndef GENERIC_STRINGUTILITY_H
+#define GENERIC_STRINGUTILITY_H
 
 #include <algorithm>
 #include <cctype>
@@ -13,7 +13,7 @@
 
 #define STRING_FORMAT(string, ...) cocos2d::StringUtils::format(string, ##__VA_ARGS__)
 
-namespace common::utilityModule {
+namespace generic::utilityModule {
 
 	std::string ltrim(std::string s);
 
@@ -31,6 +31,6 @@ namespace common::utilityModule {
 
 	std::vector<std::string> explodeString(const std::string& str, std::function<std::string(std::string)> clb = nullptr);
 
-}// namespace common::utilityModule
+}// namespace generic::utilityModule
 
-#endif// COMMON_STRINGUTILITY_H
+#endif// GENERIC_STRINGUTILITY_H

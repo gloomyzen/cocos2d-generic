@@ -1,10 +1,10 @@
-#ifndef COMMON_SPRITEPOLYGON_H
-#define COMMON_SPRITEPOLYGON_H
+#ifndef GENERIC_SPRITEPOLYGON_H
+#define GENERIC_SPRITEPOLYGON_H
 
 #include "cocos2d.h"
 #include "ui/CocosGUI.h"
 
-namespace common {
+namespace generic {
 
     namespace coreModule {
 
@@ -18,7 +18,7 @@ namespace common {
             void setHeight(float value);
         };
     }// namespace coreModule
-}// namespace common
+}// namespace generic
 
 
-#endif// COMMON_SPRITEPOLYGON_H
+#endif// GENERIC_SPRITEPOLYGON_H

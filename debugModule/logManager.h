@@ -1,17 +1,17 @@
-#ifndef COMMON_LOGMANAGER_H
-#define COMMON_LOGMANAGER_H
+#ifndef GENERIC_LOGMANAGER_H
+#define GENERIC_LOGMANAGER_H
 
 #include <iostream>
 #include <string>
 #include <vector>
 
-#define GET_LOGGER() common::debugModule::loggerInstance::getInstance()
+#define GET_LOGGER() generic::debugModule::loggerInstance::getInstance()
 #define LOG_INFO(W) GET_LOGGER().info(W)
 #define LOG_WARNING(W) GET_LOGGER().warning(W)
 #define LOG_ERROR(W) GET_LOGGER().error(W)
 #define LOGMANAGER_ITEMS_LIMIT 150
 
-namespace common {
+namespace generic {
     namespace debugModule {
 
         enum class eLogTypes : size_t { LOG_INFO = 0, LOG_WARNING, LOG_ERROR };
@@ -49,6 +49,6 @@ namespace common {
         };
     }// namespace debugModule
 
-}// namespace common
+}// namespace generic
 
-#endif// COMMON_LOGMANAGER_H
+#endif// GENERIC_LOGMANAGER_H

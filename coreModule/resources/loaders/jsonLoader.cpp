@@ -1,11 +1,11 @@
 #include "jsonLoader.h"
 #include "cocos2d.h"
-#include "common/coreModule/resources/resourceManager.h"
-#include "common/coreModule/resources/settings/settingManager.h"
-#include "common/debugModule/logManager.h"
-#include "common/utilityModule/stringUtility.h"
+#include "generic/coreModule/resources/resourceManager.h"
+#include "generic/coreModule/resources/settings/settingManager.h"
+#include "generic/debugModule/logManager.h"
+#include "generic/utilityModule/stringUtility.h"
 
-using namespace common::coreModule;
+using namespace generic::coreModule;
 
 jsonLoader::jsonLoader() {}
 jsonLoader::~jsonLoader() {}

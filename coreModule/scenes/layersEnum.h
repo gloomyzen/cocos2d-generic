@@ -1,7 +1,7 @@
-#ifndef COMMON_LAYERSENUM_H
-#define COMMON_LAYERSENUM_H
+#ifndef GENERIC_LAYERSENUM_H
+#define GENERIC_LAYERSENUM_H
 
-namespace common {
+namespace generic {
 
     namespace coreModule {
 
@@ -11,6 +11,6 @@ namespace common {
             DEBUG_LAYER = 99,
         };
     }
-}// namespace common
+}// namespace generic
 
-#endif// COMMON_LAYERSENUM_H
+#endif// GENERIC_LAYERSENUM_H

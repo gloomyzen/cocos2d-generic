@@ -1,7 +1,7 @@
 #include "soundButton.h"
-#include "common/audioModule/audioEngine.h"
+#include "generic/audioModule/audioEngine.h"
 
-using namespace common::coreModule;
+using namespace generic::coreModule;
 
 soundButton::soundButton() {
     soundCallback = []() {

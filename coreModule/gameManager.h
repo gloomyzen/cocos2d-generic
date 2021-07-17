@@ -1,14 +1,14 @@
-#ifndef COMMON_GAMEMANAGER_H
-#define COMMON_GAMEMANAGER_H
+#ifndef GENERIC_GAMEMANAGER_H
+#define GENERIC_GAMEMANAGER_H
 
 #include "cocos2d.h"
-#include "common/coreModule/scenes/layersEnum.h"
+#include "generic/coreModule/scenes/layersEnum.h"
 #include <functional>
 #include <string>
 
-#define GET_GAME_MANAGER() common::coreModule::gameManager::getInstance()
+#define GET_GAME_MANAGER() generic::coreModule::gameManager::getInstance()
 
-namespace common {
+namespace generic {
 
     namespace coreModule {
         class mainScene;
@@ -34,7 +34,7 @@ namespace common {
             mainScene* mainSceneIns = nullptr;
         };
     }// namespace coreModule
-}// namespace common
+}// namespace generic
 
 
-#endif// COMMON_GAMEMANAGER_H
+#endif// GENERIC_GAMEMANAGER_H

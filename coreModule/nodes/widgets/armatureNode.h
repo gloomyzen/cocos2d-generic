@@ -1,5 +1,5 @@
-#ifndef COMMON_ARMATUREHOLDERNODE_H
-#define COMMON_ARMATUREHOLDERNODE_H
+#ifndef GENERIC_ARMATUREHOLDERNODE_H
+#define GENERIC_ARMATUREHOLDERNODE_H
 
 #include "DragonBones/CCDragonBonesHeaders.h"
 #include "cocos-ext.h"
@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-namespace common::coreModule {
+namespace generic::coreModule {
 
     class armatureNode : public cocos2d::Node {
     public:
@@ -50,6 +50,6 @@ namespace common::coreModule {
         dragonBones::CCArmatureDisplay* boneNode = nullptr;
         std::map<std::string, std::function<void(cocos2d::EventCustom*)>> customCallbacksMap;
     };
-}// namespace common::coreModule
+}// namespace generic::coreModule
 
-#endif// COMMON_ARMATUREHOLDERNODE_H
+#endif// GENERIC_ARMATUREHOLDERNODE_H

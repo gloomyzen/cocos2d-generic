@@ -2,12 +2,12 @@
 
 #include <utility>
 #include "cocos2d.h"
-#include "common/debugModule/logManager.h"
+#include "generic/debugModule/logManager.h"
 #include "extensions/cocos-ext.h"
 #include "extensions/cocostudio/CocoStudio.h"
-#include "common/utilityModule/jsonHelper.h"
+#include "generic/utilityModule/jsonHelper.h"
 
-using namespace common::audioModule;
+using namespace generic::audioModule;
 
 audioEngine* audioEngineInstance = nullptr;
 

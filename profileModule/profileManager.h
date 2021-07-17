@@ -1,14 +1,14 @@
-#ifndef COMMON_PROFILEMANAGER_H
-#define COMMON_PROFILEMANAGER_H
+#ifndef GENERIC_PROFILEMANAGER_H
+#define GENERIC_PROFILEMANAGER_H
 
-#include "common/profileModule/profileBlockInterface.h"
+#include "generic/profileModule/profileBlockInterface.h"
 #include <functional>
 #include <map>
 #include <string>
 
-#define GET_PROFILE() common::profileModule::profileManager::getInstance()
+#define GET_PROFILE() generic::profileModule::profileManager::getInstance()
 
-namespace common {
+namespace generic {
     namespace profileModule {
         class locationProfile;
 
@@ -41,7 +41,7 @@ namespace common {
             std::map<std::string, profileBlockInterface*> profileBlocks;
         };
     }// namespace profileModule
-}// namespace common
+}// namespace generic
 
 
-#endif// COMMON_PROFILEMANAGER_H
+#endif// GENERIC_PROFILEMANAGER_H

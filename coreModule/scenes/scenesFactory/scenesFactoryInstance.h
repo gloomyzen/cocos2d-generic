@@ -1,15 +1,15 @@
-#ifndef COMMON_SCENESFACTORYINSTANCE_H
-#define COMMON_SCENESFACTORYINSTANCE_H
+#ifndef GENERIC_SCENESFACTORYINSTANCE_H
+#define GENERIC_SCENESFACTORYINSTANCE_H
 
 #include "cocos2d.h"
-#include "common/coreModule/scenes/layersEnum.h"
+#include "generic/coreModule/scenes/layersEnum.h"
 #include <functional>
 #include <map>
 #include <string>
 
-#define GET_SCENES_FACTORY() common::coreModule::scenesFactoryInstance::getInstance()
+#define GET_SCENES_FACTORY() generic::coreModule::scenesFactoryInstance::getInstance()
 
-namespace common {
+namespace generic {
 
     namespace coreModule {
         using namespace cocos2d;
@@ -28,7 +28,7 @@ namespace common {
             std::map<std::string, std::function<Layer*()>> states;
         };
     }// namespace coreModule
-}// namespace common
+}// namespace generic
 
 
-#endif// COMMON_SCENESFACTORYINSTANCE_H
+#endif// GENERIC_SCENESFACTORYINSTANCE_H

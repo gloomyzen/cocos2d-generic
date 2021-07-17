@@ -1,8 +1,8 @@
 #include "buttonNode.h"
-#include "common/utilityModule/covertUtility.h"
-#include "common/utilityModule/stringUtility.h"
+#include "generic/utilityModule/covertUtility.h"
+#include "generic/utilityModule/stringUtility.h"
 
-using namespace common::coreModule;
+using namespace generic::coreModule;
 
 buttonNode::buttonNode() {
     setFocusEnabled(false);

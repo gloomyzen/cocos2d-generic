@@ -1,9 +1,9 @@
-#ifndef COMMON_PROFILEBLOCKINTERFACE_H
-#define COMMON_PROFILEBLOCKINTERFACE_H
+#ifndef GENERIC_PROFILEBLOCKINTERFACE_H
+#define GENERIC_PROFILEBLOCKINTERFACE_H
 
-#include "common/utilityModule/jsonHelper.h"
+#include "generic/utilityModule/jsonHelper.h"
 
-namespace common {
+namespace generic {
     namespace profileModule {
 
         class profileBlockInterface {
@@ -13,6 +13,6 @@ namespace common {
             virtual bool save(rapidjson::Value&, rapidjson::Document::AllocatorType&) = 0;
         };
     }// namespace profileModule
-}// namespace common
+}// namespace generic
 
-#endif// COMMON_PROFILEBLOCKINTERFACE_H
+#endif// GENERIC_PROFILEBLOCKINTERFACE_H

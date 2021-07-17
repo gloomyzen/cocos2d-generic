@@ -1,12 +1,12 @@
-#ifndef COMMON_SIGNALHOLDER_H
-#define COMMON_SIGNALHOLDER_H
+#ifndef GENERIC_SIGNALHOLDER_H
+#define GENERIC_SIGNALHOLDER_H
 
 #include <functional>
 #include <map>
 #include <tuple>
 #include <vector>
 
-namespace common::signal {
+namespace generic::signal {
 
     class basedSignal {
     public:
@@ -94,7 +94,7 @@ namespace common::signal {
         mutable int _current_id{ 0 };
     };
 
-}// namespace common::signal
+}// namespace generic::signal
 
 
-#endif// COMMON_SIGNALHOLDER_H
+#endif// GENERIC_SIGNALHOLDER_H

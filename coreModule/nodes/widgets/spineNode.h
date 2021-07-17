@@ -4,7 +4,7 @@
 #include "cocos2d.h"
 #include "spine/spine-cocos2dx.h"
 
-namespace common::coreModule {
+namespace generic::coreModule {
     class spineNode : public spine::SkeletonAnimation {
     public:
     };

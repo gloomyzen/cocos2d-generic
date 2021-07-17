@@ -1,10 +1,10 @@
 #include "mainScene.h"
-#include "common/coreModule/gameManager.h"
-#include "common/coreModule/scenes/scenesFactory/scenesFactoryInstance.h"
-#include "common/debugModule/logManager.h"
+#include "generic/coreModule/gameManager.h"
+#include "generic/coreModule/scenes/scenesFactory/scenesFactoryInstance.h"
+#include "generic/debugModule/logManager.h"
 #include "ui/CocosGUI.h"
 
-using namespace common::coreModule;
+using namespace generic::coreModule;
 using namespace cocos2d;
 
 mainScene::mainScene() {}
@@ -31,7 +31,7 @@ bool mainScene::init() {
 
 #ifdef DEBUG
     /// insert debug layer
-    imGuiLayer = common::debugModule::imGuiLayer::create();
+    imGuiLayer = generic::debugModule::imGuiLayer::create();
     this->addChild(imGuiLayer, eGameLayers::DEBUG_LAYER);
 #endif
 

@@ -1,13 +1,13 @@
-#ifndef COMMON_GRIDNODE_H
-#define COMMON_GRIDNODE_H
+#ifndef GENERIC_GRIDNODE_H
+#define GENERIC_GRIDNODE_H
 
 #include "cocos2d.h"
-#include "common/coreModule/nodes/nodeProperties.h"
+#include "generic/coreModule/nodes/nodeProperties.h"
 #include <map>
 #include <string>
 #include <vector>
 
-namespace common {
+namespace generic {
     namespace coreModule {
 
         class gridNode
@@ -105,7 +105,7 @@ namespace common {
             int rows = 1;
         };
     }// namespace coreModule
-}// namespace common
+}// namespace generic
 
 
-#endif// COMMON_GRIDNODE_H
+#endif// GENERIC_GRIDNODE_H

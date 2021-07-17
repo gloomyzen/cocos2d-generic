@@ -1,6 +1,6 @@
 #include "armatureNode.h"
-#include "common/debugModule/logManager.h"
-#include "common/utilityModule/stringUtility.h"
+#include "generic/debugModule/logManager.h"
+#include "generic/utilityModule/stringUtility.h"
 #include <map>
 
 using namespace common::coreModule;

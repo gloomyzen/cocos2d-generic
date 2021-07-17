@@ -1,13 +1,13 @@
 #include "profileManager.h"
 #include "cocos2d.h"
-#include "common/coreModule/resources/loaders/jsonLoader.h"
-#include "common/coreModule/resources/resourceManager.h"
-#include "common/debugModule/logManager.h"
-#include "common/utilityModule/stringUtility.h"
-#include "common/utilityModule/jsonHelper.h"
+#include "generic/coreModule/resources/loaders/jsonLoader.h"
+#include "generic/coreModule/resources/resourceManager.h"
+#include "generic/debugModule/logManager.h"
+#include "generic/utilityModule/stringUtility.h"
+#include "generic/utilityModule/jsonHelper.h"
 
-using namespace common;
-using namespace common::profileModule;
+using namespace generic;
+using namespace generic::profileModule;
 
 #ifdef CMAKE_APP_NAME
 const std::string APP_NAME = CMAKE_APP_NAME;

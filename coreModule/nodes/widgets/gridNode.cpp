@@ -1,6 +1,6 @@
 #include "gridNode.h"
 
-using namespace common::coreModule;
+using namespace generic::coreModule;
 
 static std::map<std::string, gridNode::eGridDirection> gridDirectionMap = {
     { "horizontal", gridNode::eGridDirection::HORIZONTAL },

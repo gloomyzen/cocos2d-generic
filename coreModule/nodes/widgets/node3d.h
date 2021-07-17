@@ -1,11 +1,11 @@
-#ifndef MERCENARY_BATTLES_NODE3D_H
-#define MERCENARY_BATTLES_NODE3D_H
+#ifndef GENERIC_NODE3D_H
+#define GENERIC_NODE3D_H
 
 #include "cocos2d.h"
 #include <functional>
 #include <utility>
 
-namespace common::coreModule {
+namespace generic::coreModule {
     class node3d : public cocos2d::Node {
     public:
         node3d() = default;
@@ -56,5 +56,5 @@ namespace common::coreModule {
             director->popMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
         }
     };
-}// namespace common::coreModule
-#endif// MERCENARY_BATTLES_NODE3D_H
+}// namespace generic::coreModule
+#endif// GENERIC_NODE3D_H

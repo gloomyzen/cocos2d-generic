@@ -1,5 +1,5 @@
-#ifndef MERCENARY_BATTLES_AUDIOENGINE_H
-#define MERCENARY_BATTLES_AUDIOENGINE_H
+#ifndef GENERIC_AUDIOENGINE_H
+#define GENERIC_AUDIOENGINE_H
 
 #include <functional>
 #include <map>
@@ -7,12 +7,12 @@
 #include <tuple>
 #include "cocos/audio/include/AudioEngine.h"
 
-#define GET_AUDIO_ENGINE() common::audioModule::audioEngine::getInstance()
+#define GET_AUDIO_ENGINE() generic::audioModule::audioEngine::getInstance()
 #define AUDIO_ENGINE_SOUND_DIR "sounds/"
 #define AUDIO_ENGINE_SOUND_FILE "sounds.json"
 #define AUDIO_ENGINE_INVALID_TAG -1
 
-namespace common::audioModule {
+namespace generic::audioModule {
 
     class audioEngine {
       public:
@@ -36,7 +36,7 @@ namespace common::audioModule {
       private:
         std::map<std::string, std::pair<std::string, unsigned int>> sounds;// key, filePath, id
     };
-}// namespace common::audioModule
+}// namespace generic::audioModule
 
 
-#endif// MERCENARY_BATTLES_AUDIOENGINE_H
+#endif// GENERIC_AUDIOENGINE_H

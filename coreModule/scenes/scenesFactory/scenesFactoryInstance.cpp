@@ -1,12 +1,12 @@
 #include "scenesFactoryInstance.h"
-#include "common/debugModule/logManager.h"
-#include "common/coreModule/gameManager.h"
-#include "common/coreModule/scenes/mainScene.h"
-#include "common/utilityModule/stringUtility.h"
+#include "generic/debugModule/logManager.h"
+#include "generic/coreModule/gameManager.h"
+#include "generic/coreModule/scenes/mainScene.h"
+#include "generic/utilityModule/stringUtility.h"
 #include <map>
 
-using namespace common;
-using namespace common::coreModule;
+using namespace generic;
+using namespace generic::coreModule;
 using namespace cocos2d;
 
 scenesFactoryInstance* currentFactoryInstance = nullptr;

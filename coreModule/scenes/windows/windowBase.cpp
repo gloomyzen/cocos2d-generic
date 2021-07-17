@@ -1,11 +1,11 @@
 #include "windowBase.h"
-#include "common/coreModule/scenes/windows/windowSystem.h"
-#include "common/debugModule/logManager.h"
-#include "common/utilityModule/stringUtility.h"
+#include "generic/coreModule/scenes/windows/windowSystem.h"
+#include "generic/debugModule/logManager.h"
+#include "generic/utilityModule/stringUtility.h"
 
 #include <utility>
 
-using namespace common::coreModule;
+using namespace generic::coreModule;
 using namespace cocos2d;
 
 windowBase::windowBase() {

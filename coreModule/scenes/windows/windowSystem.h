@@ -1,13 +1,13 @@
-#ifndef COMMON_WINDOWSYSTEM_H
-#define COMMON_WINDOWSYSTEM_H
+#ifndef GENERIC_WINDOWSYSTEM_H
+#define GENERIC_WINDOWSYSTEM_H
 
 #include "cocos2d.h"
-#include "common/coreModule/nodes/nodeProperties.h"
+#include "generic/coreModule/nodes/nodeProperties.h"
 #include <map>
 #include <string>
 #include <vector>
 
-namespace common::coreModule {
+namespace generic::coreModule {
     class windowBase;
 
     class windowSystem : public cocos2d::Node {
@@ -26,7 +26,7 @@ namespace common::coreModule {
         std::vector<windowBase*> waitingWindowList;
         std::string lastTask;
     };
-}// namespace common::coreModule
+}// namespace generic::coreModule
 
 
-#endif// COMMON_WINDOWSYSTEM_H
+#endif// GENERIC_WINDOWSYSTEM_H

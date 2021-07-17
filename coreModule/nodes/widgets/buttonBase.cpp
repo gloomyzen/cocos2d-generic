@@ -1,6 +1,6 @@
 #include "buttonBase.h"
 
-using namespace common::coreModule;
+using namespace generic::coreModule;
 
 buttonBase::buttonBase() {}
 

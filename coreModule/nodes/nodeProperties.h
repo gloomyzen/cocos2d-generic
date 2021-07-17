@@ -1,16 +1,16 @@
-#ifndef COMMON_NODEPROPERTIES_H
-#define COMMON_NODEPROPERTIES_H
+#ifndef GENERIC_NODEPROPERTIES_H
+#define GENERIC_NODEPROPERTIES_H
 
 #include "cocos2d.h"
-#include "common/coreModule/gameManager.h"
-#include "common/coreModule/nodes/nodeFactory.h"
-#include "common/coreModule/resources/resourceManager.h"
-#include "common/coreModule/resources/settings/settingManager.h"
-#include "common/debugModule/logManager.h"
-#include "common/utilityModule/jsonHelper.h"
+#include "generic/coreModule/gameManager.h"
+#include "generic/coreModule/nodes/nodeFactory.h"
+#include "generic/coreModule/resources/resourceManager.h"
+#include "generic/coreModule/resources/settings/settingManager.h"
+#include "generic/debugModule/logManager.h"
+#include "generic/utilityModule/jsonHelper.h"
 #include <string>
 
-namespace common::coreModule {
+namespace generic::coreModule {
 
     class nodeProperties {
     public:
@@ -52,6 +52,6 @@ namespace common::coreModule {
     template<typename T>
     class nodeWithProperties : public T, public nodeProperties {};
 
-}// namespace common::coreModule
+}// namespace generic::coreModule
 
-#endif// COMMON_NODEPROPERTIES_H
+#endif// GENERIC_NODEPROPERTIES_H

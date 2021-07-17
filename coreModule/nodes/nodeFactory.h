@@ -1,15 +1,15 @@
-#ifndef COMMON_NODEFACTORY_H
-#define COMMON_NODEFACTORY_H
+#ifndef GENERIC_NODEFACTORY_H
+#define GENERIC_NODEFACTORY_H
 
 #include "cocos2d.h"
-#include "common/utilityModule/jsonHelper.h"
+#include "generic/utilityModule/jsonHelper.h"
 #include <functional>
 #include <map>
 #include <string>
 
-#define GET_NODE_FACTORY() common::coreModule::nodeFactory::getInstance()
+#define GET_NODE_FACTORY() generic::coreModule::nodeFactory::getInstance()
 
-namespace common {
+namespace generic {
     namespace coreModule {
         using namespace cocos2d;
 
@@ -51,7 +51,7 @@ namespace common {
             bool inited = false;
         };
     }// namespace coreModule
-}// namespace common
+}// namespace generic
 
 
-#endif// COMMON_NODEFACTORY_H
+#endif// GENERIC_NODEFACTORY_H
