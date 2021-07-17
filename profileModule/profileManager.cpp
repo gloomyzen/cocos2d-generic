@@ -71,7 +71,7 @@ void profileManager::save() {
     std::cout << STRING_FORMAT("save local profile: %s", strBuf.GetString()) << std::endl;
 #endif
 
-    cocos2d::UserDefault::getInstance()->setStringForKey("profile", strBuf.GetString());
+    cocos2d::UserDefault::getInstance()->setStringForKey(STRING_FORMAT("profile_%s", APP_NAME.c_str()).c_str(), strBuf.GetString());
 }
 
 void profileManager::loadProfile(const rapidjson::Document& defaultData, const rapidjson::Document& localData) {
