@@ -2,7 +2,7 @@
 #define COMMON_GAMEMANAGER_H
 
 #include "cocos2d.h"
-#include "enums/layersEnum.h"
+#include "common/coreModule/scenes/layersEnum.h"
 #include <functional>
 #include <string>
 

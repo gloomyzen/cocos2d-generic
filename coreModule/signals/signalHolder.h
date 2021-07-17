@@ -6,8 +6,6 @@
 #include <tuple>
 #include <vector>
 
-#define GET_SIGNAL() common::signal::signalInstance::getInstance()
-
 namespace common::signal {
 
     class basedSignal {

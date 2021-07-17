@@ -2,7 +2,7 @@
 #define COMMON_SCENESFACTORYINSTANCE_H
 
 #include "cocos2d.h"
-#include "common/coreModule/enums/layersEnum.h"
+#include "common/coreModule/scenes/layersEnum.h"
 #include <functional>
 #include <map>
 #include <string>
