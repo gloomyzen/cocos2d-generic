@@ -13,7 +13,12 @@ namespace generic::coreModule {
 
         void loadTexture(const std::string&);
         void setButtonBgSprite(cocos2d::Sprite*);
+        void setChangeColorByClick(bool value) {
+            changeColorByClick = value;
+        }
 
+    protected:
+        bool changeColorByClick = true;
     private:
         cocos2d::Sprite* sprite = nullptr;
     };

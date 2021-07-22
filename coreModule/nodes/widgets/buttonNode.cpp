@@ -26,11 +26,13 @@ void buttonNode::initListener() {
             }
 
             defaultColor = getColor();
-            auto nextColor = utilityModule::convertUtility::changeColorByPercent(defaultColor, 0.93);
-            auto clickAction = cocos2d::TintTo::create(0.01f, nextColor);
-            auto seq = cocos2d::Sequence::create(clickAction, nullptr);
-            seq->setTag(static_cast<int>(buttonNode::eButtonStatus::START_CLICK));
-            runAction(seq);
+            if (changeColorByClick) {
+                auto nextColor = utilityModule::convertUtility::changeColorByPercent(defaultColor, 0.93);
+                auto clickAction = cocos2d::TintTo::create(0.01f, nextColor);
+                auto seq = cocos2d::Sequence::create(clickAction, nullptr);
+                seq->setTag(static_cast<int>(buttonNode::eButtonStatus::START_CLICK));
+                runAction(seq);
+            }
             moveTimes = 0;
         } break;
         case ui::Widget::TouchEventType::MOVED: {
@@ -43,7 +45,6 @@ void buttonNode::initListener() {
                 return false;
             }
 
-            auto fadeOut = cocos2d::TintTo::create(0.1f, defaultColor);
 
             auto currentAction = getActionByTag(static_cast<int>(buttonNode::eButtonStatus::START_CLICK));
             auto actionSeq = dynamic_cast<cocos2d::Sequence*>(currentAction);
@@ -54,14 +55,27 @@ void buttonNode::initListener() {
                     }
                 }
             });
-            if (actionSeq != nullptr && !actionSeq->isDone()) {
-                auto seq = cocos2d::Sequence::create(actionSeq, fadeOut, clb, nullptr);
-                seq->setTag(static_cast<int>(buttonNode::eButtonStatus::END_CLICK));
-                runAction(seq);
+            if (changeColorByClick) {
+                auto fadeOut = cocos2d::TintTo::create(0.1f, defaultColor);
+                if (actionSeq != nullptr && !actionSeq->isDone()) {
+                    auto seq = cocos2d::Sequence::create(actionSeq, fadeOut, clb, nullptr);
+                    seq->setTag(static_cast<int>(buttonNode::eButtonStatus::END_CLICK));
+                    runAction(seq);
+                } else {
+                    auto seq = cocos2d::Sequence::create(fadeOut, clb, nullptr);
+                    seq->setTag(static_cast<int>(buttonNode::eButtonStatus::END_CLICK));
+                    runAction(seq);
+                }
             } else {
-                auto seq = cocos2d::Sequence::create(fadeOut, clb, nullptr);
-                seq->setTag(static_cast<int>(buttonNode::eButtonStatus::END_CLICK));
-                runAction(seq);
+                if (actionSeq != nullptr && !actionSeq->isDone()) {
+                    auto seq = cocos2d::Sequence::create(actionSeq, clb, nullptr);
+                    seq->setTag(static_cast<int>(buttonNode::eButtonStatus::END_CLICK));
+                    runAction(seq);
+                } else {
+                    auto seq = cocos2d::Sequence::create(clb, nullptr);
+                    seq->setTag(static_cast<int>(buttonNode::eButtonStatus::END_CLICK));
+                    runAction(seq);
+                }
             }
             return true;
         } break;
