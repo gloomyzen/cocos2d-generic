@@ -29,7 +29,7 @@ namespace generic {
                 return nullptr;
             }
 
-            void destroyProfile();
+            static void destroyProfile();
             void save();
             void cleanup();
 

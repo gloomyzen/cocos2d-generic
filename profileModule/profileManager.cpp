@@ -126,8 +126,12 @@ void profileManager::cleanup() {
     auto deleteProfile = cocos2d::UserDefault::getInstance()->getBoolForKey("deleteProfile", false);
     if (!deleteProfile)
         save();
-    for (auto item : profileBlocks) {
+    for (auto& item : profileBlocks) {
         delete item.second;
+        item.second = nullptr;
+    }
+    for (auto& item : profileBlocksClb) {
+        item.second = nullptr;
     }
     profileBlocks.clear();
     profileBlocksClb.clear();
