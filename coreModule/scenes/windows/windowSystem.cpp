@@ -2,6 +2,7 @@
 #include "generic/coreModule/scenes/windows/windowBase.h"
 #include "generic/debugModule/logManager.h"
 #include "generic/utilityModule/stringUtility.h"
+#include <algorithm>
 
 using namespace generic::coreModule;
 using namespace cocos2d;
