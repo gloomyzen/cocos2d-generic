@@ -4,8 +4,8 @@
 #include "cocos/ui/CocosGUI.h"
 #include "cocos2d.h"
 #include "generic/coreModule/nodes/nodeProperties.h"
-#include "generic/coreModule/nodes/widgets/buttonBase.h"
-#include "generic/coreModule/nodes/widgets/eventNode.h"
+#include "generic/coreModule/nodes/types/buttonBase.h"
+#include "generic/coreModule/nodes/types/eventNode.h"
 #include <functional>
 #include <string>
 

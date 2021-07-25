@@ -6,6 +6,18 @@
 #include <utility>
 
 namespace generic::coreModule {
+    class static3dNode {
+    public:
+        void setStaticEnabled(bool value) {
+            isEnabled = value;
+        }
+        bool isStaticEnabled() const {
+            return isEnabled;
+        }
+    private:
+        bool isEnabled = true;
+    };
+
     class node3d : public cocos2d::Node {
     public:
         node3d() = default;
@@ -19,9 +31,7 @@ namespace generic::coreModule {
             }
 
             uint32_t flags = processParentFlags(parentTransform, parentFlags);
-//            flags |= FLAGS_RENDER_AS_3D;
 
-            //
             Director* director = Director::getInstance();
             director->pushMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
             director->loadMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW, _modelViewTransform);
@@ -32,6 +42,15 @@ namespace generic::coreModule {
 
             if (!_children.empty()) {
                 std::sort(std::begin(_children), std::end(_children), [](Node* n1, Node* n2) {
+                    bool firstIsStatic = dynamic_cast<static3dNode*>(n1) && dynamic_cast<static3dNode*>(n1)->isStaticEnabled();
+                    bool secondIsStatic = dynamic_cast<static3dNode*>(n2) && dynamic_cast<static3dNode*>(n2)->isStaticEnabled();
+                    if (firstIsStatic && secondIsStatic) {
+                        return (n1->getPositionY() > n2->getPositionY());
+                    } else if (firstIsStatic && !secondIsStatic) {
+                        return true;
+                    } else if (!firstIsStatic && secondIsStatic) {
+                        return false;
+                    }
                     return (n1->getPositionY() > n2->getPositionY());
                 });
                 // draw children zOrder < 0

@@ -3,7 +3,7 @@
 
 #include "cocos2d.h"
 #include "generic/coreModule/nodes/nodeProperties.h"
-#include "generic/coreModule/nodes/widgets/soundButton.h"
+#include "generic/coreModule/nodes/types/soundButton.h"
 #include <map>
 #include <string>
 #include <utility>

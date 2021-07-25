@@ -1,5 +1,5 @@
 #include "gameManager.h"
-#include "generic/coreModule/nodes/widgets/eventNode.h"
+#include "generic/coreModule/nodes/types/eventNode.h"
 #include "generic/coreModule/scenes/mainScene.h"
 #include "generic/coreModule/scenes/windows/windowBase.h"
 #include "generic/coreModule/scenes/windows/windowSystem.h"

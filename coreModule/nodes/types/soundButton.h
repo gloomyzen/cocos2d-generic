@@ -3,8 +3,8 @@
 
 #include "cocos2d.h"
 #include "generic/coreModule/nodes/nodeProperties.h"
-#include "generic/coreModule/nodes/widgets/buttonNode.h"
-#include "generic/coreModule/nodes/widgets/eventNode.h"
+#include "generic/coreModule/nodes/types/buttonNode.h"
+#include "generic/coreModule/nodes/types/eventNode.h"
 #include <functional>
 #include <utility>
 

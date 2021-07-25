@@ -8,7 +8,7 @@
 #include "ImGuiEXT/imgui/imgui.h"
 #include "ImGuiEXT/imgui/imgui_internal.h"
 #include "cocos2d.h"
-#include "generic/coreModule/nodes/widgets/armatureNode.h"
+#include "generic/coreModule/nodes/types/armatureNode.h"
 #include "platform/CCPlatformConfig.h"
 #include "ui/CocosGUI.h"
 #include <functional>
