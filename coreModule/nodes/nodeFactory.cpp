@@ -426,6 +426,12 @@ void nodeFactory::getComponents(Node* node,
                 bounce = object["bounce"].GetBool();
             }
             scrollNode->setBounceEnabled(bounce);
+            if (object.HasMember("bounceOffset") && object["bounceOffset"].IsArray()) {
+                auto tempArray = object["bounceOffset"].GetArray();
+                if (tempArray[0].IsNumber() && tempArray[1].IsNumber()) {
+                    scrollNode->setBounceOffset(tempArray[0].GetFloat(), tempArray[1].GetFloat());
+                }
+            }
             // scroll bar
             bool scrollBar = false;
             if (object.HasMember("scrollBar") && object["scrollBar"].IsBool()) {
