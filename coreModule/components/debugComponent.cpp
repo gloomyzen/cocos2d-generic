@@ -3,7 +3,9 @@
 
 using namespace generic::coreModule;
 
-debugComponent::debugComponent() {}
+debugComponent::debugComponent() {
+    _name = "debugComponent";
+}
 
 debugComponent::~debugComponent() {}
 
