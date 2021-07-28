@@ -11,6 +11,16 @@ namespace generic::coreModule {
         ~debugComponent() override;
 
         void update(float delta) override;
+
+        bool isDebug() const;
+        void setDebug(bool);
+
+    protected:
+        bool _debugDrawEnabled = false;
+        cocos2d::Color4F _debugColorLine = cocos2d::Color4F::WHITE;
+        cocos2d::Color4F _debugColorPoint = cocos2d::Color4F::RED;
+
+        cocos2d::DrawNode* _debugDrawNode = nullptr;
     };
 
 }// namespace generic::coreModule
