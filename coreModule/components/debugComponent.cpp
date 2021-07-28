@@ -44,3 +44,11 @@ void debugComponent::setDebug(bool value) {
         _debugDrawNode->setVisible(false);
     }
 }
+
+void debugComponent::setLineColor(cocos2d::Color4F color) {
+    _debugColorLine = color;
+}
+
+void debugComponent::setPointColor(cocos2d::Color4F color) {
+    _debugColorPoint = color;
+}

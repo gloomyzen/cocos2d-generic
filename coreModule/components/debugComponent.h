@@ -15,6 +15,9 @@ namespace generic::coreModule {
         bool isDebug() const;
         void setDebug(bool);
 
+        void setLineColor(cocos2d::Color4F);
+        void setPointColor(cocos2d::Color4F);
+
     protected:
         bool _debugDrawEnabled = false;
         cocos2d::Color4F _debugColorLine = cocos2d::Color4F::WHITE;
