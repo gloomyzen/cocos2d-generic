@@ -12,9 +12,9 @@
 namespace generic::coreModule {
 
     class buttonNode
-        : public generic::coreModule::nodeProperties
-        , public generic::coreModule::buttonBase
-        , public generic::coreModule::eventNode {
+      : public generic::coreModule::nodeProperties
+      , public generic::coreModule::buttonBase
+      , public generic::coreModule::eventNode {
         enum class eButtonStatus {
             START_CLICK = 0,
             END_CLICK,

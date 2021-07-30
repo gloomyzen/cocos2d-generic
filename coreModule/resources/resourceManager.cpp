@@ -6,7 +6,9 @@ using namespace generic::coreModule;
 
 resourceManager* currentResourceManager = nullptr;
 
-resourceManager::resourceManager() { settingManagerInstance = new settingManager(); }
+resourceManager::resourceManager() {
+    settingManagerInstance = new settingManager();
+}
 
 resourceManager::~resourceManager() {
     delete settingManagerInstance;
@@ -26,6 +28,10 @@ resourceManager& resourceManager::getInstance() {
     return *currentResourceManager;
 }
 
-jsonLoader* resourceManager::getJsonLoader() { return &jsonLoaderInstance; }
+jsonLoader* resourceManager::getJsonLoader() {
+    return &jsonLoaderInstance;
+}
 
-settingManager* resourceManager::getSettingManager() { return settingManagerInstance; }
+settingManager* resourceManager::getSettingManager() {
+    return settingManagerInstance;
+}

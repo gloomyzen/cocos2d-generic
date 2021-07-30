@@ -9,7 +9,7 @@ namespace generic {
     namespace coreModule {
 
         class spritePolygon : public cocos2d::AutoPolygon {
-          public:
+        public:
             spritePolygon(const std::string& filename);
             ~spritePolygon();
             float getWidth();

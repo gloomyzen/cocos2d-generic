@@ -3,8 +3,8 @@
 #include "generic/coreModule/resources/loaders/jsonLoader.h"
 #include "generic/coreModule/resources/resourceManager.h"
 #include "generic/debugModule/logManager.h"
-#include "generic/utilityModule/stringUtility.h"
 #include "generic/utilityModule/jsonHelper.h"
+#include "generic/utilityModule/stringUtility.h"
 
 using namespace generic;
 using namespace generic::profileModule;
@@ -23,7 +23,9 @@ profileManager::~profileManager() {
     cleanup();
 }
 
-void profileManager::executeLoad() { load(); }
+void profileManager::executeLoad() {
+    load();
+}
 
 profileManager& profileManager::getInstance() {
     if (profileMgrInstance == nullptr) {
@@ -35,7 +37,8 @@ profileManager& profileManager::getInstance() {
 void profileManager::load() {
     const std::string& path = "config/user_profile";
     auto defaultProfile = GET_JSON_MANAGER()->loadJson(path);
-    auto profile = cocos2d::UserDefault::getInstance()->getStringForKey(STRING_FORMAT("profile_%s", APP_NAME.c_str()).c_str(), std::string());
+    auto profile =
+      cocos2d::UserDefault::getInstance()->getStringForKey(STRING_FORMAT("profile_%s", APP_NAME.c_str()).c_str(), std::string());
     auto localProfile = GET_JSON_MANAGER()->stringToJson(profile);
 #ifdef DEBUG
     if (!localProfile.HasParseError() && !localProfile.IsNull()) {
@@ -120,7 +123,9 @@ bool profileManager::isBlockRegistered(const std::string& needle) {
     return profileBlocks.count(needle) > 0;
 }
 
-void profileManager::destroyProfile() { cocos2d::UserDefault::getInstance()->deleteValueForKey("profile"); }
+void profileManager::destroyProfile() {
+    cocos2d::UserDefault::getInstance()->deleteValueForKey("profile");
+}
 
 void profileManager::cleanup() {
     auto deleteProfile = cocos2d::UserDefault::getInstance()->getBoolForKey("deleteProfile", false);

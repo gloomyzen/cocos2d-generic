@@ -9,7 +9,7 @@ namespace generic {
     namespace utilityModule {
 
         class findUtility {
-          public:
+        public:
             template<typename T>
             static T findClosest(int roll, std::vector<std::pair<int, T>> items) {
                 if (roll > 100)

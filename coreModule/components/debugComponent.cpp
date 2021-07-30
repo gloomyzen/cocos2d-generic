@@ -19,7 +19,7 @@ void debugComponent::update(float delta) {
         auto rect = getOwner()->getContentSize();
         auto pos = getOwner()->getPosition();
 
-        Vec2 dot = {rect.width * anchor.x, rect.height * anchor.y};
+        Vec2 dot = { rect.width * anchor.x, rect.height * anchor.y };
         _debugDrawNode->drawPoint(dot, 4.f, _debugColorPoint);
         _debugDrawNode->drawRect(Vec2::ZERO, rect, _debugColorLine);
     }

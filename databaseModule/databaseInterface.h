@@ -8,7 +8,7 @@
 
 namespace generic::databaseModule {
     class databaseInterface {
-      public:
+    public:
         databaseInterface() = default;
         virtual ~databaseInterface() = default;
 
@@ -39,16 +39,24 @@ namespace generic::databaseModule {
             return true;
         }
 
-        const std::string& getPath() const { return jsonPath; }
+        const std::string& getPath() const {
+            return jsonPath;
+        }
 
-        void setPath(const std::string& path) { jsonPath = path; }
+        void setPath(const std::string& path) {
+            jsonPath = path;
+        }
 
-        bool isLoaded() const { return loaded; }
+        bool isLoaded() const {
+            return loaded;
+        }
 
-      protected:
-        void setLoaded(bool _loaded) { loaded = _loaded; }
+    protected:
+        void setLoaded(bool _loaded) {
+            loaded = _loaded;
+        }
 
-      private:
+    private:
         std::string jsonPath;
         bool loaded = false;
     };

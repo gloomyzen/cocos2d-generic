@@ -1,11 +1,11 @@
 #include "audioEngine.h"
 
-#include <utility>
 #include "cocos2d.h"
-#include "generic/debugModule/logManager.h"
 #include "extensions/cocos-ext.h"
 #include "extensions/cocostudio/CocoStudio.h"
+#include "generic/debugModule/logManager.h"
 #include "generic/utilityModule/jsonHelper.h"
+#include <utility>
 
 using namespace generic::audioModule;
 
@@ -13,7 +13,8 @@ audioEngine* audioEngineInstance = nullptr;
 
 audioEngine::audioEngine() {
     // load json
-    const std::string& regionStr = cocos2d::FileUtils::getInstance()->getStringFromFile(std::string(AUDIO_ENGINE_SOUND_DIR) + std::string(AUDIO_ENGINE_SOUND_FILE));
+    const std::string& regionStr =
+      cocos2d::FileUtils::getInstance()->getStringFromFile(std::string(AUDIO_ENGINE_SOUND_DIR) + std::string(AUDIO_ENGINE_SOUND_FILE));
     rapidjson::Document data;
     data.Parse<0>(regionStr.c_str());
 
@@ -26,7 +27,7 @@ audioEngine::audioEngine() {
         for (auto value = effectIt->value.MemberBegin(); value != effectIt->value.MemberEnd(); ++value) {
             if (value->name.IsString() && value->value.IsString()) {
                 auto path = std::string(AUDIO_ENGINE_SOUND_DIR) + value->value.GetString();
-                sounds.insert({value->name.GetString(), { path, AUDIO_ENGINE_INVALID_TAG } });
+                sounds.insert({ value->name.GetString(), { path, AUDIO_ENGINE_INVALID_TAG } });
                 preload(path);
             }
         }
@@ -49,7 +50,7 @@ void audioEngine::cleanup() {
     cocos2d::AudioEngine::end();
 }
 
-void audioEngine::play(const std::string& name, bool loop, float volume, const cocos2d::AudioProfile *profile) {
+void audioEngine::play(const std::string& name, bool loop, float volume, const cocos2d::AudioProfile* profile) {
     auto item = sounds.find(name);
     if (item != sounds.end()) {
         auto id = cocos2d::AudioEngine::play2d(item->second.first, loop, volume, profile);

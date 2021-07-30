@@ -31,7 +31,7 @@ namespace generic {
         };
 
         class nodeFactory {
-          public:
+        public:
             nodeFactory();
             ~nodeFactory();
             static nodeFactory& getInstance();
@@ -46,7 +46,7 @@ namespace generic {
 
             bool registerCustomNodeType(const std::string&, std::function<Node*()>);
 
-          private:
+        private:
             void init();
             bool inited = false;
         };

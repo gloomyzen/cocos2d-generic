@@ -14,6 +14,7 @@ namespace generic::coreModule {
         bool isStaticEnabled() const {
             return isEnabled;
         }
+
     private:
         bool isEnabled = true;
     };

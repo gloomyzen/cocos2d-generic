@@ -1,7 +1,7 @@
 #include "scenesFactoryInstance.h"
-#include "generic/debugModule/logManager.h"
 #include "generic/coreModule/gameManager.h"
 #include "generic/coreModule/scenes/mainScene.h"
+#include "generic/debugModule/logManager.h"
 #include "generic/utilityModule/stringUtility.h"
 #include <map>
 
@@ -24,11 +24,10 @@ scenesFactoryInstance& scenesFactoryInstance::getInstance() {
 
 Layer* scenesFactoryInstance::getStateRoot(const std::string& state) {
     if (isStateRegistered(state)) {
-		return states[state]();
+        return states[state]();
     }
     LOG_ERROR(
-        STRING_FORMAT("scenesFactoryInstance::getStateRoot: Current state '%s' is not registered! Return simple layer.",
-                      state.c_str()));
+      STRING_FORMAT("scenesFactoryInstance::getStateRoot: Current state '%s' is not registered! Return simple layer.", state.c_str()));
     return Layer::create();
 }
 

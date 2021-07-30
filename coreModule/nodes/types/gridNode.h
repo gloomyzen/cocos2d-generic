@@ -11,8 +11,8 @@ namespace generic {
     namespace coreModule {
 
         class gridNode
-            : public nodeProperties
-            , public cocos2d::Node {
+          : public nodeProperties
+          , public cocos2d::Node {
         public:
             struct sGridCell {
                 cocos2d::Node* node = nullptr;

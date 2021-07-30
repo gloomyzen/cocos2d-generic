@@ -10,7 +10,7 @@
 namespace generic::databaseModule {
 
     class databaseManagerInterface {
-      public:
+    public:
         virtual ~databaseManagerInterface() = default;
 
         void executeLoadData() {
@@ -23,7 +23,7 @@ namespace generic::databaseModule {
 
         virtual void cleanup() = 0;
 
-      protected:
+    protected:
         void registerDatabase(const std::pair<int, std::string>& value, databaseInterface* db) {
             const auto& [key, path] = value;
             if (databasesMap.find(key) == databasesMap.end()) {

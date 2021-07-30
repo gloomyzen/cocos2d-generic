@@ -15,7 +15,7 @@ namespace generic {
         using namespace cocos2d;
 
         class scenesFactoryInstance {
-          public:
+        public:
             scenesFactoryInstance();
             ~scenesFactoryInstance();
             static scenesFactoryInstance& getInstance();
@@ -23,7 +23,7 @@ namespace generic {
             bool isStateRegistered(const std::string&);
             bool registerState(const std::string&, std::function<Layer*()>);
 
-          private:
+        private:
             std::map<std::string, bool> registeredStatesMap;
             std::map<std::string, std::function<Layer*()>> states;
         };

@@ -7,7 +7,7 @@ namespace generic {
     namespace profileModule {
 
         class profileBlockInterface {
-          public:
+        public:
             virtual ~profileBlockInterface() = default;
             virtual bool load(const rapidjson::GenericValue<rapidjson::UTF8<char>>::ConstObject&) = 0;
             virtual bool save(rapidjson::Value&, rapidjson::Document::AllocatorType&) = 0;

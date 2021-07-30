@@ -33,9 +33,7 @@ rapidjson::Document jsonLoader::stringToJson(const std::string& jsonStr) {
     return nullptr;
 }
 
-void jsonLoader::mergeJson(rapidjson::Value& target,
-                           rapidjson::Value& source,
-                           rapidjson::Value::AllocatorType& allocator) {
+void jsonLoader::mergeJson(rapidjson::Value& target, rapidjson::Value& source, rapidjson::Value::AllocatorType& allocator) {
     if (!source.IsObject())
         return;
 
@@ -50,8 +48,7 @@ void jsonLoader::mergeJson(rapidjson::Value& target,
 }
 
 rapidjson::Document jsonLoader::findByResolution(const std::string& path) {
-    if (GET_RESOLUTION_SETTING()->getCurrentSize() == nullptr
-        || GET_RESOLUTION_SETTING()->getCurrentSize()->getPath().empty()) {
+    if (GET_RESOLUTION_SETTING()->getCurrentSize() == nullptr || GET_RESOLUTION_SETTING()->getCurrentSize()->getPath().empty()) {
         return nullptr;
     }
     auto resolutionPath = GET_RESOLUTION_SETTING()->getCurrentSize()->getPath();

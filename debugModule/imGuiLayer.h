@@ -13,20 +13,20 @@
 #include "ui/CocosGUI.h"
 #include <functional>
 #include <list>
-#include <vector>
 #include <string>
 #include <tuple>
+#include <vector>
 
 namespace generic::debugModule {
     class imGuiLayer : public cocos2d::Layer {
-      protected:
+    protected:
         void update(float dt) override {
             if (!this->isVisible()) {
                 this->setVisible(true);
             }
         }
 
-      public:
+    public:
         imGuiLayer() {}
         ~imGuiLayer() {
             resetDebugModules();
@@ -38,9 +38,10 @@ namespace generic::debugModule {
         void addDebugModules(const std::pair<std::string, std::function<void()>>&);
         void drawImgui();
 
-        static bool Combo(const char* label, int* current_item, const std::vector<std::string>& items, int items_count, int height_in_items = -1);
+        static bool
+          Combo(const char* label, int* current_item, const std::vector<std::string>& items, int items_count, int height_in_items = -1);
 
-      private:
+    private:
         void initEvents();
         /// Debug data
         void debugToggleRow(Node*);

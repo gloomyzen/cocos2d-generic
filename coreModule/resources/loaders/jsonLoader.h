@@ -9,7 +9,7 @@ namespace generic {
 
     namespace coreModule {
         class jsonLoader {
-          public:
+        public:
             jsonLoader();
             ~jsonLoader();
 
@@ -23,7 +23,7 @@ namespace generic {
             rapidjson::Document stringToJson(const std::string& str);
             void mergeJson(rapidjson::Value& a, rapidjson::Value& b, rapidjson::Value::AllocatorType& allocator);
 
-          private:
+        private:
             rapidjson::Document findByResolution(const std::string& path);
         };
     }// namespace coreModule

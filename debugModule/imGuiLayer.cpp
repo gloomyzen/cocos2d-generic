@@ -2,8 +2,8 @@
 #include "imGuiLayer.h"
 #include "ImGuiEXT/imgui/misc/cpp/imgui_stdlib.h"
 #include "generic/coreModule/nodes/nodeProperties.h"
-#include "spine/spine-cocos2dx.h"
 #include "generic/utilityModule/stringUtility.h"
+#include "spine/spine-cocos2dx.h"
 
 using namespace generic;
 using namespace generic::debugModule;
@@ -90,7 +90,8 @@ bool imGuiLayer::init() {
     auto view = dynamic_cast<GLViewImpl*>(Director::getInstance()->getOpenGLView());
     view->setWindowed(director->getVisibleSize().width, director->getVisibleSize().height);
     cocos2d::extension::ImGuiEXT::getInstance()->addFont(FileUtils::getInstance()->fullPathForFilename("fonts/arial.ttf"));
-    cocos2d::extension::ImGuiEXT::getInstance()->addRenderLoop("#test", CC_CALLBACK_0(imGuiLayer::drawImgui, this), director->getRunningScene());
+    cocos2d::extension::ImGuiEXT::getInstance()->addRenderLoop(
+      "#test", CC_CALLBACK_0(imGuiLayer::drawImgui, this), director->getRunningScene());
 
     initEvents();
 
@@ -111,7 +112,7 @@ void imGuiLayer::drawImgui() {
         && ImGui::Begin("Debug",
                         &m_enabled,
                         ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoResize
-                        | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_AlwaysAutoResize)) {
+                          | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_AlwaysAutoResize)) {
         if (ImGui::Button("Debug")) {
             debugOpened = !debugOpened;
         }
@@ -124,7 +125,8 @@ void imGuiLayer::drawImgui() {
                 if (item.second != nullptr) {
                     item.second();
                     auto labelSize = ImGui::CalcTextSize(item.first.c_str());
-                    if (labelSize.x + 8.f > default_width) default_width = labelSize.x + 8.f;
+                    if (labelSize.x + 8.f > default_width)
+                        default_width = labelSize.x + 8.f;
                 }
             }
             if (ImGui::Button("Close")) {
@@ -142,8 +144,7 @@ void imGuiLayer::drawImgui() {
 }
 
 void imGuiLayer::showNodeEditor(bool* editorOpened) {
-    ImGui::SetNextWindowSize(ImVec2(static_cast<float>(nodeEditorW), static_cast<float>(nodeEditorH)),
-                             ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowSize(ImVec2(static_cast<float>(nodeEditorW), static_cast<float>(nodeEditorH)), ImGuiCond_FirstUseEver);
     if (!ImGui::Begin("Property editor", reinterpret_cast<bool*>(editorOpened))) {
         ImGui::End();
         return;
@@ -185,7 +186,7 @@ ImRect imGuiLayer::renderTree(cocos2d::Vector<Node*> n) {
         }
         const std::string name = className + node->getName() + (node->isVisible() ? "" : " #inactive");
         ImGuiTreeNodeFlags nodeFlags =
-            ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth;
+          ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth;
         if (lastTarget == node) {
             nodeFlags |= ImGuiTreeNodeFlags_Selected;
         }
@@ -354,9 +355,8 @@ ImRect imGuiLayer::renderPreferences(Node* node) {
         float nodeGreen = nodeColor.g / 255.0f;
         float nodeBlue = nodeColor.b / 255.0f;
         float vecColors[3] = { nodeRed, nodeGreen, nodeBlue };
-        ImGui::ColorEdit4("Color",
-                          (float*)&vecColors,
-                          ImGuiColorEditFlags_DisplayRGB | ImGuiColorEditFlags_InputRGB | ImGuiColorEditFlags_Uint8);
+        ImGui::ColorEdit4(
+          "Color", (float*)&vecColors, ImGuiColorEditFlags_DisplayRGB | ImGuiColorEditFlags_InputRGB | ImGuiColorEditFlags_Uint8);
         if (vecColors[0] != static_cast<float>(nodeColor.r) / 255.0f) {
             nodeColor.r = static_cast<uint8_t>(vecColors[0] * 255.0f);
             if (nodeColor.r < 0)
@@ -423,11 +423,11 @@ ImRect imGuiLayer::renderPreferences(Node* node) {
                 int tempItem = itemCurrent;
                 Combo("Animation", &itemCurrent, items, static_cast<int>(items.size()));
                 if (tempItem != itemCurrent) {
-//                    auto cfg = new dragonBones::AnimationConfig();
-//                    cfg->actionEnabled = true;
-//                    cfg->animation = items[itemCurrent];
-//                    armature->getAnimation()->playConfig(cfg);
-//                    armature->getAnimation()->play(items[itemCurrent]);
+                    //                    auto cfg = new dragonBones::AnimationConfig();
+                    //                    cfg->actionEnabled = true;
+                    //                    cfg->animation = items[itemCurrent];
+                    //                    armature->getAnimation()->playConfig(cfg);
+                    //                    armature->getAnimation()->play(items[itemCurrent]);
                     auto state = armature->getAnimation()->fadeIn(animNames[itemCurrent]);
                 }
             }
@@ -438,7 +438,7 @@ ImRect imGuiLayer::renderPreferences(Node* node) {
             if (auto skeleton = spine->getSkeleton()) {
                 if (auto data = skeleton->getData()) {
                     {
-                        //a new
+                        // a new
                         auto isLoop = false;
                         auto animations = data->getAnimations();
                         std::string lastAnimation;
@@ -466,11 +466,10 @@ ImRect imGuiLayer::renderPreferences(Node* node) {
                         if (tempItem != itemCurrent) {
                             spine->setAnimation(1, std::string(animations[itemCurrent]->getName().buffer()), isLoop);
                         }
-
                     }
 
                     {
-                        //skins section
+                        // skins section
                         auto skins = data->getSkins();
                         int itemCurrent = 1;
                         std::vector<std::string> items;
@@ -482,7 +481,7 @@ ImRect imGuiLayer::renderPreferences(Node* node) {
                     }
                 }
                 {
-                    //skeleton scale section
+                    // skeleton scale section
                     float skeletonScale[2] = { skeleton->getScaleX(), skeleton->getScaleY() };
                     ImGui::DragFloat2("Skeleton scale", skeletonScale, .01f, -1, 1);
                     if (skeletonScale[0] != skeleton->getScaleX() || skeletonScale[1] != skeleton->getScaleY()) {
@@ -491,7 +490,7 @@ ImRect imGuiLayer::renderPreferences(Node* node) {
                     }
                 }
                 {
-                    //skeleton slots section
+                    // skeleton slots section
                     auto slots = skeleton->getSlots();
                     int itemCurrent = 1;
                     std::vector<std::string> items;
@@ -503,7 +502,7 @@ ImRect imGuiLayer::renderPreferences(Node* node) {
                 }
             }
             {
-                //debug bones section
+                // debug bones section
                 auto debugBones = spine->getDebugBonesEnabled();
                 auto tempDebugBones = debugBones;
                 ImGui::Checkbox("Bones debug", &debugBones);
@@ -512,7 +511,7 @@ ImRect imGuiLayer::renderPreferences(Node* node) {
                 }
             }
             {
-                //debug bounding rect section
+                // debug bounding rect section
                 auto debugBones = spine->getDebugBoundingRectEnabled();
                 auto tempDebugBones = debugBones;
                 ImGui::Checkbox("BoundingRect debug", &debugBones);
@@ -521,7 +520,7 @@ ImRect imGuiLayer::renderPreferences(Node* node) {
                 }
             }
             {
-                //debug Meshes section
+                // debug Meshes section
                 auto debugBones = spine->getDebugMeshesEnabled();
                 auto tempDebugBones = debugBones;
                 ImGui::Checkbox("Meshes debug", &debugBones);
@@ -530,7 +529,7 @@ ImRect imGuiLayer::renderPreferences(Node* node) {
                 }
             }
             {
-                //debug Slots section
+                // debug Slots section
                 auto debugBones = spine->getDebugSlotsEnabled();
                 auto tempDebugBones = debugBones;
                 ImGui::Checkbox("Slots debug", &debugBones);
@@ -594,9 +593,13 @@ void imGuiLayer::debugToggleRow(cocos2d::Node* node) {
     }
 }
 
-void imGuiLayer::resetDebugModules() { debugModules.clear(); }
+void imGuiLayer::resetDebugModules() {
+    debugModules.clear();
+}
 
-void imGuiLayer::addDebugModules(const std::pair<std::string, std::function<void()>>& item) { debugModules.push_back(item); }
+void imGuiLayer::addDebugModules(const std::pair<std::string, std::function<void()>>& item) {
+    debugModules.push_back(item);
+}
 
 void imGuiLayer::initEvents() {
     keyboardListener = cocos2d::EventListenerKeyboard::create();
@@ -611,13 +614,10 @@ void imGuiLayer::initEvents() {
 
 bool imGuiLayer::Combo(const char* label, int* current_item, const std::vector<std::string>& items, int items_count, int height_in_items) {
     return ImGui::Combo(label, current_item,[](void* data, int idx, const char** out_text) {
-            auto strVec = static_cast<const std::vector<std::string>*>(data);
-            *out_text = (*strVec)[idx].c_str();
-            return true;
-        },
-        (void*)&items,
-        items_count,
-        height_in_items);
+          auto strVec = static_cast<const std::vector<std::string>*>(data);
+          *out_text = (*strVec)[idx].c_str();
+          return true;
+      }, (void*)&items, items_count, height_in_items);
 }
 
 #endif// DEBUG

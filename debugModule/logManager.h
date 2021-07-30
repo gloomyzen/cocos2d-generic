@@ -30,21 +30,21 @@ namespace generic {
          * Данный класс нужен для логирования исключительных событий
          */
         class logManager {
-          public:
+        public:
             void info(const std::string& message);
 
             void warning(const std::string& message);
 
             void error(const std::string& message);
 
-          private:
+        private:
             void addLogMessage(sLogMessage*);
 
             std::vector<sLogMessage*> log{};
         };
 
         class loggerInstance {
-          public:
+        public:
             static logManager& getInstance();
         };
     }// namespace debugModule

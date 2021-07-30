@@ -71,9 +71,8 @@ void mainScene::setRoom(const std::string& state) {
 void mainScene::initTaskLoading(cocos2d::Layer* layer) {
     if (auto item = dynamic_cast<taskHolder*>(layer)) {
         auto atp = cocos2d::AsyncTaskPool::getInstance();
-        atp->enqueue(cocos2d::AsyncTaskPool::TaskType::TASK_OTHER, [](void*){}, nullptr,
-                     [item]() {
-                            item->executeTasks();
-                     });
+        atp->enqueue(cocos2d::AsyncTaskPool::TaskType::TASK_OTHER, [](void*) {}, nullptr, [item]() {
+              item->executeTasks();
+        });
     }
 }

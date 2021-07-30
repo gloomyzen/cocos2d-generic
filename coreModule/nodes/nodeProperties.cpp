@@ -20,14 +20,18 @@ void nodeProperties::loadProperty(const std::string& path, cocos2d::Node* node) 
     loadJson(path);
 
     if (propertyData.HasParseError() || !propertyData.IsObject()) {
-        LOG_ERROR(STRING_FORMAT("nodeProperties::loadProperty Json file '%s' for node '%s' has errors or not found!", pathProperties.c_str(), node->getName().c_str()));
+        LOG_ERROR(STRING_FORMAT("nodeProperties::loadProperty Json file '%s' for node '%s' has errors or not found!",
+                                pathProperties.c_str(),
+                                node->getName().c_str()));
         return;
     }
     if (propertyData.HasMember("struct") && propertyData["struct"].IsObject()) {
         auto strObject = propertyData["struct"].GetObject();
-        if (!strObject.HasMember("type") || !strObject.HasMember("name")
-            || !strObject["type"].IsString() || !strObject["name"].IsString()) {
-            LOG_ERROR(STRING_FORMAT("nodeProperties::loadProperty Json file '%s' for node '%s' not has 'type' and 'name'!", pathProperties.c_str(), node->getName().c_str()));
+        if (!strObject.HasMember("type") || !strObject.HasMember("name") || !strObject["type"].IsString()
+            || !strObject["name"].IsString()) {
+            LOG_ERROR(STRING_FORMAT("nodeProperties::loadProperty Json file '%s' for node '%s' not has 'type' and 'name'!",
+                                    pathProperties.c_str(),
+                                    node->getName().c_str()));
             return;
         }
 
@@ -53,7 +57,6 @@ void nodeProperties::loadProperty(const std::string& path, cocos2d::Node* node) 
 
         parseComponents(usedNode, usedNode->getName());
     }
-
 }
 
 void nodeProperties::loadComponent(cocos2d::Node* node, const std::string& name) {
@@ -95,9 +98,8 @@ void nodeProperties::parseComponents(cocos2d::Node* node, const std::string& nam
         auto propObj = propJson[nodeName.c_str()].GetObject();
         for (const auto& component : componentPriorityList) {
             if (component.empty()) {
-                LOG_ERROR(StringUtils::format(
-                    "nodeProperties::parseProperty bad property '%s' in 'componentPriorityList'",
-                    component.c_str()));
+                LOG_ERROR(
+                  StringUtils::format("nodeProperties::parseProperty bad property '%s' in 'componentPriorityList'", component.c_str()));
                 continue;
             }
             const auto componentItr = propObj.FindMember(component.c_str());

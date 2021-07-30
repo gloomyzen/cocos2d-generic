@@ -13,7 +13,7 @@ namespace generic {
         class locationProfile;
 
         class profileManager {
-          public:
+        public:
             profileManager();
             ~profileManager();
             static profileManager& getInstance();
@@ -33,7 +33,7 @@ namespace generic {
             void save();
             void cleanup();
 
-          private:
+        private:
             void load();
             void loadProfile(const rapidjson::Document& defaultData, const rapidjson::Document& localData);
 

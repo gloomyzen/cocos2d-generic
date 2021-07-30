@@ -1,14 +1,14 @@
 #include "nodeFactory.h"
+#include "DragonBones/CCDragonBonesHeaders.h"
 #include "generic/coreModule/nodes/types/armatureNode.h"
 #include "generic/coreModule/nodes/types/buttonBase.h"
 #include "generic/coreModule/nodes/types/buttonNode.h"
 #include "generic/coreModule/nodes/types/gridNode.h"
 #include "generic/coreModule/nodes/types/node3d.h"
 #include "generic/coreModule/nodes/types/soundButton.h"
-#include "spine/spine-cocos2dx.h"
 #include "generic/debugModule/logManager.h"
 #include "generic/utilityModule/stringUtility.h"
-#include "DragonBones/CCDragonBonesHeaders.h"
+#include "spine/spine-cocos2dx.h"
 #include "ui/CocosGUI.h"
 #include <map>
 #include <string>
@@ -19,14 +19,10 @@ using namespace cocos2d;
 using namespace dragonBones;
 
 std::map<std::string, eNodeFactory> componentsMap = {
-    { "transformComponent", eNodeFactory::TRANSFORM_COMPONENT },
-    { "spriteComponent", eNodeFactory::SPRITE_COMPONENT },
-    { "labelComponent", eNodeFactory::LABEL_COMPONENT },
-    { "dragonbonesComponent", eNodeFactory::DRAGONBONES_COMPONENT },
-    { "colorComponent", eNodeFactory::COLOR_COMPONENT },
-    { "scrollViewComponent", eNodeFactory::SCROLL_VIEW_COMPONENT },
-    { "gridComponent", eNodeFactory::GRID_COMPONENT },
-    { "scale9spriteComponent", eNodeFactory::SCALE9SPRITE_COMPONENT },
+    { "transformComponent", eNodeFactory::TRANSFORM_COMPONENT }, { "spriteComponent", eNodeFactory::SPRITE_COMPONENT },
+    { "labelComponent", eNodeFactory::LABEL_COMPONENT },         { "dragonbonesComponent", eNodeFactory::DRAGONBONES_COMPONENT },
+    { "colorComponent", eNodeFactory::COLOR_COMPONENT },         { "scrollViewComponent", eNodeFactory::SCROLL_VIEW_COMPONENT },
+    { "gridComponent", eNodeFactory::GRID_COMPONENT },           { "scale9spriteComponent", eNodeFactory::SCALE9SPRITE_COMPONENT },
     { "spineComponent", eNodeFactory::SPINE_COMPONENT }
 };
 std::map<std::string, std::function<Node*()>> nodes{};
@@ -101,13 +97,11 @@ void nodeFactory::getComponents(Node* node,
             if (positions.Size() == 2) {
                 node->setPosition(positions[0].GetFloat(), positions[1].GetFloat());
             } else if (positions.Size() == 3) {
-                node->setPosition3D(
-                    cocos2d::Vec3(positions[0].GetFloat(), positions[1].GetFloat(), positions[2].GetFloat()));
+                node->setPosition3D(cocos2d::Vec3(positions[0].GetFloat(), positions[1].GetFloat(), positions[2].GetFloat()));
             } else {
-                LOG_ERROR(
-                    StringUtils::format("nodeFactory::getComponents: Component '%s' has wrong '%s' position keys!",
-                                        componentName.c_str(),
-                                        std::to_string(positions.Size()).c_str()));
+                LOG_ERROR(StringUtils::format("nodeFactory::getComponents: Component '%s' has wrong '%s' position keys!",
+                                              componentName.c_str(),
+                                              std::to_string(positions.Size()).c_str()));
             }
         }
         if (object.HasMember("pivot")) {
@@ -184,13 +178,11 @@ void nodeFactory::getComponents(Node* node,
         if (object.HasMember("rotation3d")) {
             auto rotation3d = object["rotation3d"].GetArray();
             if (rotation3d.Size() == 3) {
-                node->setRotation3D(
-                    cocos2d::Vec3(rotation3d[0].GetFloat(), rotation3d[1].GetFloat(), rotation3d[2].GetFloat()));
+                node->setRotation3D(cocos2d::Vec3(rotation3d[0].GetFloat(), rotation3d[1].GetFloat(), rotation3d[2].GetFloat()));
             } else {
-                LOG_ERROR(
-                    StringUtils::format("nodeFactory::getComponents: Component '%s' has wrong '%s' rotation3d keys!",
-                                        componentName.c_str(),
-                                        std::to_string(rotation3d.Size()).c_str()));
+                LOG_ERROR(StringUtils::format("nodeFactory::getComponents: Component '%s' has wrong '%s' rotation3d keys!",
+                                              componentName.c_str(),
+                                              std::to_string(rotation3d.Size()).c_str()));
             }
         }
         if (object.HasMember("stretch")) {
@@ -221,8 +213,7 @@ void nodeFactory::getComponents(Node* node,
             if (object.HasMember("image") && object["image"].IsString()) {
                 imagePath = object["image"].GetString();
                 if (imagePath.empty()) {
-                    LOG_ERROR(STRING_FORMAT("nodeFactory::getComponents: Component '%s' has invalid image path!",
-                                            componentName.c_str()));
+                    LOG_ERROR(STRING_FORMAT("nodeFactory::getComponents: Component '%s' has invalid image path!", componentName.c_str()));
                     break;
                 }
                 if (object.HasMember("polygon") && object["polygon"].IsBool()) {
@@ -251,19 +242,18 @@ void nodeFactory::getComponents(Node* node,
                     }
                 }
             } else {
-                LOG_ERROR(STRING_FORMAT("nodeFactory::getComponents: Component '%s' no has image path!",
-                                        componentName.c_str()));
+                LOG_ERROR(STRING_FORMAT("nodeFactory::getComponents: Component '%s' no has image path!", componentName.c_str()));
                 break;
             }
         } else {
             LOG_ERROR(STRING_FORMAT("nodeFactory::getComponents: Node '%s', component '%s' no has sprite node type!",
-                                    node->getName().c_str(), componentName.c_str()));
+                                    node->getName().c_str(),
+                                    componentName.c_str()));
         }
     } break;
     case eNodeFactory::LABEL_COMPONENT: {
         if (auto label = dynamic_cast<Label*>(node)) {
-            if (object.HasMember("fontType") && object["fontType"].IsString()
-                && object["fontType"].GetString() == std::string("ttf")) {
+            if (object.HasMember("fontType") && object["fontType"].IsString() && object["fontType"].GetString() == std::string("ttf")) {
                 TTFConfig font = label->getTTFConfig();
                 if (font.fontFilePath.empty()) {
                     font.fontFilePath = "fonts/arial.ttf";
@@ -304,8 +294,7 @@ void nodeFactory::getComponents(Node* node,
                 }
             }
         } else {
-            LOG_ERROR(StringUtils::format("nodeFactory::getComponents: Component '%s' no has label node type!",
-                                          componentName.c_str()));
+            LOG_ERROR(StringUtils::format("nodeFactory::getComponents: Component '%s' no has label node type!", componentName.c_str()));
         }
     } break;
     case eNodeFactory::DRAGONBONES_COMPONENT: {
@@ -334,8 +323,8 @@ void nodeFactory::getComponents(Node* node,
                         if (bone->getAnimation()->hasAnimation(object["animation"].GetString())) {
                             bone->getAnimation()->fadeIn(object["animation"].GetString(), fadeInTime, playTimes);
                         } else {
-                            LOG_ERROR(STRING_FORMAT("nodeFactory::getComponents: Can't find animation '%s'",
-                                                    object["animation"].GetString()));
+                            LOG_ERROR(
+                              STRING_FORMAT("nodeFactory::getComponents: Can't find animation '%s'", object["animation"].GetString()));
                         }
                     }
                     dragonbones->addChild(bone);
@@ -344,8 +333,8 @@ void nodeFactory::getComponents(Node* node,
                 }
             }
         } else {
-            LOG_ERROR(StringUtils::format("nodeFactory::getComponents: Component '%s' no has DragonBones node type!",
-                                          componentName.c_str()));
+            LOG_ERROR(
+              StringUtils::format("nodeFactory::getComponents: Component '%s' no has DragonBones node type!", componentName.c_str()));
         }
     } break;
     case eNodeFactory::SPINE_COMPONENT: {
@@ -365,7 +354,8 @@ void nodeFactory::getComponents(Node* node,
                     spine->initWithJsonFile(json, atlas, scale);
                     spine->autorelease();
                 } else {
-                    LOG_ERROR(StringUtils::format("nodeFactory::getComponents: Can't get atlas or binary file for spine '%s'!", node->getName().c_str()));
+                    LOG_ERROR(StringUtils::format("nodeFactory::getComponents: Can't get atlas or binary file for spine '%s'!",
+                                                  node->getName().c_str()));
                 }
             }
             auto loop = false;
@@ -380,8 +370,8 @@ void nodeFactory::getComponents(Node* node,
                 spine->setSkin(object["skin"].GetString());
             }
         } else {
-            LOG_ERROR(StringUtils::format("nodeFactory::getComponents: Component '%s' no has DragonBones node type!",
-                                          componentName.c_str()));
+            LOG_ERROR(
+              StringUtils::format("nodeFactory::getComponents: Component '%s' no has DragonBones node type!", componentName.c_str()));
         }
     } break;
     case eNodeFactory::COLOR_COMPONENT: {
@@ -525,8 +515,7 @@ void nodeFactory::getComponents(Node* node,
                 std::string imagePath;
                 imagePath = object["image"].GetString();
                 if (imagePath.empty()) {
-                    LOG_ERROR(STRING_FORMAT("nodeFactory::getComponents: Component '%s' has invalid image path!",
-                                            componentName.c_str()));
+                    LOG_ERROR(STRING_FORMAT("nodeFactory::getComponents: Component '%s' has invalid image path!", componentName.c_str()));
                     break;
                 }
                 sprite->initWithFile(imagePath);
@@ -577,8 +566,7 @@ void nodeFactory::init() {}
 
 bool nodeFactory::registerCustomNodeType(const std::string& type, std::function<Node*()> node) {
     if (!inited) {
-        CCLOGERROR("nodeFactory::registerCustomNodeType: No initialized instance of the class! Type %s not registered!",
-                   type.c_str());
+        CCLOGERROR("nodeFactory::registerCustomNodeType: No initialized instance of the class! Type %s not registered!", type.c_str());
         return false;
     }
     if (nodes.find(type) == nodes.end()) {

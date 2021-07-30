@@ -15,7 +15,7 @@ namespace generic {
 
     namespace coreModule {
         class resourceManager {
-          public:
+        public:
             resourceManager();
             ~resourceManager();
             static resourceManager& getInstance();
@@ -23,7 +23,7 @@ namespace generic {
             jsonLoader* getJsonLoader();
             settingManager* getSettingManager();
 
-          private:
+        private:
             jsonLoader jsonLoaderInstance;
             settingManager* settingManagerInstance = nullptr;
         };

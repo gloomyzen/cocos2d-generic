@@ -5,10 +5,12 @@
 
 namespace generic::utilityModule {
     class convertUtility {
-      public:
+    public:
         static cocos2d::Color3B changeColorFromTo(const cocos2d::Color3B& from, const cocos2d::Color3B& to, float percent) {
-            if (percent > 1.0f) percent = 1.0f;
-            else if (percent < 0.f) percent = 0.f;
+            if (percent > 1.0f)
+                percent = 1.0f;
+            else if (percent < 0.f)
+                percent = 0.f;
             auto getColor = [](float a, float b, float p) {
                 return static_cast<int>((b - a) * p + a);
             };
@@ -20,8 +22,10 @@ namespace generic::utilityModule {
         };
 
         static cocos2d::Color3B changeColorByPercent(const cocos2d::Color3B& color, float percent) {
-            if (percent > 1.0f) percent = 1.0f;
-            else if (percent < 0.f) percent = 0.f;
+            if (percent > 1.0f)
+                percent = 1.0f;
+            else if (percent < 0.f)
+                percent = 0.f;
             auto getColor = [](float a, float p) {
                 if (a * p >= 255.f)
                     return static_cast<int>(255);

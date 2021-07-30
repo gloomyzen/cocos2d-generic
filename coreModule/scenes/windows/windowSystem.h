@@ -11,7 +11,7 @@ namespace generic::coreModule {
     class windowBase;
 
     class windowSystem : public cocos2d::Node {
-      public:
+    public:
         windowSystem();
         ~windowSystem() = default;
 
@@ -20,7 +20,7 @@ namespace generic::coreModule {
         windowBase* requestWindow(const std::string&, bool force = false);
         bool closeWindow(const std::string&);
 
-      private:
+    private:
         std::map<std::string, std::function<windowBase*()>> registeredWindowList;
         std::vector<windowBase*> openedWindowList;
         std::vector<windowBase*> waitingWindowList;

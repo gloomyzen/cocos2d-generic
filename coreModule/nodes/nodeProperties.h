@@ -50,7 +50,9 @@ namespace generic::coreModule {
     };
 
     template<typename T>
-    class nodeWithProperties : public T, public nodeProperties {};
+    class nodeWithProperties
+      : public T
+      , public nodeProperties {};
 
 }// namespace generic::coreModule
 

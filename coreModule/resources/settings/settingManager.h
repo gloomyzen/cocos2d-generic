@@ -36,14 +36,14 @@ namespace generic {
         };
 
         class settingManager {
-          public:
+        public:
             settingManager();
             ~settingManager();
             void load();
             void init(bool isMobile, const std::string& settingName = "");
             sDisplaySize* getCurrentSize();
 
-          private:
+        private:
             sDisplaySize* getSizeByName(const std::string&);
             std::map<std::string, sDisplaySize*> allResolutions;
             sDisplaySize* currentSize = nullptr;
