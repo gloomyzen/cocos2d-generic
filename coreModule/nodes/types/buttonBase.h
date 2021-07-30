@@ -16,6 +16,7 @@ namespace generic::coreModule {
         void setChangeColorByClick(bool value) {
             changeColorByClick = value;
         }
+		CREATE_FUNC(buttonBase);
 
     protected:
         bool changeColorByClick = true;
