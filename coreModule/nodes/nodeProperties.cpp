@@ -48,6 +48,8 @@ void nodeProperties::loadProperty(const std::string& path, cocos2d::Node* node) 
         if (strObject.HasMember("settings") && strObject["settings"].IsObject()) {
             if (auto nodeWithProps = dynamic_cast<nodeProperties*>(usedNode)) {
                 nodeWithProps->setSettingsData(strObject["settings"].GetObject());
+                nodeWithProps->updateSettings();
+                removeSettingsData();
             }
         }
 
@@ -121,6 +123,7 @@ void nodeProperties::parseData(cocos2d::Node* node, const rapidjson::GenericValu
             if (item.HasMember("settings") && item["settings"].IsObject()) {
                 if (auto nodeWithProps = dynamic_cast<nodeProperties*>(childNode)) {
                     nodeWithProps->setSettingsData(item["settings"].GetObject());
+                    nodeWithProps->updateSettings();
                 }
             }
             node->addChild(childNode);
@@ -171,3 +174,5 @@ void nodeProperties::removeSettingsData() {
         settingsData.RemoveAllMembers();
     }
 }
+
+void nodeProperties::updateSettings() {}

@@ -39,6 +39,8 @@ namespace generic::coreModule {
         rapidjson::Value getSettingsData();
         void removeSettingsData();
 
+        virtual void updateSettings();
+
 
     private:
         void parseComponents(cocos2d::Node* node, const std::string& name = std::string());
