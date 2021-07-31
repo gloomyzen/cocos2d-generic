@@ -65,7 +65,7 @@ void mainScene::setRoom(const std::string& state) {
     initTaskLoading(nextNode);
     nodes.push_back(nextNode);
     nextNode->runAction(seq);
-    director->getRunningScene()->getDefaultCamera()->setPosition(visibleSize.width / 2, visibleSize.height / 2);
+//    director->getRunningScene()->getDefaultCamera()->setPosition(visibleSize.width / 2, visibleSize.height / 2);
 }
 
 void mainScene::initTaskLoading(cocos2d::Layer* layer) {
