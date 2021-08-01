@@ -12,20 +12,19 @@
 namespace generic {
 
     namespace coreModule {
-        using namespace cocos2d;
 
         class scenesFactoryInstance {
         public:
             scenesFactoryInstance();
             ~scenesFactoryInstance();
             static scenesFactoryInstance& getInstance();
-            Layer* getStateRoot(const std::string&);
+            cocos2d::Node* getStateRoot(const std::string&);
             bool isStateRegistered(const std::string&);
-            bool registerState(const std::string&, std::function<Layer*()>);
+            bool registerState(const std::string&, std::function<cocos2d::Node*()>);
 
         private:
             std::map<std::string, bool> registeredStatesMap;
-            std::map<std::string, std::function<Layer*()>> states;
+            std::map<std::string, std::function<cocos2d::Node*()>> states;
         };
     }// namespace coreModule
 }// namespace generic

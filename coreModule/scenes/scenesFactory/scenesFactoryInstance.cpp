@@ -22,16 +22,16 @@ scenesFactoryInstance& scenesFactoryInstance::getInstance() {
     return *currentFactoryInstance;
 }
 
-Layer* scenesFactoryInstance::getStateRoot(const std::string& state) {
+cocos2d::Node* scenesFactoryInstance::getStateRoot(const std::string& state) {
     if (isStateRegistered(state)) {
         return states[state]();
     }
     LOG_ERROR(
       STRING_FORMAT("scenesFactoryInstance::getStateRoot: Current state '%s' is not registered! Return simple layer.", state.c_str()));
-    return Layer::create();
+    return cocos2d::Node::create();
 }
 
-bool scenesFactoryInstance::registerState(const std::string& state, std::function<Layer*()> clb) {
+bool scenesFactoryInstance::registerState(const std::string& state, std::function<cocos2d::Node*()> clb) {
     if (isStateRegistered(state))
         return false;
 

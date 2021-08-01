@@ -7,6 +7,7 @@
 
 using namespace generic;
 using namespace generic::coreModule;
+using namespace cocos2d;
 
 gameManager* currentGameManager = nullptr;
 

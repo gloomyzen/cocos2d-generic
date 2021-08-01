@@ -3,6 +3,7 @@
 #include "generic/utilityModule/stringUtility.h"
 
 using namespace generic::coreModule;
+using namespace cocos2d;
 
 buttonNode::buttonNode() {
     setFocusEnabled(false);

@@ -60,7 +60,7 @@ void mainScene::setRoom(const std::string& state) {
                                     nodes.erase(nodes.begin());
                                 }),
                                 nullptr);
-    nextNode->setContentSize(visibleSize);
+//    nextNode->setContentSize(visibleSize);
     this->addChild(nextNode, eGameLayers::ROOT);
     initTaskLoading(nextNode);
     nodes.push_back(nextNode);
@@ -68,8 +68,8 @@ void mainScene::setRoom(const std::string& state) {
 //    director->getRunningScene()->getDefaultCamera()->setPosition(visibleSize.width / 2, visibleSize.height / 2);
 }
 
-void mainScene::initTaskLoading(cocos2d::Layer* layer) {
-    if (auto item = dynamic_cast<taskHolder*>(layer)) {
+void mainScene::initTaskLoading(cocos2d::Node* node) {
+    if (auto item = dynamic_cast<taskHolder*>(node)) {
         auto atp = cocos2d::AsyncTaskPool::getInstance();
         atp->enqueue(cocos2d::AsyncTaskPool::TaskType::TASK_OTHER, [](void*) {}, nullptr, [item]() {
               item->executeTasks();

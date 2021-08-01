@@ -8,6 +8,7 @@
 using namespace generic;
 using namespace generic::debugModule;
 using namespace generic::coreModule;
+using namespace cocos2d;
 
 static bool closeAll = false;
 static bool debugOpened = false;

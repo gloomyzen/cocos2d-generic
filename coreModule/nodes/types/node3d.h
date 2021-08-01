@@ -25,7 +25,7 @@ namespace generic::coreModule {
         ~node3d() override = default;
         CREATE_FUNC(node3d);
 
-        void visit(Renderer* renderer, const Mat4& parentTransform, uint32_t parentFlags) override {
+        void visit(cocos2d::Renderer* renderer, const cocos2d::Mat4& parentTransform, uint32_t parentFlags) override {
             // quick return if not visible. children won't be drawn.
             if (!_visible) {
                 return;
@@ -33,9 +33,9 @@ namespace generic::coreModule {
 
             uint32_t flags = processParentFlags(parentTransform, parentFlags);
 
-            Director* director = Director::getInstance();
-            director->pushMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
-            director->loadMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW, _modelViewTransform);
+            cocos2d::Director* director = cocos2d::Director::getInstance();
+            director->pushMatrix(cocos2d::MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
+            director->loadMatrix(cocos2d::MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW, _modelViewTransform);
 
             bool visibleByCamera = isVisitableByVisitingCamera();
 
@@ -73,7 +73,7 @@ namespace generic::coreModule {
                 this->draw(renderer, _modelViewTransform, flags);
             }
 
-            director->popMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
+            director->popMatrix(cocos2d::MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
         }
     };
 }// namespace generic::coreModule

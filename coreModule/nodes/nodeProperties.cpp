@@ -2,6 +2,7 @@
 #include "generic/utilityModule/stringUtility.h"
 
 using namespace generic::coreModule;
+using namespace cocos2d;
 
 const std::string defaultNodesPath = "properties/nodes/";
 
@@ -101,7 +102,7 @@ void nodeProperties::parseComponents(cocos2d::Node* node, const std::string& nam
         for (const auto& component : componentPriorityList) {
             if (component.empty()) {
                 LOG_ERROR(
-                  StringUtils::format("nodeProperties::parseProperty bad property '%s' in 'componentPriorityList'", component.c_str()));
+                  STRING_FORMAT("nodeProperties::parseProperty bad property '%s' in 'componentPriorityList'", component.c_str()));
                 continue;
             }
             const auto componentItr = propObj.FindMember(component.c_str());

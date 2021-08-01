@@ -30,7 +30,7 @@ namespace generic {
             }
 #endif
         private:
-            void initTaskLoading(cocos2d::Layer* layer);
+            void initTaskLoading(cocos2d::Node* node);
 
             std::vector<cocos2d::Node*> nodes{};
             windowSystem* windowViewer = nullptr;
