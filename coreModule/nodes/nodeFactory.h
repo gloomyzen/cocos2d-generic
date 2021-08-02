@@ -34,8 +34,9 @@ namespace generic::coreModule {
         nodeFactory();
         ~nodeFactory();
         static nodeFactory& getInstance();
+        void cleanup();
 
-        void getComponents(cocos2d::Node* node,
+        void readComponent(cocos2d::Node* node,
                            const std::string& componentName,
                            const rapidjson::GenericValue<rapidjson::UTF8<char>>::Object& component);
 
@@ -48,6 +49,7 @@ namespace generic::coreModule {
     private:
         void init();
         bool inited = false;
+        std::map<std::string, std::function<cocos2d::Node*()>> nodes;
     };
 }// namespace generic::coreModule
 

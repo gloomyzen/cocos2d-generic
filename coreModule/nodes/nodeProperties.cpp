@@ -108,7 +108,7 @@ void nodeProperties::parseComponents(cocos2d::Node* node, const std::string& nam
             const auto componentItr = propObj.FindMember(component.c_str());
             if (componentItr != propObj.MemberEnd()) {
                 if (componentItr->value.IsObject()) {
-                    GET_NODE_FACTORY().getComponents(node, component, componentItr->value.GetObject());
+                    GET_NODE_FACTORY().readComponent(node, component, componentItr->value.GetObject());
                 }
             }
         }
