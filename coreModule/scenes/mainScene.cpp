@@ -60,12 +60,12 @@ void mainScene::setRoom(const std::string& state) {
                                     nodes.erase(nodes.begin());
                                 }),
                                 nullptr);
-//    nextNode->setContentSize(visibleSize);
+    nextNode->setContentSize(visibleSize);
     this->addChild(nextNode, eGameLayers::ROOT);
     initTaskLoading(nextNode);
     nodes.push_back(nextNode);
     nextNode->runAction(seq);
-//    director->getRunningScene()->getDefaultCamera()->setPosition(visibleSize.width / 2, visibleSize.height / 2);
+    director->getRunningScene()->getDefaultCamera()->setPosition(visibleSize.width / 2, visibleSize.height / 2);
 }
 
 void mainScene::initTaskLoading(cocos2d::Node* node) {

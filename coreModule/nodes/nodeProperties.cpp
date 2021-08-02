@@ -108,7 +108,7 @@ void nodeProperties::parseComponents(cocos2d::Node* node, const std::string& nam
             const auto componentItr = propObj.FindMember(component.c_str());
             if (componentItr != propObj.MemberEnd()) {
                 if (componentItr->value.IsObject()) {
-                    GET_NODE_FACTORY().getComponents(node, component, componentItr->value.GetObject());
+                    GET_NODE_FACTORY().getComponents(node, component, componentItr->value.GetObject(), propJson);
                 }
             }
         }
@@ -116,7 +116,7 @@ void nodeProperties::parseComponents(cocos2d::Node* node, const std::string& nam
 }
 
 void nodeProperties::parseData(cocos2d::Node* node, const rapidjson::GenericValue<rapidjson::UTF8<char>>::Array& array) {
-    parseComponents(node, node->getName());
+    //parseComponents(node, node->getName());
     for (auto& item : array) {
         if (item["type"].IsString() && item["name"].IsString()) {
             auto childNode = GET_NODE_FACTORY().createNodeWithType(item["type"].GetString());

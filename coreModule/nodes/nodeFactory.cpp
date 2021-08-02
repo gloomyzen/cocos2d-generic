@@ -23,7 +23,7 @@ std::map<std::string, eNodeFactory> componentsMap = {
     { "labelComponent", eNodeFactory::LABEL_COMPONENT },         { "dragonbonesComponent", eNodeFactory::DRAGONBONES_COMPONENT },
     { "colorComponent", eNodeFactory::COLOR_COMPONENT },         { "scrollViewComponent", eNodeFactory::SCROLL_VIEW_COMPONENT },
     { "gridComponent", eNodeFactory::GRID_COMPONENT },           { "scale9spriteComponent", eNodeFactory::SCALE9SPRITE_COMPONENT },
-    { "spineComponent", eNodeFactory::SPINE_COMPONENT }
+    { "spineComponent", eNodeFactory::SPINE_COMPONENT },         { "clipComponent", eNodeFactory::CLIP_COMPONENT }
 };
 std::map<std::string, std::function<Node*()>> nodes{};
 
@@ -44,17 +44,8 @@ nodeFactory::nodeFactory() {
         nodes["buttonNode"] = []() { return buttonNode::create(); };
         nodes["layout"] = []() { return ui::Layout::create(); };
         nodes["layer"] = []() { return Layer::create(); };
-        nodes["clippingNode"] = []() {
-            // todo need fix this
-            ClippingNode* clipper = ClippingNode::create();
-            DrawNode* stencil = DrawNode::create();
-            stencil->setName("clipperStencil");
-            stencil->drawSolidCircle(Vec2(100, 100), 100, 0, 200, Color4F::MAGENTA);
-            clipper->setStencil(stencil);
-            clipper->setInverted(true);
-            return clipper;
-        };
-        nodes["scale9sprite"] = []() -> ui::Scale9Sprite* { return ui::Scale9Sprite::create(); };
+        nodes["clippingNode"] = []() { return ClippingNode::create(); };
+        nodes["scale9sprite"] = []() { return ui::Scale9Sprite::create(); };
         /// External types, in generic
         nodes["dragonbones"] = []() { return new armatureNode(); };
         nodes["spine"] = []() { return new spine::SkeletonAnimation(); };
@@ -76,7 +67,8 @@ nodeFactory& nodeFactory::getInstance() {
 
 void nodeFactory::getComponents(Node* node,
                                 const std::string& componentName,
-                                const rapidjson::GenericValue<rapidjson::UTF8<char>>::Object& object) {
+                                const rapidjson::GenericValue<rapidjson::UTF8<char>>::Object& object,
+                                const rapidjson::GenericValue<rapidjson::UTF8<char>>::Object& allProperties) {
     if (node == nullptr)
         return;
 
@@ -515,7 +507,7 @@ void nodeFactory::getComponents(Node* node,
                 std::string imagePath;
                 imagePath = object["image"].GetString();
                 if (imagePath.empty()) {
-                    LOG_ERROR(STRING_FORMAT("nodeFactory::getComponents: Component '%s' has invalid image path!", componentName.c_str()));
+                    LOG_ERROR(STRING_FORMAT("nodeFactory::fillComponents: Component '%s' has invalid image path!", componentName.c_str()));
                     break;
                 }
                 sprite->initWithFile(imagePath);
@@ -544,6 +536,32 @@ void nodeFactory::getComponents(Node* node,
                     _size.height = size[1].GetFloat();
                     sprite->setContentSize(_size);
                 }
+            }
+        }
+    } break;
+    case eNodeFactory::CLIP_COMPONENT: {
+        if (auto clipNode = dynamic_cast<ClippingNode*>(node)) {
+            bool inverted = false;
+            if (object.HasMember("inverted") && object["inverted"].IsBool()) {
+                inverted = object["inverted"].GetBool();
+            }
+            if (object.HasMember("nodeName") && object["nodeName"].IsString()) {
+                auto stencil = DrawNode::create();
+                auto name = object["nodeName"].GetString();
+                stencil->setName(name);
+                if (allProperties.HasMember(name) && allProperties[name].IsObject()) {
+                    auto nodeObj = allProperties[name].GetObject();
+                    if (nodeObj.HasMember("transformComponent") && nodeObj["transformComponent"].IsObject()) {
+                        auto componentObj = nodeObj["transformComponent"].GetObject();
+                        getComponents(stencil, "transformComponent", componentObj, allProperties);
+                    }
+                }
+                clipNode->setInverted(inverted);
+                clipNode->addChild(stencil);
+                stencil->drawSolidRect(Vec2::ZERO, stencil->getContentSize(), Color4F::MAGENTA);
+                clipNode->setStencil(stencil);
+            } else {
+                LOG_ERROR(STRING_FORMAT("nodeFactory::fillComponents: Component '%s' has invalid nodeName!", componentName.c_str()));
             }
         }
     } break;

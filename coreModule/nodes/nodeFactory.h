@@ -12,7 +12,7 @@
 namespace generic::coreModule {
 
     enum class eNodeFactory {
-        TRANSFORM_COMPONENT,
+        TRANSFORM_COMPONENT = 0,
         SPRITE_COMPONENT,
         LABEL_COMPONENT,
         DRAGONBONES_COMPONENT,
@@ -20,12 +20,13 @@ namespace generic::coreModule {
         COLOR_COMPONENT,
         SCROLL_VIEW_COMPONENT,
         GRID_COMPONENT,
-        SCALE9SPRITE_COMPONENT
+        SCALE9SPRITE_COMPONENT,
+        CLIP_COMPONENT
     };
 
     static const std::vector<std::string> componentPriorityList = {
         { "spriteComponent" },    { "labelComponent" }, { "dragonbonesComponent" }, { "spineComponent" }, { "scale9spriteComponent" },
-        { "transformComponent" }, { "colorComponent" }, { "scrollViewComponent" },  { "gridComponent" }
+        { "transformComponent" }, { "colorComponent" }, { "scrollViewComponent" },  { "gridComponent" }, { "clipComponent" }
     };
 
     class nodeFactory {
@@ -36,7 +37,8 @@ namespace generic::coreModule {
 
         void getComponents(cocos2d::Node* node,
                            const std::string& componentName,
-                           const rapidjson::GenericValue<rapidjson::UTF8<char>>::Object& object);
+                           const rapidjson::GenericValue<rapidjson::UTF8<char>>::Object& component,
+                           const rapidjson::GenericValue<rapidjson::UTF8<char>>::Object& allProperties);
 
         bool hasRegisteredComponent(const std::string& componentName);
 
