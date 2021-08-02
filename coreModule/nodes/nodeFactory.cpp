@@ -55,9 +55,7 @@ nodeFactory::nodeFactory() {
     }
 }
 
-nodeFactory::~nodeFactory() {
-    nodeFactory::cleanup();
-}
+nodeFactory::~nodeFactory() = default;
 
 void nodeFactory::cleanup() {
     nodes.clear();
