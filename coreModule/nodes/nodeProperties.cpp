@@ -116,7 +116,6 @@ void nodeProperties::parseComponents(cocos2d::Node* node, const std::string& nam
 }
 
 void nodeProperties::parseData(cocos2d::Node* node, const rapidjson::GenericValue<rapidjson::UTF8<char>>::Array& array) {
-    //parseComponents(node, node->getName());
     for (auto& item : array) {
         if (item["type"].IsString() && item["name"].IsString()) {
             auto childNode = GET_NODE_FACTORY().createNodeWithType(item["type"].GetString());
