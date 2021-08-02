@@ -37,8 +37,7 @@ namespace generic::coreModule {
 
         void getComponents(cocos2d::Node* node,
                            const std::string& componentName,
-                           const rapidjson::GenericValue<rapidjson::UTF8<char>>::Object& component,
-                           const rapidjson::GenericValue<rapidjson::UTF8<char>>::Object& allProperties);
+                           const rapidjson::GenericValue<rapidjson::UTF8<char>>::Object& component);
 
         bool hasRegisteredComponent(const std::string& componentName);
 
