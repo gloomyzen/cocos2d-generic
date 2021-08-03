@@ -15,13 +15,13 @@ void nodeProperties::loadProperty(const std::string& path, cocos2d::Node* node) 
     if (node == nullptr)
         return;
     if (node->getName().empty()) {
-        LOG_ERROR("Node::loadProperty Node is null or node has no identifier!");
+        LOG_ERROR("Node is null or node has no identifier!");
         return;
     }
     loadJson(path);
 
     if (propertyData.HasParseError() || !propertyData.IsObject()) {
-        LOG_ERROR(STRING_FORMAT("nodeProperties::loadProperty Json file '%s' for node '%s' has errors or not found!",
+        LOG_ERROR(STRING_FORMAT("Json file '%s' for node '%s' has errors or not found!",
                                 pathProperties.c_str(),
                                 node->getName().c_str()));
         return;
@@ -30,7 +30,7 @@ void nodeProperties::loadProperty(const std::string& path, cocos2d::Node* node) 
         auto strObject = propertyData["struct"].GetObject();
         if (!strObject.HasMember("type") || !strObject.HasMember("name") || !strObject["type"].IsString()
             || !strObject["name"].IsString()) {
-            LOG_ERROR(STRING_FORMAT("nodeProperties::loadProperty Json file '%s' for node '%s' not has 'type' and 'name'!",
+            LOG_ERROR(STRING_FORMAT("Json file '%s' for node '%s' not has 'type' and 'name'!",
                                     pathProperties.c_str(),
                                     node->getName().c_str()));
             return;
@@ -67,7 +67,7 @@ void nodeProperties::loadComponent(cocos2d::Node* node, const std::string& name)
         return;
     }
     if (node->getName().empty()) {
-        LOG_ERROR("Node::loadProperty Node has no identifier!");
+        LOG_ERROR("Node has no identifier!");
         return;
     }
     parseComponents(node, name);
@@ -88,11 +88,11 @@ void nodeProperties::loadJson(const std::string& path) {
 
 void nodeProperties::parseComponents(cocos2d::Node* node, const std::string& name) {
     if (propertyData.HasParseError() || !propertyData.IsObject()) {
-        LOG_ERROR(STRING_FORMAT("nodeProperties::parseProperty Json file '%s' contains errors or not found!", pathProperties.c_str()));
+        LOG_ERROR(STRING_FORMAT("Json file '%s' contains errors or not found!", pathProperties.c_str()));
         return;
     }
     if (!propertyData.HasMember("props") || !propertyData["props"].IsObject()) {
-        LOG_ERROR(STRING_FORMAT("nodeProperties::parseProperty Json file '%s' don't have 'props' object!", pathProperties.c_str()));
+        LOG_ERROR(STRING_FORMAT("Json file '%s' don't have 'props' object!", pathProperties.c_str()));
         return;
     }
     auto propJson = propertyData["props"].GetObject();
@@ -102,7 +102,7 @@ void nodeProperties::parseComponents(cocos2d::Node* node, const std::string& nam
         for (const auto& component : componentPriorityList) {
             if (component.empty()) {
                 LOG_ERROR(
-                  STRING_FORMAT("nodeProperties::parseProperty bad property '%s' in 'componentPriorityList'", component.c_str()));
+                  STRING_FORMAT("Bad property '%s' in 'componentPriorityList'", component.c_str()));
                 continue;
             }
             const auto componentItr = propObj.FindMember(component.c_str());

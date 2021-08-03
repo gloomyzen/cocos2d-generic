@@ -1,54 +1,59 @@
 #ifndef GENERIC_LOGMANAGER_H
 #define GENERIC_LOGMANAGER_H
 
+#include "cocos2d.h"
 #include <iostream>
 #include <string>
+#include <utility>
 #include <vector>
 
 #define GET_LOGGER() generic::debugModule::loggerInstance::getInstance()
-#define LOG_INFO(W) GET_LOGGER().info(W)
-#define LOG_WARNING(W) GET_LOGGER().warning(W)
-#define LOG_ERROR(W) GET_LOGGER().error(W)
+#define LOG_INFO(W) GET_LOGGER().info(cocos2d::StringUtils::format("m:%s -> %s:[%d] : %s", __func__, __FILE_NAME__, __LINE__, #W))
+#define LOG_WARNING(W) GET_LOGGER().warning(cocos2d::StringUtils::format("m:%s -> %s:[%d] : %s", __func__, __FILE_NAME__, __LINE__, #W))
+
+#define LOG_ERROR(W) GET_LOGGER().error(cocos2d::StringUtils::format("m:%s -> %s:[%d] : %s", __func__, __FILE_NAME__, __LINE__, #W))
 #define LOGMANAGER_ITEMS_LIMIT 150
 
-namespace generic {
-    namespace debugModule {
+namespace generic::debugModule {
 
-        enum class eLogTypes : size_t { LOG_INFO = 0, LOG_WARNING, LOG_ERROR };
+    enum class eLogTypes {
+        LOG_INFO = 0,
+        LOG_WARNING,
+        LOG_ERROR
+    };
 
-        struct sLogMessage {
-            eLogTypes type;
-            std::string message;
+    struct sLogMessage {
+        eLogTypes type;
+        std::string message;
 
-            sLogMessage(eLogTypes _type, std::string _message) {
-                type = _type;
-                message = _message;
-            }
-        };
+        sLogMessage(eLogTypes _type, std::string _message) {
+            type = _type;
+            message = std::move(_message);
+        }
+    };
 
-        /***
-         * Данный класс нужен для логирования исключительных событий
-         */
-        class logManager {
-        public:
-            void info(const std::string& message);
+    /***
+     * Logging events in application
+     */
+    class logManager {
+    public:
+        void info(const std::string& message);
 
-            void warning(const std::string& message);
+        void warning(const std::string& message);
 
-            void error(const std::string& message);
+        void error(const std::string& message);
 
-        private:
-            void addLogMessage(sLogMessage*);
+    private:
+        void addLogMessage(const sLogMessage&);
 
-            std::vector<sLogMessage*> log{};
-        };
+        std::vector<sLogMessage> log;
+    };
 
-        class loggerInstance {
-        public:
-            static logManager& getInstance();
-        };
-    }// namespace debugModule
-
-}// namespace generic
+    class loggerInstance {
+    public:
+        static logManager& getInstance();
+        static void cleanup();
+    };
+}// namespace generic::debugModule
 
 #endif// GENERIC_LOGMANAGER_H

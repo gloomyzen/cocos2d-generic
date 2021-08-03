@@ -28,12 +28,12 @@ namespace generic::databaseModule {
 
         bool isValidJson(const rapidjson::Document& data) {
             if (data.HasParseError()) {
-                LOG_ERROR("isValidJson: json parse error");
+                LOG_ERROR("Json parse error");
                 return false;
             }
 
             if (data.IsNull()) {
-                LOG_ERROR("isValidJson: json is empty");
+                LOG_ERROR("Json is empty");
                 return false;
             }
             return true;

@@ -19,7 +19,6 @@ bool mainScene::init() {
     if (!Scene::init()) {
         return false;
     }
-    LOG_INFO("mainScene::init()");
 
     auto bg = new LayerColor();
     bg->setColor(Color3B::BLACK);
@@ -35,6 +34,7 @@ bool mainScene::init() {
     this->addChild(imGuiLayer, eGameLayers::DEBUG_LAYER);
 #endif
 
+    LOG_INFO("main scene inited");
     return true;
 }
 

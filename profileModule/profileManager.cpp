@@ -79,7 +79,7 @@ void profileManager::save() {
 
 void profileManager::loadProfile(const rapidjson::Document& defaultData, const rapidjson::Document& localData) {
     if (!defaultData.IsObject() || defaultData.HasParseError() || defaultData.IsNull()) {
-        LOG_ERROR("profileManager::loadProfile: Object not found! Profile not loaded!");
+        LOG_ERROR("Object not found! Profile not loaded!");
         return;
     }
     auto localProfileValid = !localData.HasParseError() && !localData.IsNull() && localData.IsObject();

@@ -26,7 +26,7 @@ void settingManager::load() {
     doc.Parse<0>(regionStr.c_str());
 
     if (doc.HasParseError() || doc.IsNull()) {
-        LOG_ERROR("settingManager::load: json parse error");
+        LOG_ERROR("Json parse error");
         allResolutions.insert({ defaultResolution->resolutionName, defaultResolution });
         return;
     }
@@ -64,7 +64,7 @@ void settingManager::load() {
     }
 
     if (allResolutions.empty()) {
-        LOG_ERROR("settingManager::load: no data in json file!");
+        LOG_ERROR("No data in json file!");
         allResolutions.insert({ defaultResolution->resolutionName, defaultResolution });
         return;
     } else {
@@ -115,11 +115,11 @@ void settingManager::init(bool isMobile, const std::string& settingName) {
         if (resolution != nullptr) {
             currentSize = resolution;
         } else {
-            LOG_ERROR("settingManager::getCurrentSize: Can't detect valid resolution!");
+            LOG_ERROR("Can't detect valid resolution!");
         }
     }
     if (currentSize == nullptr) {
-        LOG_ERROR("settingManager::getCurrentSize: Can't detect valid resolution!");
+        LOG_ERROR("Can't detect valid resolution!");
     }
 }
 

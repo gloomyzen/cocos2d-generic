@@ -34,7 +34,7 @@ void gameManager::run(const std::string& state) {
 
 void gameManager::changeState(const std::string& state) {
     if (mainSceneIns == nullptr) {
-        LOG_ERROR("gameManager::changeState Instance mainSceneIns is null!");
+        LOG_ERROR("Instance mainSceneIns is null!");
         return;
     }
     currentState = state;

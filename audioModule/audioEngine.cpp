@@ -19,7 +19,7 @@ audioEngine::audioEngine() {
     data.Parse<0>(regionStr.c_str());
 
     if (data.HasParseError() || data.IsNull() || !data.IsObject()) {
-        LOG_ERROR("audioEngine::audioEngine: json parse error");
+        LOG_ERROR("Json parse error");
         return;
     }
     auto effectIt = data.FindMember("sounds");

@@ -34,7 +34,7 @@ void armatureNode::setAnimation(const std::string& name, std::function<void(coco
     if (auto node = getArmatureNode()) {
         node->getAnimation()->fadeIn(name);
     } else {
-        LOG_ERROR(STRING_FORMAT("armatureNode::setAnimation: animation %s not found!", name.c_str()));
+        LOG_ERROR(STRING_FORMAT("Animation %s not found!", name.c_str()));
     }
 }
 
@@ -77,7 +77,7 @@ void armatureNode::setAnimationCallback(armatureNode::eArmatureState state, std:
             node->getEventDispatcher()->addCustomEventListener(eventType, clb);
         }
     } else {
-        LOG_ERROR("armatureNode::setAnimationCallback: bones not found");
+        LOG_ERROR("Bones not found");
     }
 }
 
@@ -87,7 +87,7 @@ void armatureNode::removeAnimationCallback(armatureNode::eArmatureState state) {
             node->getEventDispatcher()->removeCustomEventListeners(eventType);
         }
     } else {
-        LOG_ERROR("armatureNode::removeAnimationCallback: bones not found");
+        LOG_ERROR("Bones not found");
     }
 }
 
@@ -100,7 +100,7 @@ void armatureNode::setEventsEnabled(bool value) {
         node->getEventDispatcher()->setEnabled(value);
         handleEvents = value;
     } else {
-        LOG_ERROR("armatureNode::setEventsEnabled: bones not found");
+        LOG_ERROR("Bones not found");
     }
 }
 
@@ -131,7 +131,7 @@ void armatureNode::setCustomAnimationCallback(const std::string& eventName, cons
             }
         });
     } else {
-        LOG_ERROR("armatureNode::setCustomAnimationCallback: bones not found");
+        LOG_ERROR("Bones not found");
     }
 }
 

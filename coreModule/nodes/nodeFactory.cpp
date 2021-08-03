@@ -79,7 +79,7 @@ void nodeFactory::readComponent(Node* node,
         return;
 
     if (!hasRegisteredComponent(componentName)) {
-        LOG_ERROR("nodeFactory::readComponent: Component '" + componentName + "' was not found!");
+        LOG_ERROR("Component '" + componentName + "' was not found!");
         return;
     }
 
@@ -97,7 +97,7 @@ void nodeFactory::readComponent(Node* node,
             } else if (positions.Size() == 3) {
                 node->setPosition3D(cocos2d::Vec3(positions[0].GetFloat(), positions[1].GetFloat(), positions[2].GetFloat()));
             } else {
-                LOG_ERROR(StringUtils::format("nodeFactory::readComponent: Component '%s' has wrong '%s' position keys!",
+                LOG_ERROR(StringUtils::format("Component '%s' has wrong '%s' position keys!",
                                               componentName.c_str(),
                                               std::to_string(positions.Size()).c_str()));
             }
@@ -107,7 +107,7 @@ void nodeFactory::readComponent(Node* node,
             if (pivot.Size() == 2) {
                 node->setPivotPoint(Vec2(pivot[0].GetFloat(), pivot[1].GetFloat()));
             } else {
-                LOG_ERROR(StringUtils::format("nodeFactory::readComponent: Component '%s' has wrong '%s' pivot keys!",
+                LOG_ERROR(StringUtils::format("Component '%s' has wrong '%s' pivot keys!",
                                               componentName.c_str(),
                                               std::to_string(pivot.Size()).c_str()));
             }
@@ -117,7 +117,7 @@ void nodeFactory::readComponent(Node* node,
             if (anchor.Size() == 2) {
                 node->setAnchorPoint(Vec2(anchor[0].GetFloat(), anchor[1].GetFloat()));
             } else {
-                LOG_ERROR(StringUtils::format("nodeFactory::readComponent: Component '%s' has wrong '%s' anchor keys!",
+                LOG_ERROR(StringUtils::format("Component '%s' has wrong '%s' anchor keys!",
                                               componentName.c_str(),
                                               std::to_string(anchor.Size()).c_str()));
             }
@@ -152,7 +152,7 @@ void nodeFactory::readComponent(Node* node,
                     node->setContentSize(_size);
                 }
             } else {
-                LOG_ERROR(StringUtils::format("nodeFactory::readComponent: Component '%s' has wrong '%s' size keys!",
+                LOG_ERROR(StringUtils::format("Component '%s' has wrong '%s' size keys!",
                                               componentName.c_str(),
                                               std::to_string(size.Size()).c_str()));
             }
@@ -165,7 +165,7 @@ void nodeFactory::readComponent(Node* node,
             if (scale.Size() == 2) {
                 node->setScale(scale[0].GetFloat(), scale[1].GetFloat());
             } else {
-                LOG_ERROR(StringUtils::format("nodeFactory::readComponent: Component '%s' has wrong '%s' scale keys!",
+                LOG_ERROR(StringUtils::format("Component '%s' has wrong '%s' scale keys!",
                                               componentName.c_str(),
                                               std::to_string(scale.Size()).c_str()));
             }
@@ -178,7 +178,7 @@ void nodeFactory::readComponent(Node* node,
             if (rotation3d.Size() == 3) {
                 node->setRotation3D(cocos2d::Vec3(rotation3d[0].GetFloat(), rotation3d[1].GetFloat(), rotation3d[2].GetFloat()));
             } else {
-                LOG_ERROR(StringUtils::format("nodeFactory::readComponent: Component '%s' has wrong '%s' rotation3d keys!",
+                LOG_ERROR(StringUtils::format("Component '%s' has wrong '%s' rotation3d keys!",
                                               componentName.c_str(),
                                               std::to_string(rotation3d.Size()).c_str()));
             }
@@ -188,7 +188,7 @@ void nodeFactory::readComponent(Node* node,
             if (stretch.Size() == 2) {
                 node->setStretch(stretch[0].GetFloat(), stretch[1].GetFloat());
             } else {
-                LOG_ERROR(StringUtils::format("nodeFactory::readComponent: Component '%s' has wrong '%s' stretch keys!",
+                LOG_ERROR(StringUtils::format("Component '%s' has wrong '%s' stretch keys!",
                                               componentName.c_str(),
                                               std::to_string(stretch.Size()).c_str()));
             }
@@ -211,7 +211,7 @@ void nodeFactory::readComponent(Node* node,
             if (object.HasMember("image") && object["image"].IsString()) {
                 imagePath = object["image"].GetString();
                 if (imagePath.empty()) {
-                    LOG_ERROR(STRING_FORMAT("nodeFactory::readComponent: Component '%s' has invalid image path!", componentName.c_str()));
+                    LOG_ERROR(STRING_FORMAT("Component '%s' has invalid image path!", componentName.c_str()));
                     break;
                 }
                 if (object.HasMember("polygon") && object["polygon"].IsBool()) {
@@ -240,11 +240,11 @@ void nodeFactory::readComponent(Node* node,
                     }
                 }
             } else {
-                LOG_ERROR(STRING_FORMAT("nodeFactory::readComponent: Component '%s' no has image path!", componentName.c_str()));
+                LOG_ERROR(STRING_FORMAT("Component '%s' no has image path!", componentName.c_str()));
                 break;
             }
         } else {
-            LOG_ERROR(STRING_FORMAT("nodeFactory::readComponent: Node '%s', component '%s' no has sprite node type!",
+            LOG_ERROR(STRING_FORMAT("Node '%s', component '%s' no has sprite node type!",
                                     node->getName().c_str(),
                                     componentName.c_str()));
         }
@@ -292,7 +292,7 @@ void nodeFactory::readComponent(Node* node,
                 }
             }
         } else {
-            LOG_ERROR(StringUtils::format("nodeFactory::readComponent: Component '%s' no has label node type!", componentName.c_str()));
+            LOG_ERROR(StringUtils::format("Component '%s' no has label node type!", componentName.c_str()));
         }
     } break;
     case eNodeFactory::DRAGONBONES_COMPONENT: {
@@ -322,17 +322,17 @@ void nodeFactory::readComponent(Node* node,
                             bone->getAnimation()->fadeIn(object["animation"].GetString(), fadeInTime, playTimes);
                         } else {
                             LOG_ERROR(
-                              STRING_FORMAT("nodeFactory::readComponent: Can't find animation '%s'", object["animation"].GetString()));
+                              STRING_FORMAT("Can't find animation '%s'", object["animation"].GetString()));
                         }
                     }
                     dragonbones->addChild(bone);
                 } else {
-                    LOG_ERROR(StringUtils::format("nodeFactory::readComponent: Can't get any armature from factory!"));
+                    LOG_ERROR(StringUtils::format("Can't get any armature from factory!"));
                 }
             }
         } else {
             LOG_ERROR(
-              StringUtils::format("nodeFactory::readComponent: Component '%s' no has DragonBones node type!", componentName.c_str()));
+              StringUtils::format("Component '%s' no has DragonBones node type!", componentName.c_str()));
         }
     } break;
     case eNodeFactory::SPINE_COMPONENT: {
@@ -352,7 +352,7 @@ void nodeFactory::readComponent(Node* node,
                     spine->initWithJsonFile(json, atlas, scale);
                     spine->autorelease();
                 } else {
-                    LOG_ERROR(StringUtils::format("nodeFactory::readComponent: Can't get atlas or binary file for spine '%s'!",
+                    LOG_ERROR(StringUtils::format("Can't get atlas or binary file for spine '%s'!",
                                                   node->getName().c_str()));
                 }
             }
@@ -369,7 +369,7 @@ void nodeFactory::readComponent(Node* node,
             }
         } else {
             LOG_ERROR(
-              StringUtils::format("nodeFactory::readComponent: Component '%s' no has DragonBones node type!", componentName.c_str()));
+              StringUtils::format("Component '%s' no has DragonBones node type!", componentName.c_str()));
         }
     } break;
     case eNodeFactory::COLOR_COMPONENT: {
@@ -385,7 +385,7 @@ void nodeFactory::readComponent(Node* node,
                     node->setOpacity(static_cast<uint8_t>(color[3].GetFloat()));
                 }
             } else {
-                LOG_ERROR(StringUtils::format("nodeFactory::readComponent: Component '%s' has wrong '%s' color keys!",
+                LOG_ERROR(StringUtils::format("Component '%s' has wrong '%s' color keys!",
                                               componentName.c_str(),
                                               std::to_string(color.Size()).c_str()));
             }
@@ -513,7 +513,7 @@ void nodeFactory::readComponent(Node* node,
                 std::string imagePath;
                 imagePath = object["image"].GetString();
                 if (imagePath.empty()) {
-                    LOG_ERROR(STRING_FORMAT("nodeFactory::readComponent: Component '%s' has invalid image path!", componentName.c_str()));
+                    LOG_ERROR(STRING_FORMAT("Component '%s' has invalid image path!", componentName.c_str()));
                     break;
                 }
                 sprite->initWithFile(imagePath);
@@ -583,7 +583,7 @@ void nodeFactory::readComponent(Node* node,
 //                stencil->drawSolidRect(Vec2::ZERO, stencil->getContentSize(), stencilColor);
 //                clipNode->setStencil(stencil);
 //            } else {
-//                LOG_ERROR(STRING_FORMAT("nodeFactory::readComponent: Component '%s' has invalid nodeName!", componentName.c_str()));
+//                LOG_ERROR(STRING_FORMAT("Component '%s' has invalid nodeName!", componentName.c_str()));
 //            }
             auto stencil = drawNodeBase::create();
             clipNode->setStencil(stencil);
@@ -605,7 +605,7 @@ Node* nodeFactory::createNodeWithType(const std::string& type) {
     if (nodes.count(type)) {
         return nodes[type]();
     }
-    LOG_ERROR("nodeFactory::createNodeWithType: Type of node '" + type + "' not registered! Created default node.");
+    LOG_ERROR("Type of node '" + type + "' not registered! Created default node.");
     return Node::create();
 }
 
