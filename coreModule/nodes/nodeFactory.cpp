@@ -6,6 +6,7 @@
 #include "generic/coreModule/nodes/types/gridNode.h"
 #include "generic/coreModule/nodes/types/node3d.h"
 #include "generic/coreModule/nodes/types/soundButton.h"
+#include "generic/coreModule/nodes/types/drawNodeBase.h"
 #include "generic/debugModule/logManager.h"
 #include "generic/utilityModule/stringUtility.h"
 #include "spine/spine-cocos2dx.h"
@@ -547,9 +548,13 @@ void nodeFactory::readComponent(Node* node,
     case eNodeFactory::CLIP_COMPONENT: {
         if (auto clipNode = dynamic_cast<ClippingNode*>(node)) {
             bool inverted = false;
+            bool autoUpdate = false;
             auto stencilColor = Color4F::BLACK;
             if (object.HasMember("inverted") && object["inverted"].IsBool()) {
                 inverted = object["inverted"].GetBool();
+            }
+            if (object.HasMember("autoUpdate") && object["autoUpdate"].IsBool()) {
+                autoUpdate = object["autoUpdate"].GetBool();
             }
             if (object.HasMember("color") && object["color"].IsArray()) {
                 auto color = object["color"].GetArray();
@@ -580,10 +585,13 @@ void nodeFactory::readComponent(Node* node,
 //            } else {
 //                LOG_ERROR(STRING_FORMAT("nodeFactory::readComponent: Component '%s' has invalid nodeName!", componentName.c_str()));
 //            }
-            auto stencil = DrawNode::create();
-            clipNode->setInverted(inverted);
-            stencil->drawSolidRect(Vec2::ZERO, clipNode->getContentSize(), stencilColor);
+            auto stencil = drawNodeBase::create();
             clipNode->setStencil(stencil);
+            clipNode->addChild(stencil);
+            stencil->setDrawColor(stencilColor);
+            stencil->setAutoUpdateEnabled(autoUpdate);
+            stencil->forceUpdateRect();
+            clipNode->setInverted(inverted);
         }
     } break;
     }
