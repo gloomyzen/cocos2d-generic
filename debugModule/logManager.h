@@ -8,10 +8,10 @@
 #include <vector>
 
 #define GET_LOGGER() generic::debugModule::loggerInstance::getInstance()
-#define LOG_INFO(W) GET_LOGGER().info(cocos2d::StringUtils::format("m:%s -> %s:[%d] : %s", __func__, __FILE_NAME__, __LINE__, #W))
-#define LOG_WARNING(W) GET_LOGGER().warning(cocos2d::StringUtils::format("m:%s -> %s:[%d] : %s", __func__, __FILE_NAME__, __LINE__, #W))
+#define LOG_INFO(W) GET_LOGGER().info(cocos2d::StringUtils::format("%s:[%d] : %s", __func__, __LINE__, #W))
+#define LOG_WARNING(W) GET_LOGGER().warning(cocos2d::StringUtils::format("%s:[%d] : %s", __FILE__, __LINE__, #W))
 
-#define LOG_ERROR(W) GET_LOGGER().error(cocos2d::StringUtils::format("m:%s -> %s:[%d] : %s", __func__, __FILE_NAME__, __LINE__, #W))
+#define LOG_ERROR(W) GET_LOGGER().error(cocos2d::StringUtils::format("%s:[%d] : %s", __FILE__, __LINE__, #W))
 #define LOGMANAGER_ITEMS_LIMIT 150
 
 namespace generic::debugModule {
