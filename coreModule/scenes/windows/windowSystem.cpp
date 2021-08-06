@@ -19,7 +19,7 @@ void windowSystem::registerWindow(const std::string& name, const std::function<w
     if (find == registeredWindowList.end()) {
         registeredWindowList[name] = clb;
     } else {
-        LOG_ERROR(STRING_FORMAT("Trying to register a duplicate window '%s'!", name.c_str()));
+        LOG_ERROR(CSTRING_FORMAT("Trying to register a duplicate window '%s'!", name.c_str()));
     }
 }
 

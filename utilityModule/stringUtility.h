@@ -12,6 +12,8 @@
 #include <vector>
 
 #define STRING_FORMAT(string, ...) cocos2d::StringUtils::format(string, ##__VA_ARGS__)
+#define CSTRING_FORMAT(string, ...) generic::utilityModule::stringToChar(STRING_FORMAT(string, ##__VA_ARGS__))
+
 
 namespace generic::utilityModule {
 
@@ -30,6 +32,11 @@ namespace generic::utilityModule {
     std::string toLowerString(std::string line);
 
     std::vector<std::string> explodeString(const std::string& str, std::function<std::string(std::string)> clb = nullptr);
+
+    /*
+     * Helper for macros
+     */
+    const char* stringToChar(const std::string& str);
 
 }// namespace generic::utilityModule
 

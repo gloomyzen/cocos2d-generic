@@ -29,7 +29,7 @@ rapidjson::Document jsonLoader::stringToJson(const std::string& jsonStr) {
     if (!document.HasParseError()) {
         return document;
     }
-    LOG_ERROR(STRING_FORMAT("GetParseError %u\n", document.GetParseError()));
+    LOG_ERROR(CSTRING_FORMAT("GetParseError %u\n", document.GetParseError()));
     return nullptr;
 }
 

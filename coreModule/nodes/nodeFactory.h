@@ -40,7 +40,7 @@ namespace generic::coreModule {
                            const std::string& componentName,
                            const rapidjson::GenericValue<rapidjson::UTF8<char>>::Object& component);
 
-        bool hasRegisteredComponent(const std::string& componentName);
+        static bool hasRegisteredComponent(const std::string& componentName);
 
         cocos2d::Node* createNodeWithType(const std::string& type);
 

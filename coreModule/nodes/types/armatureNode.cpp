@@ -34,7 +34,7 @@ void armatureNode::setAnimation(const std::string& name, std::function<void(coco
     if (auto node = getArmatureNode()) {
         node->getAnimation()->fadeIn(name);
     } else {
-        LOG_ERROR(STRING_FORMAT("Animation %s not found!", name.c_str()));
+        LOG_ERROR(CSTRING_FORMAT("Animation %s not found!", name.c_str()));
     }
 }
 
@@ -125,7 +125,7 @@ void armatureNode::setCustomAnimationCallback(const std::string& eventName, cons
             if (auto data = static_cast<dragonBones::EventObject*>(event->getUserData())) {
                 auto find = customCallbacksMap.find(data->name);
                 if (find != customCallbacksMap.end()) {
-                    LOG_INFO(STRING_FORMAT("Node %s, founded event: %s, start callback", getName().c_str(), data->name.c_str()));
+                    LOG_INFO(CSTRING_FORMAT("Node %s, founded event: %s, start callback", getName().c_str(), data->name.c_str()));
                     find->second(event);
                 }
             }

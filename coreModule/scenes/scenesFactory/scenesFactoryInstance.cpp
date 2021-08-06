@@ -27,7 +27,7 @@ cocos2d::Node* scenesFactoryInstance::getStateRoot(const std::string& state) {
         return states[state]();
     }
     LOG_ERROR(
-      STRING_FORMAT("Current state '%s' is not registered! Return simple layer.", state.c_str()));
+      CSTRING_FORMAT("Current state '%s' is not registered! Return simple layer.", state.c_str()));
     return cocos2d::Node::create();
 }
 
