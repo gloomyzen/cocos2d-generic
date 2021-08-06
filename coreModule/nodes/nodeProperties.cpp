@@ -12,8 +12,11 @@ nodeProperties::~nodeProperties() {
 }
 
 void nodeProperties::loadProperty(const std::string& path, cocos2d::Node* node) {
-    if (node == nullptr)
+    if (node == nullptr) {
+        //todo
+//        node = dynamic_cast<cocos2d::Node*>(this);
         return;
+    }
     if (node->getName().empty()) {
         LOG_ERROR("Node is null or node has no identifier!");
         return;
