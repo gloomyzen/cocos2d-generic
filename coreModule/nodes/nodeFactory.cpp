@@ -60,7 +60,6 @@ nodeFactory::~nodeFactory() = default;
 
 void nodeFactory::cleanup() {
     nodes.clear();
-    componentsMap.clear();
     delete currentNodeFactory;
     currentNodeFactory = nullptr;
 }
