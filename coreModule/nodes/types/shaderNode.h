@@ -2,6 +2,9 @@
 #define GENERIC_SHADERSNODE_H
 
 #include "cocos2d.h"
+#include "renderer/CCRenderState.h"
+#include "spine/SkeletonTwoColorBatch.h"
+#include "spine/spine-cocos2dx.h"
 #include <functional>
 #include <utility>
 
@@ -78,29 +81,73 @@ namespace generic::coreModule {
         effect* _defaultEffect;
     };
 
-    class effectOutline : public effect
-    {
+    class effectOutline : public effect {
     public:
         CREATE_FUNC(effectOutline);
 
         bool init() {
             initProgramState("shaders/outline.fsh");
 
-            float radius = 0.02f;
+            float radius = 0.04f;
             float threshold = 1.55f;
 
             SET_UNIFORM(_programState, "u_outlineColor", _outlineColor);
             SET_UNIFORM(_programState, "u_radius", radius);
             SET_UNIFORM(_programState, "u_threshold", threshold);
+            SET_UNIFORM(_programState, "u_outlineAlpha", _outlineAlpha);
+            _inited = true;
             return true;
         }
 
-        void setOutlineColor(cocos2d::Vec3 color) {
+        void setOutlineColor(const cocos2d::Vec3& color) {
             _outlineColor = color;
+        }
+
+        cocos2d::Vec3 getOutlineColor() {
+            return _outlineColor;
+        }
+
+        void setOutlineAlpha(float a) {
+            _outlineAlpha = a;
+            if (_inited) {
+                SET_UNIFORM(_programState, "u_outlineAlpha", _outlineAlpha);
+            }
+        }
+
+        float getOutlineAlpha() {
+            return _outlineAlpha;
         }
 
     private:
         cocos2d::Vec3 _outlineColor = cocos2d::Vec3(1.0f, 0.0f, 0.0f);
+        float _outlineAlpha = 1.f;
+        bool _inited = false;
+    };
+
+    class spineOutline : public spine::SkeletonAnimation {
+    public:
+        spineOutline() : SkeletonAnimation() {
+            setTwoColorTint(true);
+        }
+
+        virtual void draw(cocos2d::Renderer* renderer, const cocos2d::Mat4& transform, uint32_t transformFlags) override {
+            if (auto outline = dynamic_cast<effectOutline*>(_effect)) {
+                SkeletonAnimation::draw(renderer, transform, transformFlags);
+                auto alpha = outline->getOutlineAlpha();
+                outline->setOutlineAlpha(0.f);
+                SkeletonAnimation::draw(renderer, transform, transformFlags);
+                outline->setOutlineAlpha(alpha);
+            } else {
+                SkeletonAnimation::draw(renderer, transform, transformFlags);
+            }
+        }
+
+        void setEffect(effect* effect) {
+            _effect = effect;
+        }
+
+    private:
+        effect* _effect = nullptr;
     };
 
 }// namespace generic::coreModule
