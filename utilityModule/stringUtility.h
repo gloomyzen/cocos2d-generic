@@ -1,6 +1,7 @@
 #ifndef GENERIC_STRINGUTILITY_H
 #define GENERIC_STRINGUTILITY_H
 
+#include "cocos2d.h"
 #include <algorithm>
 #include <cctype>
 #include <clocale>
