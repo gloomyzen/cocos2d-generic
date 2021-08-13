@@ -38,7 +38,6 @@ namespace generic::coreModule {
         void setSettingsData(const rapidjson::GenericValue<rapidjson::UTF8<char>>::Object& object);
         rapidjson::Value getSettingsData();
         void removeSettingsData();
-
         virtual void updateSettings();
 
 

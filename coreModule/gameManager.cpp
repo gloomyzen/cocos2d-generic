@@ -54,3 +54,9 @@ void gameManager::registerWindow(const std::string& name, const std::function<wi
 windowBase* gameManager::requestWindow(const std::string& name, bool force) {
     return getWindowSystem()->requestWindow(name, force);
 }
+
+void gameManager::cleanup() {
+    CC_SAFE_RELEASE_NULL(mainSceneIns);
+    delete currentGameManager;
+    currentGameManager = nullptr;
+}
