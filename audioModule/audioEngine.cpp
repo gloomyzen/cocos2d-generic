@@ -35,7 +35,7 @@ audioEngine::audioEngine() {
 }
 
 audioEngine::~audioEngine() {
-    cleanup();
+    sounds.clear();
 }
 
 audioEngine& audioEngine::getInstance() {
@@ -46,8 +46,9 @@ audioEngine& audioEngine::getInstance() {
 }
 
 void audioEngine::cleanup() {
-    sounds.clear();
-    cocos2d::AudioEngine::end();
+    if (audioEngineInstance)
+        delete audioEngineInstance;
+    audioEngineInstance = nullptr;
 }
 
 void audioEngine::play(const std::string& name, bool loop, float volume, const cocos2d::AudioProfile* profile) {
