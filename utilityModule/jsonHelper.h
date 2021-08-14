@@ -7,5 +7,6 @@
 #include "rapidjson/stringbuffer.h"
 #include "rapidjson/writer.h"
 
-typedef rapidjson::GenericValue<rapidjson::UTF8<char>>::Object jsonObject;
-typedef rapidjson::GenericValue<rapidjson::UTF8<char>>::Object jsonArray;
+typedef rapidjson::GenericValue<rapidjson::UTF8<char>>::Object              jsonObject;
+typedef const rapidjson::GenericValue<rapidjson::UTF8<char>>::ConstObject&  jsonConstObject;
+typedef rapidjson::GenericValue<rapidjson::UTF8<char>>::Object              jsonArray;
