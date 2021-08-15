@@ -9,4 +9,5 @@
 
 typedef rapidjson::GenericValue<rapidjson::UTF8<char>>::Object              jsonObject;
 typedef const rapidjson::GenericValue<rapidjson::UTF8<char>>::ConstObject&  jsonConstObject;
-typedef rapidjson::GenericValue<rapidjson::UTF8<char>>::Object              jsonArray;
+typedef rapidjson::GenericValue<rapidjson::UTF8<char>>::Array               jsonArray;
+typedef rapidjson::GenericValue<rapidjson::UTF8<char>>::ConstArray          jsonConstArray;
