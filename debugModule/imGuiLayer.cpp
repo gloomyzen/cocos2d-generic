@@ -194,9 +194,17 @@ ImRect imGuiLayer::renderTree(cocos2d::Vector<Node*> n) {
         if (node->getChildren().empty() || (node->getChildren().size() == 1 && node->getChildren().front()->getName() == "debugNode")) {
             nodeFlags |= ImGuiTreeNodeFlags_Leaf;
         }
-        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.22f, 0.75f, 0.125f, 1.f));
+        bool isNodeProperties = false;
+        if (dynamic_cast<nodeProperties*>(node)) {
+            isNodeProperties = true;
+        }
+        if (isNodeProperties) {
+            ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.22f, 0.75f, 0.125f, 1.f));
+        }
         bool nodeOpen = ImGui::TreeNodeEx((void*)(intptr_t)node->_ID, nodeFlags, "%s", name.c_str());
-        ImGui::PopStyleColor(1);
+        if (isNodeProperties) {
+            ImGui::PopStyleColor(1);
+        }
         if (ImGui::IsItemClicked()) {
             // id of clicked element
             lastTarget = node;
