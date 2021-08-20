@@ -56,7 +56,7 @@ windowBase* gameManager::requestWindow(const std::string& name, bool force) {
 }
 
 void gameManager::cleanup() {
-    CC_SAFE_RELEASE_NULL(mainSceneIns);
-    delete currentGameManager;
+    if (currentGameManager)
+        delete currentGameManager;
     currentGameManager = nullptr;
 }
