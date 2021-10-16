@@ -8,6 +8,8 @@
 
 namespace generic::signal {
 
+    static const int SLOT_INVALID_VALUE = -1;
+
     class basedSignal {
     public:
         basedSignal() = default;
