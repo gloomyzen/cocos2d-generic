@@ -1,5 +1,5 @@
-#ifndef SWIPE_RPG_DRAWNODEBASE_H
-#define SWIPE_RPG_DRAWNODEBASE_H
+#ifndef GENERIC_DRAWNODEBASE_H
+#define GENERIC_DRAWNODEBASE_H
 
 #include "cocos2d.h"
 #include <functional>
@@ -50,4 +50,4 @@ namespace generic::coreModule {
     };
 }
 
-#endif// SWIPE_RPG_DRAWNODEBASE_H
+#endif// GENERIC_DRAWNODEBASE_H
