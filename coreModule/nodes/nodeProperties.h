@@ -33,7 +33,8 @@ namespace generic::coreModule {
         void removeJsonData();
         void loadJson(const std::string&);
         bool hasPropertyObject(const std::string& name);
-        rapidjson::GenericValue<rapidjson::UTF8<char>>::Object getPropertyObject(const std::string& name);
+        const jsonObject & getPropertyObject(const std::string& name);
+        const jsonArray& getPropertyArray(const std::string& name);
 
         void setSettingsData(const rapidjson::GenericValue<rapidjson::UTF8<char>>::Object& object);
         rapidjson::Value getSettingsData();
@@ -48,6 +49,10 @@ namespace generic::coreModule {
         rapidjson::Value settingsData;
         rapidjson::Document propertyData;
         std::string pathProperties;
+
+        static rapidjson::Document defaultArrayData;
+        static rapidjson::Document defaultObjectData;
+        static std::string defaultNodesPath;
     };
 
     template<typename T>

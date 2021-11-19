@@ -4,7 +4,9 @@
 using namespace generic::coreModule;
 using namespace cocos2d;
 
-const std::string defaultNodesPath = "properties/nodes/";
+rapidjson::Document nodeProperties::defaultArrayData;
+rapidjson::Document nodeProperties::defaultObjectData;
+std::string nodeProperties::defaultNodesPath = "properties/nodes/";
 
 nodeProperties::~nodeProperties() {
     removeJsonData();
@@ -136,15 +138,30 @@ void nodeProperties::parseData(cocos2d::Node* node, const rapidjson::GenericValu
     }
 }
 
-rapidjson::GenericValue<rapidjson::UTF8<char>>::Object nodeProperties::getPropertyObject(const std::string& name) {
+const jsonObject& nodeProperties::getPropertyObject(const std::string& name) {
     if (!hasPropertyObject(name)) {
-        rapidjson::Document document{};
-        document.SetObject();
-        return document.GetObject();
+        if (!defaultObjectData.IsObject()) {
+            defaultObjectData.SetObject();
+        }
+        return defaultObjectData.GetObject();
     }
 
     auto obj = propertyData["props"].FindMember(name.c_str());
-    return obj->value.GetObject();
+    static auto result = obj->value.GetObject();
+    return result;
+}
+
+const jsonArray& nodeProperties::getPropertyArray(const std::string& name) {
+    if (!hasPropertyObject(name)) {
+        if (!defaultObjectData.IsArray()) {
+            defaultObjectData.SetArray();
+        }
+        return defaultArrayData.GetArray();
+    }
+
+    auto obj = propertyData["props"].FindMember(name.c_str());
+    static auto result = obj->value.GetArray();
+    return result;
 }
 
 bool nodeProperties::hasPropertyObject(const std::string& name) {
