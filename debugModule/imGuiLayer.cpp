@@ -180,7 +180,7 @@ ImRect imGuiLayer::renderTree(cocos2d::Vector<Node*> n) {
         if (typeid(*node).name() == typeid(imGuiLayer).name())
             continue;
         ImGui::AlignTextToFramePadding();
-        std::string className = {};
+        std::string className;
         //		auto test = typeid(*node).name(); // need only for debug
         if (classList.find(typeid(*node).name()) != classList.end()) {
             className = classList[typeid(*node).name()] + " ";
@@ -574,7 +574,7 @@ ImRect imGuiLayer::renderPreferences(Node* node) {
                 }
             }
             int currentEffectsIdx = labelEffectsIdx;
-            std::string elementsList{};
+            std::string elementsList;
             for (const auto &item : labelEffectList) {
                 elementsList += item.first + '\0';
             }

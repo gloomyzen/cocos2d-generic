@@ -20,10 +20,10 @@ bool mainScene::init() {
         return false;
     }
 
-    auto bg = new LayerColor();
-    bg->setColor(Color3B::BLACK);
-    bg->setContentSize(Director::getInstance()->getVisibleSize());
-    this->addChild(bg);
+    bgLayer = new LayerColor();
+    bgLayer->setColor(Color3B::BLACK);
+    bgLayer->setContentSize(Director::getInstance()->getVisibleSize());
+    this->addChild(bgLayer);
 
     windowViewer = new windowSystem();
     this->addChild(windowViewer, eGameLayers::WINDOW);
@@ -74,5 +74,11 @@ void mainScene::initTaskLoading(cocos2d::Node* node) {
         atp->enqueue(cocos2d::AsyncTaskPool::TaskType::TASK_OTHER, [](void*) {}, nullptr, [item]() {
               item->executeTasks();
         });
+    }
+}
+
+void mainScene::setLayerColor(cocos2d::Color3B color) {
+    if (bgLayer) {
+        bgLayer->setColor(color);
     }
 }

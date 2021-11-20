@@ -24,7 +24,7 @@ rapidjson::Document jsonLoader::stringToJson(const std::string& jsonStr) {
     if (jsonStr.empty()) {
         return nullptr;
     }
-    rapidjson::Document document{};
+    rapidjson::Document document;
     document.Parse<0>(jsonStr.c_str());
     if (!document.HasParseError()) {
         return document;

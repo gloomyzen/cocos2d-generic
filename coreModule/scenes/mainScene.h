@@ -23,6 +23,7 @@ namespace generic {
             windowSystem* getWindowNode() {
                 return windowViewer;
             }
+            void setLayerColor(cocos2d::Color3B);
 
 #ifdef DEBUG
             generic::debugModule::imGuiLayer* getImGuiLayer() {
@@ -32,8 +33,9 @@ namespace generic {
         private:
             void initTaskLoading(cocos2d::Node* node);
 
-            std::vector<cocos2d::Node*> nodes{};
+            std::vector<cocos2d::Node*> nodes;
             windowSystem* windowViewer = nullptr;
+            cocos2d::LayerColor* bgLayer = nullptr;
 
 #ifdef DEBUG
             generic::debugModule::imGuiLayer* imGuiLayer = nullptr;
