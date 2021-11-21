@@ -32,9 +32,16 @@ namespace generic::coreModule {
         void loadComponent(cocos2d::Node* node, const std::string& name = std::string());
         void removeJsonData();
         void loadJson(const std::string&);
-        bool hasPropertyObject(const std::string& name);
+
+        bool hasPropertyObject(const std::string& name) const;
+        bool hasPropertyArray(const std::string& name) const;
+        template<typename T>
+        bool hasProperty(const std::string& name) const;
+
         const jsonObject & getPropertyObject(const std::string& name);
         const jsonArray& getPropertyArray(const std::string& name);
+        template<typename T>
+        const T& getProperty(const std::string& name) const;
 
         void setSettingsData(const rapidjson::GenericValue<rapidjson::UTF8<char>>::Object& object);
         rapidjson::Value getSettingsData();
@@ -50,8 +57,6 @@ namespace generic::coreModule {
         rapidjson::Document propertyData;
         std::string pathProperties;
 
-        static rapidjson::Document defaultArrayData;
-        static rapidjson::Document defaultObjectData;
         static std::string defaultNodesPath;
     };
 

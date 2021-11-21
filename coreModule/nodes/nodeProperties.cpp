@@ -1,11 +1,10 @@
 #include "nodeProperties.h"
 #include "generic/utilityModule/stringUtility.h"
+#include <cassert>
 
 using namespace generic::coreModule;
 using namespace cocos2d;
 
-rapidjson::Document nodeProperties::defaultArrayData;
-rapidjson::Document nodeProperties::defaultObjectData;
 std::string nodeProperties::defaultNodesPath = "properties/nodes/";
 
 nodeProperties::~nodeProperties() {
@@ -139,12 +138,7 @@ void nodeProperties::parseData(cocos2d::Node* node, const rapidjson::GenericValu
 }
 
 const jsonObject& nodeProperties::getPropertyObject(const std::string& name) {
-    if (!hasPropertyObject(name)) {
-        if (!defaultObjectData.IsObject()) {
-            defaultObjectData.SetObject();
-        }
-        return defaultObjectData.GetObject();
-    }
+    assert(hasPropertyObject(name) && "Can't find property, use method 'hasPropertyObject' first!");
 
     auto obj = propertyData["props"].FindMember(name.c_str());
     static auto result = obj->value.GetObject();
@@ -152,26 +146,54 @@ const jsonObject& nodeProperties::getPropertyObject(const std::string& name) {
 }
 
 const jsonArray& nodeProperties::getPropertyArray(const std::string& name) {
-    if (!hasPropertyObject(name)) {
-        if (!defaultObjectData.IsArray()) {
-            defaultObjectData.SetArray();
-        }
-        return defaultArrayData.GetArray();
-    }
+    assert(hasPropertyArray(name) && "Can't find property, use method 'hasPropertyArray' first!");
 
     auto obj = propertyData["props"].FindMember(name.c_str());
     static auto result = obj->value.GetArray();
     return result;
 }
 
-bool nodeProperties::hasPropertyObject(const std::string& name) {
+bool nodeProperties::hasPropertyObject(const std::string& name) const {
     if (propertyData.HasParseError() || !propertyData.IsObject()) {
         return false;
     }
     if (!propertyData.HasMember("props") || !propertyData["props"].IsObject()) {
         return false;
     }
-    return propertyData["props"].HasMember(name.c_str());
+    if (propertyData["props"].HasMember(name.c_str())) {
+        return propertyData["props"].GetObject()[name.c_str()].IsObject();
+    }
+    return false;
+}
+
+bool nodeProperties::hasPropertyArray(const std::string& name) const {
+    if (propertyData.HasParseError() || !propertyData.IsObject()) {
+        return false;
+    }
+    if (!propertyData.HasMember("props") || !propertyData["props"].IsObject()) {
+        return false;
+    }
+    if (propertyData["props"].HasMember(name.c_str())) {
+        return propertyData["props"].GetObject()[name.c_str()].IsArray();
+    }
+    return false;
+}
+
+template<typename T>
+bool nodeProperties::hasProperty(const std::string& name) const {
+    if (propertyData.HasParseError() || !propertyData.IsObject()) {
+        return false;
+    }
+    if (!propertyData.HasMember("props") || !propertyData["props"].IsObject()) {
+        return false;
+    }
+    if (propertyData["props"].HasMember(name.c_str())) {
+        auto find = propertyData["props"].GetObject().FindMember(name.c_str());
+        if (find != propertyData["props"].GetObject().MemberEnd()) {
+            return find->value.Is<T>();
+        }
+    }
+    return false;
 }
 
 void nodeProperties::setSettingsData(const rapidjson::GenericValue<rapidjson::UTF8<char>>::Object& object) {
@@ -194,3 +216,13 @@ void nodeProperties::removeSettingsData() {
 }
 
 void nodeProperties::updateSettings() {}
+
+template<typename T>
+const T& nodeProperties::getProperty(const std::string& name) const {
+
+    assert(hasProperty<T>(name) && "Can't find property, use method 'hasProperty<T>' first!");
+
+    auto obj = propertyData["props"].FindMember(name.c_str());
+    static auto result = obj->value.Get<T>();
+    return result;
+}
