@@ -595,9 +595,40 @@ void imGuiLayer::debugToggleRow(cocos2d::Node* node) {
     if (node->isRunning()) {
         auto active = node->getDebug();
         auto tempActive = active;
-        ImGui::Checkbox("debug", &active);
+        ImGui::Checkbox("Debug", &active);
         if (active != tempActive) {
             node->setDebug(active);
+        }
+        /***
+         * Debug line colors
+         */
+        auto nodeColor = node->getDebugLineColor();
+        float nodeRed = nodeColor.r;
+        float nodeGreen = nodeColor.g;
+        float nodeBlue = nodeColor.b;
+        float nodeAlpha = nodeColor.a;
+        float vecColors[4] = { nodeRed, nodeGreen, nodeBlue, nodeAlpha };
+        bool colorChanged = false;
+        ImGui::ColorEdit4(
+          "Debug color", (float*)&vecColors, ImGuiColorEditFlags_DisplayRGB | ImGuiColorEditFlags_InputRGB | ImGuiColorEditFlags_Uint8);
+        if (vecColors[0] != nodeColor.r) {
+            nodeColor.r = vecColors[0];
+            colorChanged = true;
+        }
+        if (vecColors[1] != nodeColor.g) {
+            nodeColor.g = vecColors[1];
+            colorChanged = true;
+        }
+        if (vecColors[2] != nodeColor.b) {
+            nodeColor.b = vecColors[2];
+            colorChanged = true;
+        }
+        if (vecColors[3] != nodeColor.a) {
+            nodeColor.a = vecColors[3];
+            colorChanged = true;
+        }
+        if (colorChanged) {
+            node->setDebugLineColor(nodeColor);
         }
     }
 }
