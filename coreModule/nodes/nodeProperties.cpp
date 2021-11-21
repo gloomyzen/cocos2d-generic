@@ -179,23 +179,6 @@ bool nodeProperties::hasPropertyArray(const std::string& name) const {
     return false;
 }
 
-template<typename T>
-bool nodeProperties::hasProperty(const std::string& name) const {
-    if (propertyData.HasParseError() || !propertyData.IsObject()) {
-        return false;
-    }
-    if (!propertyData.HasMember("props") || !propertyData["props"].IsObject()) {
-        return false;
-    }
-    if (propertyData["props"].HasMember(name.c_str())) {
-        auto find = propertyData["props"].GetObject().FindMember(name.c_str());
-        if (find != propertyData["props"].GetObject().MemberEnd()) {
-            return find->value.Is<T>();
-        }
-    }
-    return false;
-}
-
 void nodeProperties::setSettingsData(const rapidjson::GenericValue<rapidjson::UTF8<char>>::Object& object) {
     settingsData = object;
 }
@@ -216,13 +199,3 @@ void nodeProperties::removeSettingsData() {
 }
 
 void nodeProperties::updateSettings() {}
-
-template<typename T>
-const T& nodeProperties::getProperty(const std::string& name) const {
-
-    assert(hasProperty<T>(name) && "Can't find property, use method 'hasProperty<T>' first!");
-
-    auto obj = propertyData["props"].FindMember(name.c_str());
-    static auto result = obj->value.Get<T>();
-    return result;
-}
