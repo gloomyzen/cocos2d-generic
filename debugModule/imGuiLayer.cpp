@@ -101,7 +101,7 @@ bool imGuiLayer::init() {
 
 void imGuiLayer::drawImgui() {
     // Buttons
-    auto text_size = ImGui::CalcTextSize("Debug");
+    auto text_size = ImGui::CalcTextSize("Tools");
     if (default_width == 0.f) {
         default_width = text_size.x + 8.f;
     }
@@ -110,11 +110,11 @@ void imGuiLayer::drawImgui() {
     ImGui::SetNextWindowContentSize({ default_width, 0 });
 
     if (!closeAll
-        && ImGui::Begin("Debug",
+        && ImGui::Begin("Tools",
                         &m_enabled,
                         ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoResize
                           | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_AlwaysAutoResize)) {
-        if (ImGui::Button("Debug")) {
+        if (ImGui::Button("Tools")) {
             debugOpened = !debugOpened;
         }
         if (debugOpened) {
@@ -595,7 +595,7 @@ void imGuiLayer::debugToggleRow(cocos2d::Node* node) {
     if (node->isRunning()) {
         auto active = node->getDebug();
         auto tempActive = active;
-        ImGui::Checkbox("Tools", &active);
+        ImGui::Checkbox("Debug", &active);
         if (active != tempActive) {
             node->setDebug(active);
         }
