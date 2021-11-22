@@ -595,7 +595,7 @@ void imGuiLayer::debugToggleRow(cocos2d::Node* node) {
     if (node->isRunning()) {
         auto active = node->getDebug();
         auto tempActive = active;
-        ImGui::Checkbox("Debug", &active);
+        ImGui::Checkbox("Tools", &active);
         if (active != tempActive) {
             node->setDebug(active);
         }
