@@ -101,23 +101,7 @@ void nodeFactory::readComponent(Node* node,
 
     } break;
     case eNodeFactory::COLOR_COMPONENT: {
-        if (object.HasMember("color") && object["color"].IsArray()) {
-            auto color = object["color"].GetArray();
-            if (color.Size() >= 3 && color.Size() <= 4) {
-                Color3B rgb;
-                rgb.r = static_cast<uint8_t>(color[0].GetFloat());
-                rgb.g = static_cast<uint8_t>(color[1].GetFloat());
-                rgb.b = static_cast<uint8_t>(color[2].GetFloat());
-                node->setColor(rgb);
-                if (color.Size() == 4) {
-                    node->setOpacity(static_cast<uint8_t>(color[3].GetFloat()));
-                }
-            } else {
-                LOG_ERROR(CSTRING_FORMAT("Component '%s' has wrong '%s' color keys!",
-                                              componentName.c_str(),
-                                              std::to_string(color.Size()).c_str()));
-            }
-        }
+
     } break;
     case eNodeFactory::SCROLL_VIEW_COMPONENT: {
         if (auto scrollNode = dynamic_cast<ui::ScrollView*>(node)) {
@@ -163,7 +147,7 @@ void nodeFactory::readComponent(Node* node,
             // inner container size
             if (object.HasMember("containerSize") && object["containerSize"].IsArray()) {
                 auto containerSize = object["containerSize"].GetArray();
-                if (containerSize.Size() == 2) {
+                if (containerSize.Size() == 2u) {
                     cocos2d::Size innerSize;
                     innerSize.width = containerSize[0].GetFloat();
                     innerSize.height = containerSize[1].GetFloat();
@@ -173,7 +157,7 @@ void nodeFactory::readComponent(Node* node,
             // start scroll position
             if (object.HasMember("scrollPosPercent") && object["scrollPosPercent"].IsArray()) {
                 auto scrollPosPercent = object["scrollPosPercent"].GetArray();
-                if (scrollPosPercent.Size() == 2) {
+                if (scrollPosPercent.Size() == 2u) {
                     cocos2d::Vec2 jumpPos;
                     jumpPos.x = scrollPosPercent[0].GetFloat();
                     jumpPos.y = scrollPosPercent[1].GetFloat();
@@ -192,25 +176,25 @@ void nodeFactory::readComponent(Node* node,
         if (auto grid = dynamic_cast<gridNode*>(node)) {
             if (object.HasMember("marginX") && object["marginX"].IsArray()) {
                 auto array = object["marginX"].GetArray();
-                if (array.Size() == 2 && array[0].IsInt() && array[1].IsInt()) {
+                if (array.Size() == 2u && array[0].IsInt() && array[1].IsInt()) {
                     grid->setMarginX(array[0].GetInt(), array[1].GetInt());
                 }
             }
             if (object.HasMember("marginY") && object["marginY"].IsArray()) {
                 auto array = object["marginY"].GetArray();
-                if (array.Size() == 2 && array[0].IsInt() && array[1].IsInt()) {
+                if (array.Size() == 2u && array[0].IsInt() && array[1].IsInt()) {
                     grid->setMarginY(array[0].GetInt(), array[1].GetInt());
                 }
             }
             if (object.HasMember("paddingX") && object["paddingX"].IsArray()) {
                 auto array = object["paddingX"].GetArray();
-                if (array.Size() == 2 && array[0].IsInt() && array[1].IsInt()) {
+                if (array.Size() == 2u && array[0].IsInt() && array[1].IsInt()) {
                     grid->setPaddingX(array[0].GetInt(), array[1].GetInt());
                 }
             }
             if (object.HasMember("paddingY") && object["paddingY"].IsArray()) {
                 auto array = object["paddingY"].GetArray();
-                if (array.Size() == 2 && array[0].IsInt() && array[1].IsInt()) {
+                if (array.Size() == 2u && array[0].IsInt() && array[1].IsInt()) {
                     grid->setPaddingY(array[0].GetInt(), array[1].GetInt());
                 }
             }
@@ -265,7 +249,7 @@ void nodeFactory::readComponent(Node* node,
             if (object.HasMember("size") && object["size"].IsArray()) {
                 auto _size = cocos2d::Size();
                 auto size = object["size"].GetArray();
-                if (size.Size() == 2) {
+                if (size.Size() == 2u) {
                     _size.width = size[0].GetFloat();
                     _size.height = size[1].GetFloat();
                     sprite->setContentSize(_size);
@@ -286,7 +270,7 @@ void nodeFactory::readComponent(Node* node,
             }
             if (object.HasMember("color") && object["color"].IsArray()) {
                 auto color = object["color"].GetArray();
-                if (color.Size() == 4) {
+                if (color.Size() == 4u) {
                     Color4F rgba;
                     rgba.r = color[0].GetFloat() / 255;
                     rgba.g = color[1].GetFloat() / 255;

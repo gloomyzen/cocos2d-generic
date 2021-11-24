@@ -73,7 +73,7 @@ void transformProperty::parseProperty(cocos2d::Node* node, const jsonObject& obj
         node->setScale(scale);
     } else if (object.HasMember("scale") && object["scale"].IsArray()) {
         auto scale = object["scale"].GetArray();
-        if (scale.Size() == 2) {
+        if (scale.Size() == 2u) {
             node->setScale(scale[0].GetFloat(), scale[1].GetFloat());
         } else {
             LOG_ERROR(
@@ -85,7 +85,7 @@ void transformProperty::parseProperty(cocos2d::Node* node, const jsonObject& obj
     }
     if (object.HasMember("rotation3d")) {
         auto rotation3d = object["rotation3d"].GetArray();
-        if (rotation3d.Size() == 3) {
+        if (rotation3d.Size() == 3u) {
             node->setRotation3D(cocos2d::Vec3(rotation3d[0].GetFloat(), rotation3d[1].GetFloat(), rotation3d[2].GetFloat()));
         } else {
             LOG_ERROR(CSTRING_FORMAT(
