@@ -92,105 +92,10 @@ void nodeFactory::readComponent(Node* node,
 
     } break;
     case eNodeFactory::SPRITE_COMPONENT: {
-        if (auto button = dynamic_cast<buttonBase*>(node)) {
-            if (object.HasMember("image") && object["image"].IsString()) {
-                button->loadTexture(object["image"].GetString());
-            }
-        } else if (auto sprite3d = dynamic_cast<Sprite3D*>(node)) {
-            if (object.HasMember("image") && object["image"].IsString()) {
-                sprite3d->initWithFile(object["image"].GetString());
-                sprite3d->setForce2DQueue(true);
-                sprite3d->setBlendFunc(BlendFunc::ALPHA_PREMULTIPLIED);
-            }
-        } else if (auto sprite = dynamic_cast<Sprite*>(node)) {
-            std::string imagePath;
-            bool isPoly = true;
-            if (object.HasMember("image") && object["image"].IsString()) {
-                imagePath = object["image"].GetString();
-                if (imagePath.empty()) {
-                    LOG_ERROR(CSTRING_FORMAT("Component '%s' has invalid image path!", componentName.c_str()));
-                    break;
-                }
-                if (object.HasMember("polygon") && object["polygon"].IsBool()) {
-                    isPoly = object["polygon"].GetBool();
-                }
 
-                if (isPoly) {
-                    auto polygon = AutoPolygon::generatePolygon(imagePath);
-                    sprite->initWithPolygon(polygon);
-                } else {
-                    sprite->initWithFile(imagePath);
-                }
-                if (object.HasMember("alphaMode") && object["alphaMode"].IsNumber()) {
-                    switch (object["alphaMode"].GetInt()) {
-                    case 1:
-                        sprite->setBlendFunc(BlendFunc::ADDITIVE);
-                    case 2:
-                        sprite->setBlendFunc(BlendFunc::ALPHA_PREMULTIPLIED);
-                    case 3:
-                        sprite->setBlendFunc(BlendFunc::ALPHA_NON_PREMULTIPLIED);
-                    case 4:
-                        sprite->setBlendFunc(BlendFunc::DISABLE);
-                    default:
-                        sprite->setBlendFunc(BlendFunc::ALPHA_PREMULTIPLIED);
-                        break;
-                    }
-                }
-            } else {
-                LOG_ERROR(CSTRING_FORMAT("Component '%s' no has image path!", componentName.c_str()));
-                break;
-            }
-        } else {
-            LOG_ERROR(CSTRING_FORMAT("Node '%s', component '%s' no has sprite node type!",
-                                    node->getName().c_str(),
-                                    componentName.c_str()));
-        }
     } break;
     case eNodeFactory::LABEL_COMPONENT: {
-        if (auto label = dynamic_cast<Label*>(node)) {
-            if (object.HasMember("fontType") && object["fontType"].IsString() && object["fontType"].GetString() == std::string("ttf")) {
-                TTFConfig font = label->getTTFConfig();
-                if (font.fontFilePath.empty()) {
-                    font.fontFilePath = "fonts/arial.ttf";
-                }
-                font.outlineSize = 0;
 
-                if (object.HasMember("fontSize") && object["fontSize"].IsNumber()) {
-                    font.fontSize = object["fontSize"].GetFloat() * 2;
-                    label->setScale(0.5f);
-                }
-                if (object.HasMember("fontFile") && object["fontFile"].IsString()) {
-                    font.fontFilePath = object["fontFile"].GetString();
-                }
-                if (object.HasMember("bold") && object["bold"].IsBool()) {
-                    font.bold = object["bold"].GetBool();
-                }
-                if (object.HasMember("italic") && object["italic"].IsBool()) {
-                    font.italics = object["italic"].GetBool();
-                }
-                if (object.HasMember("alight") && object["alight"].IsString()) {
-                    TextHAlignment hAlignment = label->getTextAlignment();
-                    auto alight = object["alight"].GetString();
-                    if (alight == std::string("center")) {
-                        hAlignment = TextHAlignment::CENTER;
-                    } else if (alight == std::string("left")) {
-                        hAlignment = TextHAlignment::LEFT;
-                    } else if (alight == std::string("right")) {
-                        hAlignment = TextHAlignment::RIGHT;
-                    }
-                    label->setAlignment(hAlignment);
-                }
-                if (object.HasMember("maxLineWidth") && object["maxLineWidth"].IsNumber()) {
-                    label->setMaxLineWidth(object["maxLineWidth"].GetFloat());
-                }
-                label->setTTFConfig(font);
-                if (object.HasMember("text") && object["text"].IsString()) {
-                    label->setString(object["text"].GetString());
-                }
-            }
-        } else {
-            LOG_ERROR(CSTRING_FORMAT("Component '%s' no has label node type!", componentName.c_str()));
-        }
     } break;
     case eNodeFactory::DRAGONBONES_COMPONENT: {
         if (auto dragonbones = dynamic_cast<armatureNode*>(node)) {

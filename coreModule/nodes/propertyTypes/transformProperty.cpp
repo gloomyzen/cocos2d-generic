@@ -1,46 +1,43 @@
 #include "transformProperty.h"
-#include "generic/utilityModule/stringUtility.h"
 #include "generic/debugModule/logManager.h"
+#include "generic/utilityModule/stringUtility.h"
 
 using namespace generic::coreModule;
 
 
-bool transformProperty::parseProperty(cocos2d::Node* node, const jsonObject& object) {
+void transformProperty::parseProperty(cocos2d::Node* node, const jsonObject& object) {
     if (object.HasMember("position")) {
         auto positions = object["position"].GetArray();
-        if (positions.Size() == 2) {
+        if (positions.Size() == 2u) {
             node->setPosition(positions[0].GetFloat(), positions[1].GetFloat());
-        } else if (positions.Size() == 3) {
+        } else if (positions.Size() == 3u) {
             node->setPosition3D(cocos2d::Vec3(positions[0].GetFloat(), positions[1].GetFloat(), positions[2].GetFloat()));
         } else {
-            LOG_ERROR(CSTRING_FORMAT("Component '%s' has wrong '%s' position keys!",
-                                     propertyName.c_str(),
-                                     std::to_string(positions.Size()).c_str()));
+            LOG_ERROR(CSTRING_FORMAT(
+              "Property '%s' has wrong '%s' position keys!", propertyName.c_str(), std::to_string(positions.Size()).c_str()));
         }
     }
     if (object.HasMember("pivot")) {
         auto pivot = object["pivot"].GetArray();
-        if (pivot.Size() == 2) {
+        if (pivot.Size() == 2u) {
             node->setPivotPoint(cocos2d::Vec2(pivot[0].GetFloat(), pivot[1].GetFloat()));
         } else {
-            LOG_ERROR(CSTRING_FORMAT("Component '%s' has wrong '%s' pivot keys!",
-                                     propertyName.c_str(),
-                                     std::to_string(pivot.Size()).c_str()));
+            LOG_ERROR(
+              CSTRING_FORMAT("Property '%s' has wrong '%s' pivot keys!", propertyName.c_str(), std::to_string(pivot.Size()).c_str()));
         }
     }
     if (object.HasMember("anchor")) {
         auto anchor = object["anchor"].GetArray();
-        if (anchor.Size() == 2) {
+        if (anchor.Size() == 2u) {
             node->setAnchorPoint(cocos2d::Vec2(anchor[0].GetFloat(), anchor[1].GetFloat()));
         } else {
-            LOG_ERROR(CSTRING_FORMAT("Component '%s' has wrong '%s' anchor keys!",
-                                     propertyName.c_str(),
-                                     std::to_string(anchor.Size()).c_str()));
+            LOG_ERROR(
+              CSTRING_FORMAT("Property '%s' has wrong '%s' anchor keys!", propertyName.c_str(), std::to_string(anchor.Size()).c_str()));
         }
     }
     if (object.HasMember("size")) {
         auto size = object["size"].GetArray();
-        if (size.Size() == 2) {
+        if (size.Size() == 2u) {
             bool onlyScaleMode = false;
             float scaleX, scaleY;
             scaleX = scaleY = .0f;
@@ -52,7 +49,7 @@ bool transformProperty::parseProperty(cocos2d::Node* node, const jsonObject& obj
                     auto _size = cocos2d::Size();
                     _size.width = size[0].GetFloat();
                     _size.height = size[1].GetFloat();
-                    if (content.width != 0) {
+                    if (content.width != 0.f) {
                         scaleX = _size.width / content.width;
                         scaleY = _size.height / content.height;
                     }
@@ -68,9 +65,7 @@ bool transformProperty::parseProperty(cocos2d::Node* node, const jsonObject& obj
                 node->setContentSize(_size);
             }
         } else {
-            LOG_ERROR(CSTRING_FORMAT("Component '%s' has wrong '%s' size keys!",
-                                     propertyName.c_str(),
-                                     std::to_string(size.Size()).c_str()));
+            LOG_ERROR(CSTRING_FORMAT("Property '%s' has wrong '%s' size keys!", propertyName.c_str(), std::to_string(size.Size()).c_str()));
         }
     }
     if (object.HasMember("scale") && object["scale"].IsNumber()) {
@@ -81,9 +76,8 @@ bool transformProperty::parseProperty(cocos2d::Node* node, const jsonObject& obj
         if (scale.Size() == 2) {
             node->setScale(scale[0].GetFloat(), scale[1].GetFloat());
         } else {
-            LOG_ERROR(CSTRING_FORMAT("Component '%s' has wrong '%s' scale keys!",
-                                     propertyName.c_str(),
-                                     std::to_string(scale.Size()).c_str()));
+            LOG_ERROR(
+              CSTRING_FORMAT("Property '%s' has wrong '%s' scale keys!", propertyName.c_str(), std::to_string(scale.Size()).c_str()));
         }
     }
     if (object.HasMember("rotation") && object["rotation"].IsNumber()) {
@@ -94,20 +88,17 @@ bool transformProperty::parseProperty(cocos2d::Node* node, const jsonObject& obj
         if (rotation3d.Size() == 3) {
             node->setRotation3D(cocos2d::Vec3(rotation3d[0].GetFloat(), rotation3d[1].GetFloat(), rotation3d[2].GetFloat()));
         } else {
-            LOG_ERROR(CSTRING_FORMAT("Component '%s' has wrong '%s' rotation3d keys!",
-                                     propertyName.c_str(),
-                                     std::to_string(rotation3d.Size()).c_str()));
+            LOG_ERROR(CSTRING_FORMAT(
+              "Property '%s' has wrong '%s' rotation3d keys!", propertyName.c_str(), std::to_string(rotation3d.Size()).c_str()));
         }
     }
     if (object.HasMember("stretch")) {
         auto stretch = object["stretch"].GetArray();
-        if (stretch.Size() == 2) {
+        if (stretch.Size() == 2u) {
             node->setStretch(stretch[0].GetFloat(), stretch[1].GetFloat());
         } else {
-            LOG_ERROR(CSTRING_FORMAT("Component '%s' has wrong '%s' stretch keys!",
-                                     propertyName.c_str(),
-                                     std::to_string(stretch.Size()).c_str()));
+            LOG_ERROR(
+              CSTRING_FORMAT("Property '%s' has wrong '%s' stretch keys!", propertyName.c_str(), std::to_string(stretch.Size()).c_str()));
         }
     }
-    return false;
 }

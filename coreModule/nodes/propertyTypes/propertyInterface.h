@@ -11,7 +11,7 @@ namespace generic::coreModule {
         propertyInterface(const std::string& _propertyName) : propertyName(_propertyName) {};
         virtual ~propertyInterface() = 0;
 
-        virtual bool parseProperty(cocos2d::Node* node, const jsonObject& object) = 0;
+        virtual void parseProperty(cocos2d::Node* node, const jsonObject& object) = 0;
 
     protected:
         std::string propertyName;
