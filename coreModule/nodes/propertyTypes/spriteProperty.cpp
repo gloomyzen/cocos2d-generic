@@ -1,7 +1,7 @@
 #include "spriteProperty.h"
 #include "generic/debugModule/logManager.h"
 #include "generic/utilityModule/stringUtility.h"
-#include <generic/coreModule/nodes/types/buttonBase.h>
+#include "generic/coreModule/nodes/types/buttonBase.h"
 
 using namespace generic::coreModule;
 
@@ -50,6 +50,6 @@ void spriteProperty::parseProperty(cocos2d::Node* node, const jsonObject& object
             return;
         }
     } else {
-        LOG_ERROR(CSTRING_FORMAT("Node '%s', property '%s' no has sprite node type!", node->getName().c_str(), propertyName.c_str()));
+        LOG_ERROR(CSTRING_FORMAT("Node '%s' no has sprite property!", propertyName.c_str()));
     }
 }

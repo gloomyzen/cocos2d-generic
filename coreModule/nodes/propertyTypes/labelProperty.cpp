@@ -48,7 +48,6 @@ void labelProperty::parseProperty(cocos2d::Node* node, const jsonObject& object)
             }
         }
     } else {
-        LOG_ERROR(CSTRING_FORMAT("Property '%s' no has label node type!", propertyName.c_str()));
+        LOG_ERROR(CSTRING_FORMAT("Node '%s' no has label property!", propertyName.c_str()));
     }
 }
-

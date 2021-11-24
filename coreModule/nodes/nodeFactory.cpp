@@ -27,9 +27,6 @@ std::map<std::string, eNodeFactory> componentsMap = {
     { "spineComponent", eNodeFactory::SPINE_COMPONENT },         { "clipComponent", eNodeFactory::CLIP_COMPONENT }
 };
 
-// todo remove this later
-static std::map<std::string, bool> cachedArmature;
-
 nodeFactory* currentNodeFactory = nullptr;
 
 nodeFactory::nodeFactory() {
@@ -98,81 +95,10 @@ void nodeFactory::readComponent(Node* node,
 
     } break;
     case eNodeFactory::DRAGONBONES_COMPONENT: {
-        if (auto dragonbones = dynamic_cast<armatureNode*>(node)) {
-            if (object.HasMember("texFile") && object.HasMember("skeFile")) {
-                if (cachedArmature.find(object["name"].GetString()) == cachedArmature.end()) {
-                    // todo check file exists
-                    CCFactory::getFactory()->loadTextureAtlasData(object["texFile"].GetString());
-                    CCFactory::getFactory()->loadDragonBonesData(object["skeFile"].GetString());
-                    cachedArmature[object["name"].GetString()] = true;
-                }
-                auto bone = CCFactory::getFactory()->buildArmatureDisplay(object["name"].GetString());
-                if (bone->getArmature()) {
-                    if (object.HasMember("frameRate") && object["frameRate"].IsNumber()) {
-                        bone->getArmature()->setCacheFrameRate(object["frameRate"].GetInt());
-                    }
-                    int playTimes = -1;
-                    float fadeInTime = -1.f;
-                    if (object.HasMember("playTimes") && object["playTimes"].IsNumber()) {
-                        playTimes = object["playTimes"].GetInt();
-                    }
-                    if (object.HasMember("fadeInTime") && object["fadeInTime"].IsNumber()) {
-                        fadeInTime = object["fadeInTime"].GetFloat();
-                    }
-                    if (object.HasMember("animation") && object["animation"].IsString()) {
-                        if (bone->getAnimation()->hasAnimation(object["animation"].GetString())) {
-                            bone->getAnimation()->fadeIn(object["animation"].GetString(), fadeInTime, playTimes);
-                        } else {
-                            LOG_ERROR(
-                              CSTRING_FORMAT("Can't find animation '%s'", object["animation"].GetString()));
-                        }
-                    }
-                    dragonbones->addChild(bone);
-                } else {
-                    LOG_ERROR("Can't get any armature from factory!");
-                }
-            }
-        } else {
-            LOG_ERROR(
-              CSTRING_FORMAT("Component '%s' no has DragonBones node type!", componentName.c_str()));
-        }
+
     } break;
     case eNodeFactory::SPINE_COMPONENT: {
-        if (auto spine = dynamic_cast<spine::SkeletonAnimation*>(node)) {
-            auto scale = 1.f;
-            if (object.HasMember("scale") && object["scale"].IsNumber()) {
-                scale = object["scale"].GetFloat();
-            }
-            if (object.HasMember("file") && object["file"].IsString()) {
-                auto atlas = STRING_FORMAT("%s.atlas", object["file"].GetString());
-                auto skel = STRING_FORMAT("%s.skel", object["file"].GetString());
-                auto json = STRING_FORMAT("%s.json", object["file"].GetString());
-                if (cocos2d::FileUtils::getInstance()->isFileExist(atlas) && cocos2d::FileUtils::getInstance()->isFileExist(skel)) {
-                    spine->initWithBinaryFile(skel, atlas, scale);
-                    spine->autorelease();
-                } else if (cocos2d::FileUtils::getInstance()->isFileExist(atlas) && cocos2d::FileUtils::getInstance()->isFileExist(json)) {
-                    spine->initWithJsonFile(json, atlas, scale);
-                    spine->autorelease();
-                } else {
-                    LOG_ERROR(CSTRING_FORMAT("Can't get atlas or binary file for spine '%s'!",
-                                                  node->getName().c_str()));
-                }
-            }
-            auto loop = false;
-            if (object.HasMember("loop") && object["loop"].IsBool()) {
-                loop = object["loop"].GetBool();
-            }
-            if (object.HasMember("animation") && object["animation"].IsString()) {
-                auto animation = object["animation"].GetString();
-                spine->setAnimation(1, animation, loop);
-            }
-            if (object.HasMember("skin") && object["skin"].IsString()) {
-                spine->setSkin(object["skin"].GetString());
-            }
-        } else {
-            LOG_ERROR(
-              CSTRING_FORMAT("Component '%s' no has DragonBones node type!", componentName.c_str()));
-        }
+
     } break;
     case eNodeFactory::COLOR_COMPONENT: {
         if (object.HasMember("color") && object["color"].IsArray()) {
