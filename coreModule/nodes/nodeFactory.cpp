@@ -104,73 +104,7 @@ void nodeFactory::readComponent(Node* node,
 
     } break;
     case eNodeFactory::SCROLL_VIEW_COMPONENT: {
-        if (auto scrollNode = dynamic_cast<ui::ScrollView*>(node)) {
-            // direction
-            auto direction = ui::ScrollView::Direction::NONE;
-            if (object.HasMember("direction") && object["direction"].IsString()) {
-                std::string conf = object["direction"].GetString();
-                if (conf == "none") {
-                    direction = ui::ScrollView::Direction::NONE;
-                } else if (conf == "horizontal") {
-                    direction = ui::ScrollView::Direction::HORIZONTAL;
-                } else if (conf == "vertical") {
-                    direction = ui::ScrollView::Direction::VERTICAL;
-                } else if (conf == "both") {
-                    direction = ui::ScrollView::Direction::BOTH;
-                }
-            }
-            scrollNode->setDirection(direction);
-            // bounce
-            bool bounce = false;
-            if (object.HasMember("bounce") && object["bounce"].IsBool()) {
-                bounce = object["bounce"].GetBool();
-            }
-            scrollNode->setBounceEnabled(bounce);
-            if (object.HasMember("bounceOffset") && object["bounceOffset"].IsArray()) {
-                auto tempArray = object["bounceOffset"].GetArray();
-                if (tempArray[0].IsNumber() && tempArray[1].IsNumber()) {
-                    scrollNode->setBounceOffset(tempArray[0].GetFloat(), tempArray[1].GetFloat());
-                }
-            }
-            // scroll bar
-            bool scrollBar = false;
-            if (object.HasMember("scrollBar") && object["scrollBar"].IsBool()) {
-                scrollBar = object["scrollBar"].GetBool();
-            }
-            scrollNode->setScrollBarEnabled(scrollBar);
-            // inertial scroll (best performance with horizontal or vertical)
-            bool inertialScroll = false;
-            if (object.HasMember("inertialScroll") && object["inertialScroll"].IsBool()) {
-                inertialScroll = object["inertialScroll"].GetBool();
-            }
-            scrollNode->setInertiaScrollEnabled(inertialScroll);
-            // inner container size
-            if (object.HasMember("containerSize") && object["containerSize"].IsArray()) {
-                auto containerSize = object["containerSize"].GetArray();
-                if (containerSize.Size() == 2u) {
-                    cocos2d::Size innerSize;
-                    innerSize.width = containerSize[0].GetFloat();
-                    innerSize.height = containerSize[1].GetFloat();
-                    scrollNode->setInnerContainerSize(innerSize);
-                }
-            }
-            // start scroll position
-            if (object.HasMember("scrollPosPercent") && object["scrollPosPercent"].IsArray()) {
-                auto scrollPosPercent = object["scrollPosPercent"].GetArray();
-                if (scrollPosPercent.Size() == 2u) {
-                    cocos2d::Vec2 jumpPos;
-                    jumpPos.x = scrollPosPercent[0].GetFloat();
-                    jumpPos.y = scrollPosPercent[1].GetFloat();
-                    if (direction == ui::ScrollView::Direction::HORIZONTAL) {
-                        scrollNode->jumpToPercentHorizontal(jumpPos.x);
-                    } else if (direction == ui::ScrollView::Direction::VERTICAL) {
-                        scrollNode->jumpToPercentVertical(jumpPos.y);
-                    } else if (direction == ui::ScrollView::Direction::BOTH) {
-                        scrollNode->jumpToPercentBothDirection(jumpPos);
-                    }
-                }
-            }
-        }
+        //
     }
     case eNodeFactory::GRID_COMPONENT: {
         if (auto grid = dynamic_cast<gridNode*>(node)) {
