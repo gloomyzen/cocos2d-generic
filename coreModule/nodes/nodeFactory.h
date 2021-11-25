@@ -25,8 +25,8 @@ namespace generic::coreModule {
     };
 
     static const std::vector<std::string> componentPriorityList = {
-        { "spriteComponent" },    { "labelComponent" }, { "dragonbonesComponent" }, { "spineComponent" }, { "scale9spriteComponent" },
-        { "transformComponent" }, { "colorComponent" }, { "scrollViewComponent" },  { "gridComponent" }, { "clipComponent" }
+        { "spriteProperty" },    { "labelProperty" }, { "dragonbonesProperty" }, { "spineProperty" }, { "scale9spriteProperty" },
+        { "transformProperty" }, { "colorProperty" }, { "scrollViewProperty" },  { "gridProperty" }, { "clipProperty" }
     };
 
     class nodeFactory {

@@ -35,9 +35,9 @@ void clipProperty::parseProperty(cocos2d::Node* node, const jsonObject& object) 
 //            stencil->setName(name);
 //            if (allProperties.HasMember(name) && allProperties[name].IsObject()) {
 //                auto nodeObj = allProperties[name].GetObject();
-//                if (nodeObj.HasMember("transformComponent") && nodeObj["transformComponent"].IsObject()) {
-//                    auto componentObj = nodeObj["transformComponent"].GetObject();
-//                    readComponent(stencil, "transformComponent", componentObj, allProperties);
+//                if (nodeObj.HasMember("transformProperty") && nodeObj["transformProperty"].IsObject()) {
+//                    auto componentObj = nodeObj["transformProperty"].GetObject();
+//                    readComponent(stencil, "transformProperty", componentObj, allProperties);
 //                }
 //            }
 //            clipNode->setInverted(inverted);

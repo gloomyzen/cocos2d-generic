@@ -20,11 +20,11 @@ using namespace cocos2d;
 using namespace dragonBones;
 
 std::map<std::string, eNodeFactory> componentsMap = {
-    { "transformComponent", eNodeFactory::TRANSFORM_COMPONENT }, { "spriteComponent", eNodeFactory::SPRITE_COMPONENT },
-    { "labelComponent", eNodeFactory::LABEL_COMPONENT },         { "dragonbonesComponent", eNodeFactory::DRAGONBONES_COMPONENT },
-    { "colorComponent", eNodeFactory::COLOR_COMPONENT },         { "scrollViewComponent", eNodeFactory::SCROLL_VIEW_COMPONENT },
-    { "gridComponent", eNodeFactory::GRID_COMPONENT },           { "scale9spriteComponent", eNodeFactory::SCALE9SPRITE_COMPONENT },
-    { "spineComponent", eNodeFactory::SPINE_COMPONENT },         { "clipComponent", eNodeFactory::CLIP_COMPONENT }
+    { "transformProperty", eNodeFactory::TRANSFORM_COMPONENT }, { "spriteProperty", eNodeFactory::SPRITE_COMPONENT },
+    { "labelProperty", eNodeFactory::LABEL_COMPONENT },         { "dragonbonesProperty", eNodeFactory::DRAGONBONES_COMPONENT },
+    { "colorProperty", eNodeFactory::COLOR_COMPONENT },         { "scrollViewProperty", eNodeFactory::SCROLL_VIEW_COMPONENT },
+    { "gridProperty", eNodeFactory::GRID_COMPONENT },           { "scale9spriteProperty", eNodeFactory::SCALE9SPRITE_COMPONENT },
+    { "spineProperty", eNodeFactory::SPINE_COMPONENT },         { "clipProperty", eNodeFactory::CLIP_COMPONENT }
 };
 
 nodeFactory* currentNodeFactory = nullptr;
