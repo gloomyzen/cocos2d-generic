@@ -107,89 +107,10 @@ void nodeFactory::readComponent(Node* node,
         //
     }
     case eNodeFactory::GRID_COMPONENT: {
-        if (auto grid = dynamic_cast<gridNode*>(node)) {
-            if (object.HasMember("marginX") && object["marginX"].IsArray()) {
-                auto array = object["marginX"].GetArray();
-                if (array.Size() == 2u && array[0].IsInt() && array[1].IsInt()) {
-                    grid->setMarginX(array[0].GetInt(), array[1].GetInt());
-                }
-            }
-            if (object.HasMember("marginY") && object["marginY"].IsArray()) {
-                auto array = object["marginY"].GetArray();
-                if (array.Size() == 2u && array[0].IsInt() && array[1].IsInt()) {
-                    grid->setMarginY(array[0].GetInt(), array[1].GetInt());
-                }
-            }
-            if (object.HasMember("paddingX") && object["paddingX"].IsArray()) {
-                auto array = object["paddingX"].GetArray();
-                if (array.Size() == 2u && array[0].IsInt() && array[1].IsInt()) {
-                    grid->setPaddingX(array[0].GetInt(), array[1].GetInt());
-                }
-            }
-            if (object.HasMember("paddingY") && object["paddingY"].IsArray()) {
-                auto array = object["paddingY"].GetArray();
-                if (array.Size() == 2u && array[0].IsInt() && array[1].IsInt()) {
-                    grid->setPaddingY(array[0].GetInt(), array[1].GetInt());
-                }
-            }
-            if (object.HasMember("col") && object["col"].IsInt()) {
-                grid->setColumns(object["col"].GetInt());
-            }
-            if (object.HasMember("row") && object["row"].IsInt()) {
-                grid->setRows(object["row"].GetInt());
-            }
-            if (object.HasMember("direction") && object["direction"].IsString()) {
-                auto direction = gridNode::getGridDirectionByString(object["direction"].GetString());
-                grid->setDirection(direction);
-            }
-            //				if (object.HasMember("alignX") && object["alignX"].IsString()) {
-            //					auto align = gridNode::getGridAlignXByString(object["alignX"].GetString());
-            //					grid->setAlignX(align);
-            //				}
-            //				if (object.HasMember("alignY") && object["alignY"].IsString()) {
-            //					auto align = gridNode::getGridAlignYByString(object["alignY"].GetString());
-            //					grid->setAlignY(align);
-            //				}
-        }
+
     } break;
     case eNodeFactory::SCALE9SPRITE_COMPONENT: {
-        if (auto sprite = dynamic_cast<ui::Scale9Sprite*>(node)) {
-            cocos2d::Rect sliceRect = cocos2d::Rect::ZERO;
-            if (object.HasMember("image") && object["image"].IsString()) {
-                std::string imagePath;
-                imagePath = object["image"].GetString();
-                if (imagePath.empty()) {
-                    LOG_ERROR(CSTRING_FORMAT("Component '%s' has invalid image path!", componentName.c_str()));
-                    break;
-                }
-                sprite->initWithFile(imagePath);
-            }
-            if (object.HasMember("slice9") && object["slice9"].IsObject()) {
-                auto slice9 = object["slice9"].GetObject();
-                if (slice9.HasMember("x") && slice9["x"].IsNumber()) {
-                    sliceRect.origin.x = slice9["x"].GetFloat();
-                }
-                if (slice9.HasMember("y") && slice9["y"].IsNumber()) {
-                    sliceRect.origin.y = slice9["y"].GetFloat();
-                }
-                if (slice9.HasMember("width") && slice9["width"].IsNumber()) {
-                    sliceRect.size.width = slice9["width"].GetFloat();
-                }
-                if (slice9.HasMember("height") && slice9["height"].IsNumber()) {
-                    sliceRect.size.height = slice9["height"].GetFloat();
-                }
-                sprite->setCapInsets(sliceRect);
-            }
-            if (object.HasMember("size") && object["size"].IsArray()) {
-                auto _size = cocos2d::Size();
-                auto size = object["size"].GetArray();
-                if (size.Size() == 2u) {
-                    _size.width = size[0].GetFloat();
-                    _size.height = size[1].GetFloat();
-                    sprite->setContentSize(_size);
-                }
-            }
-        }
+        //
     } break;
     case eNodeFactory::CLIP_COMPONENT: {
         if (auto clipNode = dynamic_cast<ClippingNode*>(node)) {
