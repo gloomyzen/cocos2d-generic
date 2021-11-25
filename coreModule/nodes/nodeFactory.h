@@ -3,6 +3,7 @@
 
 #include "cocos2d.h"
 #include "generic/utilityModule/jsonHelper.h"
+#include "generic/coreModule/nodes/propertyTypes/propertyInterface.h"
 #include <functional>
 #include <map>
 #include <string>
@@ -25,7 +26,7 @@ namespace generic::coreModule {
     };
 
     static const std::vector<std::string> componentPriorityList = {
-        { "spriteProperty" },    { "labelProperty" }, { "dragonbonesProperty" }, { "spineProperty" }, { "scale9spriteProperty" },
+        { "spriteProperty" },    { "labelProperty" }, { "dragonbonesProperty" }, { "spineProperty" }, { "scale9SpriteProperty" },
         { "transformProperty" }, { "colorProperty" }, { "scrollViewProperty" },  { "gridProperty" }, { "clipProperty" }
     };
 
@@ -50,6 +51,7 @@ namespace generic::coreModule {
         void init();
         bool inited = false;
         std::map<std::string, std::function<cocos2d::Node*()>> nodes;
+        static std::map<std::string, propertyInterface*> componentsMap;
     };
 }// namespace generic::coreModule
 

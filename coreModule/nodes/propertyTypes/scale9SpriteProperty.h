@@ -8,7 +8,8 @@
 namespace generic::coreModule {
     class scale9SpriteProperty : public propertyInterface {
     public:
-        ~scale9SpriteProperty() override = 0;
+        scale9SpriteProperty(const std::string& _propertyName) : propertyInterface(_propertyName) {}
+        ~scale9SpriteProperty() override {}
 
         void parseProperty(cocos2d::Node* node, const jsonObject& object) override;
     };

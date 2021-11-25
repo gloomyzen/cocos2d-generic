@@ -8,7 +8,8 @@
 namespace generic::coreModule {
     class transformProperty : public propertyInterface {
     public:
-        ~transformProperty() override = 0;
+        transformProperty(const std::string& _propertyName) : propertyInterface(_propertyName) {}
+        ~transformProperty() override {}
 
         void parseProperty(cocos2d::Node* node, const jsonObject& object) override;
     };

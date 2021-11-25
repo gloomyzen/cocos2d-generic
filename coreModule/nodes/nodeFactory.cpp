@@ -1,12 +1,10 @@
 #include "nodeFactory.h"
-#include "DragonBones/CCDragonBonesHeaders.h"
+#include "generic/coreModule/nodes/propertyTypes/forward.h"
 #include "generic/coreModule/nodes/types/armatureNode.h"
-#include "generic/coreModule/nodes/types/buttonBase.h"
 #include "generic/coreModule/nodes/types/buttonNode.h"
 #include "generic/coreModule/nodes/types/gridNode.h"
 #include "generic/coreModule/nodes/types/node3d.h"
 #include "generic/coreModule/nodes/types/soundButton.h"
-#include "generic/coreModule/nodes/types/drawNodeBase.h"
 #include "generic/debugModule/logManager.h"
 #include "generic/utilityModule/stringUtility.h"
 #include "spine/spine-cocos2dx.h"
@@ -16,16 +14,8 @@
 #include <utility>
 
 using namespace generic::coreModule;
-using namespace cocos2d;
-using namespace dragonBones;
 
-std::map<std::string, eNodeFactory> componentsMap = {
-    { "transformProperty", eNodeFactory::TRANSFORM_COMPONENT }, { "spriteProperty", eNodeFactory::SPRITE_COMPONENT },
-    { "labelProperty", eNodeFactory::LABEL_COMPONENT },         { "dragonbonesProperty", eNodeFactory::DRAGONBONES_COMPONENT },
-    { "colorProperty", eNodeFactory::COLOR_COMPONENT },         { "scrollViewProperty", eNodeFactory::SCROLL_VIEW_COMPONENT },
-    { "gridProperty", eNodeFactory::GRID_COMPONENT },           { "scale9spriteProperty", eNodeFactory::SCALE9SPRITE_COMPONENT },
-    { "spineProperty", eNodeFactory::SPINE_COMPONENT },         { "clipProperty", eNodeFactory::CLIP_COMPONENT }
-};
+std::map<std::string, propertyInterface*> nodeFactory::componentsMap = {};
 
 nodeFactory* currentNodeFactory = nullptr;
 
@@ -34,22 +24,34 @@ nodeFactory::nodeFactory() {
     if (!inited) {
         inited = true;
         /// Core types
-        nodes["node"] = []() { return Node::create(); };
-        nodes["sprite"] = []() { return Sprite::create(); };
-        nodes["sprite3d"] = []() { return Sprite3D::create(); };
-        nodes["label"] = []() { return Label::create(); };
+        nodes["node"] = []() { return cocos2d::Node::create(); };
+        nodes["sprite"] = []() { return cocos2d::Sprite::create(); };
+        nodes["sprite3d"] = []() { return cocos2d::Sprite3D::create(); };
+        nodes["label"] = []() { return cocos2d::Label::create(); };
         nodes["buttonNode"] = []() { return buttonNode::create(); };
-        nodes["layout"] = []() { return ui::Layout::create(); };
-        nodes["layer"] = []() { return Layer::create(); };
-        nodes["clippingNode"] = []() { return ClippingNode::create(); };
-        nodes["scale9sprite"] = []() { return ui::Scale9Sprite::create(); };
+        nodes["layout"] = []() { return cocos2d::ui::Layout::create(); };
+        nodes["layer"] = []() { return cocos2d::Layer::create(); };
+        nodes["clippingNode"] = []() { return cocos2d::ClippingNode::create(); };
+        nodes["scale9sprite"] = []() { return cocos2d::ui::Scale9Sprite::create(); };
         /// External types, in generic
         nodes["dragonbones"] = []() { return new armatureNode(); };
         nodes["spine"] = []() { return new spine::SkeletonAnimation(); };
-        nodes["scrollView"] = []() { return ui::ScrollView::create(); };
+        nodes["scrollView"] = []() { return cocos2d::ui::ScrollView::create(); };
         nodes["soundButton"] = []() { return soundButton::create(); };
         nodes["grid"] = []() { return gridNode::create(); };
         nodes["node3d"] = []() { return node3d::create(); };
+
+        // prop types parser
+        componentsMap["transformProperty"] = new transformProperty("transformProperty");
+        componentsMap["labelProperty"] = new labelProperty("labelProperty");
+        componentsMap["colorProperty"] = new colorProperty("colorProperty");
+        componentsMap["gridProperty"] = new gridProperty("gridProperty");
+        componentsMap["spineProperty"] = new spineProperty("spineProperty");
+        componentsMap["spriteProperty"] = new spriteProperty("spriteProperty");
+        componentsMap["dragonbonesProperty"] = new dragonbonesProperty("dragonbonesProperty");
+        componentsMap["scrollViewProperty"] = new scrollViewProperty("scrollViewProperty");
+        componentsMap["scale9SpriteProperty"] = new scale9SpriteProperty("scale9SpriteProperty");
+        componentsMap["clipProperty"] = new clipProperty("clipProperty");
     }
 }
 

@@ -11,7 +11,8 @@
 namespace generic::coreModule {
     class dragonbonesProperty : public propertyInterface {
     public:
-        ~dragonbonesProperty() override = 0;
+        dragonbonesProperty(const std::string& _propertyName) : propertyInterface(_propertyName) {}
+        ~dragonbonesProperty() override {}
 
         void parseProperty(cocos2d::Node* node, const jsonObject& object) override;
     private:

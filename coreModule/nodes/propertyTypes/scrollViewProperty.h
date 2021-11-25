@@ -11,7 +11,8 @@
 namespace generic::coreModule {
     class scrollViewProperty : public propertyInterface {
     public:
-        ~scrollViewProperty() override = 0;
+        scrollViewProperty(const std::string& _propertyName) : propertyInterface(_propertyName) {}
+        ~scrollViewProperty() override {}
 
         void parseProperty(cocos2d::Node* node, const jsonObject& object) override;
 

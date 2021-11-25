@@ -8,7 +8,8 @@
 namespace generic::coreModule {
     class labelProperty : public propertyInterface {
     public:
-        ~labelProperty() override = 0;
+        labelProperty(const std::string& _propertyName) : propertyInterface(_propertyName) {}
+        ~labelProperty() override {}
 
         void parseProperty(cocos2d::Node* node, const jsonObject& object) override;
     };
