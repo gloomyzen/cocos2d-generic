@@ -2,8 +2,8 @@
 #define GENERIC_NODEFACTORY_H
 
 #include "cocos2d.h"
-#include "generic/utilityModule/jsonHelper.h"
 #include "generic/coreModule/nodes/propertyTypes/propertyInterface.h"
+#include "generic/utilityModule/jsonHelper.h"
 #include <functional>
 #include <map>
 #include <string>
@@ -12,22 +12,9 @@
 
 namespace generic::coreModule {
 
-    enum class eNodeFactory {
-        TRANSFORM_COMPONENT = 0,
-        SPRITE_COMPONENT,
-        LABEL_COMPONENT,
-        DRAGONBONES_COMPONENT,
-        SPINE_COMPONENT,
-        COLOR_COMPONENT,
-        SCROLL_VIEW_COMPONENT,
-        GRID_COMPONENT,
-        SCALE9SPRITE_COMPONENT,
-        CLIP_COMPONENT
-    };
-
-    static const std::vector<std::string> componentPriorityList = {
+    const std::vector<std::string> propertyPriorityList = {
         { "spriteProperty" },    { "labelProperty" }, { "dragonbonesProperty" }, { "spineProperty" }, { "scale9SpriteProperty" },
-        { "transformProperty" }, { "colorProperty" }, { "scrollViewProperty" },  { "gridProperty" }, { "clipProperty" }
+        { "transformProperty" }, { "colorProperty" }, { "scrollViewProperty" },  { "gridProperty" },  { "clipProperty" }
     };
 
     class nodeFactory {
@@ -37,11 +24,11 @@ namespace generic::coreModule {
         static nodeFactory& getInstance();
         void cleanup();
 
-        void readComponent(cocos2d::Node* node,
-                           const std::string& componentName,
-                           const rapidjson::GenericValue<rapidjson::UTF8<char>>::Object& component);
+        void readProperty(cocos2d::Node* node,
+                           const std::string& propertyName,
+                           const jsonObject& json);
 
-        static bool hasRegisteredComponent(const std::string& componentName);
+        bool hasRegisteredProperty(const std::string& propertyName);
 
         cocos2d::Node* createNodeWithType(const std::string& type);
 
@@ -51,7 +38,7 @@ namespace generic::coreModule {
         void init();
         bool inited = false;
         std::map<std::string, std::function<cocos2d::Node*()>> nodes;
-        static std::map<std::string, propertyInterface*> componentsMap;
+        std::map<std::string, propertyInterface*> propertiesMap;
     };
 }// namespace generic::coreModule
 

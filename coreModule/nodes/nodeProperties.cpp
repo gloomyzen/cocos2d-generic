@@ -102,7 +102,7 @@ void nodeProperties::parseComponents(cocos2d::Node* node, const std::string& nam
     auto nodeName = !name.empty() ? name : node->getName();
     if (propJson.HasMember(nodeName.c_str()) && propJson[nodeName.c_str()].IsObject()) {
         auto propObj = propJson[nodeName.c_str()].GetObject();
-        for (const auto& component : componentPriorityList) {
+        for (const auto& component : propertyPriorityList) {
             if (component.empty()) {
                 LOG_ERROR(CSTRING_FORMAT("Bad property '%s' in 'componentPriorityList'", component.c_str()));
                 continue;
@@ -110,7 +110,7 @@ void nodeProperties::parseComponents(cocos2d::Node* node, const std::string& nam
             const auto componentItr = propObj.FindMember(component.c_str());
             if (componentItr != propObj.MemberEnd()) {
                 if (componentItr->value.IsObject()) {
-                    GET_NODE_FACTORY().readComponent(node, component, componentItr->value.GetObject());
+                    GET_NODE_FACTORY().readProperty(node, component, componentItr->value.GetObject());
                 }
             }
         }

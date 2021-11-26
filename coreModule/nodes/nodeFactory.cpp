@@ -15,8 +15,6 @@
 
 using namespace generic::coreModule;
 
-std::map<std::string, propertyInterface*> nodeFactory::componentsMap = {};
-
 nodeFactory* currentNodeFactory = nullptr;
 
 nodeFactory::nodeFactory() {
@@ -42,16 +40,16 @@ nodeFactory::nodeFactory() {
         nodes["node3d"] = []() { return node3d::create(); };
 
         // prop types parser
-        componentsMap["transformProperty"] = new transformProperty("transformProperty");
-        componentsMap["labelProperty"] = new labelProperty("labelProperty");
-        componentsMap["colorProperty"] = new colorProperty("colorProperty");
-        componentsMap["gridProperty"] = new gridProperty("gridProperty");
-        componentsMap["spineProperty"] = new spineProperty("spineProperty");
-        componentsMap["spriteProperty"] = new spriteProperty("spriteProperty");
-        componentsMap["dragonbonesProperty"] = new dragonbonesProperty("dragonbonesProperty");
-        componentsMap["scrollViewProperty"] = new scrollViewProperty("scrollViewProperty");
-        componentsMap["scale9SpriteProperty"] = new scale9SpriteProperty("scale9SpriteProperty");
-        componentsMap["clipProperty"] = new clipProperty("clipProperty");
+        propertiesMap["transformProperty"] = new transformProperty("transformProperty");
+        propertiesMap["labelProperty"] = new labelProperty("labelProperty");
+        propertiesMap["colorProperty"] = new colorProperty("colorProperty");
+        propertiesMap["gridProperty"] = new gridProperty("gridProperty");
+        propertiesMap["spineProperty"] = new spineProperty("spineProperty");
+        propertiesMap["spriteProperty"] = new spriteProperty("spriteProperty");
+        propertiesMap["dragonbonesProperty"] = new dragonbonesProperty("dragonbonesProperty");
+        propertiesMap["scrollViewProperty"] = new scrollViewProperty("scrollViewProperty");
+        propertiesMap["scale9SpriteProperty"] = new scale9SpriteProperty("scale9SpriteProperty");
+        propertiesMap["clipProperty"] = new clipProperty("clipProperty");
     }
 }
 
@@ -59,6 +57,11 @@ nodeFactory::~nodeFactory() = default;
 
 void nodeFactory::cleanup() {
     nodes.clear();
+    for (auto &item : propertiesMap) {
+        delete item.second;
+        item.second = nullptr;
+    }
+    propertiesMap.clear();
     delete currentNodeFactory;
     currentNodeFactory = nullptr;
 }
@@ -70,18 +73,18 @@ nodeFactory& nodeFactory::getInstance() {
     return *currentNodeFactory;
 }
 
-void nodeFactory::readComponent(Node* node,
-                                const std::string& componentName,
-                                const rapidjson::GenericValue<rapidjson::UTF8<char>>::Object& object) {
+void nodeFactory::readProperty(cocos2d::Node* node,
+                                const std::string& propertyName,
+                                const jsonObject& object) {
     if (node == nullptr)
         return;
 
-    if (!hasRegisteredComponent(componentName)) {
-        LOG_ERROR(CSTRING_FORMAT("Component '%s' was not found!", componentName.c_str()));
+    if (!hasRegisteredProperty(propertyName)) {
+        LOG_ERROR(CSTRING_FORMAT("Component '%s' was not found!", propertyName.c_str()));
         return;
     }
 
-    eNodeFactory needle = componentsMap[componentName];
+    eNodeFactory needle = propertiesMap[propertyName];
 
     node->setCascadeOpacityEnabled(true);
     node->setCascadeColorEnabled(true);
@@ -120,21 +123,21 @@ void nodeFactory::readComponent(Node* node,
     }
 }
 
-bool nodeFactory::hasRegisteredComponent(const std::string& componentName) {
-    return componentsMap.count(componentName);
+bool nodeFactory::hasRegisteredProperty(const std::string& propertyName) {
+    return propertiesMap.count(propertyName);
 }
 
-Node* nodeFactory::createNodeWithType(const std::string& type) {
+cocos2d::Node* nodeFactory::createNodeWithType(const std::string& type) {
     if (nodes.count(type)) {
         return nodes[type]();
     }
     LOG_ERROR(CSTRING_FORMAT("Type of node '%s' not registered! Created default node.", type.c_str()));
-    return Node::create();
+    return cocos2d::Node::create();
 }
 
 void nodeFactory::init() {}
 
-bool nodeFactory::registerCustomNodeType(const std::string& type, std::function<Node*()> node) {
+bool nodeFactory::registerCustomNodeType(const std::string& type, std::function<cocos2d::Node*()> node) {
     if (!inited) {
         CCLOGERROR("nodeFactory::registerCustomNodeType: No initialized instance of the class! Type %s not registered!", type.c_str());
         return false;
