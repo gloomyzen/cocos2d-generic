@@ -9,7 +9,6 @@ namespace generic::coreModule {
     class colorProperty : public propertyInterface {
     public:
         colorProperty(const std::string& _propertyName) : propertyInterface(_propertyName) {}
-        ~colorProperty() override {}
 
         void parseProperty(cocos2d::Node* node, const jsonObject& object) override;
     };

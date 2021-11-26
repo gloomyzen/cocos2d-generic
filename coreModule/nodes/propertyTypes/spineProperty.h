@@ -9,7 +9,6 @@ namespace generic::coreModule {
     class spineProperty : public propertyInterface {
     public:
         spineProperty(const std::string& _propertyName) : propertyInterface(_propertyName) {}
-        ~spineProperty() override {}
 
         void parseProperty(cocos2d::Node* node, const jsonObject& object) override;
     };

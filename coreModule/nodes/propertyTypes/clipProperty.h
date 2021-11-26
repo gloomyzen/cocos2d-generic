@@ -9,7 +9,6 @@ namespace generic::coreModule {
     class clipProperty : public propertyInterface {
     public:
         clipProperty(const std::string& _propertyName) : propertyInterface(_propertyName) {}
-        ~clipProperty() override {}
 
         void parseProperty(cocos2d::Node* node, const jsonObject& object) override;
     };

@@ -21,7 +21,7 @@ namespace generic::coreModule {
          * @param path relative path to file
          * @param node Node instance
          */
-        void loadProperty(const std::string& path, cocos2d::Node* node = nullptr);
+        void initWithProperties(const std::string& path, cocos2d::Node* node = nullptr);
 
         /***
          * Парсинг параметров из json файла
@@ -29,7 +29,7 @@ namespace generic::coreModule {
          * @param node Node instance
          * @param name
          */
-        void loadComponent(cocos2d::Node* node, const std::string& name = std::string());
+        void loadProperty(cocos2d::Node* node, const std::string& name = "");
         void removeJsonData();
         void loadJson(const std::string&);
 
@@ -69,7 +69,7 @@ namespace generic::coreModule {
 
 
     private:
-        void parseComponents(cocos2d::Node* node, const std::string& name = std::string());
+        void parseProperties(cocos2d::Node* node, const std::string& name = "");
         void parseData(cocos2d::Node* node, const rapidjson::GenericValue<rapidjson::UTF8<char>>::Array& array);
 
         rapidjson::Value settingsData;

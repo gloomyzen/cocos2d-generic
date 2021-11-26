@@ -9,7 +9,7 @@ namespace generic::coreModule {
     class propertyInterface {
     public:
         propertyInterface(const std::string& _propertyName) : propertyName(_propertyName) {};
-        virtual ~propertyInterface() = 0;
+        virtual ~propertyInterface() = default;
 
         virtual void parseProperty(cocos2d::Node* node, const jsonObject& object) = 0;
 

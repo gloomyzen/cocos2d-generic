@@ -9,7 +9,6 @@ namespace generic::coreModule {
     class gridProperty : public propertyInterface {
     public:
         gridProperty(const std::string& _propertyName) : propertyInterface(_propertyName) {}
-        ~gridProperty() override {}
 
         void parseProperty(cocos2d::Node* node, const jsonObject& object) override;
     };

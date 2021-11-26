@@ -10,7 +10,6 @@
 #include "spine/spine-cocos2dx.h"
 #include "ui/CocosGUI.h"
 #include <map>
-#include <string>
 #include <utility>
 
 using namespace generic::coreModule;
@@ -50,6 +49,11 @@ nodeFactory::nodeFactory() {
         propertiesMap["scrollViewProperty"] = new scrollViewProperty("scrollViewProperty");
         propertiesMap["scale9SpriteProperty"] = new scale9SpriteProperty("scale9SpriteProperty");
         propertiesMap["clipProperty"] = new clipProperty("clipProperty");
+
+        propertyPriorityList = {
+            { "spriteProperty" },    { "labelProperty" }, { "dragonbonesProperty" }, { "spineProperty" }, { "scale9SpriteProperty" },
+            { "transformProperty" }, { "colorProperty" }, { "scrollViewProperty" },  { "gridProperty" },  { "clipProperty" }
+        };
     }
 }
 
@@ -80,46 +84,13 @@ void nodeFactory::readProperty(cocos2d::Node* node,
         return;
 
     if (!hasRegisteredProperty(propertyName)) {
-        LOG_ERROR(CSTRING_FORMAT("Component '%s' was not found!", propertyName.c_str()));
+        LOG_ERROR(CSTRING_FORMAT("Property '%s' was not registered!", propertyName.c_str()));
         return;
     }
-
-    eNodeFactory needle = propertiesMap[propertyName];
-
     node->setCascadeOpacityEnabled(true);
     node->setCascadeColorEnabled(true);
-
-    switch (needle) {
-    case eNodeFactory::TRANSFORM_COMPONENT: {
-
-    } break;
-    case eNodeFactory::SPRITE_COMPONENT: {
-
-    } break;
-    case eNodeFactory::LABEL_COMPONENT: {
-
-    } break;
-    case eNodeFactory::DRAGONBONES_COMPONENT: {
-
-    } break;
-    case eNodeFactory::SPINE_COMPONENT: {
-
-    } break;
-    case eNodeFactory::COLOR_COMPONENT: {
-
-    } break;
-    case eNodeFactory::SCROLL_VIEW_COMPONENT: {
-        //
-    }
-    case eNodeFactory::GRID_COMPONENT: {
-
-    } break;
-    case eNodeFactory::SCALE9SPRITE_COMPONENT: {
-        //
-    } break;
-    case eNodeFactory::CLIP_COMPONENT: {
-
-    } break;
+    if (propertiesMap.count(propertyName) && propertiesMap[propertyName]) {
+        propertiesMap[propertyName]->parseProperty(node, object);
     }
 }
 

@@ -12,7 +12,7 @@ nodeProperties::~nodeProperties() {
     removeSettingsData();
 }
 
-void nodeProperties::loadProperty(const std::string& path, cocos2d::Node* node) {
+void nodeProperties::initWithProperties(const std::string& path, cocos2d::Node* node) {
     if (!node) {
         node = dynamic_cast<cocos2d::Node*>(this);
         if (!node) {
@@ -61,11 +61,11 @@ void nodeProperties::loadProperty(const std::string& path, cocos2d::Node* node) 
             parseData(usedNode, strObject["child"].GetArray());
         }
 
-        parseComponents(usedNode, usedNode->getName());
+        parseProperties(usedNode, usedNode->getName());
     }
 }
 
-void nodeProperties::loadComponent(cocos2d::Node* node, const std::string& name) {
+void nodeProperties::loadProperty(cocos2d::Node* node, const std::string& name) {
     if (node == nullptr) {
         return;
     }
@@ -73,7 +73,7 @@ void nodeProperties::loadComponent(cocos2d::Node* node, const std::string& name)
         LOG_ERROR("Node has no identifier!");
         return;
     }
-    parseComponents(node, name);
+    parseProperties(node, name);
 }
 
 void nodeProperties::removeJsonData() {
@@ -89,7 +89,7 @@ void nodeProperties::loadJson(const std::string& path) {
     propertyData = GET_JSON(pathProperties);
 }
 
-void nodeProperties::parseComponents(cocos2d::Node* node, const std::string& name) {
+void nodeProperties::parseProperties(cocos2d::Node* node, const std::string& name) {
     if (propertyData.HasParseError() || !propertyData.IsObject()) {
         LOG_ERROR(CSTRING_FORMAT("Json file '%s' contains errors or not found!", pathProperties.c_str()));
         return;
@@ -102,15 +102,15 @@ void nodeProperties::parseComponents(cocos2d::Node* node, const std::string& nam
     auto nodeName = !name.empty() ? name : node->getName();
     if (propJson.HasMember(nodeName.c_str()) && propJson[nodeName.c_str()].IsObject()) {
         auto propObj = propJson[nodeName.c_str()].GetObject();
-        for (const auto& component : propertyPriorityList) {
-            if (component.empty()) {
-                LOG_ERROR(CSTRING_FORMAT("Bad property '%s' in 'componentPriorityList'", component.c_str()));
+        for (const auto& propertyName : GET_NODE_FACTORY().getPropertiesPriority()) {
+            if (propertyName.empty()) {
+                LOG_ERROR(CSTRING_FORMAT("Bad property '%s' in 'propertyPriorityList'", propertyName.c_str()));
                 continue;
             }
-            const auto componentItr = propObj.FindMember(component.c_str());
-            if (componentItr != propObj.MemberEnd()) {
-                if (componentItr->value.IsObject()) {
-                    GET_NODE_FACTORY().readProperty(node, component, componentItr->value.GetObject());
+            const auto propertyItr = propObj.FindMember(propertyName.c_str());
+            if (propertyItr != propObj.MemberEnd()) {
+                if (propertyItr->value.IsObject()) {
+                    GET_NODE_FACTORY().readProperty(node, propertyName, propertyItr->value.GetObject());
                 }
             }
         }
@@ -129,7 +129,7 @@ void nodeProperties::parseData(cocos2d::Node* node, const rapidjson::GenericValu
                 }
             }
             node->addChild(childNode);
-            parseComponents(childNode, childNode->getName());
+            parseProperties(childNode, childNode->getName());
             if (item.HasMember("child")) {
                 parseData(childNode, item["child"].GetArray());
             }
