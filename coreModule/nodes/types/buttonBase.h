@@ -11,7 +11,7 @@ namespace generic::coreModule {
         buttonBase();
         ~buttonBase() override;
 
-        void loadTexture(const std::string&);
+        void loadTexture(const std::string&, bool isPoly = false);
         void setButtonBgSprite(cocos2d::Sprite*);
         void setChangeColorByClick(bool value) {
             changeColorByClick = value;

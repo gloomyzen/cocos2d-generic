@@ -6,7 +6,7 @@ buttonBase::buttonBase() {}
 
 buttonBase::~buttonBase() = default;
 
-void buttonBase::loadTexture(const std::string& image) {
+void buttonBase::loadTexture(const std::string& image, bool isPoly) {
     if (sprite == nullptr) {
         if (auto node = dynamic_cast<cocos2d::Sprite*>(findNode("buttonNode"))) {
             sprite = node;
@@ -17,7 +17,12 @@ void buttonBase::loadTexture(const std::string& image) {
             sprite->setLocalZOrder(0);
         }
     }
-    sprite->initWithFile(image);
+    if (isPoly) {
+        auto polygon = cocos2d::AutoPolygon::generatePolygon(image);
+        sprite->initWithPolygon(polygon);
+    } else {
+        sprite->initWithFile(image);
+    }
     sprite->setAnchorPoint(cocos2d::Vec2::ZERO);
     setContentSize(sprite->getContentSize());
 }
@@ -39,4 +44,5 @@ void buttonBase::setButtonBgSprite(cocos2d::Sprite* pSprite) {
         addChild(sprite);
     }
     sprite->setLocalZOrder(pos);
+    setContentSize(sprite->getContentSize());
 }
