@@ -363,7 +363,8 @@ ImRect imGuiLayer::renderPreferences(Node* node) {
         float nodeRed = nodeColor.r / 255.0f;
         float nodeGreen = nodeColor.g / 255.0f;
         float nodeBlue = nodeColor.b / 255.0f;
-        float vecColors[3] = { nodeRed, nodeGreen, nodeBlue };
+        float nodeAlpha = node->getOpacity() / 255.0f;
+        float vecColors[4] = { nodeRed, nodeGreen, nodeBlue, nodeAlpha };
         ImGui::ColorEdit4(
           "Color", (float*)&vecColors, ImGuiColorEditFlags_DisplayRGB | ImGuiColorEditFlags_InputRGB | ImGuiColorEditFlags_Uint8);
         if (vecColors[0] != static_cast<float>(nodeColor.r) / 255.0f) {
@@ -389,6 +390,14 @@ ImRect imGuiLayer::renderPreferences(Node* node) {
             else if (nodeColor.b >= 255)
                 nodeColor.b = 255;
             node->setColor(nodeColor);
+        }
+        if (vecColors[3] != static_cast<float>(nodeAlpha) / 255.0f) {
+            nodeAlpha = static_cast<uint8_t>(vecColors[3] * 255.0f);
+            if (nodeAlpha < 0)
+                nodeAlpha = 0;
+            else if (nodeAlpha >= 255)
+                nodeAlpha = 255;
+            node->setOpacity(static_cast<uint8_t>(nodeAlpha));
         }
     }
     if (auto light = dynamic_cast<cocos2d::DirectionLight*>(node)) {
