@@ -46,3 +46,17 @@ void buttonBase::setButtonBgSprite(cocos2d::Sprite* pSprite) {
     sprite->setLocalZOrder(pos);
     setContentSize(sprite->getContentSize());
 }
+
+cocos2d::Sprite* buttonBase::getSprite() {
+    if (sprite == nullptr) {
+        if (auto node = dynamic_cast<cocos2d::Sprite*>(findNode("buttonNode"))) {
+            sprite = node;
+        } else {
+            sprite = cocos2d::Sprite::create();
+            sprite->setName("buttonNode");
+            addChild(sprite);
+            sprite->setLocalZOrder(0);
+        }
+    }
+    return sprite;
+}

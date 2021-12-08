@@ -16,6 +16,7 @@ namespace generic::coreModule {
         void setChangeColorByClick(bool value) {
             changeColorByClick = value;
         }
+        cocos2d::Sprite* getSprite();
         CREATE_FUNC(buttonBase);
 
     protected:
