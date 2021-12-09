@@ -43,6 +43,7 @@ namespace generic::coreModule {
         void initListener();
         bool allowSpamTap = false;
         bool allowClick = true;
+        bool blockedByShape = false;
 
     protected:
         cocos2d::Color3B defaultColor;

@@ -25,7 +25,6 @@ namespace generic::coreModule {
 
     private:
         cocos2d::Sprite* sprite = nullptr;
-        cocos2d::PhysicsBody* shapeBody = nullptr;
     };
 }// namespace generic::coreModule
 

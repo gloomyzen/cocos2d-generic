@@ -14,15 +14,20 @@ buttonNode::~buttonNode() = default;
 
 void buttonNode::initListener() {
     setTouchEnabled(true);
+    setCascadeColorEnabled(true);
     addTouchEventListener([&](Ref* sender, Widget::TouchEventType type) {
         switch (type) {
         case ui::Widget::TouchEventType::BEGAN: {
-            if (getShapePhysicsBody()) {
-                auto sprite = getSprite();
-                auto pInfo = sprite->getPolygonInfo();
+            if (auto body = getShapePhysicsBody()) {
                 auto touchPos = getTouchBeganPosition();
-                auto vert = pInfo.triangles.verts;
-                auto test = "";
+                auto shapes = body->getShapes();
+                auto find = std::find_if(shapes.begin(), shapes.end(), [&](cocos2d::PhysicsShape* shape){
+                    return shape->containsPoint(touchPos);
+                });
+                if (!shapes.empty() && find == shapes.end()) {
+                    blockedByShape = true;
+                    return false;
+                }
             }
 
             auto currentAction = getActionByTag(static_cast<int>(buttonNode::eButtonStatus::END_CLICK));
@@ -49,7 +54,10 @@ void buttonNode::initListener() {
         } break;
         case ui::Widget::TouchEventType::ENDED:
         case ui::Widget::TouchEventType::CANCELED: {
-
+            if (blockedByShape) {
+                blockedByShape = false;
+                return false;
+            }
             if (!getAllowClick()) {
                 return false;
             }
