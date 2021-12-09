@@ -60,3 +60,7 @@ cocos2d::Sprite* buttonBase::getSprite() {
     }
     return sprite;
 }
+
+cocos2d::PhysicsBody* buttonBase::getShapePhysicsBody() {
+    return spritePBody;
+}

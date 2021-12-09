@@ -17,6 +17,14 @@ void buttonNode::initListener() {
     addTouchEventListener([&](Ref* sender, Widget::TouchEventType type) {
         switch (type) {
         case ui::Widget::TouchEventType::BEGAN: {
+            if (isSpriteExist()) {
+                auto sprite = getSprite();
+                auto pInfo = sprite->getPolygonInfo();
+                auto touchPos = getTouchBeganPosition();
+                auto vert = pInfo.triangles.verts;
+                auto test = "";
+            }
+
             auto currentAction = getActionByTag(static_cast<int>(buttonNode::eButtonStatus::END_CLICK));
             if ((currentAction != nullptr && !getAllowSpamTap() && !currentAction->isDone()) || !getAllowClick()) {
                 return false;
@@ -45,7 +53,6 @@ void buttonNode::initListener() {
             if (!getAllowClick()) {
                 return false;
             }
-
 
             auto currentAction = getActionByTag(static_cast<int>(buttonNode::eButtonStatus::START_CLICK));
             auto actionSeq = dynamic_cast<cocos2d::Sequence*>(currentAction);

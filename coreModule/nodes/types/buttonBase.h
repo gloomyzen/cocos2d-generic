@@ -17,6 +17,7 @@ namespace generic::coreModule {
             changeColorByClick = value;
         }
         cocos2d::Sprite* getSprite();
+        cocos2d::PhysicsBody* getShapePhysicsBody();
         CREATE_FUNC(buttonBase);
 
     protected:
@@ -24,6 +25,7 @@ namespace generic::coreModule {
 
     private:
         cocos2d::Sprite* sprite = nullptr;
+        cocos2d::PhysicsBody* spritePBody = nullptr;
     };
 }// namespace generic::coreModule
 
