@@ -17,7 +17,7 @@ void buttonNode::initListener() {
     addTouchEventListener([&](Ref* sender, Widget::TouchEventType type) {
         switch (type) {
         case ui::Widget::TouchEventType::BEGAN: {
-            if (isSpriteExist()) {
+            if (getShapePhysicsBody()) {
                 auto sprite = getSprite();
                 auto pInfo = sprite->getPolygonInfo();
                 auto touchPos = getTouchBeganPosition();
