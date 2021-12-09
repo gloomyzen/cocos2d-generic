@@ -20,7 +20,7 @@ namespace generic {
             gameManager();
             ~gameManager();
             static gameManager& getInstance();
-            void cleanup();
+            static void cleanup();
 
             void run(const std::string& state = "mainMenuScene");
             void changeState(const std::string& state);

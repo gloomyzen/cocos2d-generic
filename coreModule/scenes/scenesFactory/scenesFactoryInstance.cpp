@@ -1,5 +1,4 @@
 #include "scenesFactoryInstance.h"
-#include "generic/coreModule/gameManager.h"
 #include "generic/coreModule/scenes/mainScene.h"
 #include "generic/debugModule/logManager.h"
 #include "generic/utilityModule/stringUtility.h"
