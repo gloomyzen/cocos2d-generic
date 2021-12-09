@@ -4,7 +4,7 @@ using namespace generic::coreModule;
 
 physicsShapeCache* currentShapesInstance = nullptr;
 
-physicsShapeCache::physicsShapeCache() {}
+physicsShapeCache::physicsShapeCache() = default;
 
 
 physicsShapeCache::~physicsShapeCache() {
@@ -50,15 +50,14 @@ bool physicsShapeCache::addShapesWithFile(const std::string& plist, float scaleF
         return false;
     }
 
-    cocos2d::ValueMap& bodydict = dict.at("bodies").asValueMap();
+    cocos2d::ValueMap& bodyDict = dict.at("bodies").asValueMap();
 
-    std::vector<BodyDef*> bodies(bodydict.size());
+    std::vector<BodyDef*> bodies(bodyDict.size());
     int num = 0;
 
-    for (auto iter = bodydict.cbegin(); iter != bodydict.cend(); ++iter) {
-        const cocos2d::ValueMap& bodyData = iter->second.asValueMap();
-        std::string bodyName = iter->first;
-        BodyDef* bodyDef = new BodyDef();
+    for (const auto& [bodyName, data] : bodyDict) {
+        const cocos2d::ValueMap& bodyData = data.asValueMap();
+        auto bodyDef = new BodyDef();
         bodies[num++] = bodyDef;
         bodyDefs.insert(std::make_pair(bodyName, bodyDef));
         bodyDef->anchorPoint = cocos2d::PointFromString(bodyData.at("anchorpoint").asString());
@@ -71,40 +70,40 @@ bool physicsShapeCache::addShapesWithFile(const std::string& plist, float scaleF
         bodyDef->angularVelocityLimit = bodyData.at("angular_velocity_limit").asFloat();
 
         const cocos2d::ValueVector& fixtureList = bodyData.at("fixtures").asValueVector();
-        for (auto& fixtureitem : fixtureList) {
-            FixtureData* fd = new FixtureData();
+        for (auto& fixtureItem : fixtureList) {
+            auto fd = new FixtureData();
             bodyDef->fixtures.push_back(fd);
-            auto& fixturedata = fixtureitem.asValueMap();
-            fd->density = fixturedata.at("density").asFloat();
-            fd->restitution = fixturedata.at("restitution").asFloat();
-            fd->friction = fixturedata.at("friction").asFloat();
-            fd->tag = fixturedata.at("tag").asInt();
-            fd->group = fixturedata.at("group").asInt();
-            fd->categoryMask = fixturedata.at("category_mask").asInt();
-            fd->collisionMask = fixturedata.at("collision_mask").asInt();
-            fd->contactTestMask = fixturedata.at("contact_test_mask").asInt();
+            auto& fixtureData = fixtureItem.asValueMap();
+            fd->density = fixtureData.at("density").asFloat();
+            fd->restitution = fixtureData.at("restitution").asFloat();
+            fd->friction = fixtureData.at("friction").asFloat();
+            fd->tag = fixtureData.at("tag").asInt();
+            fd->group = fixtureData.at("group").asInt();
+            fd->categoryMask = fixtureData.at("category_mask").asInt();
+            fd->collisionMask = fixtureData.at("collision_mask").asInt();
+            fd->contactTestMask = fixtureData.at("contact_test_mask").asInt();
 
-            std::string fixtureType = fixturedata.at("fixture_type").asString();
+            std::string fixtureType = fixtureData.at("fixture_type").asString();
             if (fixtureType == "POLYGON") {
                 fd->fixtureType = FIXTURE_POLYGON;
-                const cocos2d::ValueVector& polygonsArray = fixturedata.at("polygons").asValueVector();
-                for (auto& polygonitem : polygonsArray) {
-                    Polygon* poly = new Polygon();
+                const cocos2d::ValueVector& polygonsArray = fixtureData.at("polygons").asValueVector();
+                for (auto& polygonItem : polygonsArray) {
+                    auto poly = new Polygon();
                     fd->polygons.push_back(poly);
-                    auto& polygonArray = polygonitem.asValueVector();
+                    auto& polygonArray = polygonItem.asValueVector();
                     poly->numVertices = (int)polygonArray.size();
                     auto* vertices = poly->vertices = new cocos2d::Point[poly->numVertices];
-                    int vindex = 0;
+                    int vIndex = 0;
                     for (auto& pointString : polygonArray) {
                         auto offset = cocos2d::PointFromString(pointString.asString());
-                        vertices[vindex].x = offset.x / scaleFactor;
-                        vertices[vindex].y = offset.y / scaleFactor;
-                        vindex++;
+                        vertices[vIndex].x = offset.x / scaleFactor;
+                        vertices[vIndex].y = offset.y / scaleFactor;
+                        vIndex++;
                     }
                 }
             } else if (fixtureType == "CIRCLE") {
                 fd->fixtureType = FIXTURE_CIRCLE;
-                const cocos2d::ValueMap& circleData = fixturedata.at("circle").asValueMap();
+                const cocos2d::ValueMap& circleData = fixtureData.at("circle").asValueMap();
                 fd->radius = circleData.at("radius").asFloat() / scaleFactor;
                 fd->center = cocos2d::PointFromString(circleData.at("position").asString()) / scaleFactor;
             } else {
@@ -195,8 +194,8 @@ bool physicsShapeCache::setBodyOnSprite(const std::string& name, cocos2d::Sprite
 void physicsShapeCache::removeShapesWithFile(const std::string& plist) {
     auto bodies = bodiesInFile.at(plist);
 
-    for (auto iter = bodies.begin(); iter != bodies.end(); ++iter) {
-        safeDeleteBodyDef(*iter);
+    for (auto& item : bodies) {
+        safeDeleteBodyDef(item);
     }
 
     bodiesInFile.erase(plist);
@@ -204,8 +203,8 @@ void physicsShapeCache::removeShapesWithFile(const std::string& plist) {
 
 
 void physicsShapeCache::removeAllShapes() {
-    for (auto iter = bodyDefs.cbegin(); iter != bodyDefs.cend(); ++iter) {
-        safeDeleteBodyDef(iter->second);
+    for (const auto& bodyDef : bodyDefs) {
+        safeDeleteBodyDef(bodyDef.second);
     }
     bodyDefs.clear();
     bodiesInFile.clear();
@@ -213,13 +212,13 @@ void physicsShapeCache::removeAllShapes() {
 
 
 void physicsShapeCache::safeDeleteBodyDef(BodyDef* bodyDef) {
-    for (auto fixturedata : bodyDef->fixtures) {
-        for (auto polygon : fixturedata->polygons) {
+    for (auto fixtureData : bodyDef->fixtures) {
+        for (auto polygon : fixtureData->polygons) {
             CC_SAFE_DELETE_ARRAY(polygon->vertices);
             CC_SAFE_DELETE(polygon);
         }
-        fixturedata->polygons.clear();
-        CC_SAFE_DELETE(fixturedata);
+        fixtureData->polygons.clear();
+        CC_SAFE_DELETE(fixtureData);
     }
     bodyDef->fixtures.clear();
     CC_SAFE_DELETE(bodyDef);
