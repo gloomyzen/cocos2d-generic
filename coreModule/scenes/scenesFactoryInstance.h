@@ -24,6 +24,8 @@ namespace generic::coreModule {
         bool runScene(const std::string& stateName);
 
     private:
+        void initTaskLoading(cocos2d::Node* node);
+
         std::map<std::string, std::function<sceneInterface*()>> scenesMap;
         sceneInterface* currentScene = nullptr;
     };

@@ -3,7 +3,7 @@
 
 namespace generic::coreModule {
     enum eGameLayers {
-        ROOT = 0,
+        BACKGROUND = 0,
         WINDOW = 90,
         DEBUG_LAYER = 99,
     };

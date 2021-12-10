@@ -32,7 +32,7 @@ bool scenesFactoryInstance::registerScene(const std::string& stateName, const st
 }
 
 bool scenesFactoryInstance::runScene(const std::string& stateName) {
-    if (!isSceneRegistered(stateName)) {
+    if (isSceneRegistered(stateName)) {
         auto scene = scenesMap[stateName]();
         if (!scene)
             return false;
@@ -47,6 +47,7 @@ bool scenesFactoryInstance::runScene(const std::string& stateName) {
             scene->getPhysicsWorld()->setGravity(scene->getGravity());
         }
         scene->onSceneLoading();
+        initTaskLoading(scene);
         currentScene = scene;
         scene->getDefaultCamera()->setName("CameraNode");
         return true;
@@ -62,4 +63,13 @@ void scenesFactoryInstance::cleanup() {
         delete currentFactoryInstance;
     }
     currentFactoryInstance = nullptr;
+}
+
+void scenesFactoryInstance::initTaskLoading(cocos2d::Node* node) {
+    if (auto item = dynamic_cast<taskHolder*>(node)) {
+        auto atp = cocos2d::AsyncTaskPool::getInstance();
+        atp->enqueue(cocos2d::AsyncTaskPool::TaskType::TASK_OTHER, [](void*) {}, nullptr, [item]() {
+            item->executeTasks();
+        });
+    }
 }
