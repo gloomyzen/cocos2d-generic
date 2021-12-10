@@ -11,18 +11,21 @@
 
 namespace generic::coreModule {
 
+    class sceneInterface;
+
     class scenesFactoryInstance {
     public:
         scenesFactoryInstance();
         ~scenesFactoryInstance();
         static scenesFactoryInstance& getInstance();
-        cocos2d::Node* getStateRoot(const std::string&);
-        bool isStateRegistered(const std::string&);
-        bool registerState(const std::string&, std::function<cocos2d::Node*()>);
+        static void cleanup();
+        bool isStateRegistered(const std::string& stateName);
+        bool registerState(const std::string& stateName, const std::function<sceneInterface*()>& clb);
+        bool runState(const std::string& stateName);
 
     private:
-        std::map<std::string, bool> registeredStatesMap;
-        std::map<std::string, std::function<cocos2d::Node*()>> states;
+        std::map<std::string, std::function<sceneInterface*()>> states;
+        sceneInterface* currentScene = nullptr;
     };
 }// namespace generic::coreModule
 

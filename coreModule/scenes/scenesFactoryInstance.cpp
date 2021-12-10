@@ -1,7 +1,5 @@
 #include "scenesFactoryInstance.h"
-#include "generic/coreModule/scenes/mainScene.h"
-#include "generic/debugModule/logManager.h"
-#include "generic/utilityModule/stringUtility.h"
+#include "sceneInterface.h"
 #include <map>
 
 using namespace generic;
@@ -21,24 +19,43 @@ scenesFactoryInstance& scenesFactoryInstance::getInstance() {
     return *currentFactoryInstance;
 }
 
-cocos2d::Node* scenesFactoryInstance::getStateRoot(const std::string& state) {
-    if (isStateRegistered(state)) {
-        return states[state]();
+bool scenesFactoryInstance::isStateRegistered(const std::string& stateName) {
+    return states.count(stateName);
+}
+
+bool scenesFactoryInstance::registerState(const std::string& stateName, const std::function<sceneInterface*()>& clb) {
+    if (!isStateRegistered(stateName)) {
+        states[stateName] = clb;
+        return true;
     }
-    LOG_ERROR(
-      CSTRING_FORMAT("Current state '%s' is not registered! Return simple layer.", state.c_str()));
-    return cocos2d::Node::create();
+    return false;
 }
 
-bool scenesFactoryInstance::registerState(const std::string& state, std::function<cocos2d::Node*()> clb) {
-    if (isStateRegistered(state))
-        return false;
-
-    states[state] = std::move(clb);
-    registeredStatesMap[state] = true;
-    return true;
+bool scenesFactoryInstance::runState(const std::string& stateName) {
+    if (!isStateRegistered(stateName)) {
+        auto scene = states[stateName]();
+        if (!scene)
+            return false;
+        if (!currentScene) {
+            Director::getInstance()->runWithScene(scene);
+        } else {
+            currentScene->onSceneClosing();
+            Director::getInstance()->replaceScene(TransitionSlideInT::create(1, scene));
+        }
+        scene->onSceneLoading();
+        currentScene = scene;
+        scene->getDefaultCamera()->setName("CameraNode");
+        return true;
+    }
+    return false;
 }
 
-bool scenesFactoryInstance::isStateRegistered(const std::string& needle) {
-    return registeredStatesMap.count(needle) != 0;
+void scenesFactoryInstance::cleanup() {
+    if (currentFactoryInstance) {
+        currentFactoryInstance->states.clear();
+        delete currentFactoryInstance->currentScene;
+        currentFactoryInstance->currentScene = nullptr;
+        delete currentFactoryInstance;
+    }
+    currentFactoryInstance = nullptr;
 }
