@@ -19,21 +19,21 @@ scenesFactoryInstance& scenesFactoryInstance::getInstance() {
     return *currentFactoryInstance;
 }
 
-bool scenesFactoryInstance::isStateRegistered(const std::string& stateName) {
-    return states.count(stateName);
+bool scenesFactoryInstance::isSceneRegistered(const std::string& stateName) {
+    return scenesMap.count(stateName);
 }
 
-bool scenesFactoryInstance::registerState(const std::string& stateName, const std::function<sceneInterface*()>& clb) {
-    if (!isStateRegistered(stateName)) {
-        states[stateName] = clb;
+bool scenesFactoryInstance::registerScene(const std::string& stateName, const std::function<sceneInterface*()>& clb) {
+    if (!isSceneRegistered(stateName)) {
+        scenesMap[stateName] = clb;
         return true;
     }
     return false;
 }
 
-bool scenesFactoryInstance::runState(const std::string& stateName) {
-    if (!isStateRegistered(stateName)) {
-        auto scene = states[stateName]();
+bool scenesFactoryInstance::runScene(const std::string& stateName) {
+    if (!isSceneRegistered(stateName)) {
+        auto scene = scenesMap[stateName]();
         if (!scene)
             return false;
         if (!currentScene) {
@@ -41,6 +41,10 @@ bool scenesFactoryInstance::runState(const std::string& stateName) {
         } else {
             currentScene->onSceneClosing();
             Director::getInstance()->replaceScene(TransitionSlideInT::create(1, scene));
+        }
+        if (scene->isPhysics()) {
+            scene->initWithPhysics();
+            scene->getPhysicsWorld()->setGravity(scene->getGravity());
         }
         scene->onSceneLoading();
         currentScene = scene;
@@ -52,7 +56,7 @@ bool scenesFactoryInstance::runState(const std::string& stateName) {
 
 void scenesFactoryInstance::cleanup() {
     if (currentFactoryInstance) {
-        currentFactoryInstance->states.clear();
+        currentFactoryInstance->scenesMap.clear();
         delete currentFactoryInstance->currentScene;
         currentFactoryInstance->currentScene = nullptr;
         delete currentFactoryInstance;

@@ -57,7 +57,7 @@ void windowBase::closeWindow() {
     auto clb = cocos2d::CallFunc::create([this, closeClb]() {
         if (closeClb)
             closeClb();
-        GET_GAME_MANAGER().getWindowSystem()->closeWindow(getWindowName());
+//        GET_GAME_MANAGER().getWindowSystem()->closeWindow(getWindowName());
     });
     setCascadeOpacityEnabled(true);
     switch (closeAnim) {

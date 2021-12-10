@@ -19,12 +19,12 @@ namespace generic::coreModule {
         ~scenesFactoryInstance();
         static scenesFactoryInstance& getInstance();
         static void cleanup();
-        bool isStateRegistered(const std::string& stateName);
-        bool registerState(const std::string& stateName, const std::function<sceneInterface*()>& clb);
-        bool runState(const std::string& stateName);
+        bool isSceneRegistered(const std::string& stateName);
+        bool registerScene(const std::string& stateName, const std::function<sceneInterface*()>& clb);
+        bool runScene(const std::string& stateName);
 
     private:
-        std::map<std::string, std::function<sceneInterface*()>> states;
+        std::map<std::string, std::function<sceneInterface*()>> scenesMap;
         sceneInterface* currentScene = nullptr;
     };
 }// namespace generic::coreModule

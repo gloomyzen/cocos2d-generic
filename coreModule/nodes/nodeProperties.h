@@ -2,7 +2,6 @@
 #define GENERIC_NODEPROPERTIES_H
 
 #include "cocos2d.h"
-#include "generic/coreModule/gameManager.h"
 #include "generic/coreModule/nodes/nodeFactory.h"
 #include "generic/coreModule/resources/resourceManager.h"
 #include "generic/coreModule/resources/settings/settingManager.h"
