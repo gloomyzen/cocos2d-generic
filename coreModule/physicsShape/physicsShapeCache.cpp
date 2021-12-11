@@ -2,6 +2,14 @@
 
 using namespace generic::coreModule;
 
+const std::vector<std::string> obligatoryDataKeys = {
+    "anchorpoint", "is_dynamic", "affected_by_gravity", "allows_rotation",
+    "linear_damping", "angular_damping", "velocity_limit", "angular_velocity_limit", "fixtures"
+};
+const std::vector<std::string> obligatoryFixtureKeys = {
+    "density", "restitution", "friction", "tag", "group", "category_mask", "collision_mask", "contact_test_mask", "fixture_type", "polygons"
+};
+
 physicsShapeCache* currentShapesInstance = nullptr;
 
 physicsShapeCache::physicsShapeCache() = default;
@@ -35,10 +43,12 @@ bool physicsShapeCache::addShapesWithFile(const std::string& plist) {
 
 
 bool physicsShapeCache::addShapesWithFile(const std::string& plist, float scaleFactor) {
-    CCASSERT(bodiesInFile.find(plist) == bodiesInFile.end(), "file already loaded");
+    if (bodiesInFile.count(plist)) {
+        return false;
+    }
 
     cocos2d::ValueMap dict = cocos2d::FileUtils::getInstance()->getValueMapFromFile(plist);
-    if (dict.empty()) {
+    if (dict.empty() || !dict.count("metadata") || dict.count("bodies")) {
         // plist file not found
         return false;
     }
@@ -50,65 +60,75 @@ bool physicsShapeCache::addShapesWithFile(const std::string& plist, float scaleF
         return false;
     }
 
-    cocos2d::ValueMap& bodyDict = dict.at("bodies").asValueMap();
+    cocos2d::ValueMap& bodyDict = dict["bodies"].asValueMap();
 
     std::vector<BodyDef*> bodies(bodyDict.size());
     int num = 0;
 
     for (const auto& [bodyName, data] : bodyDict) {
-        const cocos2d::ValueMap& bodyData = data.asValueMap();
-        auto bodyDef = new BodyDef();
-        bodies[num++] = bodyDef;
-        bodyDefs.insert(std::make_pair(bodyName, bodyDef));
-        bodyDef->anchorPoint = cocos2d::PointFromString(bodyData.at("anchorpoint").asString());
-        bodyDef->isDynamic = bodyData.at("is_dynamic").asBool();
-        bodyDef->affectedByGravity = bodyData.at("affected_by_gravity").asBool();
-        bodyDef->allowsRotation = bodyData.at("allows_rotation").asBool();
-        bodyDef->linearDamping = bodyData.at("linear_damping").asFloat();
-        bodyDef->angularDamping = bodyData.at("angular_damping").asFloat();
-        bodyDef->velocityLimit = bodyData.at("velocity_limit").asFloat();
-        bodyDef->angularVelocityLimit = bodyData.at("angular_velocity_limit").asFloat();
+        cocos2d::ValueMap bodyData = data.asValueMap();
+        auto findDataKey = std::find_if(obligatoryDataKeys.begin(), obligatoryDataKeys.end(), [&bodyData](const std::string& s){
+            return !bodyData.count(s);
+        });
+        if (findDataKey == obligatoryDataKeys.end()) {
+            auto bodyDef = new BodyDef();
+            bodies[num++] = bodyDef;
+            bodyDefs.insert(std::make_pair(bodyName, bodyDef));
+            bodyDef->anchorPoint = cocos2d::PointFromString(bodyData["anchorpoint"].asString());
+            bodyDef->isDynamic = bodyData["is_dynamic"].asBool();
+            bodyDef->affectedByGravity = bodyData["affected_by_gravity"].asBool();
+            bodyDef->allowsRotation = bodyData["allows_rotation"].asBool();
+            bodyDef->linearDamping = bodyData["linear_damping"].asFloat();
+            bodyDef->angularDamping = bodyData["angular_damping"].asFloat();
+            bodyDef->velocityLimit = bodyData["velocity_limit"].asFloat();
+            bodyDef->angularVelocityLimit = bodyData["angular_velocity_limit"].asFloat();
 
-        const cocos2d::ValueVector& fixtureList = bodyData.at("fixtures").asValueVector();
-        for (auto& fixtureItem : fixtureList) {
-            auto fd = new FixtureData();
-            bodyDef->fixtures.push_back(fd);
-            auto& fixtureData = fixtureItem.asValueMap();
-            fd->density = fixtureData.at("density").asFloat();
-            fd->restitution = fixtureData.at("restitution").asFloat();
-            fd->friction = fixtureData.at("friction").asFloat();
-            fd->tag = fixtureData.at("tag").asInt();
-            fd->group = fixtureData.at("group").asInt();
-            fd->categoryMask = fixtureData.at("category_mask").asInt();
-            fd->collisionMask = fixtureData.at("collision_mask").asInt();
-            fd->contactTestMask = fixtureData.at("contact_test_mask").asInt();
+            cocos2d::ValueVector& fixtureList = bodyData["fixtures"].asValueVector();
+            for (auto& fixtureItem : fixtureList) {
+                auto& fixtureData = fixtureItem.asValueMap();
+                auto findFixtureKey = std::find_if(obligatoryFixtureKeys.begin(), obligatoryFixtureKeys.end(), [&fixtureData](const std::string& s){
+                    return !fixtureData.count(s);
+                });
+                if (findFixtureKey == obligatoryFixtureKeys.end()) {
+                    auto fd = new FixtureData();
+                    bodyDef->fixtures.push_back(fd);
+                    fd->density = fixtureData["density"].asFloat();
+                    fd->restitution = fixtureData["restitution"].asFloat();
+                    fd->friction = fixtureData["friction"].asFloat();
+                    fd->tag = fixtureData["tag"].asInt();
+                    fd->group = fixtureData["group"].asInt();
+                    fd->categoryMask = fixtureData["category_mask"].asInt();
+                    fd->collisionMask = fixtureData["collision_mask"].asInt();
+                    fd->contactTestMask = fixtureData["contact_test_mask"].asInt();
 
-            std::string fixtureType = fixtureData.at("fixture_type").asString();
-            if (fixtureType == "POLYGON") {
-                fd->fixtureType = FIXTURE_POLYGON;
-                const cocos2d::ValueVector& polygonsArray = fixtureData.at("polygons").asValueVector();
-                for (auto& polygonItem : polygonsArray) {
-                    auto poly = new Polygon();
-                    fd->polygons.push_back(poly);
-                    auto& polygonArray = polygonItem.asValueVector();
-                    poly->numVertices = (int)polygonArray.size();
-                    auto* vertices = poly->vertices = new cocos2d::Point[poly->numVertices];
-                    int vIndex = 0;
-                    for (auto& pointString : polygonArray) {
-                        auto offset = cocos2d::PointFromString(pointString.asString());
-                        vertices[vIndex].x = offset.x / scaleFactor;
-                        vertices[vIndex].y = offset.y / scaleFactor;
-                        vIndex++;
+                    std::string fixtureType = fixtureData["fixture_type"].asString();
+                    if (fixtureType == "POLYGON") {
+                        fd->fixtureType = FIXTURE_POLYGON;
+                        const cocos2d::ValueVector& polygonsArray = fixtureData["polygons"].asValueVector();
+                        for (auto& polygonItem : polygonsArray) {
+                            auto poly = new Polygon();
+                            fd->polygons.push_back(poly);
+                            auto& polygonArray = polygonItem.asValueVector();
+                            poly->numVertices = (int)polygonArray.size();
+                            auto* vertices = poly->vertices = new cocos2d::Point[poly->numVertices];
+                            int vIndex = 0;
+                            for (auto& pointString : polygonArray) {
+                                auto offset = cocos2d::PointFromString(pointString.asString());
+                                vertices[vIndex].x = offset.x / scaleFactor;
+                                vertices[vIndex].y = offset.y / scaleFactor;
+                                vIndex++;
+                            }
+                        }
+                    } else if (fixtureType == "CIRCLE") {
+                        fd->fixtureType = FIXTURE_CIRCLE;
+                        cocos2d::ValueMap& circleData = fixtureData["circle"].asValueMap();
+                        fd->radius = circleData["radius"].asFloat() / scaleFactor;
+                        fd->center = cocos2d::PointFromString(circleData["position"].asString()) / scaleFactor;
+                    } else {
+                        // unknown type
+                        return false;
                     }
                 }
-            } else if (fixtureType == "CIRCLE") {
-                fd->fixtureType = FIXTURE_CIRCLE;
-                const cocos2d::ValueMap& circleData = fixtureData.at("circle").asValueMap();
-                fd->radius = circleData.at("radius").asFloat() / scaleFactor;
-                fd->center = cocos2d::PointFromString(circleData.at("position").asString()) / scaleFactor;
-            } else {
-                // unknown type
-                return false;
             }
         }
     }
@@ -120,14 +140,11 @@ bool physicsShapeCache::addShapesWithFile(const std::string& plist, float scaleF
 
 
 physicsShapeCache::BodyDef* physicsShapeCache::getBodyDef(const std::string& name) {
-    try {
-        return bodyDefs.at(name);
-    } catch (std::out_of_range&) {
-    }
-
-    try {
-        return bodyDefs.at(name.substr(0, name.rfind('.')));// remove file suffix and try again...
-    } catch (std::out_of_range&) {
+    if (bodyDefs.count(name)) {
+        return bodyDefs[name];
+    } else if (auto key = name.substr(0, name.rfind('.')); bodyDefs.count(key)) {
+        // remove file suffix and try again...
+        return bodyDefs[key];
     }
 
     return nullptr;
@@ -192,13 +209,13 @@ bool physicsShapeCache::setBodyOnSprite(const std::string& name, cocos2d::Sprite
 
 
 void physicsShapeCache::removeShapesWithFile(const std::string& plist) {
-    auto bodies = bodiesInFile.at(plist);
+    if (bodiesInFile.count(plist)) {
+        for (auto& item : bodiesInFile[plist]) {
+            safeDeleteBodyDef(item);
+        }
 
-    for (auto& item : bodies) {
-        safeDeleteBodyDef(item);
+        bodiesInFile.erase(plist);
     }
-
-    bodiesInFile.erase(plist);
 }
 
 
