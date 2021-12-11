@@ -58,13 +58,19 @@ namespace generic::coreModule {
             windowViewer = new windowSystem();
             this->addChild(windowViewer, eGameLayers::WINDOW);
         }
-
+        void setFadeTransition(float value) {
+            fadeTransitionTime = value;
+        }
+        float getFadeTransition() const {
+            return fadeTransitionTime;
+        }
 
     protected:
         bool physics = false;
         cocos2d::Vec2 defaultGravity = { 0.f, 0.f };
         cocos2d::LayerColor* bgLayer = nullptr;
         windowSystem* windowViewer = nullptr;
+        float fadeTransitionTime = 1.f;
 #ifdef DEBUG
         generic::debugModule::imGuiLayer* imGuiLayer = nullptr;
 #endif

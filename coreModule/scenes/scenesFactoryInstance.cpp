@@ -40,7 +40,7 @@ bool scenesFactoryInstance::runScene(const std::string& stateName) {
             Director::getInstance()->runWithScene(scene);
         } else {
             currentScene->onSceneClosing();
-            Director::getInstance()->replaceScene(TransitionSlideInT::create(1, scene));
+            Director::getInstance()->replaceScene(TransitionCrossFade::create(scene->getFadeTransition(), scene));
         }
         if (scene->isPhysics()) {
             scene->initWithPhysics();
