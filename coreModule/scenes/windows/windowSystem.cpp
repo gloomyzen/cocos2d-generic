@@ -28,16 +28,19 @@ windowBase* windowSystem::requestWindow(const std::string& name, bool force) {
     if (find == registeredWindowList.end()) {
         return nullptr;
     }
-    auto findOpened = std::find_if(openedWindowList.cbegin(), openedWindowList.cend(), [name](windowBase* node) {
-        return node->getWindowName() == name;
+    auto findOpened = std::find_if(openedWindowList.cbegin(), openedWindowList.cend(), [name](const std::pair<windowBase*, int>& c) {
+        return c.first->getWindowName() == name;
     });
     auto findWaiting = std::find_if(waitingWindowList.cbegin(), waitingWindowList.cend(), [name](windowBase* node) {
         return node->getWindowName() == name;
     });
     auto window = registeredWindowList[name]();
     window->setWindowName(name);
+    auto slotId = window->getEmitter()->onWindowClose.connect([this](const std::string& windowName){
+        closeWindow(windowName);
+    });
     if ((force && findOpened == openedWindowList.end()) || (openedWindowList.empty() && waitingWindowList.empty())) {
-        openedWindowList.push_back(window);
+        openedWindowList.emplace_back(window, slotId);
         this->scheduleOnce(
           [this, window](float) {
               addChild(window);
@@ -54,21 +57,25 @@ windowBase* windowSystem::requestWindow(const std::string& name, bool force) {
 }
 
 bool windowSystem::closeWindow(const std::string& name) {
-    auto find = std::find_if(openedWindowList.begin(), openedWindowList.end(), [name](windowBase* node) {
-        return node->getWindowName() == name;
+    auto find = std::find_if(openedWindowList.begin(), openedWindowList.end(), [name](const std::pair<windowBase*, int>& c) {
+        return c.first->getWindowName() == name;
     });
     auto taskName = STRING_FORMAT("closeWindowTask_%s_%u", name.c_str(), this->_ID);
     if (!this->isScheduled(taskName)) {
         this->scheduleOnce(
           [this, find, name](float) {
               if (find != openedWindowList.end()) {
-                  (*find)->removeFromParentAndCleanup(true);
+                  (*find).first->removeFromParentAndCleanup(true);
+                  (*find).first->getEmitter()->onWindowClose.disconnect((*find).second);
                   openedWindowList.erase(find);
               }
               auto taskName = STRING_FORMAT("openWindow_%s", name.c_str());
               if (!waitingWindowList.empty() && !this->isScheduled(taskName)) {
                   auto window = waitingWindowList.begin();
-                  openedWindowList.push_back(*window);
+                  auto slotId = (*window)->getEmitter()->onWindowClose.connect([this](const std::string& windowName){
+                      closeWindow(windowName);
+                  });
+                  openedWindowList.emplace_back((*window), slotId);
                   this->scheduleOnce(
                     [this, window](float) {
                         addChild(*window);

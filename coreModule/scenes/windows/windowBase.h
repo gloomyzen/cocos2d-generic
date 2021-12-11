@@ -4,6 +4,7 @@
 #include "cocos2d.h"
 #include "generic/coreModule/nodes/nodeProperties.h"
 #include "generic/coreModule/nodes/types/soundButton.h"
+#include "generic/coreModule/signals/signalHolder.h"
 #include <map>
 #include <string>
 #include <utility>
@@ -11,6 +12,11 @@
 
 namespace generic::coreModule {
     class windowBase : public soundButton {
+        struct windowEmitter {
+            generic::signal::signalHolder<> onWindowOpen;
+            generic::signal::signalHolder<std::string> onWindowClose;
+        };
+
         class windowBaseData {
         public:
             windowBaseData() = default;
@@ -90,6 +96,7 @@ namespace generic::coreModule {
         void setCloseAnim(eWindowAnim anim) {
             closeAnim = anim;
         }
+        windowEmitter* getEmitter() { return &windowEmitter; }
 
     private:
         void initWindow();
@@ -100,6 +107,7 @@ namespace generic::coreModule {
         std::map<std::string, windowBaseData*> windowData;
         std::map<std::string, std::function<void()>> windowCallbacks;
         bool handleMissClick = true;
+        windowEmitter windowEmitter;
     };
 }// namespace generic::coreModule
 

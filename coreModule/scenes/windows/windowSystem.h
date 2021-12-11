@@ -22,7 +22,7 @@ namespace generic::coreModule {
 
     private:
         std::map<std::string, std::function<windowBase*()>> registeredWindowList;
-        std::vector<windowBase*> openedWindowList;
+        std::vector<std::pair<windowBase*, int>> openedWindowList;
         std::vector<windowBase*> waitingWindowList;
         std::string lastTask;
     };

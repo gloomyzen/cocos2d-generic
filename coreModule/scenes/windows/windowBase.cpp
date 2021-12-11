@@ -46,6 +46,7 @@ void windowBase::initWindow() {
     auto clb = cocos2d::CallFunc::create([this]() {
         currentState = eWindowState::OPENED;
         setCascadeOpacityEnabled(false);
+        getEmitter()->onWindowOpen.emit();
     });
     auto seq = Sequence::create(spawn, clb, nullptr);
     runAction(seq);
@@ -57,7 +58,7 @@ void windowBase::closeWindow() {
     auto clb = cocos2d::CallFunc::create([this, closeClb]() {
         if (closeClb)
             closeClb();
-//        GET_GAME_MANAGER().getWindowSystem()->closeWindow(getWindowName());
+        getEmitter()->onWindowClose.emit(getWindowName());
     });
     setCascadeOpacityEnabled(true);
     switch (closeAnim) {

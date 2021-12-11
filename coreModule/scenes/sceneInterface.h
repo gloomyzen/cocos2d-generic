@@ -3,6 +3,7 @@
 
 #include "cocos2d.h"
 #include "layersEnum.h"
+#include "generic/coreModule/scenes/windows/windowSystem.h"
 #ifdef DEBUG
 #include "generic/debugModule/imGuiLayer.h"
 #endif
@@ -54,6 +55,8 @@ namespace generic::coreModule {
                 prevScene->imGuiLayer = nullptr;
             }
 #endif
+            windowViewer = new windowSystem();
+            this->addChild(windowViewer, eGameLayers::WINDOW);
         }
 
 
@@ -61,6 +64,7 @@ namespace generic::coreModule {
         bool physics = false;
         cocos2d::Vec2 defaultGravity = { 0.f, 0.f };
         cocos2d::LayerColor* bgLayer = nullptr;
+        windowSystem* windowViewer = nullptr;
 #ifdef DEBUG
         generic::debugModule::imGuiLayer* imGuiLayer = nullptr;
 #endif
