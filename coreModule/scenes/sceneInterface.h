@@ -3,6 +3,9 @@
 
 #include "cocos2d.h"
 #include "layersEnum.h"
+#ifdef DEBUG
+#include "generic/debugModule/imGuiLayer.h"
+#endif
 
 namespace generic::coreModule {
     class sceneInterface : public cocos2d::Scene {
@@ -36,12 +39,31 @@ namespace generic::coreModule {
             }
             bgLayer->setColor(color);
         }
+        void updateLayers(sceneInterface* prevScene) {
+            // update imGuiLayer
+#ifdef DEBUG
+            if (!prevScene || !prevScene->imGuiLayer) {
+                /// insert debug layer
+                imGuiLayer = generic::debugModule::imGuiLayer::create();
+                this->addChild(imGuiLayer, eGameLayers::DEBUG_LAYER);
+            } else {
+                prevScene->imGuiLayer->retain();
+                prevScene->removeChild(prevScene->imGuiLayer, true);
+                this->addChild(prevScene->imGuiLayer, eGameLayers::DEBUG_LAYER);
+                imGuiLayer = prevScene->imGuiLayer;
+                prevScene->imGuiLayer = nullptr;
+            }
+#endif
+        }
 
 
     protected:
         bool physics = false;
         cocos2d::Vec2 defaultGravity = { 0.f, 0.f };
         cocos2d::LayerColor* bgLayer = nullptr;
+#ifdef DEBUG
+        generic::debugModule::imGuiLayer* imGuiLayer = nullptr;
+#endif
     };
 }// namespace generic::coreModule
 

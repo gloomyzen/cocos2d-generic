@@ -46,6 +46,7 @@ bool scenesFactoryInstance::runScene(const std::string& stateName) {
             scene->initWithPhysics();
             scene->getPhysicsWorld()->setGravity(scene->getGravity());
         }
+        scene->updateLayers(currentScene);
         scene->onSceneLoading();
         initTaskLoading(scene);
         currentScene = scene;
