@@ -1,4 +1,7 @@
 #include "physicsShapeCache.h"
+#include "generic/utilityModule/stringUtility.h"
+#include "generic/coreModule/scenes/scenesFactoryInstance.h"
+#include "generic/coreModule/scenes/sceneInterface.h"
 
 using namespace generic::coreModule;
 
@@ -9,6 +12,9 @@ const std::vector<std::string> obligatoryDataKeys = {
 const std::vector<std::string> obligatoryFixtureKeys = {
     "density", "restitution", "friction", "tag", "group", "category_mask", "collision_mask", "contact_test_mask", "fixture_type", "polygons"
 };
+
+const std::string shapesFolder = "shapes/%s.plist";
+const std::string findKeyPattern = "%s.%s";
 
 physicsShapeCache* currentShapesInstance = nullptr;
 
@@ -46,9 +52,9 @@ bool physicsShapeCache::addShapesWithFile(const std::string& plist, float scaleF
     if (bodiesInFile.count(plist)) {
         return false;
     }
-
-    cocos2d::ValueMap dict = cocos2d::FileUtils::getInstance()->getValueMapFromFile(plist);
-    if (dict.empty() || !dict.count("metadata") || dict.count("bodies")) {
+    auto path = STRING_FORMAT(shapesFolder.c_str(), plist.c_str());
+    cocos2d::ValueMap dict = cocos2d::FileUtils::getInstance()->getValueMapFromFile(path);
+    if (dict.empty() || !dict.count("metadata") || !dict.count("bodies")) {
         // plist file not found
         return false;
     }
@@ -140,11 +146,15 @@ bool physicsShapeCache::addShapesWithFile(const std::string& plist, float scaleF
 
 
 physicsShapeCache::BodyDef* physicsShapeCache::getBodyDef(const std::string& name) {
-    if (bodyDefs.count(name)) {
-        return bodyDefs[name];
-    } else if (auto key = name.substr(0, name.rfind('.')); bodyDefs.count(key)) {
-        // remove file suffix and try again...
+    auto key = name;
+    if (GET_CURRENT_SCENE() && !GET_CURRENT_SCENE()->getName().empty()) {
+        key = STRING_FORMAT(findKeyPattern.c_str(), GET_CURRENT_SCENE()->getName().c_str(), name.c_str());
+    }
+    if (bodyDefs.count(key)) {
         return bodyDefs[key];
+    } else if (auto normalizedKey = key.substr(0, key.rfind('.')); bodyDefs.count(key)) {
+        // remove file suffix and try again...
+        return bodyDefs[normalizedKey];
     }
 
     return nullptr;

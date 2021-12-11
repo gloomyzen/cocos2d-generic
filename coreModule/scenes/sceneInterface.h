@@ -13,12 +13,12 @@ namespace generic::coreModule {
     public:
         sceneInterface() {
             initLayerColor(cocos2d::Color3B::BLACK);
-        };
+        }
 
-        virtual ~sceneInterface(){};
+        virtual ~sceneInterface() {}
 
-        virtual void onSceneLoading() {}
-        virtual void onSceneClosing() {}
+        virtual void onSceneLoading();
+        virtual void onSceneClosing();
 
         void setPhysics(bool value) {
             physics = value;

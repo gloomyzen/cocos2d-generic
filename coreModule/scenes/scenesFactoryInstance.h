@@ -8,6 +8,7 @@
 #include <string>
 
 #define GET_SCENES_FACTORY() generic::coreModule::scenesFactoryInstance::getInstance()
+#define GET_CURRENT_SCENE() generic::coreModule::scenesFactoryInstance::getInstance().getCurrentScene()
 
 namespace generic::coreModule {
 
@@ -22,6 +23,7 @@ namespace generic::coreModule {
         bool isSceneRegistered(const std::string& stateName);
         bool registerScene(const std::string& stateName, const std::function<sceneInterface*()>& clb);
         bool runScene(const std::string& stateName);
+        sceneInterface* getCurrentScene() { return currentScene; }
 
     private:
         void initTaskLoading(cocos2d::Node* node);
