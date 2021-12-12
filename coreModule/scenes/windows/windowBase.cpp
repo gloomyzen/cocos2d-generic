@@ -28,7 +28,8 @@ void windowBase::initWindow() {
     initWithProperties(STRING_FORMAT("windows/%s", this->getName().c_str()), dynamic_cast<Node*>(this));
     removeJsonData();
     if (auto bgNode = dynamic_cast<cocos2d::Sprite*>(findNode("buttonNode"))) {
-        setButtonBgSprite(bgNode);
+        //todo fix this
+//        setButtonBgSprite(bgNode);
     }
     setOnTouchEnded([this]() {
         if (handleMissClick) {

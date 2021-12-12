@@ -3,14 +3,16 @@
 
 #include "cocos2d.h"
 #include "generic/coreModule/nodes/nodeProperties.h"
-#include "generic/coreModule/nodes/types/buttonNode.h"
+#include "generic/coreModule/nodes/types/buttonType.h"
 #include "generic/coreModule/nodes/types/eventNode.h"
 #include <functional>
 #include <utility>
 
 namespace generic::coreModule {
 
-    class soundButton : public generic::coreModule::buttonNode {
+    class soundButton
+      : public generic::coreModule::buttonType<cocos2d::Sprite>
+      , public generic::coreModule::nodeProperties {
     public:
         soundButton();
         ~soundButton() override;

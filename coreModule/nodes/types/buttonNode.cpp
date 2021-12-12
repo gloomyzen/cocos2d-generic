@@ -1,6 +1,5 @@
 #include "buttonNode.h"
 #include "generic/utilityModule/covertUtility.h"
-#include "generic/utilityModule/stringUtility.h"
 
 using namespace generic::coreModule;
 using namespace cocos2d;
