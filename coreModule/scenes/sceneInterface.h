@@ -69,6 +69,7 @@ namespace generic::coreModule {
             return nullptr;
 #endif
         }
+        windowSystem* getWindowSystem() { return windowViewer; }
 
     protected:
         bool physics = false;
