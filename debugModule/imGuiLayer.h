@@ -71,5 +71,9 @@ namespace generic::debugModule {
     };
 }// namespace generic::debugModule
 
+#else
+namespace generic::debugModule {
+    class imGuiLayer : public cocos2d::Layer {};
+}
 #endif// DEBUG
 #endif// GENERIC_IMGUILAYER_H

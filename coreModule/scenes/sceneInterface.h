@@ -4,9 +4,7 @@
 #include "cocos2d.h"
 #include "layersEnum.h"
 #include "generic/coreModule/scenes/windows/windowSystem.h"
-#ifdef DEBUG
 #include "generic/debugModule/imGuiLayer.h"
-#endif
 
 namespace generic::coreModule {
     class sceneInterface : public cocos2d::Scene {
@@ -63,6 +61,13 @@ namespace generic::coreModule {
         }
         float getFadeTransition() const {
             return fadeTransitionTime;
+        }
+        generic::debugModule::imGuiLayer* getImGuiLayer() {
+#ifdef DEBUG
+            return imGuiLayer;
+#else
+            return nullptr;
+#endif
         }
 
     protected:

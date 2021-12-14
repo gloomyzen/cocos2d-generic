@@ -25,7 +25,7 @@ windowBase::~windowBase() {
 
 void windowBase::initWindow() {
     this->setName("windowBase");
-    initWithProperties(STRING_FORMAT("windows/%s", this->getName().c_str()), dynamic_cast<Node*>(this));
+    initWithProperties(STRING_FORMAT("windows/%s", this->getName().c_str()));
     removeJsonData();
     if (auto bgNode = dynamic_cast<cocos2d::Sprite*>(findNode("buttonNode"))) {
         //todo fix this
