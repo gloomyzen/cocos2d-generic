@@ -1,5 +1,5 @@
 #include "nodeFactory.h"
-#include "generic/coreModule/nodes/propertyTypes/forward.h"
+#include "generic/coreModule/nodes/propertyTypes/headers.h"
 #include "generic/coreModule/nodes/types/armatureNode.h"
 #include "generic/coreModule/nodes/types/buttonNode.h"
 #include "generic/coreModule/nodes/types/gridNode.h"
@@ -37,6 +37,7 @@ nodeFactory::nodeFactory() {
         nodes["soundButton"] = []() { return soundButton::create(); };
         nodes["grid"] = []() { return gridNode::create(); };
         nodes["node3d"] = []() { return node3d::create(); };
+        nodes["aseprite"] = []() { return new asepriteNode(); };
 
         // prop types parser
         propertiesMap["transformProperty"] = new transformProperty("transformProperty");
@@ -49,11 +50,10 @@ nodeFactory::nodeFactory() {
         propertiesMap["scrollViewProperty"] = new scrollViewProperty("scrollViewProperty");
         propertiesMap["scale9SpriteProperty"] = new scale9SpriteProperty("scale9SpriteProperty");
         propertiesMap["clipProperty"] = new clipProperty("clipProperty");
+        propertiesMap["asepriteProperty"] = new asepriteProperty("asepriteProperty");
 
-        propertyPriorityList = {
-            { "spriteProperty" },    { "labelProperty" }, { "dragonbonesProperty" }, { "spineProperty" }, { "scale9SpriteProperty" },
-            { "transformProperty" }, { "colorProperty" }, { "scrollViewProperty" },  { "gridProperty" },  { "clipProperty" }
-        };
+        propertyPriorityList = { "spriteProperty", "labelProperty", "dragonbonesProperty", "spineProperty", "scale9SpriteProperty", "asepriteProperty",
+                                 "transformProperty", "colorProperty", "scrollViewProperty", "gridProperty", "clipProperty" };
     }
 }
 

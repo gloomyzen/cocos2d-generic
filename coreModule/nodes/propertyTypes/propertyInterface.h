@@ -1,5 +1,5 @@
-#ifndef ANIMAL_PLANET_PROPERTYINTERFACE_H
-#define ANIMAL_PLANET_PROPERTYINTERFACE_H
+#ifndef GENERIC_PROPERTYINTERFACE_H
+#define GENERIC_PROPERTYINTERFACE_H
 
 #include "cocos2d.h"
 #include "generic/utilityModule/jsonHelper.h"
@@ -18,4 +18,4 @@ namespace generic::coreModule {
     };
 }// namespace generic::coreModule
 
-#endif// ANIMAL_PLANET_PROPERTYINTERFACE_H
+#endif// GENERIC_PROPERTYINTERFACE_H

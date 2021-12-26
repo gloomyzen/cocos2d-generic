@@ -1,5 +1,5 @@
-#ifndef ANIMAL_PLANET_SPRITEPROPERTY_H
-#define ANIMAL_PLANET_SPRITEPROPERTY_H
+#ifndef GENERIC_SPRITEPROPERTY_H
+#define GENERIC_SPRITEPROPERTY_H
 
 #include "cocos2d.h"
 #include "generic/utilityModule/jsonHelper.h"
@@ -15,4 +15,4 @@ namespace generic::coreModule {
 }// namespace generic::coreModule
 
 
-#endif// ANIMAL_PLANET_SPRITEPROPERTY_H
+#endif// GENERIC_SPRITEPROPERTY_H

@@ -1,5 +1,5 @@
-#ifndef ANIMAL_PLANET_CLIPPROPERTY_H
-#define ANIMAL_PLANET_CLIPPROPERTY_H
+#ifndef GENERIC_CLIPPROPERTY_H
+#define GENERIC_CLIPPROPERTY_H
 
 #include "cocos2d.h"
 #include "generic/utilityModule/jsonHelper.h"
@@ -15,4 +15,4 @@ namespace generic::coreModule {
 }// namespace generic::coreModule
 
 
-#endif// ANIMAL_PLANET_CLIPPROPERTY_H
+#endif// GENERIC_CLIPPROPERTY_H

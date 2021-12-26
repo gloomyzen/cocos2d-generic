@@ -1,5 +1,5 @@
-#ifndef ANIMAL_PLANET_PROP_TYPES_FORWARD_H
-#define ANIMAL_PLANET_PROP_TYPES_FORWARD_H
+#ifndef GENERIC_PROP_TYPES_FORWARD_H
+#define GENERIC_PROP_TYPES_FORWARD_H
 #include "clipProperty.h"
 #include "colorProperty.h"
 #include "dragonbonesProperty.h"
@@ -10,6 +10,7 @@
 #include "spineProperty.h"
 #include "spriteProperty.h"
 #include "transformProperty.h"
+#include "asepriteProperty.h"
 
 
-#endif// ANIMAL_PLANET_PROP_TYPES_FORWARD_H
+#endif// GENERIC_PROP_TYPES_FORWARD_H

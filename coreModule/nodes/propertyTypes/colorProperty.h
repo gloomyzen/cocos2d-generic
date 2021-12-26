@@ -1,5 +1,5 @@
-#ifndef ANIMAL_PLANET_COLORPROPERTY_H
-#define ANIMAL_PLANET_COLORPROPERTY_H
+#ifndef GENERIC_COLORPROPERTY_H
+#define GENERIC_COLORPROPERTY_H
 
 #include "cocos2d.h"
 #include "generic/utilityModule/jsonHelper.h"
@@ -15,4 +15,4 @@ namespace generic::coreModule {
 }// namespace generic::coreModule
 
 
-#endif// ANIMAL_PLANET_COLORPROPERTY_H
+#endif// GENERIC_COLORPROPERTY_H

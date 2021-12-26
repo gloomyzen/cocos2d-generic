@@ -1,5 +1,5 @@
-#ifndef ANIMAL_PLANET_DRAGONBONESPROPERTY_H
-#define ANIMAL_PLANET_DRAGONBONESPROPERTY_H
+#ifndef GENERIC_DRAGONBONESPROPERTY_H
+#define GENERIC_DRAGONBONESPROPERTY_H
 
 
 #include "cocos2d.h"
@@ -20,4 +20,4 @@ namespace generic::coreModule {
 }// namespace generic::coreModule
 
 
-#endif// ANIMAL_PLANET_DRAGONBONESPROPERTY_H
+#endif// GENERIC_DRAGONBONESPROPERTY_H

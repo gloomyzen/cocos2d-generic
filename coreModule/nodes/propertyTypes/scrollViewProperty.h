@@ -1,5 +1,5 @@
-#ifndef ANIMAL_PLANET_SCROLLVIEWPROPERTY_H
-#define ANIMAL_PLANET_SCROLLVIEWPROPERTY_H
+#ifndef GENERIC_SCROLLVIEWPROPERTY_H
+#define GENERIC_SCROLLVIEWPROPERTY_H
 
 #include "cocos2d.h"
 #include "generic/utilityModule/jsonHelper.h"
@@ -21,4 +21,4 @@ namespace generic::coreModule {
 }// namespace generic::coreModule
 
 
-#endif// ANIMAL_PLANET_SCROLLVIEWPROPERTY_H
+#endif// GENERIC_SCROLLVIEWPROPERTY_H
