@@ -1,14 +1,23 @@
 #include "asepriteNode.h"
+#include <tuple>
 
 using namespace generic::coreModule;
 
-bool asepriteNode::load(const jsonObject& object) {
-    if (object.HasMember("frames")) {
+bool asepriteNode::load(const jsonObject& object, const jsonObject& animations) {
+    if (object.HasMember("frames") && animations.MemberCount() != 0u) {
+        std::map<std::string, std::pair<int, int>> anim;
+        for (auto item = animations.MemberBegin(); item != animations.MemberEnd(); ++item) {
+            if (item->value.IsArray() && item->value.GetArray().Size() == 2u) {
+                auto array = item->value.GetArray();
+                anim[item->name.GetString()] = std::make_pair(array[0u].GetInt(), array[1u].GetInt());
+            }
+        }
         auto frames = object["frames"].GetObject();
         for (auto item = frames.MemberBegin(); item != frames.MemberEnd(); ++item) {
-            auto name = item->name.GetString();
-            auto val = item->value.IsObject();
-            auto test = ";";
+            if (item->value.IsObject()) {
+                auto frame = item->value.GetObject();
+//                frame
+            }
         }
     }
     return false;

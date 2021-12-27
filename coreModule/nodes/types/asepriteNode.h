@@ -24,13 +24,13 @@ namespace generic::coreModule {
         asepriteNode() = default;
         ~asepriteNode() override = default;
         CREATE_FUNC(asepriteNode);
-        bool load(const jsonObject& object);
+        bool load(const jsonObject& object, const jsonObject& animations);
         bool hasAnimation(const std::string& name);
         bool setAnimation(const std::string& name);
         bool setAnimationFrames(const std::string& name, int firstFrame, int lastFrame);
         bool setAnimationFrame(const std::string& name, int frame);
     private:
-        std::map<std::string, std::vector<std::shared_ptr<sAnimFrame>>> animations;
+        std::map<std::string, std::vector<std::shared_ptr<sAnimFrame>>> animationsMap;
     };
 }// namespace generic::coreModule
 
