@@ -7,19 +7,30 @@
 #include <utility>
 #include <map>
 #include <string>
+#include <vector>
 
 namespace generic::coreModule {
 
     class asepriteNode : public cocos2d::Sprite {
     public:
+        struct sAnimFrame {
+            cocos2d::Size frameSize;
+            cocos2d::Vec2 framePos;
+            bool rotated = false;
+            cocos2d::Size sourceSize;
+            float duration;
+        };
+
         asepriteNode() = default;
         ~asepriteNode() override = default;
         CREATE_FUNC(asepriteNode);
-        void load(const jsonObject& object);
+        bool load(const jsonObject& object);
         bool hasAnimation(const std::string& name);
         bool setAnimation(const std::string& name);
+        bool setAnimationFrames(const std::string& name, int firstFrame, int lastFrame);
+        bool setAnimationFrame(const std::string& name, int frame);
     private:
-        std::map<std::string, std::string> animations;
+        std::map<std::string, std::vector<std::shared_ptr<sAnimFrame>>> animations;
     };
 }// namespace generic::coreModule
 
