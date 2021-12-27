@@ -5,6 +5,7 @@
 #include "generic/coreModule/nodes/types/gridNode.h"
 #include "generic/coreModule/nodes/types/node3d.h"
 #include "generic/coreModule/nodes/types/soundButton.h"
+#include "generic/coreModule/nodes/types/asepriteNode.h"
 #include "generic/debugModule/logManager.h"
 #include "generic/utilityModule/stringUtility.h"
 #include "spine/spine-cocos2dx.h"
