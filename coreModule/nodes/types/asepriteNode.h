@@ -14,11 +14,13 @@ namespace generic::coreModule {
     class asepriteNode : public cocos2d::Sprite {
     public:
         struct sAnimFrame {
+            sAnimFrame() {}
             cocos2d::Size frameSize;
             cocos2d::Vec2 framePos;
             bool rotated = false;
             cocos2d::Size sourceSize;
             float duration;
+            bool load(const jsonObject& data);
         };
 
         asepriteNode() = default;

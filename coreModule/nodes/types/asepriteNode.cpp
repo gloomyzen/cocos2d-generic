@@ -12,13 +12,29 @@ bool asepriteNode::load(const jsonObject& object, const jsonObject& animations) 
                 anim[item->name.GetString()] = std::make_pair(array[0u].GetInt(), array[1u].GetInt());
             }
         }
-        auto frames = object["frames"].GetObject();
-        for (auto item = frames.MemberBegin(); item != frames.MemberEnd(); ++item) {
-            if (item->value.IsObject()) {
-                auto frame = item->value.GetObject();
-//                frame
+        //todo add loading from array export
+        if (object["frames"].IsObject()) {
+            auto frames = object["frames"].GetObject();
+            auto pos = 0u;
+            std::vector<std::string> memberNames;
+            for (auto item = frames.MemberBegin(); item != frames.MemberEnd(); ++item) {
+                memberNames.emplace_back(item->name.GetString());
+            }
+            for (auto [animName, animIndexes] : anim) {
+                for (auto i = animIndexes.first; i < animIndexes.second; ++i) {
+                    auto frame = std::make_shared<sAnimFrame>();
+                    if (frame->load(frames[memberNames[static_cast<size_t>(i)].c_str()].GetObject())) {
+                        if (animationsMap.count(animName) != 0u) {
+                            animationsMap[animName].emplace_back(frame);
+                        } else {
+                            animationsMap[animName] = {frame};
+                        }
+                    }
+                }
+
             }
         }
+
     }
     return false;
 }
@@ -36,5 +52,16 @@ bool asepriteNode::setAnimationFrames(const std::string& name, int firstFrame, i
 }
 
 bool asepriteNode::setAnimationFrame(const std::string& name, int frame) {
+    return false;
+}
+
+bool asepriteNode::sAnimFrame::load(const jsonObject& data) {
+    if (data.HasMember("frame") && data["frame"].IsObject()) {
+        frameSize = cocos2d::Size(data["frame"]["w"].GetFloat(), data["frame"]["h"].GetFloat());
+        framePos = cocos2d::Vec2(data["frame"]["x"].GetFloat(), data["frame"]["y"].GetFloat());
+    }
+    if (data.HasMember("rotated") && data["rotated"].IsBool()) {
+        rotated = data["rotated"].GetBool();
+    }
     return false;
 }
