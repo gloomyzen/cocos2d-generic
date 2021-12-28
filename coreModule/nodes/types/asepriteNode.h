@@ -28,11 +28,11 @@ namespace generic::coreModule {
         CREATE_FUNC(asepriteNode);
         bool load(const jsonObject& object, const jsonObject& animations);
         bool hasAnimation(const std::string& name);
-        bool setAnimation(const std::string& name);
-        bool setAnimationFrames(const std::string& name, int firstFrame, int lastFrame);
-        bool setAnimationFrame(const std::string& name, int frame);
+        bool setAnimation(const std::string& name, bool loop = false);
     private:
         std::map<std::string, std::vector<std::shared_ptr<sAnimFrame>>> animationsMap;
+        std::string currentAnimation;
+        bool currentAnimLoop = false;
     };
 }// namespace generic::coreModule
 

@@ -34,24 +34,21 @@ bool asepriteNode::load(const jsonObject& object, const jsonObject& animations) 
 
             }
         }
-
+        return true;
     }
     return false;
 }
 
 bool asepriteNode::hasAnimation(const std::string& name) {
-    return false;
+    return animationsMap.count(name) != 0u;
 }
 
-bool asepriteNode::setAnimation(const std::string& name) {
-    return false;
-}
-
-bool asepriteNode::setAnimationFrames(const std::string& name, int firstFrame, int lastFrame) {
-    return false;
-}
-
-bool asepriteNode::setAnimationFrame(const std::string& name, int frame) {
+bool asepriteNode::setAnimation(const std::string& name, bool loop) {
+    if (hasAnimation(name)) {
+        currentAnimation = name;
+        currentAnimLoop = loop;
+        return true;
+    }
     return false;
 }
 
@@ -59,9 +56,21 @@ bool asepriteNode::sAnimFrame::load(const jsonObject& data) {
     if (data.HasMember("frame") && data["frame"].IsObject()) {
         frameSize = cocos2d::Size(data["frame"]["w"].GetFloat(), data["frame"]["h"].GetFloat());
         framePos = cocos2d::Vec2(data["frame"]["x"].GetFloat(), data["frame"]["y"].GetFloat());
+    } else {
+        return false;
     }
     if (data.HasMember("rotated") && data["rotated"].IsBool()) {
         rotated = data["rotated"].GetBool();
     }
-    return false;
+    if (data.HasMember("sourceSize") && data["sourceSize"].IsObject()) {
+        sourceSize = cocos2d::Size(data["sourceSize"]["w"].GetFloat(), data["sourceSize"]["h"].GetFloat());
+    } else {
+        return false;
+    }
+    if (data.HasMember("duration") && data["duration"].IsNumber()) {
+        duration = data["duration"].GetFloat() / 1000;
+    } else {
+        return false;
+    }
+    return true;
 }

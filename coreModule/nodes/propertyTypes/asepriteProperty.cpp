@@ -16,11 +16,12 @@ void asepriteProperty::parseProperty(cocos2d::Node* node, const jsonObject& obje
                 aNode->load(data.GetObject(), object["animations"].GetObject());
             }
         }
-        if (object.HasMember("animation") && object["animation"].IsString()) {
-            //
-        }
+        bool isLoop = false;
         if (object.HasMember("loop") && object["loop"].IsBool()) {
-            //
+            isLoop = object["loop"].GetBool();
+        }
+        if (object.HasMember("animation") && object["animation"].IsString()) {
+            aNode->setAnimation(object["animation"].GetString(), isLoop);
         }
     } else {
         LOG_ERROR(CSTRING_FORMAT("Node '%s' no has aseprite property!", propertyName.c_str()));
