@@ -31,6 +31,7 @@ namespace generic::coreModule {
         bool setAnimation(const std::string& name, bool loop = false);
     private:
         std::map<std::string, std::vector<std::shared_ptr<sAnimFrame>>> animationsMap;
+        cocos2d::SpriteFrame* spriteFrame;
         std::string currentAnimation;
         bool currentAnimLoop = false;
     };
