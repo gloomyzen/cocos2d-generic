@@ -1,9 +1,10 @@
 #include "asepriteNode.h"
+#include "generic/coreModule/resources/resourceManager.h"
 #include <tuple>
 
 using namespace generic::coreModule;
 
-bool asepriteNode::load(const jsonObject& object, const jsonObject& animations) {
+bool asepriteNode::load(const jsonObject& object, const jsonObject& animations, const std::string& path) {
     if (object.HasMember("frames") && animations.MemberCount() != 0u) {
         std::map<std::string, std::pair<int, int>> anim;
         for (auto item = animations.MemberBegin(); item != animations.MemberEnd(); ++item) {
@@ -34,6 +35,13 @@ bool asepriteNode::load(const jsonObject& object, const jsonObject& animations) 
 
             }
         }
+        auto fullPath = GET_RESOURCE_MANAGER().getImagePathWithExtension(path);
+        if (fullPath.empty()) {
+            return false;
+        }
+//        initWithSpriteFrame() todo use this for anim switching
+//        spriteFrame = cocos2d::SpriteFrameCache::getInstance().
+//        initWithTextureFilename(fullPath, sourceSize);
         return true;
     }
     return false;
@@ -52,25 +60,28 @@ bool asepriteNode::setAnimation(const std::string& name, bool loop) {
     return false;
 }
 
+asepriteNode::~asepriteNode() {
+    //todo clear cache
+}
+
 bool asepriteNode::sAnimFrame::load(const jsonObject& data) {
-    if (data.HasMember("frame") && data["frame"].IsObject()) {
-        frameSize = cocos2d::Size(data["frame"]["w"].GetFloat(), data["frame"]["h"].GetFloat());
-        framePos = cocos2d::Vec2(data["frame"]["x"].GetFloat(), data["frame"]["y"].GetFloat());
-    } else {
-        return false;
-    }
-    if (data.HasMember("rotated") && data["rotated"].IsBool()) {
-        rotated = data["rotated"].GetBool();
-    }
-    if (data.HasMember("sourceSize") && data["sourceSize"].IsObject()) {
-        sourceSize = cocos2d::Size(data["sourceSize"]["w"].GetFloat(), data["sourceSize"]["h"].GetFloat());
-    } else {
-        return false;
-    }
+//    if (data.HasMember("frame") && data["frame"].IsObject()) {
+//        frameSize = cocos2d::Size(data["frame"]["w"].GetFloat(), data["frame"]["h"].GetFloat());
+//        framePos = cocos2d::Vec2(data["frame"]["x"].GetFloat(), data["frame"]["y"].GetFloat());
+//    } else {
+//        return false;
+//    }
+//    if (data.HasMember("rotated") && data["rotated"].IsBool()) {
+//        rotated = data["rotated"].GetBool();
+//    }
     if (data.HasMember("duration") && data["duration"].IsNumber()) {
         duration = data["duration"].GetFloat() / 1000;
     } else {
         return false;
     }
+//    if (data.HasMember("sourceSize") && data["sourceSize"].IsObject()) {
+//        _sourceSize.size.width = data["sourceSize"]["w"].GetFloat();
+//        _sourceSize.size.height = data["sourceSize"]["h"].GetFloat();
+//    }
     return true;
 }

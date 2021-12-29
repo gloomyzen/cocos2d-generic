@@ -15,23 +15,20 @@ namespace generic::coreModule {
     public:
         struct sAnimFrame {
             sAnimFrame() {}
-            cocos2d::Size frameSize;
-            cocos2d::Vec2 framePos;
-            bool rotated = false;
-            cocos2d::Size sourceSize;
+            cocos2d::SpriteFrame* spriteFrame = nullptr;
             float duration;
+            //todo add uuid
             bool load(const jsonObject& data);
         };
 
         asepriteNode() = default;
-        ~asepriteNode() override = default;
+        ~asepriteNode() override;
         CREATE_FUNC(asepriteNode);
-        bool load(const jsonObject& object, const jsonObject& animations);
+        bool load(const jsonObject& object, const jsonObject& animations, const std::string& path);
         bool hasAnimation(const std::string& name);
         bool setAnimation(const std::string& name, bool loop = false);
     private:
         std::map<std::string, std::vector<std::shared_ptr<sAnimFrame>>> animationsMap;
-        cocos2d::SpriteFrame* spriteFrame;
         std::string currentAnimation;
         bool currentAnimLoop = false;
     };

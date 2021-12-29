@@ -13,7 +13,7 @@ void asepriteProperty::parseProperty(cocos2d::Node* node, const jsonObject& obje
             && object.HasMember("animations") && object["animations"].IsObject()) {
             auto data = GET_JSON(object["file"].GetString());
             if (!data.HasParseError() && data.IsObject()) {
-                aNode->load(data.GetObject(), object["animations"].GetObject());
+                aNode->load(data.GetObject(), object["animations"].GetObject(), object["file"].GetString());
             }
         }
         bool isLoop = false;
