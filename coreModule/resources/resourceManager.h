@@ -4,6 +4,7 @@
 #include "generic/coreModule/resources/loaders/jsonLoader.h"
 #include "generic/coreModule/resources/settings/settingManager.h"
 #include <map>
+#include <vector>
 #include <string>
 
 #define GET_RESOURCE_MANAGER() generic::coreModule::resourceManager::getInstance()
@@ -22,10 +23,12 @@ namespace generic {
 
             jsonLoader* getJsonLoader();
             settingManager* getSettingManager();
+            std::string getImagePathWithExtension(const std::string& path);
 
         private:
             jsonLoader jsonLoaderInstance;
             settingManager* settingManagerInstance = nullptr;
+            static std::vector<std::string> imageExtensions;
         };
     }// namespace coreModule
 }// namespace generic

@@ -4,6 +4,8 @@
 
 using namespace generic::coreModule;
 
+std::vector<std::string> resourceManager::imageExtensions = { "png", "jpeg", "jpg" };
+
 resourceManager* currentResourceManager = nullptr;
 
 resourceManager::resourceManager() {
@@ -34,4 +36,13 @@ jsonLoader* resourceManager::getJsonLoader() {
 
 settingManager* resourceManager::getSettingManager() {
     return settingManagerInstance;
+}
+std::string resourceManager::getImagePathWithExtension(const std::string& path) {
+    for (const auto& extension : imageExtensions) {
+        auto fullPath = cocos2d::StringUtils::format("%s.%s", path.c_str(), extension.c_str());
+        if (cocos2d::FileUtils::getInstance()->isFileExist(fullPath)) {
+            return fullPath;
+        }
+    }
+    return std::string();
 }
