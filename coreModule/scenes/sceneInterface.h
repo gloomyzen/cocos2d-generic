@@ -88,7 +88,7 @@ namespace generic::coreModule {
         cocos2d::Vec2 defaultGravity = { 0.f, 0.f };
         cocos2d::LayerColor* bgLayer = nullptr;
         windowSystem* windowViewer = nullptr;
-        float fadeTransitionTime = 1.f;
+        float fadeTransitionTime = .1f;
 #ifdef DEBUG
         generic::debugModule::imGuiLayer* imGuiLayer = nullptr;
         bool physicsDebugDraw = false;
