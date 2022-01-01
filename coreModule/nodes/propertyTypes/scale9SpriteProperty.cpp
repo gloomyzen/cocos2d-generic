@@ -2,12 +2,13 @@
 #include "generic/debugModule/logManager.h"
 #include "generic/utilityModule/stringUtility.h"
 #include "ui/CocosGUI.h"
+#include "generic/coreModule/nodes/nodeProperties.h"
 
 using namespace generic::coreModule;
 
 
 void scale9SpriteProperty::parseProperty(cocos2d::Node* node, const jsonObject& object) {
-    if (auto sprite = dynamic_cast<cocos2d::ui::Scale9Sprite*>(node)) {
+    if (auto scaleSprite = dynamic_cast<cocos2d::ui::Scale9Sprite*>(node)) {
         cocos2d::Rect sliceRect = cocos2d::Rect::ZERO;
         if (object.HasMember("image") && object["image"].IsString()) {
             std::string imagePath;
@@ -16,7 +17,7 @@ void scale9SpriteProperty::parseProperty(cocos2d::Node* node, const jsonObject& 
                 LOG_ERROR(CSTRING_FORMAT("Property '%s' has invalid image path!", propertyName.c_str()));
                 return;
             }
-            sprite->initWithFile(imagePath);
+            scaleSprite->initWithFile(imagePath);
         }
         if (object.HasMember("slice9") && object["slice9"].IsObject()) {
             auto slice9 = object["slice9"].GetObject();
@@ -32,7 +33,7 @@ void scale9SpriteProperty::parseProperty(cocos2d::Node* node, const jsonObject& 
             if (slice9.HasMember("height") && slice9["height"].IsNumber()) {
                 sliceRect.size.height = slice9["height"].GetFloat();
             }
-            sprite->setCapInsets(sliceRect);
+            scaleSprite->setCapInsets(sliceRect);
         }
         if (object.HasMember("size") && object["size"].IsArray()) {
             auto _size = cocos2d::Size();
@@ -40,10 +41,42 @@ void scale9SpriteProperty::parseProperty(cocos2d::Node* node, const jsonObject& 
             if (size.Size() == 2u) {
                 _size.width = size[0].GetFloat();
                 _size.height = size[1].GetFloat();
-                sprite->setContentSize(_size);
+                scaleSprite->setContentSize(_size);
             }
         }
-    } else {
+    }
+    else if (auto sprite = dynamic_cast<cocos2d::Sprite*>(node)) {
+        auto tempSprite = new generic::coreModule::nodeWithProperties<cocos2d::ui::Scale9Sprite>();
+        parseProperty(tempSprite, object);
+        tempSprite->setAnchorPoint(cocos2d::Vec2::ZERO);
+        auto rTarget = cocos2d::RenderTexture::create(tempSprite->getContentSize().width, tempSprite->getContentSize().height);
+        rTarget->begin();
+        tempSprite->visit();
+        rTarget->end();
+//        cocos2d::Director::getInstance()->getRenderer()->render();
+//        rTarget->setSprite(sprite);
+        rTarget->newImage([sprite](cocos2d::RefPtr<cocos2d::Image> image){
+            if (image) {
+                auto texture = new cocos2d::Texture2D();
+                texture->initWithImage(image);
+                sprite->initWithTexture(texture);
+            }
+        });
+        if (rTarget->getSprite() && rTarget->getSprite()->getTexture()) {
+//            sprite->setTexture(rTarget->getSprite()->getTexture());
+        } else {
+            LOG_ERROR(CSTRING_FORMAT("Can not get texture from render target."));
+        }
+//        sprite->addChild(rTarget);
+//        sprite->addChild(tempSprite);
+//        CC_SAFE_RELEASE_NULL(tempSprite);
+//        CC_SAFE_DELETE(rTarget);
+//        delete tempSprite;
+//        tempSprite = nullptr;
+//        delete rTarget;
+//        rTarget = nullptr;
+    }
+    else {
         LOG_ERROR(CSTRING_FORMAT("Node '%s' no has scale9Sprite property!", propertyName.c_str()));
     }
 }
