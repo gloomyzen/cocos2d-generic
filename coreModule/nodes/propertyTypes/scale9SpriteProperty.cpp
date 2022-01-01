@@ -53,28 +53,14 @@ void scale9SpriteProperty::parseProperty(cocos2d::Node* node, const jsonObject& 
         rTarget->begin();
         tempSprite->visit();
         rTarget->end();
-//        cocos2d::Director::getInstance()->getRenderer()->render();
-//        rTarget->setSprite(sprite);
-        rTarget->newImage([sprite](cocos2d::RefPtr<cocos2d::Image> image){
-            if (image) {
-                auto texture = new cocos2d::Texture2D();
-                texture->initWithImage(image);
-                sprite->initWithTexture(texture);
-            }
-        });
+        sprite->initWithTexture(rTarget->getSprite()->getTexture());
         if (rTarget->getSprite() && rTarget->getSprite()->getTexture()) {
-//            sprite->setTexture(rTarget->getSprite()->getTexture());
+            sprite->initWithTexture(rTarget->getSprite()->getTexture());
         } else {
             LOG_ERROR(CSTRING_FORMAT("Can not get texture from render target."));
         }
-//        sprite->addChild(rTarget);
-//        sprite->addChild(tempSprite);
-//        CC_SAFE_RELEASE_NULL(tempSprite);
-//        CC_SAFE_DELETE(rTarget);
-//        delete tempSprite;
-//        tempSprite = nullptr;
-//        delete rTarget;
-//        rTarget = nullptr;
+        CC_SAFE_RETAIN(tempSprite);
+        CC_SAFE_RETAIN(rTarget);
     }
     else {
         LOG_ERROR(CSTRING_FORMAT("Node '%s' no has scale9Sprite property!", propertyName.c_str()));
