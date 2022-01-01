@@ -1,5 +1,7 @@
 #include "scenesFactoryInstance.h"
 #include "sceneInterface.h"
+#include "generic/debugModule/imGuiLayer.h"
+#include "generic/utilityModule/stringUtility.h"
 #include <map>
 
 using namespace generic;
@@ -51,6 +53,35 @@ bool scenesFactoryInstance::runScene(const std::string& stateName) {
         initTaskLoading(scene);
         currentScene = scene;
         scene->getDefaultCamera()->setName("CameraNode");
+        if (scene->isPhysics()) {
+#ifdef DEBUG
+            auto clb = [this]() {
+                if (!currentScene)
+                    return;
+                auto physicsDebugDraw = currentScene->isPhysicsDebugDraw();
+                auto label = STRING_FORMAT("Physics debug: %s", physicsDebugDraw ? "ON" : "OFF");
+                if (ImGui::Button(label.c_str())) {
+                    physicsDebugDraw = !physicsDebugDraw;
+                }
+                if (currentScene->isPhysicsDebugDraw() != physicsDebugDraw) {
+                    if (physicsDebugDraw)
+                        LOG_INFO("Enable physics debug for current scene.");
+                    else
+                        LOG_INFO("Disable physics debug for current scene.");
+                    if (!currentScene->isPhysics()) {
+                        LOG_ERROR("Physics in current scene is disabled!");
+                        return;
+                    }
+                    currentScene->setPhysicsDebugDraw(physicsDebugDraw);
+                    currentScene->getPhysicsWorld()->setDebugDrawMask(
+                      physicsDebugDraw ? cocos2d::PhysicsWorld::DEBUGDRAW_ALL : cocos2d::PhysicsWorld::DEBUGDRAW_NONE);
+                }
+            };
+            currentScene->getImGuiLayer()->addDebugModules({ "Physics debug: OFF", [clb]() {
+                                                                clb();
+                                                            } });
+#endif
+        }
         return true;
     }
     return false;

@@ -70,6 +70,18 @@ namespace generic::coreModule {
 #endif
         }
         windowSystem* getWindowSystem() { return windowViewer; }
+        bool isPhysicsDebugDraw() {
+#ifdef DEBUG
+            return physicsDebugDraw;
+#else
+            return false;
+#endif
+        }
+        void setPhysicsDebugDraw(bool value) {
+#ifdef DEBUG
+            physicsDebugDraw = value;
+#endif
+        }
 
     protected:
         bool physics = false;
@@ -79,6 +91,7 @@ namespace generic::coreModule {
         float fadeTransitionTime = 1.f;
 #ifdef DEBUG
         generic::debugModule::imGuiLayer* imGuiLayer = nullptr;
+        bool physicsDebugDraw = false;
 #endif
     };
 }// namespace generic::coreModule
