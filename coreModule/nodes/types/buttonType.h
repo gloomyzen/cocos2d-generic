@@ -44,7 +44,14 @@ namespace generic::coreModule {
                     }
                 } else {
                     auto touchLocation = node->convertToNodeSpace(touch->getLocation());
-                    bool correctNode = node->getBoundingBox().containsPoint(touchLocation);
+                    auto boundingBox = node->getBoundingBox();
+                    boundingBox.origin.x += boundingBox.size.width * node->getAnchorPoint().x;
+                    boundingBox.origin.y += boundingBox.size.height * node->getAnchorPoint().y;
+                    if (node->getParent()) {
+                        boundingBox.origin.x -= node->getParent()->getContentSize().width * node->getPivotPoint().x;
+                        boundingBox.origin.y -= node->getParent()->getContentSize().height * node->getPivotPoint().y;
+                    }
+                    bool correctNode = boundingBox.containsPoint(touchLocation);
                     if (!correctNode)
                         return false;
                 }

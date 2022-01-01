@@ -46,7 +46,7 @@ void scale9SpriteProperty::parseProperty(cocos2d::Node* node, const jsonObject& 
         }
     }
     else if (auto sprite = dynamic_cast<cocos2d::Sprite*>(node)) {
-        auto tempSprite = new generic::coreModule::nodeWithProperties<cocos2d::ui::Scale9Sprite>();
+        auto tempSprite = new cocos2d::ui::Scale9Sprite();
         parseProperty(tempSprite, object);
         tempSprite->setAnchorPoint(cocos2d::Vec2::ZERO);
         auto rTarget = cocos2d::RenderTexture::create(tempSprite->getContentSize().width, tempSprite->getContentSize().height);
