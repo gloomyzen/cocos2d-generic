@@ -11,7 +11,7 @@ namespace generic::utilityModule {
     class uuidGenerator {
     public:
         static uuidGenerator& getInstance();
-        static void cleanup();
+        void cleanup();
     };
 }
 
