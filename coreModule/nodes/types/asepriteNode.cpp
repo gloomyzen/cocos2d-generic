@@ -1,5 +1,6 @@
 #include "asepriteNode.h"
 #include "generic/coreModule/resources/resourceManager.h"
+#include "generic/utilityModule/uuidGenerator/uuidGenerator.h"
 #include <tuple>
 
 using namespace generic::coreModule;
@@ -13,6 +14,10 @@ bool asepriteNode::load(const jsonObject& object, const jsonObject& animations, 
                 anim[item->name.GetString()] = std::make_pair(array[0u].GetInt(), array[1u].GetInt());
             }
         }
+        auto fullPath = GET_RESOURCE_MANAGER().getImagePathWithExtension(path);
+        if (fullPath.empty()) {
+            return false;
+        }
         //todo add loading from array export
         if (object["frames"].IsObject()) {
             auto frames = object["frames"].GetObject();
@@ -23,7 +28,7 @@ bool asepriteNode::load(const jsonObject& object, const jsonObject& animations, 
             for (auto [animName, animIndexes] : anim) {
                 for (auto i = animIndexes.first; i < animIndexes.second; ++i) {
                     auto frame = std::make_shared<sAnimFrame>();
-                    if (frame->load(frames[memberNames[static_cast<size_t>(i)].c_str()].GetObject())) {
+                    if (frame->load(frames[memberNames[static_cast<size_t>(i)].c_str()].GetObject(), fullPath)) {
                         if (animationsMap.count(animName) != 0u) {
                             animationsMap[animName].emplace_back(frame);
                         } else {
@@ -33,10 +38,6 @@ bool asepriteNode::load(const jsonObject& object, const jsonObject& animations, 
                 }
 
             }
-        }
-        auto fullPath = GET_RESOURCE_MANAGER().getImagePathWithExtension(path);
-        if (fullPath.empty()) {
-            return false;
         }
 //        initWithSpriteFrame() todo use this for anim switching
 //        cocos2d::SpriteFrameCache::getInstance()->addSpriteFrame()
@@ -64,24 +65,23 @@ asepriteNode::~asepriteNode() {
     //todo clear cache
 }
 
-bool asepriteNode::sAnimFrame::load(const jsonObject& data) {
-//    if (data.HasMember("frame") && data["frame"].IsObject()) {
-//        frameSize = cocos2d::Size(data["frame"]["w"].GetFloat(), data["frame"]["h"].GetFloat());
-//        framePos = cocos2d::Vec2(data["frame"]["x"].GetFloat(), data["frame"]["y"].GetFloat());
-//    } else {
-//        return false;
-//    }
-//    if (data.HasMember("rotated") && data["rotated"].IsBool()) {
-//        rotated = data["rotated"].GetBool();
-//    }
+bool asepriteNode::sAnimFrame::load(const jsonObject& data, const std::string& fullPath) {
+    if (!data.HasMember("frame") || !data["frame"].IsObject()) {
+        return false;
+    }
+    auto frameRect = cocos2d::Size(data["frame"]["w"].GetFloat(), data["frame"]["h"].GetFloat());
+    auto frameOffset = cocos2d::Vec2(data["frame"]["x"].GetFloat(), data["frame"]["y"].GetFloat());
+    auto rotated = false;
+    if (data.HasMember("rotated") && data["rotated"].IsBool()) {
+        rotated = data["rotated"].GetBool();
+    }
     if (data.HasMember("duration") && data["duration"].IsNumber()) {
         duration = data["duration"].GetFloat() / 1000;
     } else {
         return false;
     }
-//    if (data.HasMember("sourceSize") && data["sourceSize"].IsObject()) {
-//        _sourceSize.size.width = data["sourceSize"]["w"].GetFloat();
-//        _sourceSize.size.height = data["sourceSize"]["h"].GetFloat();
-//    }
+    spriteFrameName = GET_UUID_GENERATOR().getRandom();
+    auto spriteFrame = cocos2d::SpriteFrame::create(fullPath, cocos2d::Rect(frameOffset, frameRect), rotated, frameOffset, frameRect);
+    cocos2d::SpriteFrameCache::getInstance()->addSpriteFrame(spriteFrame, spriteFrameName);
     return true;
 }

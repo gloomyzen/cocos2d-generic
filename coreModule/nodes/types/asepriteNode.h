@@ -15,10 +15,9 @@ namespace generic::coreModule {
     public:
         struct sAnimFrame {
             sAnimFrame() {}
-            cocos2d::SpriteFrame* spriteFrame = nullptr;
             float duration;
-            //todo add uuid
-            bool load(const jsonObject& data);
+            std::string spriteFrameName; //uuid
+            bool load(const jsonObject& data, const std::string& fullPath);
         };
 
         asepriteNode() = default;
