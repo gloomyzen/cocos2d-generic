@@ -15,3 +15,17 @@ void uuidGenerator::cleanup() {
     delete currentUuidGenerator;
     currentUuidGenerator = nullptr;
 }
+
+std::string uuidGenerator::getRandom() {
+    auto uuid = generator.getUUID();
+    auto id = uuid.str();
+    if (ids.count(id) != 0u)
+        return getRandom();
+    ids.insert(id);
+
+    return id;
+}
+
+uuidGenerator::~uuidGenerator() {
+    ids.clear();
+}
