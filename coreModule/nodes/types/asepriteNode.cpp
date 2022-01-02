@@ -16,7 +16,6 @@ bool asepriteNode::load(const jsonObject& object, const jsonObject& animations, 
         //todo add loading from array export
         if (object["frames"].IsObject()) {
             auto frames = object["frames"].GetObject();
-            auto pos = 0u;
             std::vector<std::string> memberNames;
             for (auto item = frames.MemberBegin(); item != frames.MemberEnd(); ++item) {
                 memberNames.emplace_back(item->name.GetString());
@@ -40,7 +39,8 @@ bool asepriteNode::load(const jsonObject& object, const jsonObject& animations, 
             return false;
         }
 //        initWithSpriteFrame() todo use this for anim switching
-//        spriteFrame = cocos2d::SpriteFrameCache::getInstance().
+//        cocos2d::SpriteFrameCache::getInstance()->addSpriteFrame()
+//        cocos2d::SpriteFrameCache::getInstance()->getSpriteFrameByName()
 //        initWithTextureFilename(fullPath, sourceSize);
         return true;
     }
