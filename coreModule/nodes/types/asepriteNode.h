@@ -16,7 +16,7 @@ namespace generic::coreModule {
         struct sAnimFrame {
             sAnimFrame() {}
             float duration;
-            std::string spriteFrameName; //uuid
+            std::string spriteFrameId; //uuid
             bool load(const jsonObject& data, const std::string& fullPath);
         };
 
