@@ -27,9 +27,14 @@ namespace generic::coreModule {
         bool hasAnimation(const std::string& name);
         bool setAnimation(const std::string& name, bool loop = false);
     private:
+        void animProceed();
         std::map<std::string, std::vector<std::shared_ptr<sAnimFrame>>> animationsMap;
-        std::string currentAnimation;
-        bool currentAnimLoop = false;
+        struct sFrameOptions {
+            std::string animation;
+            bool loop = false;
+            size_t index = 0u;
+        };
+        sFrameOptions frame;
     };
 }// namespace generic::coreModule
 
