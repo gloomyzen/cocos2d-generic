@@ -26,13 +26,15 @@ namespace generic::coreModule {
         bool load(const jsonObject& object, const jsonObject& animations, const std::string& path);
         bool hasAnimation(const std::string& name);
         bool setAnimation(const std::string& name, bool loop = false);
+        void update(float delta) override;
     private:
-        void animProceed();
+        void animProceed(float delta = 0.f);
         std::map<std::string, std::vector<std::shared_ptr<sAnimFrame>>> animationsMap;
         struct sFrameOptions {
             std::string animation;
             bool loop = false;
             size_t index = 0u;
+            unsigned millis = 0u;
         };
         sFrameOptions frame;
     };

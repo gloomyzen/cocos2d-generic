@@ -71,14 +71,33 @@ bool asepriteNode::setAnimation(const std::string& name, bool loop) {
     return false;
 }
 
-void asepriteNode::animProceed() {
-//    auto delay = cocos2d::DelayTime::create(globalAnimDelay / 3);
-//    auto endClbAction = cocos2d::CallFunc::create([clb]() {
-//        if (clb)
-//            clb();
-//    });
-//
-//    auto seq = cocos2d::Sequence::create(ease, delay, endClbAction, nullptr);
+void asepriteNode::animProceed(float delta) {
+    scheduleUpdate();
+    if (!hasAnimation(frame.animation) || (frame.index >= animationsMap[frame.animation].size() && !frame.loop)) {
+        unscheduleUpdate();
+        return;
+    }
+    if (delta <= 0.f) {
+        return;
+    }
+    frame.millis += static_cast<unsigned>(delta);
+    if (frame.index == animationsMap[frame.animation].size()) {
+        //set first frame
+        frame.index = 0u;
+    }
+    unsigned allDuration = 0u;
+    for (const auto& item : animationsMap[frame.animation]) {
+        allDuration += static_cast<unsigned>(item->duration);
+    }
+    if (frame.millis > allDuration) {
+        //
+    }
+
+}
+
+void asepriteNode::update(float delta) {
+    Node::update(delta);
+    animProceed(delta);
 }
 
 bool asepriteNode::sAnimFrame::load(const jsonObject& data, const std::string& fullPath) {
