@@ -2,6 +2,7 @@
 #include "generic/coreModule/resources/resourceManager.h"
 #include "generic/utilityModule/uuidGenerator/uuidGenerator.h"
 #include <tuple>
+#include <cmath>
 
 using namespace generic::coreModule;
 
@@ -35,9 +36,12 @@ bool asepriteNode::load(const jsonObject& object, const jsonObject& animations, 
                 memberNames.emplace_back(item->name.GetString());
             }
             for (auto [animName, animIndexes] : anim) {
+                auto animDuration = 0.f;
                 for (auto i = animIndexes.first; i < animIndexes.second; ++i) {
                     auto framePtr = std::make_shared<sAnimFrame>();
                     if (framePtr->load(frames[memberNames[static_cast<size_t>(i)].c_str()].GetObject(), fullPath)) {
+                        animDuration += framePtr->duration;
+                        framePtr->allDuration = animDuration;
                         if (animationsMap.count(animName) != 0u) {
                             animationsMap[animName].emplace_back(framePtr);
                         } else {
@@ -73,25 +77,29 @@ bool asepriteNode::setAnimation(const std::string& name, bool loop) {
 
 void asepriteNode::animProceed(float delta) {
     scheduleUpdate();
-    if (!hasAnimation(frame.animation) || (frame.index >= animationsMap[frame.animation].size() && !frame.loop)) {
+    if (!hasAnimation(frame.animation) || (frame.index > animationsMap[frame.animation].size() && !frame.loop)) {
         unscheduleUpdate();
         return;
     }
     if (delta <= 0.f) {
         return;
     }
-    frame.millis += static_cast<unsigned>(delta);
+    frame.millis += delta;
     if (frame.index == animationsMap[frame.animation].size()) {
         //set first frame
         frame.index = 0u;
     }
-    unsigned allDuration = 0u;
+    float allDuration = 0.f;
     for (const auto& item : animationsMap[frame.animation]) {
-        allDuration += static_cast<unsigned>(item->duration);
+        allDuration += item->duration;
     }
     if (frame.millis > allDuration) {
-        //
+        //next turn
+        frame.millis = fmod(frame.millis, allDuration);
     }
+
+    size_t nextPos = 0u;
+    auto test = "";
 
 }
 
