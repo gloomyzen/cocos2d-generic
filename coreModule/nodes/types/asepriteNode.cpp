@@ -68,7 +68,7 @@ bool asepriteNode::setAnimation(const std::string& name, bool loop) {
     if (hasAnimation(name)) {
         frame.animation = name;
         frame.loop = loop;
-        frame.index = animationsMap[frame.animation].size();
+//        frame.index = animationsMap[frame.animation].size();
         animProceed();
         return true;
     }
@@ -77,7 +77,7 @@ bool asepriteNode::setAnimation(const std::string& name, bool loop) {
 
 void asepriteNode::animProceed(float delta) {
     scheduleUpdate();
-    if (!hasAnimation(frame.animation) || (frame.index > animationsMap[frame.animation].size() && !frame.loop)) {
+    if (!hasAnimation(frame.animation)) {
         unscheduleUpdate();
         return;
     }
@@ -85,14 +85,11 @@ void asepriteNode::animProceed(float delta) {
         return;
     }
     frame.millis += delta;
-    if (frame.index == animationsMap[frame.animation].size()) {
-        //set first frame
-        frame.index = 0u;
-    }
-    float allDuration = 0.f;
-    for (const auto& item : animationsMap[frame.animation]) {
-        allDuration += item->duration;
-    }
+//    if (frame.index == animationsMap[frame.animation].size()) {
+//        set first frame
+//        frame.index = 0u;
+//    }
+    float allDuration = animationsMap[frame.animation][animationsMap[frame.animation].size() - 1]->allDuration;
     if (frame.millis > allDuration) {
         //next turn
         frame.millis = fmod(frame.millis, allDuration);

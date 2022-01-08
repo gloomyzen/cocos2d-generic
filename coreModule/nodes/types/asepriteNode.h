@@ -34,7 +34,7 @@ namespace generic::coreModule {
         struct sFrameOptions {
             std::string animation;
             bool loop = false;
-            size_t index = 0u;
+//            size_t index = 0u;
             float millis = 0.f;
         };
         sFrameOptions frame;
