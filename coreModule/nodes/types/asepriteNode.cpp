@@ -132,7 +132,7 @@ bool asepriteNode::sAnimFrame::load(const jsonObject& data, const std::string& f
         return false;
     }
     spriteFrameId = GET_UUID_GENERATOR().getRandom();
-    auto spriteFrame = cocos2d::SpriteFrame::create(fullPath, cocos2d::Rect(frameOffset, frameRect), rotated, frameOffset, frameRect);
+    auto spriteFrame = cocos2d::SpriteFrame::create(fullPath, cocos2d::Rect(frameOffset, frameRect), rotated, cocos2d::Vec2::ZERO, frameRect);
     cocos2d::SpriteFrameCache::getInstance()->addSpriteFrame(spriteFrame, spriteFrameId);
     return true;
 }

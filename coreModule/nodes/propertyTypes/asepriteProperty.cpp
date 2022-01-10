@@ -23,6 +23,9 @@ void asepriteProperty::parseProperty(cocos2d::Node* node, const jsonObject& obje
         if (object.HasMember("animation") && object["animation"].IsString()) {
             aNode->setAnimation(object["animation"].GetString(), isLoop);
         }
+        if (object.HasMember("usePixelMode") && object["usePixelMode"].IsBool()) {
+            aNode->setUsePixelMode(object["usePixelMode"].GetBool());
+        }
     } else {
         LOG_ERROR(CSTRING_FORMAT("Node '%s' no has aseprite property!", propertyName.c_str()));
     }
