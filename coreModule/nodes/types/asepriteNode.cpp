@@ -6,6 +6,10 @@
 
 using namespace generic::coreModule;
 
+asepriteNode::asepriteNode() {
+    scheduleUpdate();
+}
+
 asepriteNode::~asepriteNode() {
     for (const auto& [_, frames] : animationsMap) {
         for (const auto& item : frames) {
@@ -68,7 +72,6 @@ bool asepriteNode::setAnimation(const std::string& name, bool loop) {
     if (hasAnimation(name)) {
         frame.animation = name;
         frame.loop = loop;
-//        frame.index = animationsMap[frame.animation].size();
         animProceed();
         return true;
     }
@@ -76,27 +79,35 @@ bool asepriteNode::setAnimation(const std::string& name, bool loop) {
 }
 
 void asepriteNode::animProceed(float delta) {
-    scheduleUpdate();
     if (!hasAnimation(frame.animation)) {
-        unscheduleUpdate();
         return;
     }
     if (delta <= 0.f) {
         return;
     }
     frame.millis += delta;
-//    if (frame.index == animationsMap[frame.animation].size()) {
-//        set first frame
-//        frame.index = 0u;
-//    }
-    float allDuration = animationsMap[frame.animation][animationsMap[frame.animation].size() - 1]->allDuration;
+    const auto& animations = animationsMap[frame.animation];
+    float allDuration = animations[animations.size() - 1]->allDuration;
     if (frame.millis > allDuration) {
         //next turn
         frame.millis = fmod(frame.millis, allDuration);
     }
 
-    size_t nextPos = 0u;
-    auto test = "";
+    size_t pos = 0u;
+    for (size_t i = 1u; i < animations.size(); ++i) {
+        if (frame.millis <= animations[pos]->allDuration) {
+            break;
+        } else if (frame.millis > animations[pos]->allDuration && frame.millis <= animations[i]->allDuration) {
+            pos = i;
+            break;
+        }
+    }
+    if (frame.lastFrameId != animations[pos]->spriteFrameId) {
+        frame.lastFrameId = animations[pos]->spriteFrameId;
+        if (auto spriteFrame = cocos2d::SpriteFrameCache::getInstance()->getSpriteFrameByName(frame.lastFrameId)) {
+            initWithSpriteFrame(spriteFrame);
+        }
+    }
 
 }
 

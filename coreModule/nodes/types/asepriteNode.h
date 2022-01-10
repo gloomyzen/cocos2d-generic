@@ -21,7 +21,7 @@ namespace generic::coreModule {
             bool load(const jsonObject& data, const std::string& fullPath);
         };
 
-        asepriteNode() = default;
+        asepriteNode();
         ~asepriteNode() override;
         CREATE_FUNC(asepriteNode);
         bool load(const jsonObject& object, const jsonObject& animations, const std::string& path);
@@ -34,8 +34,8 @@ namespace generic::coreModule {
         struct sFrameOptions {
             std::string animation;
             bool loop = false;
-//            size_t index = 0u;
             float millis = 0.f;
+            std::string lastFrameId;
         };
         sFrameOptions frame;
     };
