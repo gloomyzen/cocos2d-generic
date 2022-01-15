@@ -1,4 +1,5 @@
 #include "uuidGenerator.h"
+#include "uuid.h"
 
 using namespace generic::utilityModule;
 

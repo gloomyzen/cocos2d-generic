@@ -1,7 +1,6 @@
 #ifndef GENERIC_UUIDGENERATOR_H
 #define GENERIC_UUIDGENERATOR_H
 
-#include "uuid.h"
 #include <string>
 #include <set>
 
@@ -17,7 +16,6 @@ namespace generic::utilityModule {
         std::string getRandom();
 
     private:
-        UUIDv4::UUIDGenerator<std::mt19937_64> generator;
         std::set<std::string> ids;
     };
 }
