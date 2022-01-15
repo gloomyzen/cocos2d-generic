@@ -17,9 +17,8 @@ void uuidGenerator::cleanup() {
     currentUuidGenerator = nullptr;
 }
 
-std::string uuidGenerator::getRandom() {
-    auto uuid = generator.getUUID();
-    auto id = uuid.str();
+std::string uuidGenerator::getRandom(const unsigned int len) {
+    auto id = generate_hex(len);
     if (ids.count(id) != 0u)
         return getRandom();
     ids.insert(id);

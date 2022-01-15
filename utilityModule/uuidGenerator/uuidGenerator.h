@@ -13,7 +13,7 @@ namespace generic::utilityModule {
         static uuidGenerator& getInstance();
         void cleanup();
 
-        std::string getRandom();
+        std::string getRandom(const unsigned int len = 5u);
 
     private:
         std::set<std::string> ids;
