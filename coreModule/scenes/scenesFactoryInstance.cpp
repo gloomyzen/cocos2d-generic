@@ -90,8 +90,7 @@ bool scenesFactoryInstance::runScene(const std::string& stateName) {
 void scenesFactoryInstance::cleanup() {
     if (currentFactoryInstance) {
         currentFactoryInstance->scenesMap.clear();
-        delete currentFactoryInstance->currentScene;
-        currentFactoryInstance->currentScene = nullptr;
+        CC_SAFE_RETAIN(currentFactoryInstance->currentScene);
         delete currentFactoryInstance;
     }
     currentFactoryInstance = nullptr;
