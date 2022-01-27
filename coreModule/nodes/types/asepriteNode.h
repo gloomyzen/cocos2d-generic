@@ -18,17 +18,21 @@ namespace generic::coreModule {
             float duration;
             float allDuration;
             std::string spriteFrameId; //uuid
-            bool load(const jsonObject& data, const std::string& fullPath);
+            bool load(const jsonObject& data, const std::string& fullPath, const std::string& cacheId);
         };
 
         asepriteNode();
         ~asepriteNode() override;
         CREATE_FUNC(asepriteNode);
+        /// Loading node with external list of animation
         bool load(const jsonObject& object, const jsonObject& animations, const std::string& path);
+        /// Loading node with animations from 'frameTags'
+        bool load(const jsonObject& object, const std::string& path);
         bool hasAnimation(const std::string& name);
         bool setAnimation(const std::string& name, bool loop = false);
         void update(float delta) override;
     private:
+        bool loadFrames(const jsonObject& object, const std::map<std::string, std::pair<int, int>>& anim, const std::string& fullPath);
         void animProceed(float delta = 0.f);
         std::map<std::string, std::vector<std::shared_ptr<sAnimFrame>>> animationsMap;
         struct sFrameOptions {

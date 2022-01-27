@@ -9,8 +9,8 @@
 using namespace generic;
 using namespace generic::profileModule;
 
-#ifdef CMAKE_APP_NAME
-const std::string APP_NAME = CMAKE_APP_NAME;
+#ifdef GENERIC_APP_NAME
+const std::string APP_NAME = GENERIC_APP_NAME;
 #else
 const std::string APP_NAME = "defaultAppName";
 #endif

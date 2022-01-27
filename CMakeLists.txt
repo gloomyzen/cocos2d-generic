@@ -1,12 +1,6 @@
 include(cmake/generic_dependency.cmake) # Add library for including external targets
 include(cmake/helpers.cmake)
 
-if (${DEBUG})
-    add_definitions(-DDEBUG=1)
-else ()
-    add_definitions(-DRELEASE=1)
-endif ()
-
 # Source management section
 set(GENERIC_HEADER)
 set(GENERIC_SOURCE)
@@ -22,6 +16,5 @@ set(GAME_HEADER ${GAME_HEADER} ${GENERIC_HEADER} PARENT_SCOPE)
 set(GAME_SOURCE ${GAME_SOURCE} ${GENERIC_SOURCE} PARENT_SCOPE)
 
 macro(finalizeInitGeneric)
-    add_definitions(-DCMAKE_APP_NAME="${APP_NAME}")
     initDebugModule()
 endmacro()

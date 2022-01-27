@@ -1,6 +1,5 @@
 #include "asepriteNode.h"
 #include "generic/coreModule/resources/resourceManager.h"
-#include "generic/utilityModule/uuidGenerator/uuidGenerator.h"
 #include <tuple>
 #include <cmath>
 
@@ -20,7 +19,11 @@ asepriteNode::~asepriteNode() {
 }
 
 bool asepriteNode::load(const jsonObject& object, const jsonObject& animations, const std::string& path) {
-    if (object.HasMember("frames") && animations.MemberCount() != 0u) {
+    auto fullPath = GET_RESOURCE_MANAGER().getImagePathWithExtension(path);
+    if (fullPath.empty()) {
+        return false;
+    }
+    if (animations.MemberCount() != 0u) {
         std::map<std::string, std::pair<int, int>> anim;
         for (auto item = animations.MemberBegin(); item != animations.MemberEnd(); ++item) {
             if (item->value.IsArray() && item->value.GetArray().Size() == 2u) {
@@ -28,33 +31,58 @@ bool asepriteNode::load(const jsonObject& object, const jsonObject& animations, 
                 anim[item->name.GetString()] = std::make_pair(array[0u].GetInt(), array[1u].GetInt());
             }
         }
-        auto fullPath = GET_RESOURCE_MANAGER().getImagePathWithExtension(path);
-        if (fullPath.empty()) {
-            return false;
-        }
-        //todo add loading from array export
-        if (object["frames"].IsObject()) {
-            auto frames = object["frames"].GetObject();
-            std::vector<std::string> memberNames;
-            for (auto item = frames.MemberBegin(); item != frames.MemberEnd(); ++item) {
-                memberNames.emplace_back(item->name.GetString());
+        return loadFrames(object, anim, fullPath);
+    }
+    return false;
+}
+
+bool asepriteNode::load(const jsonObject& object, const std::string& path) {
+    auto fullPath = GET_RESOURCE_MANAGER().getImagePathWithExtension(path);
+    if (fullPath.empty()) {
+        return false;
+    }
+    if (object.HasMember("meta") && object["meta"].HasMember("frameTags")) {
+        auto tags = object["meta"]["frameTags"].GetArray();
+        std::map<std::string, std::pair<int, int>> anim;
+        for (const auto& obj : tags) {
+            if (obj.IsObject()) {
+                auto item = obj.GetObject();
+                if (item.HasMember("name") && item.HasMember("from") && item.HasMember("to")) {
+                    anim[item["name"].GetString()] = std::make_pair(item["from"].GetInt(), item["to"].GetInt());
+                }
             }
-            for (auto [animName, animIndexes] : anim) {
-                auto animDuration = 0.f;
-                for (auto i = animIndexes.first; i < animIndexes.second; ++i) {
-                    auto framePtr = std::make_shared<sAnimFrame>();
-                    if (framePtr->load(frames[memberNames[static_cast<size_t>(i)].c_str()].GetObject(), fullPath)) {
-                        animDuration += framePtr->duration;
-                        framePtr->allDuration = animDuration;
-                        if (animationsMap.count(animName) != 0u) {
-                            animationsMap[animName].emplace_back(framePtr);
-                        } else {
-                            animationsMap[animName] = {framePtr};
-                        }
+        }
+        return loadFrames(object, anim, fullPath);
+    }
+    return false;
+}
+
+bool asepriteNode::loadFrames(const jsonObject& object,
+                              const std::map<std::string, std::pair<int, int>>& anim,
+                              const std::string& fullPath) {
+    //todo add loading from array export
+    if (object.HasMember("frames") && object["frames"].IsObject()) {
+        auto frames = object["frames"].GetObject();
+        std::vector<std::string> memberNames;
+        for (auto item = frames.MemberBegin(); item != frames.MemberEnd(); ++item) {
+            memberNames.emplace_back(item->name.GetString());
+        }
+        for (auto [animName, animIndexes] : anim) {
+            auto animDuration = 0.f;
+            for (auto i = animIndexes.first; i < animIndexes.second; ++i) {
+                auto framePtr = std::make_shared<sAnimFrame>();
+                auto cacheId = cocos2d::StringUtils::format("%d_%s", this->_ID, memberNames[static_cast<size_t>(i)].c_str());
+                if (framePtr->load(frames[memberNames[static_cast<size_t>(i)].c_str()].GetObject(), fullPath, cacheId)) {
+                    animDuration += framePtr->duration;
+                    framePtr->allDuration = animDuration;
+                    if (animationsMap.count(animName) != 0u) {
+                        animationsMap[animName].emplace_back(framePtr);
+                    } else {
+                        animationsMap[animName] = {framePtr};
                     }
                 }
-
             }
+
         }
         if (frame.animation.empty() && !animationsMap.empty()) {
             setAnimation(animationsMap.begin()->first);
@@ -116,7 +144,7 @@ void asepriteNode::update(float delta) {
     animProceed(delta);
 }
 
-bool asepriteNode::sAnimFrame::load(const jsonObject& data, const std::string& fullPath) {
+bool asepriteNode::sAnimFrame::load(const jsonObject& data, const std::string& fullPath, const std::string& cacheId) {
     if (!data.HasMember("frame") || !data["frame"].IsObject()) {
         return false;
     }
@@ -131,7 +159,7 @@ bool asepriteNode::sAnimFrame::load(const jsonObject& data, const std::string& f
     } else {
         return false;
     }
-    spriteFrameId = GET_UUID_GENERATOR().getRandom();
+    spriteFrameId = cacheId;
     auto spriteFrame = cocos2d::SpriteFrame::create(fullPath, cocos2d::Rect(frameOffset, frameRect), rotated, cocos2d::Vec2::ZERO, frameRect);
     cocos2d::SpriteFrameCache::getInstance()->addSpriteFrame(spriteFrame, spriteFrameId);
     return true;

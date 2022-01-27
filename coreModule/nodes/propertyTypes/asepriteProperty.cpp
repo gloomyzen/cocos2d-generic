@@ -9,11 +9,15 @@ using namespace generic::coreModule;
 
 void asepriteProperty::parseProperty(cocos2d::Node* node, const jsonObject& object) {
     if (auto aNode = dynamic_cast<asepriteNode*>(node)) {
-        if (object.HasMember("file") && object["file"].IsString()
-            && object.HasMember("animations") && object["animations"].IsObject()) {
+        if (object.HasMember("file") && object["file"].IsString()) {
             auto data = GET_JSON(object["file"].GetString());
             if (!data.HasParseError() && data.IsObject()) {
-                aNode->load(data.GetObject(), object["animations"].GetObject(), object["file"].GetString());
+                if (object.HasMember("animations") && object["animations"].IsObject()) {
+                    aNode->load(data.GetObject(), object["animations"].GetObject(), object["file"].GetString());
+                }
+                else if (data.HasMember("meta") && data["meta"].HasMember("frameTags")) {
+                    aNode->load(data.GetObject(), object["file"].GetString());
+                }
             }
         }
         bool isLoop = false;
