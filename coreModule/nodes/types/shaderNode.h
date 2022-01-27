@@ -3,7 +3,9 @@
 
 #include "cocos2d.h"
 #include "renderer/CCRenderState.h"
+#ifdef ADXE_VERSION
 #include "spine/SkeletonTwoColorBatch.h"
+#endif
 #include "spine/spine-cocos2dx.h"
 #include <functional>
 #include <utility>

@@ -79,8 +79,10 @@ bool imGuiLayer::init() {
         // Actions
         classList[typeid(cocos2d::Action).name()] = "[Action]";
         // DragonBones node
+#if defined(CC_BUILD_WITH_DRANGBONES) && CC_BUILD_WITH_DRANGBONES
         classList[typeid(dragonBones::CCArmatureDisplay).name()] = "[DBArmature]";
         classList[typeid(generic::coreModule::armatureNode).name()] = "[DBHolder]";
+#endif
         classList[typeid(spine::SkeletonAnimation).name()] = "[spine]";
     }
 
@@ -425,6 +427,7 @@ ImRect imGuiLayer::renderPreferences(Node* node) {
             ImGui::Text("Image path \"%s\"", spriteNode->getResourceName().c_str());
         }
     }
+#if defined(CC_BUILD_WITH_DRANGBONES) && CC_BUILD_WITH_DRANGBONES
     if (auto dragonbonesNode = dynamic_cast<generic::coreModule::armatureNode*>(node)) {
         if (ImGui::CollapsingHeader("DragonBones node")) {
             // animation sections
@@ -453,6 +456,7 @@ ImRect imGuiLayer::renderPreferences(Node* node) {
             }
         }
     }
+#endif
     if (auto spine = dynamic_cast<spine::SkeletonAnimation*>(node)) {
         if (ImGui::CollapsingHeader("Spine node")) {
             if (auto skeleton = spine->getSkeleton()) {

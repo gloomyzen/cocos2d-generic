@@ -1,9 +1,10 @@
 #ifndef GENERIC_ARMATUREHOLDERNODE_H
 #define GENERIC_ARMATUREHOLDERNODE_H
 
+#include "cocos2d.h"
+#if defined(CC_BUILD_WITH_DRANGBONES) && CC_BUILD_WITH_DRANGBONES
 #include "DragonBones/CCDragonBonesHeaders.h"
 #include "cocos-ext.h"
-#include "cocos2d.h"
 #include <functional>
 #include <map>
 #include <string>
@@ -51,5 +52,13 @@ namespace generic::coreModule {
         std::map<std::string, std::function<void(cocos2d::EventCustom*)>> customCallbacksMap;
     };
 }// namespace generic::coreModule
+#else
+namespace generic::coreModule {
 
+    class armatureNode : public cocos2d::Node {
+    public:
+        CREATE_FUNC(armatureNode);
+    };
+}// namespace generic::coreModule
+#endif
 #endif// GENERIC_ARMATUREHOLDERNODE_H

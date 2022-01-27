@@ -1,4 +1,5 @@
 #include "armatureNode.h"
+#if defined(CC_BUILD_WITH_DRANGBONES) && CC_BUILD_WITH_DRANGBONES
 #include "generic/debugModule/logManager.h"
 #include "generic/utilityModule/stringUtility.h"
 #include <map>
@@ -141,3 +142,4 @@ void armatureNode::removeCustomAnimationCallback(const std::string& eventName) {
         customCallbacksMap.erase(find);
     }
 }
+#endif

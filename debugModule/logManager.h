@@ -7,7 +7,7 @@
 #include <utility>
 #include <vector>
 
-#define GET_LOGGER() generic::debugModule::loggerInstance::getInstance()
+#define GET_LOGGER() generic::debugModule::logManager::getInstance()
 #define LOG_INFO(W) GET_LOGGER().info(cocos2d::StringUtils::format("%s:[%d] : %s", __func__, __LINE__, W))
 #define LOG_WARNING(W) GET_LOGGER().warning(cocos2d::StringUtils::format("%s:[%d] : %s", __FILE__, __LINE__, W))
 
@@ -37,22 +37,27 @@ namespace generic::debugModule {
      */
     class logManager {
     public:
+        static logManager& getInstance();
+        static void cleanup();
+
         void info(const std::string& message);
-
         void warning(const std::string& message);
-
         void error(const std::string& message);
 
     private:
+        logManager() = default;
+        ~logManager() = default;
+        logManager(const logManager&) = default;
+        logManager& operator=(const logManager&) = default;
+        static void create();
+        static void onDeadReference();
+
+        static logManager* pInstance;
+        static bool destroyed;
+
         void addLogMessage(const sLogMessage&);
 
         std::vector<sLogMessage> log;
-    };
-
-    class loggerInstance {
-    public:
-        static logManager& getInstance();
-        static void cleanup();
     };
 }// namespace generic::debugModule
 

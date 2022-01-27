@@ -7,6 +7,7 @@ using namespace generic::coreModule;
 
 
 void dragonbonesProperty::parseProperty(cocos2d::Node* node, const jsonObject& object) {
+#if defined(CC_BUILD_WITH_DRANGBONES) && CC_BUILD_WITH_DRANGBONES
     if (auto rootNode = dynamic_cast<armatureNode*>(node)) {
         if (object.HasMember("texFile") && object.HasMember("skeFile")) {
             if (cachedArmature.find(object["name"].GetString()) == cachedArmature.end()) {
@@ -43,4 +44,7 @@ void dragonbonesProperty::parseProperty(cocos2d::Node* node, const jsonObject& o
     } else {
         LOG_ERROR(CSTRING_FORMAT("Node '%s' no has dragonBones property!", propertyName.c_str()));
     }
+#else
+    LOG_ERROR(CSTRING_FORMAT("Engine can't support dragonBones property!"));
+#endif
 }
