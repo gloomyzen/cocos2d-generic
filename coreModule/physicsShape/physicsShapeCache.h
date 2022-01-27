@@ -18,7 +18,7 @@ namespace generic::coreModule {
         /**
          * Removes all shapes and cleanup
          */
-        void cleanup();
+        static void cleanup();
 
         /**
          * Adds all physics shapes from a plist file.

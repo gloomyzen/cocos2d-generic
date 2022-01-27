@@ -22,5 +22,6 @@ set(GAME_HEADER ${GAME_HEADER} ${GENERIC_HEADER} PARENT_SCOPE)
 set(GAME_SOURCE ${GAME_SOURCE} ${GENERIC_SOURCE} PARENT_SCOPE)
 
 macro(finalizeInitGeneric)
+    add_definitions(-DCMAKE_APP_NAME="${APP_NAME}")
     initDebugModule()
 endmacro()

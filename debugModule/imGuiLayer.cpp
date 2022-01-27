@@ -277,14 +277,12 @@ ImRect imGuiLayer::renderPreferences(Node* node) {
         /**
          * Pivot
          */
-#ifdef ADXE_PIVOT_EXT
         auto nodePivot = node->getPivotPoint();
         float vecPivot[2] = { nodePivot.x, nodePivot.y };
         ImGui::DragFloat2("Pivot X/Y", vecPivot, 0.01f, -10.f, 10.f);
         if (vecPivot[0] != nodePivot.x || vecPivot[1] != nodePivot.y) {
             node->setPivotPoint({ vecPivot[0], vecPivot[1] });
         }
-#endif
         /**
          * Anchor
          */
@@ -607,7 +605,6 @@ ImRect imGuiLayer::renderPreferences(Node* node) {
 }
 
 void imGuiLayer::debugToggleRow(cocos2d::Node* node) {
-#ifdef ADXE_DEBUGGER
     if (node->isRunning()) {
         auto active = node->getDebug();
         auto tempActive = active;
@@ -647,7 +644,6 @@ void imGuiLayer::debugToggleRow(cocos2d::Node* node) {
             node->setDebugLineColor(nodeColor);
         }
     }
-#endif
 }
 
 void imGuiLayer::resetDebugModules() {

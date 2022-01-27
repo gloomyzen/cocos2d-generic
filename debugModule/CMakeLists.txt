@@ -23,7 +23,7 @@ set(GENERIC_SOURCE ${GENERIC_SOURCE} ${MODULE_SOURCE} PARENT_SCOPE)
 
 # ImGui, included for debugging only
 macro(initDebugModule)
-    if (${DEBUG} AND NOT ADXE_VERSION)
+    if (${DEBUG} AND !ADXE)
         if (NOT EXISTS ${GENERIC_DEBUG_MODULE_PATH}/imgui/CMakeLists.txt)
             message(WARNING "ImGui not found, use 'git submodules update'.")
         else()

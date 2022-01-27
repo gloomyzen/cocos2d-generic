@@ -4,44 +4,41 @@
 #include "generic/coreModule/resources/loaders/jsonLoader.h"
 #include "generic/coreModule/resources/settings/settingManager.h"
 #include <map>
-#include <vector>
 #include <string>
+#include <vector>
 
 #define GET_RESOURCE_MANAGER() generic::coreModule::resourceManager::getInstance()
 #define GET_JSON_MANAGER() generic::coreModule::resourceManager::getInstance().getJsonLoader()
 #define GET_RESOLUTION_SETTING() generic::coreModule::resourceManager::getInstance().getSettingManager()
-#define GET_JSON(L) GET_JSON_MANAGER().loadJson(L)
+#define GET_JSON(L) GET_JSON_MANAGER()->loadJson(L)
 
-namespace generic {
+namespace generic::coreModule {
+    class resourceManager {
+    public:
+        resourceManager();
+        static resourceManager& getInstance();
+        static void cleanup();
 
-    namespace coreModule {
-        class resourceManager {
-        public:
-            resourceManager();
-            static resourceManager& getInstance();
-            static void cleanup();
+        jsonLoader* getJsonLoader();
+        settingManager* getSettingManager();
+        std::string getImagePathWithExtension(const std::string& path);
 
-            jsonLoader& getJsonLoader();
-            settingManager& getSettingManager();
-            std::string getImagePathWithExtension(const std::string& path);
+    private:
+        ~resourceManager();
+        resourceManager(const resourceManager&) = default;
+        resourceManager& operator=(const resourceManager&) = default;
+        static void create();
+        static void onDeadReference();
 
-        private:
-            ~resourceManager();
-            resourceManager(const resourceManager&) = default;
-            resourceManager& operator=(const resourceManager&) = default;
-            static void create();
-            static void onDeadReference();
+        static resourceManager* pInstance;
+        static bool destroyed;
 
-            static resourceManager* pInstance;
-            static bool destroyed;
+        static jsonLoader* jsonLoaderInstance;
+        static settingManager* settingManagerInstance;
 
-            static jsonLoader* jsonLoaderInstance;
-            static settingManager* settingManagerInstance;
-
-            static std::vector<std::string> imageExtensions;
-        };
-    }// namespace coreModule
-}// namespace generic
+        static std::vector<std::string> imageExtensions;
+    };
+}// namespace generic::coreModule
 
 
 #endif// GENERIC_RESOURCEMANAGER_H

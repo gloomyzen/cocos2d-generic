@@ -65,10 +65,10 @@ void profileManager::onDeadReference() {
 
 void profileManager::load() {
     const std::string& path = "config/user_profile";
-    auto defaultProfile = GET_JSON_MANAGER().loadJson(path);
+    auto defaultProfile = GET_JSON_MANAGER()->loadJson(path);
     auto profile =
       cocos2d::UserDefault::getInstance()->getStringForKey(STRING_FORMAT("profile_%s", APP_NAME.c_str()).c_str(), std::string());
-    auto localProfile = GET_JSON_MANAGER().stringToJson(profile);
+    auto localProfile = GET_JSON_MANAGER()->stringToJson(profile);
 #ifdef DEBUG
     if (!localProfile.HasParseError() && !localProfile.IsNull()) {
         rapidjson::StringBuffer strBuf;

@@ -50,12 +50,12 @@ void resourceManager::onDeadReference() {
     CCASSERT(false, "Founded dead reference!");
 }
 
-jsonLoader& resourceManager::getJsonLoader() {
-    return *jsonLoaderInstance;
+jsonLoader* resourceManager::getJsonLoader() {
+    return jsonLoaderInstance;
 }
 
-settingManager& resourceManager::getSettingManager() {
-    return *settingManagerInstance;
+settingManager* resourceManager::getSettingManager() {
+    return settingManagerInstance;
 }
 
 std::string resourceManager::getImagePathWithExtension(const std::string& path) {
