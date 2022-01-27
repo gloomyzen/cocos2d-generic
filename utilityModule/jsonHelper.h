@@ -1,6 +1,7 @@
 #ifdef GetObject
 #undef GetObject
 #endif
+#include "cocos2d.h"
 #ifdef ADXE_VERSION // for adxe engine
 #include "rapidjson/document.h"
 #include "rapidjson/istreamwrapper.h"
@@ -21,3 +22,14 @@ typedef rapidjson::GenericValue<rapidjson::UTF8<char>>::Object              json
 typedef const rapidjson::GenericValue<rapidjson::UTF8<char>>::ConstObject&  jsonConstObject;
 typedef rapidjson::GenericValue<rapidjson::UTF8<char>>::Array               jsonArray;
 typedef rapidjson::GenericValue<rapidjson::UTF8<char>>::ConstArray          jsonConstArray;
+
+namespace generic::utilityModule {
+
+    inline bool isValidJson(const rapidjson::Document& data) {
+        if (data.HasParseError() || data.IsNull()) {
+            return false;
+        }
+        return true;
+    }
+
+}

@@ -2,6 +2,7 @@ set(GENERIC_HEADER)
 set(GENERIC_SOURCE)
 
 add_subdirectory(audioModule)
+add_subdirectory(databaseModule)
 add_subdirectory(profileModule)
 add_subdirectory(utilityModule)
 
