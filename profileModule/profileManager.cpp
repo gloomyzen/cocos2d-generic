@@ -15,12 +15,22 @@ const std::string APP_NAME = CMAKE_APP_NAME;
 const std::string APP_NAME = "defaultAppName";
 #endif
 
-profileManager* profileMgrInstance = nullptr;
-
-profileManager::profileManager() {}
+profileManager* profileManager::pInstance = nullptr;
+bool profileManager::destroyed = false;
 
 profileManager::~profileManager() {
-    cleanup();
+    auto deleteProfile = cocos2d::UserDefault::getInstance()->getBoolForKey("deleteProfile", false);
+    if (!deleteProfile)
+        save();
+    for (auto& item : profileBlocks) {
+        delete item.second;
+        item.second = nullptr;
+    }
+    for (auto& item : profileBlocksClb) {
+        item.second = nullptr;
+    }
+    profileBlocks.clear();
+    profileBlocksClb.clear();
 }
 
 void profileManager::executeLoad() {
@@ -28,10 +38,29 @@ void profileManager::executeLoad() {
 }
 
 profileManager& profileManager::getInstance() {
-    if (profileMgrInstance == nullptr) {
-        profileMgrInstance = new profileManager();
+    if (!pInstance) {
+        if (destroyed) {
+            onDeadReference();
+        } else {
+            create();
+        }
     }
-    return *profileMgrInstance;
+    return *pInstance;
+}
+
+void profileManager::cleanup() {
+    destroyed = true;
+    delete pInstance;
+    pInstance = nullptr;
+}
+
+void profileManager::create() {
+    static profileManager instance;
+    pInstance = &instance;
+}
+
+void profileManager::onDeadReference() {
+    CCASSERT(false, "Founded dead reference!");
 }
 
 void profileManager::load() {
@@ -47,7 +76,7 @@ void profileManager::load() {
 
         rapidjson::Writer<rapidjson::StringBuffer> writer(strBuf);
         localProfile.Accept(writer);
-        std::cout << STRING_FORMAT("local profile: %s", strBuf.GetString()) << std::endl;
+        LOG_INFO(CSTRING_FORMAT("local profile: %s", strBuf.GetString()));
     }
 #endif
     loadProfile(defaultProfile, localProfile);
@@ -71,7 +100,7 @@ void profileManager::save() {
     rapidjson::Writer<rapidjson::StringBuffer> writer(strBuf);
     json.Accept(writer);
 #ifdef DEBUG
-    std::cout << STRING_FORMAT("save local profile: %s", strBuf.GetString()) << std::endl;
+    LOG_INFO(CSTRING_FORMAT("save local profile: %s", strBuf.GetString()));
 #endif
 
     cocos2d::UserDefault::getInstance()->setStringForKey(STRING_FORMAT("profile_%s", APP_NAME.c_str()).c_str(), strBuf.GetString());
@@ -125,19 +154,4 @@ bool profileManager::isBlockRegistered(const std::string& needle) {
 
 void profileManager::destroyProfile() {
     cocos2d::UserDefault::getInstance()->deleteValueForKey("profile");
-}
-
-void profileManager::cleanup() {
-    auto deleteProfile = cocos2d::UserDefault::getInstance()->getBoolForKey("deleteProfile", false);
-    if (!deleteProfile)
-        save();
-    for (auto& item : profileBlocks) {
-        delete item.second;
-        item.second = nullptr;
-    }
-    for (auto& item : profileBlocksClb) {
-        item.second = nullptr;
-    }
-    profileBlocks.clear();
-    profileBlocksClb.clear();
 }

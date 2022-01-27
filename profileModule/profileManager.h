@@ -1,47 +1,52 @@
 #ifndef GENERIC_PROFILEMANAGER_H
 #define GENERIC_PROFILEMANAGER_H
 
-#include "generic/profileModule/profileBlockInterface.h"
+#include "profileBlockInterface.h"
 #include <functional>
 #include <map>
 #include <string>
 
 #define GET_PROFILE() generic::profileModule::profileManager::getInstance()
 
-namespace generic {
-    namespace profileModule {
-        class locationProfile;
+namespace generic::profileModule {
 
-        class profileManager {
-        public:
-            profileManager();
-            ~profileManager();
-            static profileManager& getInstance();
-            void executeLoad();
+    class profileManager {
+    public:
+        ~profileManager();
+        static profileManager& getInstance();
+        static void cleanup();
+        void executeLoad();
 
-            bool registerBlock(const std::string&, const std::function<profileBlockInterface*()>&);
-            bool isBlockRegistered(const std::string&);
+        bool registerBlock(const std::string&, const std::function<profileBlockInterface*()>&);
+        bool isBlockRegistered(const std::string&);
 
-            template<typename T>
-            T* getBlock(const std::string& key) {
-                if (isBlockRegistered(key))
-                    return dynamic_cast<T*>(profileBlocks[key]);
-                return nullptr;
-            }
+        template<typename T>
+        T* getBlock(const std::string& key) {
+            if (isBlockRegistered(key))
+                return dynamic_cast<T*>(profileBlocks[key]);
+            return nullptr;
+        }
 
-            static void destroyProfile();
-            void save();
-            void cleanup();
+        static void destroyProfile();
+        void save();
 
-        private:
-            void load();
-            void loadProfile(const rapidjson::Document& defaultData, const rapidjson::Document& localData);
+    private:
+        profileManager() = default;
+        profileManager(const profileManager&) = default;
+        profileManager& operator=(const profileManager&) = default;
+        static void create();
+        static void onDeadReference();
 
-            std::map<std::string, std::function<profileBlockInterface*()>> profileBlocksClb;
-            std::map<std::string, profileBlockInterface*> profileBlocks;
-        };
-    }// namespace profileModule
-}// namespace generic
+        static profileManager* pInstance;
+        static bool destroyed;
+
+        void load();
+        void loadProfile(const rapidjson::Document& defaultData, const rapidjson::Document& localData);
+
+        std::map<std::string, std::function<profileBlockInterface*()>> profileBlocksClb;
+        std::map<std::string, profileBlockInterface*> profileBlocks;
+    };
+}// namespace generic::profileModule
 
 
 #endif// GENERIC_PROFILEMANAGER_H

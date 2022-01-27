@@ -2,6 +2,7 @@ set(GENERIC_HEADER)
 set(GENERIC_SOURCE)
 
 add_subdirectory(audioModule)
+add_subdirectory(profileModule)
 add_subdirectory(utilityModule)
 
 set(GAME_HEADER ${GAME_HEADER} ${GENERIC_HEADER} PARENT_SCOPE)
