@@ -1,0 +1,37 @@
+set(MODULE_HEADER)
+set(MODULE_SOURCE)
+SET(GENERIC_DEBUG_MODULE_PATH  "${CMAKE_CURRENT_SOURCE_DIR}" CACHE INTERNAL "GENERIC_DEBUG_MODULE_PATH")
+
+file(GLOB_RECURSE MODULE_HEADER ${CMAKE_CURRENT_SOURCE_DIR}/*.h)
+file(GLOB_RECURSE MODULE_SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
+MakeReadableListOfSources(MODULE_HEADER)
+MakeReadableListOfSources(MODULE_SOURCE)
+# remove sources from imgui submodule
+foreach(source ${MODULE_HEADER})
+    if("${source}" MATCHES "/imgui/")
+        list(REMOVE_ITEM MODULE_HEADER "${source}")
+    endif()
+endforeach()
+foreach(source ${MODULE_SOURCE})
+    if("${source}" MATCHES "/imgui/")
+        list(REMOVE_ITEM MODULE_SOURCE "${source}")
+    endif()
+endforeach()
+
+set(GENERIC_HEADER ${GENERIC_HEADER} ${MODULE_HEADER} PARENT_SCOPE)
+set(GENERIC_SOURCE ${GENERIC_SOURCE} ${MODULE_SOURCE} PARENT_SCOPE)
+
+# ImGui, included for debugging only
+macro(initDebugModule)
+    if (${DEBUG} AND NOT ADXE_VERSION)
+        if (NOT EXISTS ${GENERIC_DEBUG_MODULE_PATH}/imgui/CMakeLists.txt)
+            message(WARNING "ImGui not found, use 'git submodules update'.")
+        else()
+            SET(imgui_lib_path  "${GENERIC_DEBUG_MODULE_PATH}/imgui" CACHE INTERNAL "imgui_lib_path")
+            include(${GENERIC_DEBUG_MODULE_PATH}/imgui/CMakeLists.txt)
+            add_definitions(-DIMGUI_ENABLED)
+            target_link_libraries(${GENERIC_LIB_NAME} INTERFACE cc_imgui)
+        endif ()
+    endif ()
+endmacro()
+
