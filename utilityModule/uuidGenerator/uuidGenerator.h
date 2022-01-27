@@ -11,11 +11,20 @@ namespace generic::utilityModule {
     public:
         ~uuidGenerator();
         static uuidGenerator& getInstance();
-        void cleanup();
+        static void cleanup();
 
         std::string getRandom(const unsigned int len = 5u);
 
     private:
+        uuidGenerator() = default;
+        uuidGenerator(const uuidGenerator&) = default;
+        uuidGenerator& operator=(const uuidGenerator&) = default;
+        static void create();
+        static void onDeadReference();
+
+        static uuidGenerator* pInstance;
+        static bool destroyed;
+
         std::set<std::string> ids;
     };
 }

@@ -32,7 +32,7 @@ namespace generic::utilityModule {
 
     std::string toLowerString(std::string line);
 
-    std::vector<std::string> explodeString(const std::string& str, std::function<std::string(std::string)> clb = nullptr);
+    std::vector<std::string> explodeString(const std::string& str, const std::function<std::string(std::string)>& clb = nullptr);
 
     /*
      * Helper for macros

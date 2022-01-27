@@ -48,7 +48,7 @@ std::string generic::utilityModule::toLowerString(std::string line) {
     return line;
 }
 
-std::vector<std::string> generic::utilityModule::explodeString(const std::string& str, std::function<std::string(std::string)> clb) {
+std::vector<std::string> generic::utilityModule::explodeString(const std::string& str, const std::function<std::string(std::string)>& clb) {
     std::vector<std::string> result;
     std::stringstream ssitem(str);
     while (ssitem.good()) {

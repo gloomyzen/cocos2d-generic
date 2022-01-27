@@ -1,20 +1,27 @@
 #include "uuidGenerator.h"
 #include "uuid.h"
+#include "cocos2d.h"
 
 using namespace generic::utilityModule;
 
-uuidGenerator* currentUuidGenerator = nullptr;
+uuidGenerator* uuidGenerator::pInstance = nullptr;
+bool uuidGenerator::destroyed = false;
 
 uuidGenerator& uuidGenerator::getInstance() {
-    if (currentUuidGenerator == nullptr) {
-        currentUuidGenerator = new uuidGenerator();
+    if (!pInstance) {
+        if (destroyed) {
+            onDeadReference();
+        } else {
+            create();
+        }
     }
-    return *currentUuidGenerator;
+    return *pInstance;
 }
 
 void uuidGenerator::cleanup() {
-    delete currentUuidGenerator;
-    currentUuidGenerator = nullptr;
+    destroyed = true;
+    delete pInstance;
+    pInstance = nullptr;
 }
 
 std::string uuidGenerator::getRandom(const unsigned int len) {
@@ -28,4 +35,13 @@ std::string uuidGenerator::getRandom(const unsigned int len) {
 
 uuidGenerator::~uuidGenerator() {
     ids.clear();
+}
+
+void uuidGenerator::create() {
+    static uuidGenerator instance;
+    pInstance = &instance;
+}
+
+void uuidGenerator::onDeadReference() {
+    CCASSERT(false, "Founded dead reference!");
 }
