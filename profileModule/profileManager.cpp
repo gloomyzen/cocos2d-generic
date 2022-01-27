@@ -50,7 +50,6 @@ profileManager& profileManager::getInstance() {
 
 void profileManager::cleanup() {
     destroyed = true;
-    delete pInstance;
     pInstance = nullptr;
 }
 
@@ -76,7 +75,7 @@ void profileManager::load() {
 
         rapidjson::Writer<rapidjson::StringBuffer> writer(strBuf);
         localProfile.Accept(writer);
-        LOG_INFO(CSTRING_FORMAT("local profile: %s", strBuf.GetString()));
+        CCLOG(CSTRING_FORMAT("local profile: %s", strBuf.GetString()));
     }
 #endif
     loadProfile(defaultProfile, localProfile);
@@ -100,7 +99,7 @@ void profileManager::save() {
     rapidjson::Writer<rapidjson::StringBuffer> writer(strBuf);
     json.Accept(writer);
 #ifdef DEBUG
-    LOG_INFO(CSTRING_FORMAT("save local profile: %s", strBuf.GetString()));
+    CCLOG(CSTRING_FORMAT("save local profile: %s", strBuf.GetString()));
 #endif
 
     cocos2d::UserDefault::getInstance()->setStringForKey(STRING_FORMAT("profile_%s", APP_NAME.c_str()).c_str(), strBuf.GetString());

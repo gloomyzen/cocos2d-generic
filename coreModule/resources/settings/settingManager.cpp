@@ -9,16 +9,13 @@ settingManager::settingManager() = default;
 
 settingManager::~settingManager() {
     for (auto [_, c] : allResolutions) {
-        delete c;
         c = nullptr;
     }
     allResolutions.clear();
-    delete currentSize;
-    currentSize = nullptr;
 }
 
 void settingManager::load() {
-    auto defaultResolution = new sDisplaySize("default", 1024.f, 768.f, 1.f);
+    auto defaultResolution = std::make_shared<sDisplaySize>(sDisplaySize("default", 1024.f, 768.f, 1.f));
 
     // load json
     const std::string& regionStr = cocos2d::FileUtils::getInstance()->getStringFromFile("config/setting.json");
@@ -33,7 +30,7 @@ void settingManager::load() {
 
     for (auto it = doc.GetObject().begin(); it != doc.GetObject().end(); ++it) {
         auto resName = it->name.GetString();
-        auto currentResolution = new sDisplaySize();
+        auto currentResolution = std::make_shared<sDisplaySize>();
         currentResolution->resolutionName = resName;
         for (auto resIt = it->value.GetObject().begin(); resIt != it->value.GetObject().end(); ++resIt) {
             if (!resIt->name.IsString()) {
@@ -79,7 +76,7 @@ void settingManager::load() {
     }
 }
 
-sDisplaySize* settingManager::getSizeByName(const std::string& name) {
+std::shared_ptr<sDisplaySize> settingManager::getSizeByName(const std::string& name) {
     if (name.empty())
         return nullptr;
     auto it = allResolutions.find(name);
@@ -123,7 +120,7 @@ void settingManager::init(bool isMobile, const std::string& settingName) {
     }
 }
 
-sDisplaySize* settingManager::getCurrentSize() {
+std::shared_ptr<sDisplaySize> settingManager::getCurrentSize() {
     if (currentSize != nullptr)
         return currentSize;
     return nullptr;

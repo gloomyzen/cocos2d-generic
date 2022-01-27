@@ -66,9 +66,7 @@ nodeFactory::~nodeFactory() {
 };
 
 void nodeFactory::cleanup() {
-
     destroyed = true;
-    delete pInstance;
     pInstance = nullptr;
 }
 

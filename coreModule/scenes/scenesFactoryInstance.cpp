@@ -28,7 +28,6 @@ void scenesFactoryInstance::cleanup() {
         pInstance->scenesMap.clear();
         CC_SAFE_RETAIN(pInstance->currentScene);
     }
-    delete pInstance;
     pInstance = nullptr;
 }
 

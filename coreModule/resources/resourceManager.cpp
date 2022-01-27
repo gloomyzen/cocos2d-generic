@@ -18,9 +18,7 @@ resourceManager::resourceManager() {
 }
 
 resourceManager::~resourceManager() {
-    delete jsonLoaderInstance;
     jsonLoaderInstance = nullptr;
-    delete settingManagerInstance;
     settingManagerInstance = nullptr;
 }
 
@@ -37,7 +35,6 @@ resourceManager& resourceManager::getInstance() {
 
 void resourceManager::cleanup() {
     destroyed = true;
-    delete pInstance;
     pInstance = nullptr;
 }
 

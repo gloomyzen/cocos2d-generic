@@ -60,7 +60,6 @@ audioEngineInstance& audioEngineInstance::getInstance() {
 
 void audioEngineInstance::cleanup() {
     destroyed = true;
-    delete pInstance;
     pInstance = nullptr;
 }
 

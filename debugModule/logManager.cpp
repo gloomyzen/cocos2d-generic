@@ -20,7 +20,6 @@ logManager& logManager::getInstance() {
 
 void logManager::cleanup() {
     destroyed = true;
-    delete pInstance;
     pInstance = nullptr;
 }
 

@@ -15,7 +15,7 @@ namespace generic {
             float scale = 1.f;
             std::string path;
             std::string parentName;
-            sDisplaySize* parent = nullptr;
+            std::shared_ptr<sDisplaySize> parent = nullptr;
             bool showStats = false;
             bool spritePixel = false;
             sDisplaySize() = default;
@@ -41,12 +41,12 @@ namespace generic {
             ~settingManager();
             void load();
             void init(bool isMobile, const std::string& settingName = "");
-            sDisplaySize* getCurrentSize();
+            std::shared_ptr<sDisplaySize> getCurrentSize();
 
         private:
-            sDisplaySize* getSizeByName(const std::string&);
-            std::map<std::string, sDisplaySize*> allResolutions;
-            sDisplaySize* currentSize = nullptr;
+            std::shared_ptr<sDisplaySize> getSizeByName(const std::string&);
+            std::map<std::string, std::shared_ptr<sDisplaySize>> allResolutions;
+            std::shared_ptr<sDisplaySize> currentSize;
         };
     }// namespace coreModule
 }// namespace generic
