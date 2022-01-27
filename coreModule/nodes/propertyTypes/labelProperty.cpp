@@ -4,13 +4,19 @@
 
 using namespace generic::coreModule;
 
+std::string labelProperty::defaultFont = "fonts/arial.ttf";
+std::map<std::string, cocos2d::TextHAlignment> labelProperty::textHAlignmentTypes = {
+    {"center", cocos2d::TextHAlignment::CENTER},
+    {"left", cocos2d::TextHAlignment::LEFT},
+    {"right", cocos2d::TextHAlignment::RIGHT}
+};
 
 void labelProperty::parseProperty(cocos2d::Node* node, const jsonObject& object) {
     if (auto label = dynamic_cast<cocos2d::Label*>(node)) {
         if (object.HasMember("fontType") && object["fontType"].IsString() && object["fontType"].GetString() == std::string("ttf")) {
             cocos2d::TTFConfig font = label->getTTFConfig();
             if (font.fontFilePath.empty()) {
-                font.fontFilePath = "fonts/arial.ttf";
+                font.fontFilePath = defaultFont;
             }
             font.outlineSize = 0;
 
@@ -27,15 +33,11 @@ void labelProperty::parseProperty(cocos2d::Node* node, const jsonObject& object)
             if (object.HasMember("italic") && object["italic"].IsBool()) {
                 font.italics = object["italic"].GetBool();
             }
-            if (object.HasMember("alight") && object["alight"].IsString()) {
+            if (object.HasMember("align") && object["align"].IsString()) {
                 cocos2d::TextHAlignment hAlignment = label->getTextAlignment();
-                auto alight = object["alight"].GetString();
-                if (alight == std::string("center")) {
-                    hAlignment = cocos2d::TextHAlignment::CENTER;
-                } else if (alight == std::string("left")) {
-                    hAlignment = cocos2d::TextHAlignment::LEFT;
-                } else if (alight == std::string("right")) {
-                    hAlignment = cocos2d::TextHAlignment::RIGHT;
+                auto align = object["align"].GetString();
+                if (textHAlignmentTypes.count(align)) {
+                    hAlignment = textHAlignmentTypes.at(align);
                 }
                 label->setAlignment(hAlignment);
             }

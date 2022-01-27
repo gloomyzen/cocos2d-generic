@@ -5,38 +5,59 @@
 using namespace generic::coreModule;
 
 std::vector<std::string> resourceManager::imageExtensions = { "png", "jpeg", "jpg" };
-
-resourceManager* currentResourceManager = nullptr;
+resourceManager* resourceManager::pInstance = nullptr;
+bool resourceManager::destroyed = false;
+jsonLoader* resourceManager::jsonLoaderInstance = nullptr;
+settingManager* resourceManager::settingManagerInstance = nullptr;
 
 resourceManager::resourceManager() {
-    settingManagerInstance = new settingManager();
+    static jsonLoader jsonInstance;
+    jsonLoaderInstance = &jsonInstance;
+    static settingManager settingMgrInstance;
+    settingManagerInstance = &settingMgrInstance;
 }
 
 resourceManager::~resourceManager() {
+    delete jsonLoaderInstance;
+    jsonLoaderInstance = nullptr;
     delete settingManagerInstance;
     settingManagerInstance = nullptr;
 }
 
 resourceManager& resourceManager::getInstance() {
-    if (currentResourceManager == nullptr) {
-        currentResourceManager = new resourceManager();
-        // todo update for ios and ipad
-        //		auto fileUtils = cocos2d::FileUtils::getInstance();
-        //		std::vector<std::string> searchPaths = fileUtils->getSearchPaths();
-        //		searchPaths.insert(searchPaths.begin(), "iphone");
-        //		searchPaths.insert(searchPaths.begin(), "ipad");
-        //		fileUtils->setSearchPaths(searchPaths);
+    if (!pInstance) {
+        if (destroyed) {
+            onDeadReference();
+        } else {
+            create();
+        }
     }
-    return *currentResourceManager;
+    return *pInstance;
 }
 
-jsonLoader* resourceManager::getJsonLoader() {
-    return &jsonLoaderInstance;
+void resourceManager::cleanup() {
+    destroyed = true;
+    delete pInstance;
+    pInstance = nullptr;
 }
 
-settingManager* resourceManager::getSettingManager() {
-    return settingManagerInstance;
+void resourceManager::create() {
+    static resourceManager instance;
+    pInstance = &instance;
 }
+
+void resourceManager::onDeadReference() {
+    CCASSERT(false, "Founded dead reference!");
+}
+
+jsonLoader& resourceManager::getJsonLoader() {
+    return *jsonLoaderInstance;
+}
+
+settingManager& resourceManager::getSettingManager() {
+    return *settingManagerInstance;
+}
+
 std::string resourceManager::getImagePathWithExtension(const std::string& path) {
     for (const auto& extension : imageExtensions) {
         auto fullPath = cocos2d::StringUtils::format("%s.%s", path.c_str(), extension.c_str());

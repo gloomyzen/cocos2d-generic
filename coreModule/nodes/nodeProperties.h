@@ -15,16 +15,16 @@ namespace generic::coreModule {
     public:
         ~nodeProperties();
         /***
-         * Парсинг параметров из json файла
-         * Полный парсинг нод и следом параметров каждой ноды
+         * Parsing parameters from json file
+         * Creating child structure and then read the parameters of each node
          * @param path relative path to file
          * @param node Node instance
          */
         void initWithProperties(const std::string& path, cocos2d::Node* node = nullptr);
 
         /***
-         * Парсинг параметров из json файла
-         * Парсинг только параметров одной ноды
+         * Parsing parameters from json file
+         * But only for first founded node by name
          * @param node Node instance
          * @param name
          */

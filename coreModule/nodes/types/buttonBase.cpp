@@ -2,9 +2,6 @@
 
 using namespace generic::coreModule;
 
-buttonBase::buttonBase() {}
-
-buttonBase::~buttonBase() = default;
 
 void buttonBase::loadTexture(const std::string& image, bool isPoly) {
     if (sprite == nullptr) {

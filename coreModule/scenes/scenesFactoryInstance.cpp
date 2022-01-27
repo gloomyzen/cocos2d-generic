@@ -8,17 +8,37 @@ using namespace generic;
 using namespace generic::coreModule;
 using namespace cocos2d;
 
-scenesFactoryInstance* currentFactoryInstance = nullptr;
-
-scenesFactoryInstance::scenesFactoryInstance() = default;
-
-scenesFactoryInstance::~scenesFactoryInstance() = default;
+scenesFactoryInstance* scenesFactoryInstance::pInstance = nullptr;
+bool scenesFactoryInstance::destroyed = false;
 
 scenesFactoryInstance& scenesFactoryInstance::getInstance() {
-    if (currentFactoryInstance == nullptr) {
-        currentFactoryInstance = new scenesFactoryInstance();
+    if (!pInstance) {
+        if (destroyed) {
+            onDeadReference();
+        } else {
+            create();
+        }
     }
-    return *currentFactoryInstance;
+    return *pInstance;
+}
+
+void scenesFactoryInstance::cleanup() {
+    destroyed = true;
+    if (pInstance) {
+        pInstance->scenesMap.clear();
+        CC_SAFE_RETAIN(pInstance->currentScene);
+    }
+    delete pInstance;
+    pInstance = nullptr;
+}
+
+void scenesFactoryInstance::create() {
+    static scenesFactoryInstance instance;
+    pInstance = &instance;
+}
+
+void scenesFactoryInstance::onDeadReference() {
+    CCASSERT(false, "Founded dead reference!");
 }
 
 bool scenesFactoryInstance::isSceneRegistered(const std::string& stateName) {
@@ -85,15 +105,6 @@ bool scenesFactoryInstance::runScene(const std::string& stateName) {
         return true;
     }
     return false;
-}
-
-void scenesFactoryInstance::cleanup() {
-    if (currentFactoryInstance) {
-        currentFactoryInstance->scenesMap.clear();
-        CC_SAFE_RETAIN(currentFactoryInstance->currentScene);
-        delete currentFactoryInstance;
-    }
-    currentFactoryInstance = nullptr;
 }
 
 void scenesFactoryInstance::initTaskLoading(cocos2d::Node* node) {

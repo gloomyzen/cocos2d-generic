@@ -21,7 +21,7 @@ namespace generic::coreModule {
         void setPhysics(bool value) {
             physics = value;
         }
-        bool isPhysics() {
+        bool isPhysics() const {
             return physics;
         }
         void setGravity(cocos2d::Vec2 value) {

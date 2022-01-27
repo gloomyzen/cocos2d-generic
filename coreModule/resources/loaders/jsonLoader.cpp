@@ -7,9 +7,6 @@
 
 using namespace generic::coreModule;
 
-jsonLoader::jsonLoader() {}
-jsonLoader::~jsonLoader() {}
-
 rapidjson::Document jsonLoader::loadJson(const std::string& path) {
     auto jsonStr = cocos2d::FileUtils::getInstance()->getStringFromFile(path + ".json");
     auto currentDeviceData = stringToJson(jsonStr);
@@ -48,10 +45,10 @@ void jsonLoader::mergeJson(rapidjson::Value& target, rapidjson::Value& source, r
 }
 
 rapidjson::Document jsonLoader::findByResolution(const std::string& path) {
-    if (GET_RESOLUTION_SETTING()->getCurrentSize() == nullptr || GET_RESOLUTION_SETTING()->getCurrentSize()->getPath().empty()) {
+    if (GET_RESOLUTION_SETTING().getCurrentSize() == nullptr || GET_RESOLUTION_SETTING().getCurrentSize()->getPath().empty()) {
         return nullptr;
     }
-    auto resolutionPath = GET_RESOLUTION_SETTING()->getCurrentSize()->getPath();
+    auto resolutionPath = GET_RESOLUTION_SETTING().getCurrentSize()->getPath();
     auto pathProperties = STRING_FORMAT("%s/%s.json", resolutionPath.c_str(), path.c_str());
 
     if (!cocos2d::FileUtils::getInstance()->isFileExist(pathProperties)) {

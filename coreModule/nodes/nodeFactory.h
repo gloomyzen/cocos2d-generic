@@ -15,10 +15,9 @@ namespace generic::coreModule {
 
     class nodeFactory {
     public:
-        nodeFactory();
         ~nodeFactory();
         static nodeFactory& getInstance();
-        void cleanup();
+        static void cleanup();
 
         void readProperty(cocos2d::Node* node, const std::string& propertyName, const jsonObject& json);
         bool hasRegisteredProperty(const std::string& propertyName);
@@ -26,8 +25,15 @@ namespace generic::coreModule {
         bool registerCustomNodeType(const std::string&, std::function<cocos2d::Node*()>);
         const std::vector<std::string>& getPropertiesPriority() { return propertyPriorityList; }
     private:
-        void init();
-        bool inited = false;
+        nodeFactory();
+        nodeFactory(const nodeFactory&) = default;
+        nodeFactory& operator=(const nodeFactory&) = default;
+        static void create();
+        static void onDeadReference();
+
+        static nodeFactory* pInstance;
+        static bool destroyed;
+
         std::map<std::string, std::function<cocos2d::Node*()>> nodes;
         std::map<std::string, propertyInterface*> propertiesMap;
         std::vector<std::string> propertyPriorityList;

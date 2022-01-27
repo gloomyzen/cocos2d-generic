@@ -8,8 +8,6 @@
 namespace generic::coreModule {
     class buttonBase : public cocos2d::ui::Widget {
     public:
-        buttonBase();
-        ~buttonBase() override;
 
         void loadTexture(const std::string&, bool isPoly = false);
         void setButtonBgSprite(cocos2d::Sprite*);

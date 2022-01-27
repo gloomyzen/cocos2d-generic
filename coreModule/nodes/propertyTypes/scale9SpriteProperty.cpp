@@ -2,7 +2,6 @@
 #include "generic/debugModule/logManager.h"
 #include "generic/utilityModule/stringUtility.h"
 #include "ui/CocosGUI.h"
-#include "generic/coreModule/nodes/nodeProperties.h"
 
 using namespace generic::coreModule;
 

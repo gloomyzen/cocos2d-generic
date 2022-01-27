@@ -16,8 +16,6 @@ namespace generic::coreModule {
 
     class scenesFactoryInstance {
     public:
-        scenesFactoryInstance();
-        ~scenesFactoryInstance();
         static scenesFactoryInstance& getInstance();
         static void cleanup();
         bool isSceneRegistered(const std::string& stateName);
@@ -26,6 +24,16 @@ namespace generic::coreModule {
         sceneInterface* getCurrentScene() { return currentScene; }
 
     private:
+        scenesFactoryInstance() = default;
+        ~scenesFactoryInstance() = default;
+        scenesFactoryInstance(const scenesFactoryInstance&) = default;
+        scenesFactoryInstance& operator=(const scenesFactoryInstance&) = default;
+        static void create();
+        static void onDeadReference();
+
+        static scenesFactoryInstance* pInstance;
+        static bool destroyed;
+
         void initTaskLoading(cocos2d::Node* node);
 
         std::map<std::string, std::function<sceneInterface*()>> scenesMap;

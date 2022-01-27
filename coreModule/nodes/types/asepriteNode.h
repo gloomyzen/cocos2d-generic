@@ -14,7 +14,7 @@ namespace generic::coreModule {
     class asepriteNode : public cocos2d::Sprite {
     public:
         struct sAnimFrame {
-            sAnimFrame() {}
+            sAnimFrame() = default;
             float duration;
             float allDuration;
             std::string spriteFrameId; //uuid
