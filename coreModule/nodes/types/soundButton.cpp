@@ -1,5 +1,5 @@
 #include "soundButton.h"
-#include "generic/audioModule/audioEngine.h"
+#include "generic/audioModule/audioEngineInstance.h"
 
 using namespace generic::coreModule;
 

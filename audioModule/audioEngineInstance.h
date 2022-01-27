@@ -1,5 +1,5 @@
-#ifndef GENERIC_AUDIOENGINE_H
-#define GENERIC_AUDIOENGINE_H
+#ifndef GENERIC_AUDIOENGINEINSTANCE_H
+#define GENERIC_AUDIOENGINEINSTANCE_H
 
 #include "cocos/audio/include/AudioEngine.h"
 #include <functional>
@@ -7,19 +7,18 @@
 #include <string>
 #include <tuple>
 
-#define GET_AUDIO_ENGINE() generic::audioModule::audioEngine::getInstance()
+#define GET_AUDIO_ENGINE() generic::audioModule::audioEngineInstance::getInstance()
 #define AUDIO_ENGINE_SOUND_DIR "sounds/"
 #define AUDIO_ENGINE_SOUND_FILE "sounds.json"
 #define AUDIO_ENGINE_INVALID_TAG -1
 
 namespace generic::audioModule {
 
-    class audioEngine {
+    class audioEngineInstance {
     public:
-        audioEngine();
-        ~audioEngine();
-        static audioEngine& getInstance();
-        void cleanup();
+        ~audioEngineInstance();
+        static audioEngineInstance& getInstance();
+        static void cleanup();
 
         void play(const std::string& filePath, bool loop = false, float volume = 1.0f, const cocos2d::AudioProfile* profile = nullptr);
         void pause(const std::string& name);
@@ -36,9 +35,18 @@ namespace generic::audioModule {
         }
 
     private:
+        audioEngineInstance();
+        audioEngineInstance(const audioEngineInstance&) = default;
+        audioEngineInstance& operator=(const audioEngineInstance&) = default;
+        static void create();
+        static void onDeadReference();
+
+        static audioEngineInstance* pInstance;
+        static bool destroyed;
+
         std::map<std::string, std::pair<std::string, unsigned int>> sounds;// key, filePath, id
     };
 }// namespace generic::audioModule
 
 
-#endif// GENERIC_AUDIOENGINE_H
+#endif// GENERIC_AUDIOENGINEINSTANCE_H
