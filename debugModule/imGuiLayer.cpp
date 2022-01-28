@@ -1,6 +1,10 @@
 #ifdef DEBUG
 #include "imGuiLayer.h"
+#ifdef ADXE_VERSION
 #include "ImGuiEXT/imgui/misc/cpp/imgui_stdlib.h"
+#else
+#include "imgui/misc/cpp/imgui_stdlib.h"
+#endif
 #include "generic/coreModule/nodes/nodeProperties.h"
 #include "generic/utilityModule/stringUtility.h"
 #include "spine/spine-cocos2dx.h"
@@ -88,6 +92,7 @@ bool imGuiLayer::init() {
 
     setName("ImGUILayer");
 
+#ifdef ADXE_VERSION
     // Resize (expand) window
     auto director = Director::getInstance();
     auto view = dynamic_cast<GLViewImpl*>(Director::getInstance()->getOpenGLView());
@@ -95,7 +100,7 @@ bool imGuiLayer::init() {
     cocos2d::extension::ImGuiEXT::getInstance()->addFont(FileUtils::getInstance()->fullPathForFilename("fonts/arial.ttf"));
     cocos2d::extension::ImGuiEXT::getInstance()->addRenderLoop(
       "#test", CC_CALLBACK_0(imGuiLayer::drawImgui, this), director->getRunningScene());
-
+#endif
     initEvents();
 
     return true;

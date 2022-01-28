@@ -3,12 +3,20 @@
 
 #ifdef DEBUG
 
+#if defined(CC_BUILD_WITH_DRANGBONES) && CC_BUILD_WITH_DRANGBONES
 #include "DragonBones/CCDragonBonesHeaders.h"
+#endif
+#ifdef ADXE_VERSION
 #include "ImGuiEXT/CCImGuiEXT.h"
 #include "ImGuiEXT/imgui/imgui.h"
 #include "ImGuiEXT/imgui/imgui_internal.h"
+#else
+#include "CCImGuiLayer.h"
+#include <CCIMGUI.h>
+#include <imgui.h>
+#include <imgui_internal.h>
+#endif
 #include "cocos2d.h"
-#include "generic/coreModule/nodes/types/armatureNode.h"
 #include "platform/CCPlatformConfig.h"
 #include "ui/CocosGUI.h"
 #include <functional>
