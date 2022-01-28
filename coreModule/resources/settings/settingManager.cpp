@@ -8,9 +8,6 @@ using namespace generic::coreModule;
 settingManager::settingManager() = default;
 
 settingManager::~settingManager() {
-    for (auto [_, c] : allResolutions) {
-        c = nullptr;
-    }
     allResolutions.clear();
 }
 
