@@ -91,7 +91,7 @@ bool imGuiLayer::init() {
     }
 
     setName("ImGUILayer");
-
+    scheduleUpdate();
 #ifdef ADXE_VERSION
     // Resize (expand) window
     auto director = Director::getInstance();
@@ -100,6 +100,12 @@ bool imGuiLayer::init() {
     cocos2d::extension::ImGuiEXT::getInstance()->addFont(FileUtils::getInstance()->fullPathForFilename("fonts/arial.ttf"));
     cocos2d::extension::ImGuiEXT::getInstance()->addRenderLoop(
       "#test", CC_CALLBACK_0(imGuiLayer::drawImgui, this), director->getRunningScene());
+#else
+    auto layer = ImGuiLayer::create();
+    addChild(layer);
+    CCIMGUI::getInstance()->addCallback([this](){
+        drawImgui();
+    }, "buttons");
 #endif
     initEvents();
 

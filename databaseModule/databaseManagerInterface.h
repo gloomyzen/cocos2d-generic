@@ -32,9 +32,9 @@ namespace generic::databaseModule {
         }
 
         template<typename T>
-        T* getRegisteredDatabase(int key) {
+        const std::shared_ptr<T> &getRegisteredDatabase(int key) {
             if (databasesMap.find(key) != databasesMap.end()) {
-                return dynamic_cast<T*>(databasesMap[key]);
+                return std::dynamic_pointer_cast<T>(databasesMap[key]);
             }
             return nullptr;
         }
