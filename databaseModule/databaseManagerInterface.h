@@ -6,6 +6,7 @@
 #include <map>
 #include <string>
 #include <tuple>
+#include <memory>
 
 namespace generic::databaseModule {
 
@@ -21,10 +22,8 @@ namespace generic::databaseModule {
             }
         }
 
-        virtual void cleanup() = 0;
-
     protected:
-        void registerDatabase(const std::pair<int, std::string>& value, databaseInterface* db) {
+        void registerDatabase(const std::pair<int, std::string>& value, const std::shared_ptr<databaseInterface>& db) {
             const auto& [key, path] = value;
             if (databasesMap.find(key) == databasesMap.end()) {
                 db->setPath(path);
@@ -40,7 +39,7 @@ namespace generic::databaseModule {
             return nullptr;
         }
 
-        std::map<int, databaseInterface*> databasesMap;
+        std::map<int, std::shared_ptr<databaseInterface>> databasesMap;
     };
 }// namespace generic::databaseModule
 
