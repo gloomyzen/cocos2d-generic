@@ -1,7 +1,6 @@
 #include "nodeFactory.h"
 #include "generic/coreModule/nodes/propertyTypes/headers.h"
 #include "generic/coreModule/nodes/types/armatureNode.h"
-#include "generic/coreModule/nodes/types/buttonNode.h"
 #include "generic/coreModule/nodes/types/gridNode.h"
 #include "generic/coreModule/nodes/types/node3d.h"
 #include "generic/coreModule/nodes/types/soundButton.h"
@@ -25,19 +24,18 @@ nodeFactory::nodeFactory() {
     nodes["sprite"] = []() { return cocos2d::Sprite::create(); };
     nodes["sprite3d"] = []() { return cocos2d::Sprite3D::create(); };
     nodes["label"] = []() { return cocos2d::Label::create(); };
-    nodes["buttonNode"] = []() { return buttonNode::create(); };
     nodes["layout"] = []() { return cocos2d::ui::Layout::create(); };
     nodes["layer"] = []() { return cocos2d::Layer::create(); };
     nodes["clippingNode"] = []() { return cocos2d::ClippingNode::create(); };
-    nodes["scale9sprite"] = []() { return cocos2d::ui::Scale9Sprite::create(); };
+    nodes["scale9Sprite"] = []() { return cocos2d::ui::Scale9Sprite::create(); };
     /// External types, in generic
-    nodes["dragonbones"] = []() { return new armatureNode(); };
+    nodes["dragonbones"] = []() { return armatureNode::create(); };
     nodes["spine"] = []() { return new spine::SkeletonAnimation(); };
     nodes["scrollView"] = []() { return cocos2d::ui::ScrollView::create(); };
     nodes["soundButton"] = []() { return soundButton::create(); };
     nodes["grid"] = []() { return gridNode::create(); };
     nodes["node3d"] = []() { return node3d::create(); };
-    nodes["aseprite"] = []() { return new asepriteNode(); };
+    nodes["aseprite"] = []() { return asepriteNode::create(); };
 
     // prop types parser
     propertiesMap["transformProperty"] = new transformProperty("transformProperty");
@@ -53,7 +51,7 @@ nodeFactory::nodeFactory() {
     propertiesMap["asepriteProperty"] = new asepriteProperty("asepriteProperty");
 
     propertyPriorityList = { "spriteProperty", "labelProperty", "dragonbonesProperty", "spineProperty", "scale9SpriteProperty", "asepriteProperty",
-                             "transformProperty", "colorProperty", "scrollViewProperty", "gridProperty", "clipProperty" };
+                             "colorProperty", "scrollViewProperty", "gridProperty", "clipProperty", "transformProperty" };
 }
 
 nodeFactory::~nodeFactory() {
@@ -100,8 +98,6 @@ void nodeFactory::readProperty(cocos2d::Node* node,
         LOG_ERROR(CSTRING_FORMAT("Property '%s' was not registered!", propertyName.c_str()));
         return;
     }
-    node->setCascadeOpacityEnabled(true);
-    node->setCascadeColorEnabled(true);
     if (propertiesMap.count(propertyName) && propertiesMap[propertyName]) {
         propertiesMap[propertyName]->parseProperty(node, object);
     }
@@ -119,7 +115,6 @@ cocos2d::Node* nodeFactory::createNodeWithType(const std::string& type) {
         LOG_ERROR(CSTRING_FORMAT("Type of node '%s' not registered! Created default node.", type.c_str()));
         node = cocos2d::Node::create();
     }
-    node->setCascadeOpacityEnabled(true); // todo move this to callback
     return node;
 }
 

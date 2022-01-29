@@ -1,17 +1,12 @@
 #include "spriteProperty.h"
 #include "generic/debugModule/logManager.h"
 #include "generic/utilityModule/stringUtility.h"
-#include "generic/coreModule/nodes/types/buttonBase.h"
 
 using namespace generic::coreModule;
 
 
 void spriteProperty::parseProperty(cocos2d::Node* node, const jsonObject& object) {
-    if (auto button = dynamic_cast<buttonBase*>(node)) {
-        if (object.HasMember("image") && object["image"].IsString()) {
-            button->loadTexture(object["image"].GetString());
-        }
-    } else if (auto sprite3d = dynamic_cast<cocos2d::Sprite3D*>(node)) {
+   if (auto sprite3d = dynamic_cast<cocos2d::Sprite3D*>(node)) {
         if (object.HasMember("image") && object["image"].IsString()) {
             sprite3d->initWithFile(object["image"].GetString());
             sprite3d->setForce2DQueue(true);
