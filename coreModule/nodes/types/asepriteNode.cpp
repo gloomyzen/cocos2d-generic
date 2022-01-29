@@ -60,7 +60,7 @@ bool asepriteNode::load(const jsonObject& object, const std::string& path) {
 bool asepriteNode::loadFrames(const jsonObject& object,
                               const std::map<std::string, std::pair<int, int>>& anim,
                               const std::string& fullPath) {
-    //todo add loading from array export
+    //parsing object/hash-type aseprite import
     if (object.HasMember("frames") && object["frames"].IsObject()) {
         auto frames = object["frames"].GetObject();
         std::vector<std::string> memberNames;
@@ -69,10 +69,36 @@ bool asepriteNode::loadFrames(const jsonObject& object,
         }
         for (auto [animName, animIndexes] : anim) {
             auto animDuration = 0.f;
-            for (auto i = animIndexes.first; i < animIndexes.second; ++i) {
+            for (auto i = animIndexes.first; i <= animIndexes.second; ++i) {
                 auto framePtr = std::make_shared<sAnimFrame>();
                 auto cacheId = cocos2d::StringUtils::format("%d_%s", this->_ID, memberNames[static_cast<size_t>(i)].c_str());
                 if (framePtr->load(frames[memberNames[static_cast<size_t>(i)].c_str()].GetObject(), fullPath, cacheId)) {
+                    animDuration += framePtr->duration;
+                    framePtr->allDuration = animDuration;
+                    if (animationsMap.count(animName) != 0u) {
+                        animationsMap[animName].emplace_back(framePtr);
+                    } else {
+                        animationsMap[animName] = {framePtr};
+                    }
+                }
+            }
+
+        }
+        if (frame.animation.empty() && !animationsMap.empty()) {
+            setAnimation(animationsMap.begin()->first);
+        }
+        return true;
+    }
+    //parsing array-type aseprite import
+    else if (object.HasMember("frames") && object["frames"].IsArray()) {
+        auto frames = object["frames"].GetArray();
+        for (auto [animName, animIndexes] : anim) {
+            auto animDuration = 0.f;
+            for (auto i = animIndexes.first; i <= animIndexes.second; ++i) {
+                auto obj = frames[static_cast<unsigned>(i)].GetObject();
+                auto framePtr = std::make_shared<sAnimFrame>();
+                auto cacheId = cocos2d::StringUtils::format("%d_%s", this->_ID, obj["filename"].GetString());
+                if (framePtr->load(obj, fullPath, cacheId)) {
                     animDuration += framePtr->duration;
                     framePtr->allDuration = animDuration;
                     if (animationsMap.count(animName) != 0u) {
