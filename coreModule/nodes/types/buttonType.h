@@ -1,12 +1,12 @@
 #ifndef GENERIC_BUTTONTYPE_H
 #define GENERIC_BUTTONTYPE_H
 
-#include "cocos2d.h"
 #include "cocos/ui/CocosGUI.h"
+#include "cocos2d.h"
 #include "generic/coreModule/nodes/types/eventNode.h"
-#include "generic/coreModule/scenes/scenesFactoryInstance.h"
 #include "generic/coreModule/scenes/sceneInterface.h"
-#include "generic/utilityModule/covertUtility.h"
+#include "generic/coreModule/scenes/scenesFactoryInstance.h"
+#include "generic/utilityModule/convertUtility.h"
 #include <functional>
 #include <string>
 
