@@ -110,9 +110,6 @@ bool asepriteNode::loadFrames(const jsonObject& object,
             }
 
         }
-        if (frame.animation.empty() && !animationsMap.empty()) {
-            setAnimation(animationsMap.begin()->first);
-        }
         return true;
     }
     return false;
@@ -126,6 +123,7 @@ bool asepriteNode::setAnimation(const std::string& name, bool loop) {
     if (hasAnimation(name)) {
         frame.animation = name;
         frame.loop = loop;
+        frame.millis = 0.f;
         animProceed();
         return true;
     }
@@ -134,9 +132,6 @@ bool asepriteNode::setAnimation(const std::string& name, bool loop) {
 
 void asepriteNode::animProceed(float delta) {
     if (!hasAnimation(frame.animation)) {
-        return;
-    }
-    if (delta <= 0.f) {
         return;
     }
     frame.millis += delta;
@@ -159,6 +154,13 @@ void asepriteNode::animProceed(float delta) {
     if (frame.lastFrameId != animations[pos]->spriteFrameId) {
         frame.lastFrameId = animations[pos]->spriteFrameId;
         if (auto spriteFrame = cocos2d::SpriteFrameCache::getInstance()->getSpriteFrameByName(frame.lastFrameId)) {
+            if (animations[pos]->usePixel != usePixel) {
+                animations[pos]->usePixel = usePixel;
+                if (usePixel)
+                    spriteFrame->getTexture()->setAliasTexParameters();
+                else
+                    spriteFrame->getTexture()->setAntiAliasTexParameters();
+            }
             initWithSpriteFrame(spriteFrame);
         }
     }
@@ -168,6 +170,11 @@ void asepriteNode::animProceed(float delta) {
 void asepriteNode::update(float delta) {
     Node::update(delta);
     animProceed(delta);
+}
+
+void asepriteNode::setUsePixelMode(bool value) {
+    usePixel = value;
+    Sprite::setUsePixelMode(value);
 }
 
 bool asepriteNode::sAnimFrame::load(const jsonObject& data, const std::string& fullPath, const std::string& cacheId) {

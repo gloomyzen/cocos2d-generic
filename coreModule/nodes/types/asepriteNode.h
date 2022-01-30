@@ -18,6 +18,7 @@ namespace generic::coreModule {
             float duration;
             float allDuration;
             std::string spriteFrameId; //uuid
+            bool usePixel = false;
             bool load(const jsonObject& data, const std::string& fullPath, const std::string& cacheId);
         };
 
@@ -31,6 +32,7 @@ namespace generic::coreModule {
         bool hasAnimation(const std::string& name);
         bool setAnimation(const std::string& name, bool loop = false);
         void update(float delta) override;
+        void setUsePixelMode(bool value) override;
     private:
         bool loadFrames(const jsonObject& object, const std::map<std::string, std::pair<int, int>>& anim, const std::string& fullPath);
         void animProceed(float delta = 0.f);
@@ -42,6 +44,7 @@ namespace generic::coreModule {
             std::string lastFrameId;
         };
         sFrameOptions frame;
+        bool usePixel = false;
     };
 }// namespace generic::coreModule
 
