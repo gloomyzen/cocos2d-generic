@@ -57,20 +57,23 @@ bool scenesFactoryInstance::runScene(const std::string& stateName) {
         auto scene = scenesMap[stateName]();
         if (!scene)
             return false;
-        if (!currentScene) {
-            Director::getInstance()->runWithScene(scene);
-        } else {
-            currentScene->onSceneClosing();
-            Director::getInstance()->replaceScene(TransitionCrossFade::create(scene->getFadeTransition(), scene));
-        }
+        bool isFirstStart = currentScene == nullptr;
         if (scene->isPhysics()) {
             scene->initWithPhysics();
             scene->getPhysicsWorld()->setGravity(scene->getGravity());
         }
         scene->updateLayers(currentScene);
+        if (currentScene) {
+            currentScene->onSceneClosing();
+        }
+        currentScene = scene;
+        if (isFirstStart) {
+            Director::getInstance()->runWithScene(scene);
+        } else {
+            Director::getInstance()->replaceScene(TransitionCrossFade::create(scene->getFadeTransition(), scene));
+        }
         scene->onSceneLoading();
         initTaskLoading(scene);
-        currentScene = scene;
         scene->getDefaultCamera()->setName("CameraNode");
         if (scene->isPhysics()) {
 #ifdef DEBUG
