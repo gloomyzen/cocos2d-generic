@@ -16,9 +16,7 @@ namespace generic::coreModule {
         struct sAnimFrame {
             sAnimFrame() = default;
             float duration;
-            float allDuration;
             std::string spriteFrameId; //uuid
-            bool usePixel = false;
             bool load(const jsonObject& data, const std::string& fullPath, const std::string& cacheId);
         };
 
@@ -31,19 +29,11 @@ namespace generic::coreModule {
         bool load(const jsonObject& object, const std::string& path);
         bool hasAnimation(const std::string& name);
         bool setAnimation(const std::string& name, bool loop = false);
-        void update(float delta) override;
         void setUsePixelMode(bool value) override;
     private:
         bool loadFrames(const jsonObject& object, const std::map<std::string, std::pair<int, int>>& anim, const std::string& fullPath);
-        void animProceed(float delta = 0.f);
         std::map<std::string, std::vector<std::shared_ptr<sAnimFrame>>> animationsMap;
-        struct sFrameOptions {
-            std::string animation;
-            bool loop = false;
-            float millis = 0.f;
-            std::string lastFrameId;
-        };
-        sFrameOptions frame;
+        std::string animation;
         bool usePixel = false;
     };
 }// namespace generic::coreModule

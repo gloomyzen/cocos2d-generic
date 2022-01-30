@@ -5,9 +5,7 @@
 
 using namespace generic::coreModule;
 
-asepriteNode::asepriteNode() {
-    scheduleUpdate();
-}
+asepriteNode::asepriteNode() {}
 
 asepriteNode::~asepriteNode() {
     for (const auto& [_, frames] : animationsMap) {
@@ -68,13 +66,10 @@ bool asepriteNode::loadFrames(const jsonObject& object,
             memberNames.emplace_back(item->name.GetString());
         }
         for (auto [animName, animIndexes] : anim) {
-            auto animDuration = 0.f;
             for (auto i = animIndexes.first; i <= animIndexes.second; ++i) {
                 auto framePtr = std::make_shared<sAnimFrame>();
                 auto cacheId = cocos2d::StringUtils::format("%d_%s", this->_ID, memberNames[static_cast<size_t>(i)].c_str());
                 if (framePtr->load(frames[memberNames[static_cast<size_t>(i)].c_str()].GetObject(), fullPath, cacheId)) {
-                    animDuration += framePtr->duration;
-                    framePtr->allDuration = animDuration;
                     if (animationsMap.count(animName) != 0u) {
                         animationsMap[animName].emplace_back(framePtr);
                     } else {
@@ -84,7 +79,7 @@ bool asepriteNode::loadFrames(const jsonObject& object,
             }
 
         }
-        if (frame.animation.empty() && !animationsMap.empty()) {
+        if (animation.empty() && !animationsMap.empty()) {
             setAnimation(animationsMap.begin()->first);
         }
         return true;
@@ -93,14 +88,11 @@ bool asepriteNode::loadFrames(const jsonObject& object,
     else if (object.HasMember("frames") && object["frames"].IsArray()) {
         auto frames = object["frames"].GetArray();
         for (auto [animName, animIndexes] : anim) {
-            auto animDuration = 0.f;
             for (auto i = animIndexes.first; i <= animIndexes.second; ++i) {
                 auto obj = frames[static_cast<unsigned>(i)].GetObject();
                 auto framePtr = std::make_shared<sAnimFrame>();
                 auto cacheId = cocos2d::StringUtils::format("%d_%s", this->_ID, obj["filename"].GetString());
                 if (framePtr->load(obj, fullPath, cacheId)) {
-                    animDuration += framePtr->duration;
-                    framePtr->allDuration = animDuration;
                     if (animationsMap.count(animName) != 0u) {
                         animationsMap[animName].emplace_back(framePtr);
                     } else {
@@ -121,59 +113,45 @@ bool asepriteNode::hasAnimation(const std::string& name) {
 
 bool asepriteNode::setAnimation(const std::string& name, bool loop) {
     if (hasAnimation(name)) {
-        frame.animation = name;
-        frame.loop = loop;
-        frame.millis = 0.f;
-        animProceed();
+        animation = name;
+        const auto& animations = animationsMap[animation];
+        initWithSpriteFrameName(animations[0u]->spriteFrameId);
+        cocos2d::Vector<cocos2d::AnimationFrame*> list;
+        float allDuration = 0.f;
+        for (const auto& item : animations) {
+            if (auto spriteFrame = cocos2d::SpriteFrameCache::getInstance()->getSpriteFrameByName(item->spriteFrameId)) {
+                auto frame = cocos2d::AnimationFrame::create(spriteFrame, item->duration, {});
+                allDuration += item->duration;
+                list.pushBack(frame);
+            }
+        }
+        auto anim = cocos2d::Animation::create(list, allDuration);
+        auto animAction = cocos2d::Animate::create(anim);
+        if (loop) {
+            runAction(cocos2d::RepeatForever::create(animAction));
+        } else {
+            runAction(animAction);
+        }
+
         return true;
     }
     return false;
 }
 
-void asepriteNode::animProceed(float delta) {
-    if (!hasAnimation(frame.animation)) {
-        return;
-    }
-    frame.millis += delta;
-    const auto& animations = animationsMap[frame.animation];
-    float allDuration = animations[animations.size() - 1]->allDuration;
-    if (frame.millis > allDuration) {
-        //next turn
-        frame.millis = fmod(frame.millis, allDuration);
-    }
-
-    size_t pos = 0u;
-    for (size_t i = 1u; i < animations.size(); ++i) {
-        if (frame.millis <= animations[pos]->allDuration) {
-            break;
-        } else if (frame.millis > animations[pos]->allDuration && frame.millis <= animations[i]->allDuration) {
-            pos = i;
-            break;
-        }
-    }
-    if (frame.lastFrameId != animations[pos]->spriteFrameId) {
-        frame.lastFrameId = animations[pos]->spriteFrameId;
-        if (auto spriteFrame = cocos2d::SpriteFrameCache::getInstance()->getSpriteFrameByName(frame.lastFrameId)) {
-            if (animations[pos]->usePixel != usePixel) {
-                animations[pos]->usePixel = usePixel;
-                if (usePixel)
-                    spriteFrame->getTexture()->setAliasTexParameters();
-                else
-                    spriteFrame->getTexture()->setAntiAliasTexParameters();
-            }
-            initWithSpriteFrame(spriteFrame);
-        }
-    }
-
-}
-
-void asepriteNode::update(float delta) {
-    Node::update(delta);
-    animProceed(delta);
-}
-
 void asepriteNode::setUsePixelMode(bool value) {
-    usePixel = value;
+    if (usePixel != value) {
+        usePixel = value;
+        for (const auto& [_, frames] : animationsMap) {
+            for (const auto& item : frames) {
+                if (auto spriteFrame = cocos2d::SpriteFrameCache::getInstance()->getSpriteFrameByName(item->spriteFrameId)) {
+                    if (value)
+                        spriteFrame->getTexture()->setAliasTexParameters();
+                    else
+                        spriteFrame->getTexture()->setAntiAliasTexParameters();
+                }
+            }
+        }
+    }
     Sprite::setUsePixelMode(value);
 }
 
