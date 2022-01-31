@@ -38,6 +38,7 @@ namespace generic::utilityModule {
      * Helper for macros
      */
     const char* stringToChar(const std::string& str);
+    const char* stringToChar(const char* str);
 
 }// namespace generic::utilityModule
 

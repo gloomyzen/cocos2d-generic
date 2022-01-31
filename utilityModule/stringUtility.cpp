@@ -66,3 +66,7 @@ std::vector<std::string> generic::utilityModule::explodeString(const std::string
 const char* generic::utilityModule::stringToChar(const std::string& str) {
     return str.c_str();
 }
+
+const char* generic::utilityModule::stringToChar(const char* str) {
+    return str;
+}
