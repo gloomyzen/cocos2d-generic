@@ -21,8 +21,7 @@ void labelProperty::parseProperty(cocos2d::Node* node, const jsonObject& object)
             font.outlineSize = 0;
 
             if (object.HasMember("fontSize") && object["fontSize"].IsNumber()) {
-                font.fontSize = object["fontSize"].GetFloat() * 2;
-                label->setScale(0.5f);
+                font.fontSize = object["fontSize"].GetFloat();
             }
             if (object.HasMember("fontFile") && object["fontFile"].IsString()) {
                 font.fontFilePath = object["fontFile"].GetString();
