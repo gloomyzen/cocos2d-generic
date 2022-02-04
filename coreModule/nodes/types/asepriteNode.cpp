@@ -115,7 +115,6 @@ bool asepriteNode::setAnimation(const std::string& name, bool loop) {
     if (hasAnimation(name)) {
         animation = name;
         const auto& animations = animationsMap[animation];
-        initWithSpriteFrameName(animations[0u]->spriteFrameId);
         cocos2d::Vector<cocos2d::AnimationFrame*> list;
         float allDuration = 0.f;
         for (const auto& item : animations) {
@@ -132,6 +131,7 @@ bool asepriteNode::setAnimation(const std::string& name, bool loop) {
         } else {
             runAction(animAction);
         }
+        cocos2d::Sprite::init();
 
         return true;
     }

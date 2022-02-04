@@ -70,7 +70,11 @@ bool scenesFactoryInstance::runScene(const std::string& stateName) {
         if (isFirstStart) {
             Director::getInstance()->runWithScene(scene);
         } else {
-            Director::getInstance()->replaceScene(TransitionCrossFade::create(scene->getFadeTransition(), scene));
+            if (scene->getFadeTransition() == 0.f) {
+                Director::getInstance()->replaceScene(scene);
+            } else {
+                Director::getInstance()->replaceScene(TransitionFade::create(scene->getFadeTransition(), scene));
+            }
         }
         scene->onSceneLoading();
         initTaskLoading(scene);
