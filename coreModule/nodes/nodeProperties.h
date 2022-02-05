@@ -51,8 +51,8 @@ namespace generic::coreModule {
             return false;
         }
 
-        const jsonObject & getPropertyObject(const std::string& name);
-        const jsonArray& getPropertyArray(const std::string& name);
+        const jsonObject getPropertyObject(const std::string& name);
+        const jsonArray getPropertyArray(const std::string& name);
         template<typename T>
         const T& getProperty(const std::string& name) const {
             assert(hasProperty<T>(name) && "Can't find property, use method 'hasProperty<T>' first!");

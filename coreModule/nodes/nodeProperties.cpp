@@ -137,19 +137,19 @@ void nodeProperties::parseData(cocos2d::Node* node, const rapidjson::GenericValu
     }
 }
 
-const jsonObject& nodeProperties::getPropertyObject(const std::string& name) {
+const jsonObject nodeProperties::getPropertyObject(const std::string& name) {
     assert(hasPropertyObject(name) && "Can't find property, use method 'hasPropertyObject' first!");
 
     auto obj = propertyData["props"].FindMember(name.c_str());
-    static auto result = obj->value.GetObject();
+    auto result = obj->value.GetObject();
     return result;
 }
 
-const jsonArray& nodeProperties::getPropertyArray(const std::string& name) {
+const jsonArray nodeProperties::getPropertyArray(const std::string& name) {
     assert(hasPropertyArray(name) && "Can't find property, use method 'hasPropertyArray' first!");
 
     auto obj = propertyData["props"].FindMember(name.c_str());
-    static auto result = obj->value.GetArray();
+    auto result = obj->value.GetArray();
     return result;
 }
 
