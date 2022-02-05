@@ -48,8 +48,9 @@ void clipProperty::parseProperty(cocos2d::Node* node, const jsonObject& object) 
 //            LOG_ERROR(STRING_FORMAT("Component '%s' has invalid nodeName!", componentName.c_str()));
 //        }
         auto stencil = drawNodeBase::create();
+        stencil->drawSolidRect(cocos2d::Vec2::ZERO, clipNode->getContentSize(), stencilColor);
         clipNode->setStencil(stencil);
-        clipNode->addChild(stencil);
+//        clipNode->addChild(stencil);
         stencil->setDrawColor(stencilColor);
         stencil->setAutoUpdateEnabled(autoUpdate);
         stencil->forceUpdateRect();
