@@ -90,10 +90,10 @@ namespace generic::coreModule {
         cocos2d::LayerColor* bgLayer = nullptr;
         windowSystem* windowViewer = nullptr;
         float fadeTransitionTime = .1f;
+        cocos2d::ValueMap sceneData;
 #ifdef DEBUG
         generic::debugModule::imGuiLayer* imGuiLayer = nullptr;
         bool physicsDebugDraw = false;
-        cocos2d::ValueMap sceneData;
 #endif
     };
 }// namespace generic::coreModule

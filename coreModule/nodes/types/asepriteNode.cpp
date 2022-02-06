@@ -5,6 +5,8 @@
 
 using namespace generic::coreModule;
 
+const int animTag = 1;
+
 asepriteNode::asepriteNode() {}
 
 asepriteNode::~asepriteNode() {
@@ -126,9 +128,15 @@ bool asepriteNode::setAnimation(const std::string& name, bool loop) {
         }
         auto anim = cocos2d::Animation::create(list, allDuration);
         auto animAction = cocos2d::Animate::create(anim);
+        if (auto currentAction = getActionByTag(animTag)) {
+            stopAction(currentAction);
+        }
         if (loop) {
-            runAction(cocos2d::RepeatForever::create(animAction));
+            auto action = cocos2d::RepeatForever::create(animAction);
+            action->setTag(animTag);
+            runAction(action);
         } else {
+            animAction->setTag(animTag);
             runAction(animAction);
         }
         cocos2d::Sprite::init();

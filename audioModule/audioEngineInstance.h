@@ -21,6 +21,7 @@ namespace generic::audioModule {
         static void cleanup();
 
         void play(const std::string& filePath, bool loop = false, float volume = 1.0f, const cocos2d::AudioProfile* profile = nullptr);
+        void playOnce(const std::string& filePath, bool loop = false, float volume = 1.0f, const cocos2d::AudioProfile* profile = nullptr);
         void pause(const std::string& name);
         void pauseAll();
         void resume(const std::string& name);
@@ -34,6 +35,9 @@ namespace generic::audioModule {
             return sounds;
         }
 
+        void onSceneClosing(const std::string& sceneName);
+        void onSceneLoading(const std::string& sceneName);
+
     private:
         audioEngineInstance();
         audioEngineInstance(const audioEngineInstance&) = default;
@@ -45,6 +49,7 @@ namespace generic::audioModule {
         static bool destroyed;
 
         std::map<std::string, std::pair<std::string, unsigned int>> sounds;// key, filePath, id
+        static std::vector<std::string> reservedPrefix;
     };
 }// namespace generic::audioModule
 

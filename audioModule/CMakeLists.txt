@@ -8,3 +8,9 @@ MakeReadableListOfSources(MODULE_SOURCE)
 
 set(GENERIC_HEADER ${GENERIC_HEADER} ${MODULE_HEADER} PARENT_SCOPE)
 set(GENERIC_SOURCE ${GENERIC_SOURCE} ${MODULE_SOURCE} PARENT_SCOPE)
+
+macro(initAudioModule)
+    if (${DISABLE_AUDIO_ENGINE})
+        add_definitions(-DDISABLE_AUDIO_ENGINE=1)
+    endif ()
+endmacro()

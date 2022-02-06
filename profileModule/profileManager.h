@@ -7,6 +7,8 @@
 #include <string>
 
 #define GET_PROFILE() generic::profileModule::profileManager::getInstance()
+#define SAVE_PROFILE() generic::profileModule::profileManager::getInstance().save();
+
 
 namespace generic::profileModule {
 

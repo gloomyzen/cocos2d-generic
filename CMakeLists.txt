@@ -17,4 +17,5 @@ set(GAME_SOURCE ${GAME_SOURCE} ${GENERIC_SOURCE} PARENT_SCOPE)
 
 macro(finalizeInitGeneric)
     initDebugModule()
+    initAudioModule()
 endmacro()
