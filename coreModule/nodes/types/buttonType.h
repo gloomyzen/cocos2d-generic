@@ -71,6 +71,11 @@ namespace generic::coreModule {
                     auto seq = cocos2d::Sequence::create(clickAction, nullptr);
                     seq->setTag(static_cast<int>(buttonType::eButtonStatus::START_CLICK));
                     node->runAction(seq);
+                } else {
+                    auto waitAction = cocos2d::DelayTime::create(0.01f);
+                    auto seq = cocos2d::Sequence::create(waitAction, nullptr);
+                    seq->setTag(static_cast<int>(buttonType::eButtonStatus::START_CLICK));
+                    node->runAction(seq);
                 }
                 moveTimes = 0;
                 return true;
