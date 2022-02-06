@@ -18,10 +18,11 @@ namespace generic::coreModule {
     public:
         static scenesFactoryInstance& getInstance();
         static void cleanup();
-        bool isSceneRegistered(const std::string& stateName);
-        bool registerScene(const std::string& stateName, const std::function<sceneInterface*()>& clb);
-        bool runScene(const std::string& stateName);
+        bool isSceneRegistered(const std::string& sceneName);
+        bool registerScene(const std::string& sceneName, const std::function<sceneInterface*()>& clb);
+        bool runScene(const std::string& sceneName);
         sceneInterface* getCurrentScene() { return currentScene; }
+        bool runSceneWithParameters(const std::string& sceneName, const cocos2d::ValueMap& values);
 
     private:
         scenesFactoryInstance() = default;

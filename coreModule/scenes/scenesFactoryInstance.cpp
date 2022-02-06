@@ -40,23 +40,24 @@ void scenesFactoryInstance::onDeadReference() {
     CCASSERT(false, "Founded dead reference!");
 }
 
-bool scenesFactoryInstance::isSceneRegistered(const std::string& stateName) {
-    return scenesMap.count(stateName);
+bool scenesFactoryInstance::isSceneRegistered(const std::string& sceneName) {
+    return scenesMap.count(sceneName);
 }
 
-bool scenesFactoryInstance::registerScene(const std::string& stateName, const std::function<sceneInterface*()>& clb) {
-    if (!isSceneRegistered(stateName)) {
-        scenesMap[stateName] = clb;
+bool scenesFactoryInstance::registerScene(const std::string& sceneName, const std::function<sceneInterface*()>& clb) {
+    if (!isSceneRegistered(sceneName)) {
+        scenesMap[sceneName] = clb;
         return true;
     }
     return false;
 }
 
-bool scenesFactoryInstance::runScene(const std::string& stateName) {
-    if (isSceneRegistered(stateName)) {
-        auto scene = scenesMap[stateName]();
+bool scenesFactoryInstance::runSceneWithParameters(const std::string& sceneName, const ValueMap& values) {
+    if (isSceneRegistered(sceneName)) {
+        auto scene = scenesMap[sceneName]();
         if (!scene)
             return false;
+        scene->setValues(values);
         bool isFirstStart = currentScene == nullptr;
         if (scene->isPhysics()) {
             scene->initWithPhysics();
@@ -73,7 +74,7 @@ bool scenesFactoryInstance::runScene(const std::string& stateName) {
             if (scene->getFadeTransition() == 0.f) {
                 Director::getInstance()->replaceScene(scene);
             } else {
-                Director::getInstance()->replaceScene(TransitionFade::create(scene->getFadeTransition(), scene));
+                Director::getInstance()->replaceScene(TransitionProgressHorizontal::create(scene->getFadeTransition(), scene));
             }
         }
         scene->onSceneLoading();
@@ -111,6 +112,10 @@ bool scenesFactoryInstance::runScene(const std::string& stateName) {
         return true;
     }
     return false;
+}
+
+bool scenesFactoryInstance::runScene(const std::string& sceneName) {
+    return runSceneWithParameters(sceneName, {});
 }
 
 void scenesFactoryInstance::initTaskLoading(cocos2d::Node* node) {

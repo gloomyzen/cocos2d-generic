@@ -82,6 +82,7 @@ namespace generic::coreModule {
             physicsDebugDraw = value;
 #endif
         }
+        void setValues(const cocos2d::ValueMap& value) { sceneData = value; }
 
     protected:
         bool physics = false;
@@ -92,6 +93,7 @@ namespace generic::coreModule {
 #ifdef DEBUG
         generic::debugModule::imGuiLayer* imGuiLayer = nullptr;
         bool physicsDebugDraw = false;
+        cocos2d::ValueMap sceneData;
 #endif
     };
 }// namespace generic::coreModule
