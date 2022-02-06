@@ -72,11 +72,7 @@ bool asepriteNode::loadFrames(const jsonObject& object,
                 auto framePtr = std::make_shared<sAnimFrame>();
                 auto cacheId = cocos2d::StringUtils::format("%d_%s", this->_ID, memberNames[static_cast<size_t>(i)].c_str());
                 if (framePtr->load(frames[memberNames[static_cast<size_t>(i)].c_str()].GetObject(), fullPath, cacheId)) {
-                    if (animationsMap.count(animName) != 0u) {
-                        animationsMap[animName].emplace_back(framePtr);
-                    } else {
-                        animationsMap[animName] = {framePtr};
-                    }
+                    animationsMap[animName].emplace_back(framePtr);
                 }
             }
 
@@ -95,11 +91,7 @@ bool asepriteNode::loadFrames(const jsonObject& object,
                 auto framePtr = std::make_shared<sAnimFrame>();
                 auto cacheId = cocos2d::StringUtils::format("%d_%s", this->_ID, obj["filename"].GetString());
                 if (framePtr->load(obj, fullPath, cacheId)) {
-                    if (animationsMap.count(animName) != 0u) {
-                        animationsMap[animName].emplace_back(framePtr);
-                    } else {
-                        animationsMap[animName] = {framePtr};
-                    }
+                    animationsMap[animName].emplace_back(framePtr);
                 }
             }
 
