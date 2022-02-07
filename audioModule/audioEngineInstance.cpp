@@ -65,9 +65,6 @@ audioEngineInstance& audioEngineInstance::getInstance() {
 }
 
 void audioEngineInstance::cleanup() {
-#ifndef DISABLE_AUDIO_ENGINE
-    cocos2d::AudioEngine::end();
-#endif
     destroyed = true;
     pInstance = nullptr;
 }

@@ -25,7 +25,6 @@ scenesFactoryInstance& scenesFactoryInstance::getInstance() {
 void scenesFactoryInstance::cleanup() {
     destroyed = true;
     if (pInstance) {
-        pInstance->scenesMap.clear();
         CC_SAFE_RETAIN(pInstance->currentScene);
     }
     pInstance = nullptr;
