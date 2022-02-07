@@ -1,8 +1,8 @@
 #include "audioEngineInstance.h"
 
 #include "cocos2d.h"
-#include "extensions/cocos-ext.h"
 #include "generic/debugModule/logManager.h"
+#include "generic/utilityModule/jsonHelper.h"
 #include <utility>
 
 using namespace generic::audioModule;
