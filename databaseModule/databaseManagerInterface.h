@@ -23,7 +23,7 @@ namespace generic::databaseModule {
         }
 
     protected:
-        void registerDatabase(const std::pair<int, std::string>& value, const std::shared_ptr<databaseInterface>& db) {
+        void registerDatabase(const std::pair<int, std::string>& value, databaseInterface* db) {
             const auto& [key, path] = value;
             if (databasesMap.find(key) == databasesMap.end()) {
                 db->setPath(path);
@@ -32,14 +32,14 @@ namespace generic::databaseModule {
         }
 
         template<typename T>
-        const std::shared_ptr<T> &getRegisteredDatabase(int key) {
+        T* getRegisteredDatabase(int key) {
             if (databasesMap.find(key) != databasesMap.end()) {
-                return std::dynamic_pointer_cast<T>(databasesMap[key]);
+                return dynamic_cast<T*>(databasesMap[key]);
             }
             return nullptr;
         }
 
-        std::map<int, std::shared_ptr<databaseInterface>> databasesMap;
+        std::map<int, databaseInterface*> databasesMap;
     };
 }// namespace generic::databaseModule
 
