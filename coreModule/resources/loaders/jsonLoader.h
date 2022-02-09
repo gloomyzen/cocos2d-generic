@@ -18,6 +18,7 @@ namespace generic::coreModule {
         rapidjson::Document loadJson(const std::string& path);
         rapidjson::Document stringToJson(const std::string& str);
         void mergeJson(rapidjson::Value& a, rapidjson::Value& b, rapidjson::Value::AllocatorType& allocator);
+        bool mergeObjects(rapidjson::Value& a, rapidjson::Value& b, rapidjson::Document::AllocatorType& allocator);
 
     private:
         rapidjson::Document findByResolution(const std::string& path);
