@@ -1,14 +1,14 @@
 #include "jsonLoader.h"
-#include "cocos2d.h"
+#include "axmol.h"
 #include "generic/coreModule/resources/resourceManager.h"
 #include "generic/coreModule/resources/settings/settingManager.h"
-#include "generic/debugModule/logManager.h"
+#include "generic/utilityModule/logManager.h"
 #include "generic/utilityModule/stringUtility.h"
 
 using namespace generic::coreModule;
 
 rapidjson::Document jsonLoader::loadJson(const std::string& path) {
-    auto jsonStr = cocos2d::FileUtils::getInstance()->getStringFromFile(path + ".json");
+    auto jsonStr = ax::FileUtils::getInstance()->getStringFromFile(path + ".json");
     auto currentDeviceData = stringToJson(jsonStr);
     auto nextResolution = findByResolution(path);
     if (!nextResolution.IsNull()) {
@@ -17,18 +17,18 @@ rapidjson::Document jsonLoader::loadJson(const std::string& path) {
 
         rapidjson::Writer<rapidjson::StringBuffer> writer(strBuf);
         currentDeviceData.Accept(writer);
-        CCLOG(CSTRING_FORMAT("before current: %s", strBuf.GetString()));
+        AXLOG(CSTRING_FORMAT("before current: %s", strBuf.GetString()));
         strBuf.Clear();
 
         rapidjson::Writer<rapidjson::StringBuffer> writer2(strBuf);
         currentDeviceData.Accept(writer2);
-        CCLOG(CSTRING_FORMAT("next current: %s", strBuf.GetString()));
+        AXLOG(CSTRING_FORMAT("next current: %s", strBuf.GetString()));
         mergeObjects(currentDeviceData, nextResolution, currentDeviceData.GetAllocator());
         strBuf.Clear();
 
         rapidjson::Writer<rapidjson::StringBuffer> writer3(strBuf);
         currentDeviceData.Accept(writer3);
-        CCLOG(CSTRING_FORMAT("final current: %s", strBuf.GetString()));
+        AXLOG(CSTRING_FORMAT("final current: %s", strBuf.GetString()));
     }
     return currentDeviceData;
 }
@@ -67,10 +67,10 @@ rapidjson::Document jsonLoader::findByResolution(const std::string& path) {
     auto resolutionPath = GET_RESOLUTION_SETTING()->getCurrentSize()->getPath();
     auto pathProperties = STRING_FORMAT("%s/%s.json", resolutionPath.c_str(), path.c_str());
 
-    if (!cocos2d::FileUtils::getInstance()->isFileExist(pathProperties)) {
+    if (!ax::FileUtils::getInstance()->isFileExist(pathProperties)) {
         return nullptr;
     }
-    auto jsonStr = cocos2d::FileUtils::getInstance()->getStringFromFile(pathProperties);
+    auto jsonStr = ax::FileUtils::getInstance()->getStringFromFile(pathProperties);
 
     return stringToJson(jsonStr);
 }

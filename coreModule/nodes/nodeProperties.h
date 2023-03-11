@@ -1,13 +1,14 @@
+#pragma once
 #ifndef GENERIC_NODEPROPERTIES_H
 #define GENERIC_NODEPROPERTIES_H
 
-#include "cocos2d.h"
+#include "axmol.h"
 #include "generic/coreModule/nodes/nodeFactory.h"
 #include "generic/coreModule/resources/resourceManager.h"
 #include "generic/coreModule/resources/settings/settingManager.h"
-#include "generic/debugModule/logManager.h"
+#include "generic/utilityModule/logManager.h"
 #include "generic/utilityModule/jsonHelper.h"
-#include <string>
+#include <string_view>
 
 namespace generic::coreModule {
 
@@ -20,7 +21,7 @@ namespace generic::coreModule {
          * @param path relative path to file
          * @param node Node instance
          */
-        void initWithProperties(const std::string& path, cocos2d::Node* node = nullptr);
+        void initWithProperties(const std::string_view& path, ax::Node* node = nullptr);
 
         /***
          * Parsing parameters from json file
@@ -28,22 +29,22 @@ namespace generic::coreModule {
          * @param node Node instance
          * @param name
          */
-        void loadProperty(cocos2d::Node* node, const std::string& name = "");
+        void loadProperty(ax::Node* node, const std::string_view& name = "");
         void removeJsonData();
-        void loadJson(const std::string&);
+        void loadJson(const std::string_view&);
 
-        bool hasPropertyObject(const std::string& name) const;
-        bool hasPropertyArray(const std::string& name) const;
+        bool hasPropertyObject(const std::string_view& name) const;
+        bool hasPropertyArray(const std::string_view& name) const;
         template<typename T>
-        bool hasProperty(const std::string& name) const {
+        bool hasProperty(const std::string_view& name) const {
             if (propertyData.HasParseError() || !propertyData.IsObject()) {
                 return false;
             }
             if (!propertyData.HasMember("props") || !propertyData["props"].IsObject()) {
                 return false;
             }
-            if (propertyData["props"].HasMember(name.c_str())) {
-                auto find = propertyData["props"].GetObject().FindMember(name.c_str());
+            if (propertyData["props"].HasMember(name.data())) {
+                auto find = propertyData["props"].GetObject().FindMember(name.data());
                 if (find != propertyData["props"].GetObject().MemberEnd()) {
                     return find->value.Is<T>();
                 }
@@ -51,12 +52,12 @@ namespace generic::coreModule {
             return false;
         }
 
-        const jsonObject getPropertyObject(const std::string& name);
-        const jsonArray getPropertyArray(const std::string& name);
+        const jsonObject getPropertyObject(const std::string_view& name);
+        const jsonArray getPropertyArray(const std::string_view& name);
         template<typename T>
-        const T& getProperty(const std::string& name) const {
+        const T& getProperty(const std::string_view& name) const {
             assert(hasProperty<T>(name) && "Can't find property, use method 'hasProperty<T>' first!");
-            auto obj = propertyData["props"].FindMember(name.c_str());
+            auto obj = propertyData["props"].FindMember(name.data());
             static auto result = obj->value.Get<T>();
             return result;
         }
@@ -68,8 +69,8 @@ namespace generic::coreModule {
 
 
     private:
-        void parseProperties(cocos2d::Node* node, const std::string& name = "");
-        void parseData(cocos2d::Node* node, const rapidjson::GenericValue<rapidjson::UTF8<char>>::Array& array);
+        void parseProperties(ax::Node* node, const std::string_view& name = "");
+        void parseData(ax::Node* node, const rapidjson::GenericValue<rapidjson::UTF8<char>>::Array& array);
 
         rapidjson::Value settingsData;
         rapidjson::Document propertyData;

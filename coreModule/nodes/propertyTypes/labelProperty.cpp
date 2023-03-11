@@ -1,20 +1,20 @@
 #include "labelProperty.h"
-#include "generic/debugModule/logManager.h"
+#include "generic/utilityModule/logManager.h"
 #include "generic/utilityModule/stringUtility.h"
 
 using namespace generic::coreModule;
 
 std::string labelProperty::defaultFont = "fonts/arial.ttf";
-std::map<std::string, cocos2d::TextHAlignment> labelProperty::textHAlignmentTypes = {
-    {"center", cocos2d::TextHAlignment::CENTER},
-    {"left", cocos2d::TextHAlignment::LEFT},
-    {"right", cocos2d::TextHAlignment::RIGHT}
+std::map<std::string, ax::TextHAlignment> labelProperty::textHAlignmentTypes = {
+    {"center", ax::TextHAlignment::CENTER},
+    {"left", ax::TextHAlignment::LEFT},
+    {"right", ax::TextHAlignment::RIGHT}
 };
 
-void labelProperty::parseProperty(cocos2d::Node* node, const jsonObject& object) {
-    if (auto label = dynamic_cast<cocos2d::Label*>(node)) {
+void labelProperty::parseProperty(ax::Node* node, const jsonObject& object) {
+    if (auto label = dynamic_cast<ax::Label*>(node)) {
         if (object.HasMember("fontType") && object["fontType"].IsString() && object["fontType"].GetString() == std::string("ttf")) {
-            cocos2d::TTFConfig font = label->getTTFConfig();
+            ax::TTFConfig font = label->getTTFConfig();
             if (font.fontFilePath.empty()) {
                 font.fontFilePath = defaultFont;
             }
@@ -33,7 +33,7 @@ void labelProperty::parseProperty(cocos2d::Node* node, const jsonObject& object)
                 font.italics = object["italic"].GetBool();
             }
             if (object.HasMember("align") && object["align"].IsString()) {
-                cocos2d::TextHAlignment hAlignment = label->getTextAlignment();
+                ax::TextHAlignment hAlignment = label->getTextAlignment();
                 auto align = object["align"].GetString();
                 if (textHAlignmentTypes.count(align)) {
                     hAlignment = textHAlignmentTypes.at(align);

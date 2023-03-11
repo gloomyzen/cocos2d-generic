@@ -1,7 +1,8 @@
+#pragma once
 #ifndef GENERIC_GRIDNODE_H
 #define GENERIC_GRIDNODE_H
 
-#include "cocos2d.h"
+#include "axmol.h"
 #include "generic/coreModule/nodes/nodeProperties.h"
 #include <map>
 #include <string>
@@ -12,12 +13,12 @@ namespace generic {
 
         class gridNode
           : public nodeProperties
-          , public cocos2d::Node {
+          , public ax::Node {
         public:
             struct sGridCell {
-                cocos2d::Node* node = nullptr;
-                cocos2d::Size size;
-                sGridCell(cocos2d::Node* _node, cocos2d::Size _size) {
+                ax::Node* node = nullptr;
+                ax::Size size;
+                sGridCell(ax::Node* _node, ax::Size _size) {
                     node = _node;
                     size = _size;
                 }

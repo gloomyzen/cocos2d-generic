@@ -1,13 +1,13 @@
 #include "dragonbonesProperty.h"
 #include "generic/coreModule/nodes/types/armatureNode.h"
-#include "generic/debugModule/logManager.h"
+#include "generic/utilityModule/logManager.h"
 #include "generic/utilityModule/stringUtility.h"
 
 using namespace generic::coreModule;
 
 
-void dragonbonesProperty::parseProperty(cocos2d::Node* node, const jsonObject& object) {
-#if defined(CC_BUILD_WITH_DRANGBONES) && CC_BUILD_WITH_DRANGBONES
+void dragonbonesProperty::parseProperty(ax::Node* node, const jsonObject& object) {
+#if defined(AX_BUILD_WITH_DRANGBONES) && AX_BUILD_WITH_DRANGBONES
     if (auto rootNode = dynamic_cast<armatureNode*>(node)) {
         if (object.HasMember("texFile") && object.HasMember("skeFile")) {
             if (cachedArmature.find(object["name"].GetString()) == cachedArmature.end()) {

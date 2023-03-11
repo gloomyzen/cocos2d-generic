@@ -1,12 +1,12 @@
 #include "gridProperty.h"
-#include "generic/debugModule/logManager.h"
+#include "generic/utilityModule/logManager.h"
 #include "generic/utilityModule/stringUtility.h"
 #include <generic/coreModule/nodes/types/gridNode.h>
 
 using namespace generic::coreModule;
 
 
-void gridProperty::parseProperty(cocos2d::Node* node, const jsonObject& object) {
+void gridProperty::parseProperty(ax::Node* node, const jsonObject& object) {
     if (auto grid = dynamic_cast<gridNode*>(node)) {
         if (object.HasMember("marginX") && object["marginX"].IsArray()) {
             auto array = object["marginX"].GetArray();

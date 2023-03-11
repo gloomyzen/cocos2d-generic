@@ -1,7 +1,8 @@
+#pragma once
 #ifndef GENERIC_SHADERSNODE_H
 #define GENERIC_SHADERSNODE_H
 
-#include "cocos2d.h"
+#include "axmol.h"
 #include "renderer/CCRenderState.h"
 #ifdef ADXE_VERSION
 #include "spine/SkeletonTwoColorBatch.h"
@@ -29,14 +30,14 @@ namespace generic::coreModule {
     class effectSprite;
     class effect;
 
-    static int tuple_sort(const std::tuple<ssize_t, effect*, cocos2d::QuadCommand>& tuple1,
-                          const std::tuple<ssize_t, effect*, cocos2d::QuadCommand>& tuple2);
-    static void updateUniforms(cocos2d::backend::ProgramState* programState);
+    static int tuple_sort(const std::tuple<ssize_t, effect*, ax::QuadCommand>& tuple1,
+                          const std::tuple<ssize_t, effect*, ax::QuadCommand>& tuple2);
+    static void updateUniforms(ax::backend::ProgramState* programState);
 
 
-    class effect : public cocos2d::Ref {
+    class effect : public ax::Ref {
     public:
-        cocos2d::backend::ProgramState* getProgramState() const {
+        ax::backend::ProgramState* getProgramState() const {
             return _programState;
         }
         virtual void setTarget(effectSprite* sprite) {}
@@ -45,12 +46,12 @@ namespace generic::coreModule {
         bool initProgramState(const std::string& fragmentFilename);
         effect() {}
         ~effect() {
-            CC_SAFE_RELEASE_NULL(_programState);
+            AX_SAFE_RELEASE_NULL(_programState);
         }
-        cocos2d::backend::ProgramState* _programState = nullptr;
+        ax::backend::ProgramState* _programState = nullptr;
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
         std::string _fragSource;
-        cocos2d::EventListenerCustom* _backgroundListener;
+        ax::EventListenerCustom* _backgroundListener;
 #endif
     };
 
@@ -59,14 +60,14 @@ namespace generic::coreModule {
      * effectSprite
      */
 
-    class effectSprite : public cocos2d::Sprite {
+    class effectSprite : public ax::Sprite {
     public:
         static effectSprite* create(const std::string& filename);
 
         void setEffect(effect* effect);
         void addEffect(effect* effect, ssize_t order);
 
-        void draw(cocos2d::Renderer* renderer, const cocos2d::Mat4& transform, uint32_t flags) override;
+        void draw(ax::Renderer* renderer, const ax::Mat4& transform, uint32_t flags) override;
 
     protected:
         effectSprite() : _defaultEffect(nullptr) {
@@ -76,10 +77,10 @@ namespace generic::coreModule {
             for (auto& tuple : _effects) {
                 std::get<1>(tuple)->release();
             }
-            CC_SAFE_RELEASE(_defaultEffect);
+            AX_SAFE_RELEASE(_defaultEffect);
         }
 
-        std::vector<std::tuple<ssize_t, effect*, cocos2d::QuadCommand>> _effects;
+        std::vector<std::tuple<ssize_t, effect*, ax::QuadCommand>> _effects;
         effect* _defaultEffect;
     };
 
@@ -101,11 +102,11 @@ namespace generic::coreModule {
             return true;
         }
 
-        void setOutlineColor(const cocos2d::Vec3& color) {
+        void setOutlineColor(const ax::Vec3& color) {
             _outlineColor = color;
         }
 
-        cocos2d::Vec3 getOutlineColor() {
+        ax::Vec3 getOutlineColor() {
             return _outlineColor;
         }
 
@@ -121,7 +122,7 @@ namespace generic::coreModule {
         }
 
     private:
-        cocos2d::Vec3 _outlineColor = cocos2d::Vec3(1.0f, 0.0f, 0.0f);
+        ax::Vec3 _outlineColor = ax::Vec3(1.0f, 0.0f, 0.0f);
         float _outlineAlpha = 1.f;
         bool _inited = false;
     };
@@ -132,7 +133,7 @@ namespace generic::coreModule {
             setTwoColorTint(true);
         }
 
-        virtual void draw(cocos2d::Renderer* renderer, const cocos2d::Mat4& transform, uint32_t transformFlags) override {
+        virtual void draw(ax::Renderer* renderer, const ax::Mat4& transform, uint32_t transformFlags) override {
             if (auto outline = dynamic_cast<effectOutline*>(_effect)) {
                 SkeletonAnimation::draw(renderer, transform, transformFlags);
                 auto alpha = outline->getOutlineAlpha();

@@ -1,7 +1,8 @@
+#pragma once
 #ifndef GENERIC_SETTINGMANAGER_H
 #define GENERIC_SETTINGMANAGER_H
 
-#include "cocos2d.h"
+#include "axmol.h"
 #include <map>
 #include <string>
 #include <utility>
@@ -11,7 +12,7 @@ namespace generic {
 
         struct sDisplaySize {
             std::string resolutionName;
-            cocos2d::Size size;
+            ax::Size size;
             float scale = 1.f;
             std::string path;
             std::string parentName;
@@ -40,7 +41,7 @@ namespace generic {
             settingManager();
             ~settingManager();
             void load();
-            void init(bool isMobile, const std::string& settingName = "");
+            bool init(bool isMobile, const std::string& settingName = "");
             std::shared_ptr<sDisplaySize> getCurrentSize();
 
         private:

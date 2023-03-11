@@ -1,16 +1,16 @@
 #include "profileManager.h"
-#include "cocos2d.h"
+#include "axmol.h"
 #include "generic/coreModule/resources/loaders/jsonLoader.h"
 #include "generic/coreModule/resources/resourceManager.h"
-#include "generic/debugModule/logManager.h"
+#include "generic/utilityModule/logManager.h"
 #include "generic/utilityModule/jsonHelper.h"
 #include "generic/utilityModule/stringUtility.h"
 
 using namespace generic;
 using namespace generic::profileModule;
 
-#ifdef GENERIC_APP_NAME
-const std::string APP_NAME = GENERIC_APP_NAME;
+#ifdef CMAKE_APP_NAME
+const std::string APP_NAME = CMAKE_APP_NAME;
 #else
 const std::string APP_NAME = "defaultAppName";
 #endif
@@ -19,7 +19,7 @@ profileManager* profileManager::pInstance = nullptr;
 bool profileManager::destroyed = false;
 
 profileManager::~profileManager() {
-    auto deleteProfile = cocos2d::UserDefault::getInstance()->getBoolForKey("deleteProfile", false);
+    auto deleteProfile = ax::UserDefault::getInstance()->getBoolForKey("deleteProfile", false);
     if (!deleteProfile)
         save();
     for (auto& item : profileBlocks) {
@@ -59,15 +59,15 @@ void profileManager::create() {
 }
 
 void profileManager::onDeadReference() {
-    CCASSERT(false, "Founded dead reference!");
+    AXASSERT(false, "Founded dead reference!");
 }
 
 void profileManager::load() {
     const std::string& path = "config/user_profile";
     auto defaultProfile = GET_JSON_MANAGER()->loadJson(path);
     auto profile =
-      cocos2d::UserDefault::getInstance()->getStringForKey(STRING_FORMAT("profile_%s", APP_NAME.c_str()).c_str(), std::string());
-    auto localProfile = GET_JSON_MANAGER()->stringToJson(profile);
+      ax::UserDefault::getInstance()->getStringForKey(STRING_FORMAT("profile_%s", APP_NAME.c_str()).c_str(), std::string());
+    auto localProfile = GET_JSON_MANAGER()->stringToJson(profile.data());
 #ifdef DEBUG
     if (!localProfile.HasParseError() && !localProfile.IsNull()) {
         rapidjson::StringBuffer strBuf;
@@ -75,7 +75,7 @@ void profileManager::load() {
 
         rapidjson::Writer<rapidjson::StringBuffer> writer(strBuf);
         localProfile.Accept(writer);
-        CCLOG(CSTRING_FORMAT("local profile: %s", strBuf.GetString()));
+        AXLOG(CSTRING_FORMAT("local profile: %s", strBuf.GetString()));
     }
 #endif
     loadProfile(defaultProfile, localProfile);
@@ -99,10 +99,10 @@ void profileManager::save() {
     rapidjson::Writer<rapidjson::StringBuffer> writer(strBuf);
     json.Accept(writer);
 #ifdef DEBUG
-    CCLOG(CSTRING_FORMAT("save local profile: %s", strBuf.GetString()));
+    AXLOG(CSTRING_FORMAT("save local profile: %s", strBuf.GetString()));
 #endif
 
-    cocos2d::UserDefault::getInstance()->setStringForKey(STRING_FORMAT("profile_%s", APP_NAME.c_str()).c_str(), strBuf.GetString());
+    ax::UserDefault::getInstance()->setStringForKey(STRING_FORMAT("profile_%s", APP_NAME.c_str()).c_str(), strBuf.GetString());
 }
 
 void profileManager::loadProfile(const rapidjson::Document& defaultData, const rapidjson::Document& localData) {
@@ -152,5 +152,5 @@ bool profileManager::isBlockRegistered(const std::string& needle) {
 }
 
 void profileManager::destroyProfile() {
-    cocos2d::UserDefault::getInstance()->deleteValueForKey("profile");
+    ax::UserDefault::getInstance()->deleteValueForKey("profile");
 }

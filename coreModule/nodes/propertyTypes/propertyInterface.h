@@ -1,7 +1,8 @@
+#pragma once
 #ifndef GENERIC_PROPERTYINTERFACE_H
 #define GENERIC_PROPERTYINTERFACE_H
 
-#include "cocos2d.h"
+#include "axmol.h"
 #include "generic/utilityModule/jsonHelper.h"
 #include <string>
 
@@ -11,7 +12,7 @@ namespace generic::coreModule {
         propertyInterface(const std::string& _propertyName) : propertyName(_propertyName) {};
         virtual ~propertyInterface() = default;
 
-        virtual void parseProperty(cocos2d::Node* node, const jsonObject& object) = 0;
+        virtual void parseProperty(ax::Node* node, const jsonObject& object) = 0;
 
     protected:
         std::string propertyName;

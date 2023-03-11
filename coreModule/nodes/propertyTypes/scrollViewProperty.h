@@ -1,7 +1,8 @@
+#pragma once
 #ifndef GENERIC_SCROLLVIEWPROPERTY_H
 #define GENERIC_SCROLLVIEWPROPERTY_H
 
-#include "cocos2d.h"
+#include "axmol.h"
 #include "generic/utilityModule/jsonHelper.h"
 #include "propertyInterface.h"
 #include "ui/CocosGUI.h"
@@ -13,10 +14,10 @@ namespace generic::coreModule {
     public:
         scrollViewProperty(const std::string& _propertyName) : propertyInterface(_propertyName) {}
 
-        void parseProperty(cocos2d::Node* node, const jsonObject& object) override;
+        void parseProperty(ax::Node* node, const jsonObject& object) override;
 
     private:
-        static std::map<std::string, cocos2d::ui::ScrollView::Direction> scrollDirectionsMap;
+        static std::map<std::string, ax::ui::ScrollView::Direction> scrollDirectionsMap;
     };
 }// namespace generic::coreModule
 

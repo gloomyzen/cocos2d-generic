@@ -1,24 +1,22 @@
+#pragma once
 #ifndef GENERIC_SPRITEPOLYGON_H
 #define GENERIC_SPRITEPOLYGON_H
 
-#include "cocos2d.h"
+#include "axmol.h"
 #include "ui/CocosGUI.h"
 
-namespace generic {
+namespace generic::coreModule {
 
-    namespace coreModule {
-
-        class spritePolygon : public cocos2d::AutoPolygon {
-        public:
-            spritePolygon(const std::string& filename);
-            ~spritePolygon();
-            float getWidth();
-            float getHeight();
-            void setWidth(float value);
-            void setHeight(float value);
-        };
-    }// namespace coreModule
-}// namespace generic
+    class spritePolygon : public ax::AutoPolygon {
+    public:
+        spritePolygon(const std::string& filename);
+        ~spritePolygon();
+        float getWidth();
+        float getHeight();
+        void setWidth(float value);
+        void setHeight(float value);
+    };
+}// namespace generic::coreModule
 
 
 #endif// GENERIC_SPRITEPOLYGON_H

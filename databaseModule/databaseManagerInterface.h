@@ -1,7 +1,8 @@
+#pragma once
 #ifndef GENERIC_DATABASEMANAGER_H
 #define GENERIC_DATABASEMANAGER_H
 
-#include "cocos2d.h"
+#include "axmol.h"
 #include "generic/databaseModule/databaseInterface.h"
 #include <map>
 #include <string>

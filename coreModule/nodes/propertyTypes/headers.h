@@ -1,3 +1,4 @@
+#pragma once
 #ifndef GENERIC_PROP_TYPES_FORWARD_H
 #define GENERIC_PROP_TYPES_FORWARD_H
 #include "clipProperty.h"

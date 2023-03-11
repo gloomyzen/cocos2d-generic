@@ -1,10 +1,12 @@
 #include "debugComponent.h"
 
 using namespace generic::coreModule;
-using namespace cocos2d;
+using namespace ax;
+
+std::string_view debugComponent::DEBUG_COMPONENT_NAME = "debugComponent";
 
 debugComponent::debugComponent() {
-    _name = "debugComponent";
+    _name = DEBUG_COMPONENT_NAME;
 }
 
 debugComponent::~debugComponent() {
@@ -13,7 +15,7 @@ debugComponent::~debugComponent() {
 
 void debugComponent::update(float delta) {
     Component::update(delta);
-    if (isDebug() && _debugDrawNode) {
+    if (isDebugEnabled() && _debugDrawNode) {
         _debugDrawNode->clear();
         auto anchor = getOwner()->getAnchorPoint();
         auto rect = getOwner()->getContentSize();
@@ -25,11 +27,11 @@ void debugComponent::update(float delta) {
     }
 }
 
-bool debugComponent::isDebug() const {
+bool debugComponent::isDebugEnabled() {
     return _debugDrawEnabled;
 }
 
-void debugComponent::setDebug(bool value) {
+void debugComponent::setDebugEnabled(bool value) {
     _debugDrawEnabled = value;
     if (value && !_debugDrawNode) {
         _debugDrawNode = DrawNode::create();
@@ -38,17 +40,24 @@ void debugComponent::setDebug(bool value) {
     }
     if (value) {
         _debugDrawNode->setVisible(true);
-    }
-    if (!value) {
+    } else {
         _debugDrawNode->clear();
         _debugDrawNode->setVisible(false);
     }
 }
 
-void debugComponent::setLineColor(cocos2d::Color4F color) {
+void debugComponent::setLineColor(ax::Color4F color) {
     _debugColorLine = color;
 }
 
-void debugComponent::setPointColor(cocos2d::Color4F color) {
+void debugComponent::setPointColor(ax::Color4F color) {
     _debugColorPoint = color;
+}
+
+ax::Color4F debugComponent::getLineColor() {
+    return _debugColorLine;
+}
+
+ax::Color4F debugComponent::getPointColor() {
+    return _debugColorPoint;
 }

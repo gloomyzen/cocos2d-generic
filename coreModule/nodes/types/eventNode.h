@@ -1,7 +1,8 @@
+#pragma once
 #ifndef GENERIC_TOUCHESNODE_H
 #define GENERIC_TOUCHESNODE_H
 
-#include "cocos2d.h"
+#include "axmol.h"
 #include <functional>
 #include <utility>
 

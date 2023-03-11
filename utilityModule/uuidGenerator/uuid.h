@@ -1,3 +1,4 @@
+#pragma once
 #ifndef GENERIC_UUID_H
 #define GENERIC_UUID_H
 

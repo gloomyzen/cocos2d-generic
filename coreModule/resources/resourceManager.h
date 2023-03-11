@@ -1,3 +1,4 @@
+#pragma once
 #ifndef GENERIC_RESOURCEMANAGER_H
 #define GENERIC_RESOURCEMANAGER_H
 

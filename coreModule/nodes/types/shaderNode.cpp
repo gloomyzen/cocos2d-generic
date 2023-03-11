@@ -2,7 +2,7 @@
 #include <renderer/backend/Device.h>
 
 using namespace generic::coreModule;
-using namespace cocos2d;
+using namespace ax;
 
 int generic::coreModule::tuple_sort(const std::tuple<ssize_t, effect*, QuadCommand>& tuple1,
                                     const std::tuple<ssize_t, effect*, QuadCommand>& tuple2) {
@@ -54,7 +54,7 @@ void effectSprite::setEffect(effect* effect) {
 
         CC_SAFE_RELEASE(_defaultEffect);
         _defaultEffect = effect;
-        CC_SAFE_RETAIN(_defaultEffect);
+        AX_SAFE_RETAIN(_defaultEffect);
 
         setProgramState(_defaultEffect->getProgramState());
     }
@@ -64,12 +64,12 @@ void effectSprite::addEffect(effect* effect, ssize_t order) {
     effect->retain();
     effect->setTarget(this);
 
-    _effects.emplace_back(order, effect, cocos2d::QuadCommand());
+    _effects.emplace_back(order, effect, ax::QuadCommand());
 
     std::sort(std::begin(_effects), std::end(_effects), tuple_sort);
 }
 
-void effectSprite::draw(cocos2d::Renderer* renderer, const Mat4& transform, uint32_t flags) {
+void effectSprite::draw(ax::Renderer* renderer, const Mat4& transform, uint32_t flags) {
 #if CC_USE_CULLING
     // Don't do calculate the culling if the transform was not updated
     _insideBounds = (flags & FLAGS_TRANSFORM_DIRTY) ? renderer->checkVisibility(transform, _contentSize) : _insideBounds;
@@ -85,7 +85,7 @@ void effectSprite::draw(cocos2d::Renderer* renderer, const Mat4& transform, uint
                 break;
             auto* programState = std::get<1>(effect)->getProgramState();
             if (programState) {
-                cocos2d::QuadCommand& q = std::get<2>(effect);
+                ax::QuadCommand& q = std::get<2>(effect);
                 q.init(_globalZOrder, _texture, _blendFunc, &_quad, 1, transform, flags);
                 updateUniforms(programState);
                 renderer->addCommand(&q);
@@ -101,7 +101,7 @@ void effectSprite::draw(cocos2d::Renderer* renderer, const Mat4& transform, uint
 
         // positive effects: order >= 0
         for (auto it = std::begin(_effects) + idx; it != std::end(_effects); ++it) {
-            cocos2d::QuadCommand& q = std::get<2>(*it);
+            ax::QuadCommand& q = std::get<2>(*it);
             auto* programState = std::get<1>(*it)->getProgramState();
             updateUniforms(programState);
             q.init(_globalZOrder, _texture, _blendFunc, &_quad, 1, transform, flags);

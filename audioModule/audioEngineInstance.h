@@ -1,7 +1,8 @@
+#pragma once
 #ifndef GENERIC_AUDIOENGINEINSTANCE_H
 #define GENERIC_AUDIOENGINEINSTANCE_H
 
-#include "cocos/audio/include/AudioEngine.h"
+#include "audio/AudioEngine.h"
 #include <functional>
 #include <map>
 #include <string>
@@ -20,8 +21,8 @@ namespace generic::audioModule {
         static audioEngineInstance& getInstance();
         static void cleanup();
 
-        void play(const std::string& filePath, bool loop = false, float volume = 1.0f, const cocos2d::AudioProfile* profile = nullptr);
-        void playOnce(const std::string& filePath, bool loop = false, float volume = 1.0f, const cocos2d::AudioProfile* profile = nullptr);
+        void play(const std::string& filePath, bool loop = false, float volume = 1.0f, const ax::AudioProfile* profile = nullptr);
+        void playOnce(const std::string& filePath, bool loop = false, float volume = 1.0f, const ax::AudioProfile* profile = nullptr);
         void pause(const std::string& name);
         void pauseAll();
         void resume(const std::string& name);

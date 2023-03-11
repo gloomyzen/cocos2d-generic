@@ -1,3 +1,4 @@
+#pragma once
 #ifndef GENERIC_RANDOMUTILITY_H
 #define GENERIC_RANDOMUTILITY_H
 

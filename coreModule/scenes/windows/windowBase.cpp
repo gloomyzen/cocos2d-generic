@@ -1,12 +1,13 @@
 #include "windowBase.h"
 #include "generic/coreModule/scenes/windows/windowSystem.h"
-#include "generic/debugModule/logManager.h"
+#include "generic/utilityModule/logManager.h"
 #include "generic/utilityModule/stringUtility.h"
+#include "generic/utilityModule/findUtility.h"
 
 #include <utility>
 
 using namespace generic::coreModule;
-using namespace cocos2d;
+using namespace ax;
 
 windowBase::windowBase() {
     initWindow();
@@ -25,9 +26,9 @@ windowBase::~windowBase() {
 
 void windowBase::initWindow() {
     this->setName("windowBase");
-    initWithProperties(STRING_FORMAT("windows/%s", this->getName().c_str()));
+    initWithProperties(STRING_FORMAT("windows/%s", this->getName().data()));
     removeJsonData();
-    if (auto bgNode = dynamic_cast<cocos2d::Sprite*>(findNode("buttonNode"))) {
+    if (auto bgNode = dynamic_cast<ax::Sprite*>(generic::utilityModule::findNode(this, "buttonNode"))) {
         //todo fix this, buttonNode type was deleted
 //        setButtonBgSprite(bgNode);
     }
@@ -44,7 +45,7 @@ void windowBase::initWindow() {
     auto fadeTo = FadeTo::create(0.08f, 255.0f);
     auto scaleBy = ScaleBy::create(0.08f, 1.25f);
     auto spawn = Spawn::createWithTwoActions(scaleBy, fadeTo);
-    auto clb = cocos2d::CallFunc::create([this]() {
+    auto clb = ax::CallFunc::create([this]() {
         currentState = eWindowState::OPENED;
         setCascadeOpacityEnabled(false);
         getEmitter()->onWindowOpen.emit();
@@ -56,7 +57,7 @@ void windowBase::initWindow() {
 void windowBase::closeWindow() {
     auto closeClb = getCallback("safeClose");
     currentState = eWindowState::CLOSING;
-    auto clb = cocos2d::CallFunc::create([this, closeClb]() {
+    auto clb = ax::CallFunc::create([this, closeClb]() {
         if (closeClb)
             closeClb();
         getEmitter()->onWindowClose.emit(getWindowName());

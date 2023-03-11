@@ -12,7 +12,7 @@ asepriteNode::asepriteNode() {}
 asepriteNode::~asepriteNode() {
     for (const auto& [_, frames] : animationsMap) {
         for (const auto& item : frames) {
-            cocos2d::SpriteFrameCache::getInstance()->removeSpriteFrameByName(item->spriteFrameId);
+            ax::SpriteFrameCache::getInstance()->removeSpriteFrameByName(item->spriteFrameId);
         }
     }
     animationsMap.clear();
@@ -70,7 +70,7 @@ bool asepriteNode::loadFrames(const jsonObject& object,
         for (auto [animName, animIndexes] : anim) {
             for (auto i = animIndexes.first; i <= animIndexes.second; ++i) {
                 auto framePtr = std::make_shared<sAnimFrame>();
-                auto cacheId = cocos2d::StringUtils::format("%d_%s", this->_ID, memberNames[static_cast<size_t>(i)].c_str());
+                auto cacheId = ax::StringUtils::format("%d_%s", this->_ID, memberNames[static_cast<size_t>(i)].c_str());
                 if (framePtr->load(frames[memberNames[static_cast<size_t>(i)].c_str()].GetObject(), fullPath, cacheId)) {
                     animationsMap[animName].emplace_back(framePtr);
                 }
@@ -89,7 +89,7 @@ bool asepriteNode::loadFrames(const jsonObject& object,
             for (auto i = animIndexes.first; i <= animIndexes.second; ++i) {
                 auto obj = frames[static_cast<unsigned>(i)].GetObject();
                 auto framePtr = std::make_shared<sAnimFrame>();
-                auto cacheId = cocos2d::StringUtils::format("%d_%s", this->_ID, obj["filename"].GetString());
+                auto cacheId = ax::StringUtils::format("%d_%s", this->_ID, obj["filename"].GetString());
                 if (framePtr->load(obj, fullPath, cacheId)) {
                     animationsMap[animName].emplace_back(framePtr);
                 }
@@ -109,58 +109,58 @@ bool asepriteNode::setAnimation(const std::string& name, bool loop) {
     if (hasAnimation(name)) {
         animation = name;
         const auto& animations = animationsMap[animation];
-        cocos2d::Vector<cocos2d::AnimationFrame*> list;
+        ax::Vector<ax::AnimationFrame*> list;
         float allDuration = 0.f;
         for (const auto& item : animations) {
-            if (auto spriteFrame = cocos2d::SpriteFrameCache::getInstance()->getSpriteFrameByName(item->spriteFrameId)) {
-                auto frame = cocos2d::AnimationFrame::create(spriteFrame, item->duration, {});
+            if (auto spriteFrame = ax::SpriteFrameCache::getInstance()->getSpriteFrameByName(item->spriteFrameId)) {
+                auto frame = ax::AnimationFrame::create(spriteFrame, item->duration, {});
                 allDuration += item->duration;
                 list.pushBack(frame);
             }
         }
-        auto anim = cocos2d::Animation::create(list, allDuration);
-        auto animAction = cocos2d::Animate::create(anim);
+        auto anim = ax::Animation::create(list, allDuration);
+        auto animAction = ax::Animate::create(anim);
         if (auto currentAction = getActionByTag(animTag)) {
             stopAction(currentAction);
         }
         if (loop) {
-            auto action = cocos2d::RepeatForever::create(animAction);
+            auto action = ax::RepeatForever::create(animAction);
             action->setTag(animTag);
             runAction(action);
         } else {
             animAction->setTag(animTag);
             runAction(animAction);
         }
-        cocos2d::Sprite::init();
+        ax::Sprite::init();
 
         return true;
     }
     return false;
 }
 
-void asepriteNode::setUsePixelMode(bool value) {
-    if (usePixel != value) {
-        usePixel = value;
-        for (const auto& [_, frames] : animationsMap) {
-            for (const auto& item : frames) {
-                if (auto spriteFrame = cocos2d::SpriteFrameCache::getInstance()->getSpriteFrameByName(item->spriteFrameId)) {
-                    if (value)
-                        spriteFrame->getTexture()->setAliasTexParameters();
-                    else
-                        spriteFrame->getTexture()->setAntiAliasTexParameters();
-                }
-            }
-        }
-    }
-    Sprite::setUsePixelMode(value);
-}
+//void asepriteNode::setUsePixelMode(bool value) {
+//    if (usePixel != value) {
+//        usePixel = value;
+//        for (const auto& [_, frames] : animationsMap) {
+//            for (const auto& item : frames) {
+//                if (auto spriteFrame = ax::SpriteFrameCache::getInstance()->getSpriteFrameByName(item->spriteFrameId)) {
+//                    if (value)
+//                        spriteFrame->getTexture()->setAliasTexParameters();
+//                    else
+//                        spriteFrame->getTexture()->setAntiAliasTexParameters();
+//                }
+//            }
+//        }
+//    }
+//    Sprite::setUsePixelMode(value);
+//}
 
 bool asepriteNode::sAnimFrame::load(const jsonObject& data, const std::string& fullPath, const std::string& cacheId) {
     if (!data.HasMember("frame") || !data["frame"].IsObject()) {
         return false;
     }
-    auto frameRect = cocos2d::Size(data["frame"]["w"].GetFloat(), data["frame"]["h"].GetFloat());
-    auto frameOffset = cocos2d::Vec2(data["frame"]["x"].GetFloat(), data["frame"]["y"].GetFloat());
+    auto frameRect = ax::Size(data["frame"]["w"].GetFloat(), data["frame"]["h"].GetFloat());
+    auto frameOffset = ax::Vec2(data["frame"]["x"].GetFloat(), data["frame"]["y"].GetFloat());
     auto rotated = false;
     if (data.HasMember("rotated") && data["rotated"].IsBool()) {
         rotated = data["rotated"].GetBool();
@@ -171,7 +171,7 @@ bool asepriteNode::sAnimFrame::load(const jsonObject& data, const std::string& f
         return false;
     }
     spriteFrameId = cacheId;
-    auto spriteFrame = cocos2d::SpriteFrame::create(fullPath, cocos2d::Rect(frameOffset, frameRect), rotated, cocos2d::Vec2::ZERO, frameRect);
-    cocos2d::SpriteFrameCache::getInstance()->addSpriteFrame(spriteFrame, spriteFrameId);
+    auto spriteFrame = ax::SpriteFrame::create(fullPath, ax::Rect(frameOffset, frameRect), rotated, ax::Vec2::ZERO, frameRect);
+    ax::SpriteFrameCache::getInstance()->addSpriteFrame(spriteFrame, spriteFrameId);
     return true;
 }

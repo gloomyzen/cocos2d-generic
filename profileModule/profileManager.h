@@ -1,3 +1,4 @@
+#pragma once
 #ifndef GENERIC_PROFILEMANAGER_H
 #define GENERIC_PROFILEMANAGER_H
 

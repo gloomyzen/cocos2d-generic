@@ -1,15 +1,16 @@
+#pragma once
 #ifndef GENERIC_DRAWNODEBASE_H
 #define GENERIC_DRAWNODEBASE_H
 
-#include "cocos2d.h"
+#include "axmol.h"
 #include <functional>
 #include <utility>
 
 namespace generic::coreModule {
-    class drawNodeBase : public cocos2d::DrawNode {
+    class drawNodeBase : public ax::DrawNode {
     private:
         bool autoUpdateEnabled = false;
-        cocos2d::Color4F drawColor;
+        ax::Color4F drawColor;
     public:
         drawNodeBase() {
             setName("drawNodeBase");
@@ -22,21 +23,21 @@ namespace generic::coreModule {
             autoUpdateEnabled = value;
         }
 
-        void setDrawColor(cocos2d::Color4F value) {
+        void setDrawColor(ax::Color4F value) {
             drawColor = value;
         }
 
         void forceUpdateRect() {
             clear();
-            cocos2d::Size rect;
+            ax::Size rect;
             if (_parent) {
                 rect = _parent->getContentSize();
                 setContentSize(rect);
             }
-            drawSolidRect(cocos2d::Vec2::ZERO, rect, drawColor);
+            drawSolidRect(ax::Vec2::ZERO, rect, drawColor);
         }
 
-        void visit(cocos2d::Renderer* renderer, const cocos2d::Mat4 &parentTransform, uint32_t parentFlags) override {
+        void visit(ax::Renderer* renderer, const ax::Mat4 &parentTransform, uint32_t parentFlags) override {
             if (autoUpdateEnabled && _parent) {
                 auto first = getContentSize();
                 auto second = _parent->getContentSize();

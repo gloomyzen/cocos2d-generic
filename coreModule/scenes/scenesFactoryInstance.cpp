@@ -1,51 +1,50 @@
 #include "scenesFactoryInstance.h"
 #include "sceneInterface.h"
-#include "generic/debugModule/imGuiLayer.h"
 #include "generic/utilityModule/stringUtility.h"
 #include <map>
 
 using namespace generic;
 using namespace generic::coreModule;
-using namespace cocos2d;
+using namespace ax;
 
-scenesFactoryInstance* scenesFactoryInstance::pInstance = nullptr;
-bool scenesFactoryInstance::destroyed = false;
+scenesFactoryInstance* scenesFactoryInstance::_pInstance = nullptr;
+bool scenesFactoryInstance::_destroyed = false;
 
 scenesFactoryInstance& scenesFactoryInstance::getInstance() {
-    if (!pInstance) {
-        if (destroyed) {
+    if (!_pInstance) {
+        if (_destroyed) {
             onDeadReference();
         } else {
             create();
         }
     }
-    return *pInstance;
+    return *_pInstance;
 }
 
 void scenesFactoryInstance::cleanup() {
-    destroyed = true;
-    if (pInstance) {
-        CC_SAFE_RETAIN(pInstance->currentScene);
+    _destroyed = true;
+    if (_pInstance) {
+        AX_SAFE_RETAIN(_pInstance->_currentScene);
     }
-    pInstance = nullptr;
+    _pInstance = nullptr;
 }
 
 void scenesFactoryInstance::create() {
     static scenesFactoryInstance instance;
-    pInstance = &instance;
+    _pInstance = &instance;
 }
 
 void scenesFactoryInstance::onDeadReference() {
-    CCASSERT(false, "Founded dead reference!");
+    AXASSERT(false, "Founded dead reference!");
 }
 
 bool scenesFactoryInstance::isSceneRegistered(const std::string& sceneName) {
-    return scenesMap.count(sceneName);
+    return _scenesMap.count(sceneName);
 }
 
 bool scenesFactoryInstance::registerScene(const std::string& sceneName, const std::function<sceneInterface*()>& clb) {
     if (!isSceneRegistered(sceneName)) {
-        scenesMap[sceneName] = clb;
+        _scenesMap[sceneName] = clb;
         return true;
     }
     return false;
@@ -53,20 +52,22 @@ bool scenesFactoryInstance::registerScene(const std::string& sceneName, const st
 
 bool scenesFactoryInstance::runSceneWithParameters(const std::string& sceneName, const ValueMap& values) {
     if (isSceneRegistered(sceneName)) {
-        auto scene = scenesMap[sceneName]();
+        auto scene = _scenesMap[sceneName]();
         if (!scene)
             return false;
         scene->setValues(values);
-        bool isFirstStart = currentScene == nullptr;
+        bool isFirstStart = _currentScene == nullptr;
         if (scene->isPhysics()) {
             scene->initWithPhysics();
             scene->getPhysicsWorld()->setGravity(scene->getGravity());
+        } else {
+            scene->init();
         }
-        scene->updateLayers(currentScene);
-        if (currentScene) {
-            currentScene->onSceneClosing();
+        scene->updateLayers(_currentScene);
+        if (_currentScene) {
+            _currentScene->onSceneClosing();
         }
-        currentScene = scene;
+        _currentScene = scene;
         if (isFirstStart) {
             Director::getInstance()->runWithScene(scene);
         } else {
@@ -78,35 +79,11 @@ bool scenesFactoryInstance::runSceneWithParameters(const std::string& sceneName,
         }
         scene->onSceneLoading();
         initTaskLoading(scene);
-        scene->getDefaultCamera()->setName("CameraNode");
-        if (scene->isPhysics()) {
-#ifdef DEBUG
-            auto clb = [this]() {
-                if (!currentScene)
-                    return;
-                auto physicsDebugDraw = currentScene->isPhysicsDebugDraw();
-                auto label = STRING_FORMAT("Physics debug: %s", physicsDebugDraw ? "ON" : "OFF");
-                if (ImGui::Button(label.c_str())) {
-                    physicsDebugDraw = !physicsDebugDraw;
-                }
-                if (currentScene->isPhysicsDebugDraw() != physicsDebugDraw) {
-                    if (physicsDebugDraw)
-                        LOG_INFO("Enable physics debug for current scene.");
-                    else
-                        LOG_INFO("Disable physics debug for current scene.");
-                    if (!currentScene->isPhysics()) {
-                        LOG_ERROR("Physics in current scene is disabled!");
-                        return;
-                    }
-                    currentScene->setPhysicsDebugDraw(physicsDebugDraw);
-                    currentScene->getPhysicsWorld()->setDebugDrawMask(
-                      physicsDebugDraw ? cocos2d::PhysicsWorld::DEBUGDRAW_ALL : cocos2d::PhysicsWorld::DEBUGDRAW_NONE);
-                }
-            };
-            currentScene->getImGuiLayer()->addDebugModules({ "Physics debug: OFF", [clb]() {
-                                                                clb();
-                                                            } });
-#endif
+        if (auto camera = scene->getDefaultCamera()) {
+            camera->setName("CameraNode");
+        } else {
+            AX_ASSERT(0 && "Can't find the camera, probably scene wasn't inited.");
+            return false;
         }
         return true;
     }
@@ -117,11 +94,11 @@ bool scenesFactoryInstance::runScene(const std::string& sceneName) {
     return runSceneWithParameters(sceneName, {});
 }
 
-void scenesFactoryInstance::initTaskLoading(cocos2d::Node* node) {
-    if (auto item = dynamic_cast<taskHolder*>(node)) {
-        auto atp = cocos2d::AsyncTaskPool::getInstance();
-        atp->enqueue(cocos2d::AsyncTaskPool::TaskType::TASK_OTHER, [](void*) {}, nullptr, [item]() {
-            item->executeTasks();
-        });
-    }
+void scenesFactoryInstance::initTaskLoading(ax::Node* node) {
+//    if (auto item = dynamic_cast<taskHolder*>(node)) {
+//        auto atp = ax::AsyncTaskPool::getInstance();
+//        atp->enqueue(ax::AsyncTaskPool::TaskType::TASK_OTHER, [](void*) {}, nullptr, [item]() {
+//            item->executeTasks();
+//        });
+//    }
 }

@@ -1,6 +1,6 @@
 #include "armatureNode.h"
-#if defined(CC_BUILD_WITH_DRANGBONES) && CC_BUILD_WITH_DRANGBONES
-#include "generic/debugModule/logManager.h"
+#if defined(AX_BUILD_WITH_DRANGBONES) && AX_BUILD_WITH_DRANGBONES
+#include "generic/utilityModule/logManager.h"
 #include "generic/utilityModule/stringUtility.h"
 #include <map>
 
@@ -31,7 +31,7 @@ dragonBones::CCArmatureDisplay* armatureNode::getArmatureNode() {
     return nullptr;
 }
 
-void armatureNode::setAnimation(const std::string& name, std::function<void(cocos2d::EventCustom*)> clb) {
+void armatureNode::setAnimation(const std::string& name, std::function<void(ax::EventCustom*)> clb) {
     if (auto node = getArmatureNode()) {
         node->getAnimation()->fadeIn(name);
     } else {
@@ -39,28 +39,28 @@ void armatureNode::setAnimation(const std::string& name, std::function<void(coco
     }
 }
 
-void armatureNode::addChild(cocos2d::Node* child) {
+void armatureNode::addChild(ax::Node* child) {
     Node::addChild(child);
     if (auto armature = dynamic_cast<dragonBones::CCArmatureDisplay*>(child)) {
         boneNode = armature;
     }
 }
 
-void armatureNode::addChild(cocos2d::Node* child, int localZOrder) {
+void armatureNode::addChild(ax::Node* child, int localZOrder) {
     Node::addChild(child, localZOrder);
     if (auto armature = dynamic_cast<dragonBones::CCArmatureDisplay*>(child)) {
         boneNode = armature;
     }
 }
 
-void armatureNode::addChild(cocos2d::Node* child, int localZOrder, int tag) {
+void armatureNode::addChild(ax::Node* child, int localZOrder, int tag) {
     Node::addChild(child, localZOrder, tag);
     if (auto armature = dynamic_cast<dragonBones::CCArmatureDisplay*>(child)) {
         boneNode = armature;
     }
 }
 
-void armatureNode::addChild(cocos2d::Node* child, int localZOrder, const std::string& name) {
+void armatureNode::addChild(ax::Node* child, int localZOrder, const std::string& name) {
     Node::addChild(child, localZOrder, name);
     if (auto armature = dynamic_cast<dragonBones::CCArmatureDisplay*>(child)) {
         boneNode = armature;
@@ -71,7 +71,7 @@ void armatureNode::addChild(cocos2d::Node* child, int localZOrder, const std::st
  * Example usage:
  * node->setAnimationCallback(armatureNode::eArmatureState::COMPLETE, [](auto){});
  */
-void armatureNode::setAnimationCallback(armatureNode::eArmatureState state, std::function<void(cocos2d::EventCustom*)> clb) {
+void armatureNode::setAnimationCallback(armatureNode::eArmatureState state, std::function<void(ax::EventCustom*)> clb) {
     if (auto node = getArmatureNode()) {
         if (auto eventType = getEventType(state)) {
             setEventsEnabled(true);
@@ -118,11 +118,11 @@ const char* armatureNode::getEventType(armatureNode::eArmatureState state) {
  * node->setCustomAnimationCallback("eventAttack", [](auto){});
  * "eventAttack" is custom event from dragonbones timeline
  */
-void armatureNode::setCustomAnimationCallback(const std::string& eventName, const std::function<void(cocos2d::EventCustom*)>& clb) {
+void armatureNode::setCustomAnimationCallback(const std::string& eventName, const std::function<void(ax::EventCustom*)>& clb) {
     if (auto node = getArmatureNode()) {
         setEventsEnabled(true);
         customCallbacksMap[eventName] = clb;
-        node->getEventDispatcher()->addCustomEventListener(dragonBones::EventObject::FRAME_EVENT, [this](cocos2d::EventCustom* event) {
+        node->getEventDispatcher()->addCustomEventListener(dragonBones::EventObject::FRAME_EVENT, [this](ax::EventCustom* event) {
             if (auto data = static_cast<dragonBones::EventObject*>(event->getUserData())) {
                 auto find = customCallbacksMap.find(data->name);
                 if (find != customCallbacksMap.end()) {

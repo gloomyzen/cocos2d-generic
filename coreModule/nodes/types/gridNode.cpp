@@ -49,7 +49,7 @@ gridNode::eGridAlignY gridNode::getGridAlignYByString(const std::string& type) {
 void gridNode::updateGridTransform() {
     auto startPos = getPosition();
     auto containerSize = getContentSize();
-    cocos2d::Vec2 pos = { static_cast<float>(paddingX.first), static_cast<float>(paddingX.second) };
+    ax::Vec2 pos = { static_cast<float>(paddingX.first), static_cast<float>(paddingX.second) };
     pos.y -= marginY.first;
     pos.x += marginX.first;
     for (const auto& child : getChildren()) {

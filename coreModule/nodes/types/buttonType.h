@@ -1,11 +1,13 @@
+#pragma once
 #ifndef GENERIC_BUTTONTYPE_H
 #define GENERIC_BUTTONTYPE_H
 
-#include "cocos/ui/CocosGUI.h"
-#include "cocos2d.h"
+#include "ui/CocosGUI.h"
+#include "axmol.h"
 #include "generic/coreModule/nodes/types/eventNode.h"
 #include "generic/coreModule/scenes/sceneInterface.h"
 #include "generic/coreModule/scenes/scenesFactoryInstance.h"
+#include "generic/coreModule/components/transformComponent.h"
 #include "generic/utilityModule/convertUtility.h"
 #include <functional>
 #include <string>
@@ -26,17 +28,17 @@ namespace generic::coreModule {
 
         ~buttonType() {}
         void initListener() {
-            if (auto node = dynamic_cast<cocos2d::Node*>(this)) {
+            if (auto node = dynamic_cast<ax::Node*>(this)) {
                 node->setCascadeColorEnabled(true);
             }
-            listener = cocos2d::EventListenerTouchOneByOne::create();
+            listener = ax::EventListenerTouchOneByOne::create();
             listener->setSwallowTouches(true);
-            listener->onTouchBegan = [this](cocos2d::Touch* touch, cocos2d::Event* event){
+            listener->onTouchBegan = [this](ax::Touch* touch, ax::Event* event){
                 auto node = event->getCurrentTarget();
                 if (auto body = node->getPhysicsBody()) {
                     auto touchPos = touch->getStartLocation();
                     auto shapes = body->getShapes();
-                    auto find = std::find_if(shapes.begin(), shapes.end(), [&](cocos2d::PhysicsShape* shape){
+                    auto find = std::find_if(shapes.begin(), shapes.end(), [&](ax::PhysicsShape* shape){
                         return shape->containsPoint(touchPos);
                     });
                     if (!shapes.empty() && find == shapes.end()) {
@@ -48,8 +50,10 @@ namespace generic::coreModule {
                     boundingBox.origin.x += boundingBox.size.width * node->getAnchorPoint().x;
                     boundingBox.origin.y += boundingBox.size.height * node->getAnchorPoint().y;
                     if (node->getParent()) {
-                        boundingBox.origin.x -= node->getParent()->getContentSize().width * node->getPivotPoint().x;
-                        boundingBox.origin.y -= node->getParent()->getContentSize().height * node->getPivotPoint().y;
+                        if (auto transform = dynamic_cast<transformComponent*>(node->getComponent(transformComponent::TRANSFORM_COMPONENT_NAME))) {
+                            boundingBox.origin.x -= node->getParent()->getContentSize().width * transform->getPivotPoint().x;
+                            boundingBox.origin.y -= node->getParent()->getContentSize().height * transform->getPivotPoint().y;
+                        }
                     }
                     bool correctNode = boundingBox.containsPoint(touchLocation);
                     if (!correctNode)
@@ -67,32 +71,32 @@ namespace generic::coreModule {
                 defaultColor = node->getColor();
                 if (changeColorByClick) {
                     auto nextColor = utilityModule::convertUtility::changeColorByPercent(defaultColor, 0.93);
-                    auto clickAction = cocos2d::TintTo::create(0.01f, nextColor);
-                    auto seq = cocos2d::Sequence::create(clickAction, nullptr);
+                    auto clickAction = ax::TintTo::create(0.01f, nextColor);
+                    auto seq = ax::Sequence::create(clickAction, nullptr);
                     seq->setTag(static_cast<int>(buttonType::eButtonStatus::START_CLICK));
                     node->runAction(seq);
                 } else {
-                    auto waitAction = cocos2d::DelayTime::create(0.01f);
-                    auto seq = cocos2d::Sequence::create(waitAction, nullptr);
+                    auto waitAction = ax::DelayTime::create(0.01f);
+                    auto seq = ax::Sequence::create(waitAction, nullptr);
                     seq->setTag(static_cast<int>(buttonType::eButtonStatus::START_CLICK));
                     node->runAction(seq);
                 }
                 moveTimes = 0;
                 return true;
             };
-            listener->onTouchMoved = [this](cocos2d::Touch* touch, cocos2d::Event* event){
+            listener->onTouchMoved = [this](ax::Touch* touch, ax::Event* event){
                 ++moveTimes;
                 return true;
             };
-            listener->onTouchCancelled = listener->onTouchEnded = [this](cocos2d::Touch* touch, cocos2d::Event* event){
+            listener->onTouchCancelled = listener->onTouchEnded = [this](ax::Touch* touch, ax::Event* event){
                 auto node = event->getCurrentTarget();
                 if (!getAllowClick()) {
                     return false;
                 }
 
                 auto currentAction = node->getActionByTag(static_cast<int>(buttonType::eButtonStatus::START_CLICK));
-                auto actionSeq = dynamic_cast<cocos2d::Sequence*>(currentAction);
-                auto clb = cocos2d::CallFunc::create([this]() {
+                auto actionSeq = dynamic_cast<ax::Sequence*>(currentAction);
+                auto clb = ax::CallFunc::create([this]() {
                     if (auto fn = getOnTouchEnded()) {
                         if (moveTimes < 8) {
                             fn();
@@ -100,23 +104,23 @@ namespace generic::coreModule {
                     }
                 });
                 if (changeColorByClick) {
-                    auto fadeOut = cocos2d::TintTo::create(0.1f, defaultColor);
+                    auto fadeOut = ax::TintTo::create(0.1f, defaultColor);
                     if (actionSeq != nullptr && !actionSeq->isDone()) {
-                        auto seq = cocos2d::Sequence::create(actionSeq, fadeOut, clb, nullptr);
+                        auto seq = ax::Sequence::create(actionSeq, fadeOut, clb, nullptr);
                         seq->setTag(static_cast<int>(buttonType::eButtonStatus::END_CLICK));
                         node->runAction(seq);
                     } else {
-                        auto seq = cocos2d::Sequence::create(fadeOut, clb, nullptr);
+                        auto seq = ax::Sequence::create(fadeOut, clb, nullptr);
                         seq->setTag(static_cast<int>(buttonType::eButtonStatus::END_CLICK));
                         node->runAction(seq);
                     }
                 } else {
                     if (actionSeq != nullptr && !actionSeq->isDone()) {
-                        auto seq = cocos2d::Sequence::create(actionSeq, clb, nullptr);
+                        auto seq = ax::Sequence::create(actionSeq, clb, nullptr);
                         seq->setTag(static_cast<int>(buttonType::eButtonStatus::END_CLICK));
                         node->runAction(seq);
                     } else {
-                        auto seq = cocos2d::Sequence::create(clb, nullptr);
+                        auto seq = ax::Sequence::create(clb, nullptr);
                         seq->setTag(static_cast<int>(buttonType::eButtonStatus::END_CLICK));
                         node->runAction(seq);
                     }
@@ -132,13 +136,13 @@ namespace generic::coreModule {
         void setChangeColorByClick(bool value) { changeColorByClick = value; }
 
     private:
-        cocos2d::EventListenerTouchOneByOne* listener = nullptr;
+        ax::EventListenerTouchOneByOne* listener = nullptr;
         bool allowSpamTap = false;
         bool allowClick = true;
         bool changeColorByClick = true;
 
     protected:
-        cocos2d::Color3B defaultColor;
+        ax::Color3B defaultColor;
         int moveTimes = 0;
     };
 }

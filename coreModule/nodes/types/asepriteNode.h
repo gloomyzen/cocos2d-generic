@@ -1,7 +1,8 @@
+#pragma once
 #ifndef GENERIC_ASEPRITENODE_H
 #define GENERIC_ASEPRITENODE_H
 
-#include "cocos2d.h"
+#include "axmol.h"
 #include "generic/utilityModule/jsonHelper.h"
 #include <functional>
 #include <utility>
@@ -11,7 +12,7 @@
 
 namespace generic::coreModule {
 
-    class asepriteNode : public cocos2d::Sprite {
+    class asepriteNode : public ax::Sprite {
     public:
         struct sAnimFrame {
             sAnimFrame() = default;
@@ -29,7 +30,7 @@ namespace generic::coreModule {
         bool load(const jsonObject& object, const std::string& path);
         bool hasAnimation(const std::string& name);
         bool setAnimation(const std::string& name, bool loop = false);
-        void setUsePixelMode(bool value) override;
+//        void setUsePixelMode(bool value) override; //todo fix this
     private:
         bool loadFrames(const jsonObject& object, const std::map<std::string, std::pair<int, int>>& anim, const std::string& fullPath);
         std::map<std::string, std::vector<std::shared_ptr<sAnimFrame>>> animationsMap;

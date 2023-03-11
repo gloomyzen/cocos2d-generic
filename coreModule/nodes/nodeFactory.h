@@ -1,7 +1,8 @@
+#pragma once
 #ifndef GENERIC_NODEFACTORY_H
 #define GENERIC_NODEFACTORY_H
 
-#include "cocos2d.h"
+#include "axmol.h"
 #include "generic/coreModule/nodes/propertyTypes/propertyInterface.h"
 #include "generic/utilityModule/jsonHelper.h"
 #include <functional>
@@ -19,10 +20,10 @@ namespace generic::coreModule {
         static nodeFactory& getInstance();
         static void cleanup();
 
-        void readProperty(cocos2d::Node* node, const std::string& propertyName, const jsonObject& json);
+        void readProperty(ax::Node* node, const std::string& propertyName, const jsonObject& json);
         bool hasRegisteredProperty(const std::string& propertyName);
-        cocos2d::Node* createNodeWithType(const std::string& type);
-        bool registerCustomNodeType(const std::string&, std::function<cocos2d::Node*()>);
+        ax::Node* createNodeWithType(const std::string& type);
+        bool registerCustomNodeType(const std::string&, std::function<ax::Node*()>);
         const std::vector<std::string>& getPropertiesPriority() { return propertyPriorityList; }
     private:
         nodeFactory();
@@ -34,7 +35,7 @@ namespace generic::coreModule {
         static nodeFactory* pInstance;
         static bool destroyed;
 
-        std::map<std::string, std::function<cocos2d::Node*()>> nodes;
+        std::map<std::string, std::function<ax::Node*()>> nodes;
         std::map<std::string, propertyInterface*> propertiesMap;
         std::vector<std::string> propertyPriorityList;
     };

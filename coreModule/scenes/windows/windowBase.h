@@ -1,7 +1,8 @@
+#pragma once
 #ifndef GENERIC_WINDOWBASE_H
 #define GENERIC_WINDOWBASE_H
 
-#include "cocos2d.h"
+#include "axmol.h"
 #include "generic/coreModule/nodes/nodeProperties.h"
 #include "generic/coreModule/nodes/types/soundButton.h"
 #include "generic/coreModule/signals/signalHolder.h"

@@ -1,7 +1,8 @@
+#pragma once
 #ifndef GENERIC_LABELPROPERTY_H
 #define GENERIC_LABELPROPERTY_H
 
-#include "cocos2d.h"
+#include "axmol.h"
 #include "generic/utilityModule/jsonHelper.h"
 #include "propertyInterface.h"
 #include <string>
@@ -12,11 +13,11 @@ namespace generic::coreModule {
     public:
         labelProperty(const std::string& _propertyName) : propertyInterface(_propertyName) {}
 
-        void parseProperty(cocos2d::Node* node, const jsonObject& object) override;
+        void parseProperty(ax::Node* node, const jsonObject& object) override;
 
     private:
         static std::string defaultFont;
-        static std::map<std::string, cocos2d::TextHAlignment> textHAlignmentTypes;
+        static std::map<std::string, ax::TextHAlignment> textHAlignmentTypes;
     };
 }// namespace generic::coreModule
 

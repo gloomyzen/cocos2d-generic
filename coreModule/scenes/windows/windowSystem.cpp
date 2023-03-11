@@ -1,17 +1,19 @@
 #include "windowSystem.h"
 #include "generic/coreModule/scenes/windows/windowBase.h"
-#include "generic/debugModule/logManager.h"
+#include "generic/utilityModule/logManager.h"
 #include "generic/utilityModule/stringUtility.h"
+#include "generic/coreModule/components/transformComponent.h"
 #include <algorithm>
 
 using namespace generic::coreModule;
-using namespace cocos2d;
+using namespace ax;
 
 windowSystem::windowSystem() {
     this->setName("windowViewer");
-    this->setStretch(1.f, 1.f);
     this->setAnchorPoint({ 0.5f, 0.5f });
-    this->setPivotPoint({ 0.5f, 0.5f });
+    auto transform = transformComponent::attachAndGetTransformComponent(this);
+    transform->setStretch(1.f, 1.f);
+    transform->setPivotPoint({ 0.5f, 0.5f });
 }
 
 void windowSystem::registerWindow(const std::string& name, const std::function<windowBase*()>& clb) {

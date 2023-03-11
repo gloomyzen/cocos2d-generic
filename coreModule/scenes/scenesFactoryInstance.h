@@ -1,7 +1,8 @@
+#pragma once
 #ifndef GENERIC_SCENESFACTORYINSTANCE_H
 #define GENERIC_SCENESFACTORYINSTANCE_H
 
-#include "cocos2d.h"
+#include "axmol.h"
 #include "generic/coreModule/scenes/layersEnum.h"
 #include <functional>
 #include <map>
@@ -21,8 +22,8 @@ namespace generic::coreModule {
         bool isSceneRegistered(const std::string& sceneName);
         bool registerScene(const std::string& sceneName, const std::function<sceneInterface*()>& clb);
         bool runScene(const std::string& sceneName);
-        sceneInterface* getCurrentScene() { return currentScene; }
-        bool runSceneWithParameters(const std::string& sceneName, const cocos2d::ValueMap& values);
+        sceneInterface* getCurrentScene() { return _currentScene; }
+        bool runSceneWithParameters(const std::string& sceneName, const ax::ValueMap& values);
 
     private:
         scenesFactoryInstance() = default;
@@ -32,13 +33,13 @@ namespace generic::coreModule {
         static void create();
         static void onDeadReference();
 
-        static scenesFactoryInstance* pInstance;
-        static bool destroyed;
+        static scenesFactoryInstance* _pInstance;
+        static bool _destroyed;
 
-        void initTaskLoading(cocos2d::Node* node);
+        void initTaskLoading(ax::Node* node);
 
-        std::map<std::string, std::function<sceneInterface*()>> scenesMap;
-        sceneInterface* currentScene = nullptr;
+        std::map<std::string, std::function<sceneInterface*()>> _scenesMap;
+        sceneInterface* _currentScene = nullptr;
     };
 }// namespace generic::coreModule
 

@@ -1,5 +1,5 @@
 #include "settingManager.h"
-#include "generic/debugModule/logManager.h"
+#include "generic/utilityModule/logManager.h"
 #include "generic/utilityModule/findUtility.h"
 #include "generic/utilityModule/jsonHelper.h"
 
@@ -15,7 +15,7 @@ void settingManager::load() {
     auto defaultResolution = std::make_shared<sDisplaySize>(sDisplaySize("default", 1024.f, 768.f, 1.f));
 
     // load json
-    const std::string& regionStr = cocos2d::FileUtils::getInstance()->getStringFromFile("config/setting.json");
+    const std::string& regionStr = ax::FileUtils::getInstance()->getStringFromFile("config/setting.json");
     rapidjson::Document doc;
     doc.Parse<0>(regionStr.c_str());
 
@@ -82,10 +82,10 @@ std::shared_ptr<sDisplaySize> settingManager::getSizeByName(const std::string& n
     return nullptr;
 }
 
-void settingManager::init(bool isMobile, const std::string& settingName) {
+bool settingManager::init(bool isMobile, const std::string& settingName) {
     if (isMobile) {
         using namespace generic::utilityModule;
-        auto director = cocos2d::Director::getInstance();
+        auto director = ax::Director::getInstance();
         auto glView = director->getOpenGLView();
         auto currentRes = glView->getDesignResolutionSize();
         auto current = currentRes.height / currentRes.width;
@@ -110,11 +110,14 @@ void settingManager::init(bool isMobile, const std::string& settingName) {
             currentSize = resolution;
         } else {
             LOG_ERROR("Can't detect valid resolution!");
+            return false;
         }
     }
     if (currentSize == nullptr) {
         LOG_ERROR("Can't detect valid resolution!");
+        return false;
     }
+    return true;
 }
 
 std::shared_ptr<sDisplaySize> settingManager::getCurrentSize() {

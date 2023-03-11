@@ -1,21 +1,21 @@
 #include "scrollViewProperty.h"
-#include "generic/debugModule/logManager.h"
+#include "generic/utilityModule/logManager.h"
 #include "generic/utilityModule/stringUtility.h"
 #include "ui/CocosGUI.h"
 
 using namespace generic::coreModule;
 
-std::map<std::string, cocos2d::ui::ScrollView::Direction> scrollViewProperty::scrollDirectionsMap = {
-    {"none", cocos2d::ui::ScrollView::Direction::NONE},
-    {"horizontal", cocos2d::ui::ScrollView::Direction::HORIZONTAL},
-    {"vertical", cocos2d::ui::ScrollView::Direction::VERTICAL},
-    {"both", cocos2d::ui::ScrollView::Direction::BOTH}
+std::map<std::string, ax::ui::ScrollView::Direction> scrollViewProperty::scrollDirectionsMap = {
+    {"none", ax::ui::ScrollView::Direction::NONE},
+    {"horizontal", ax::ui::ScrollView::Direction::HORIZONTAL},
+    {"vertical", ax::ui::ScrollView::Direction::VERTICAL},
+    {"both", ax::ui::ScrollView::Direction::BOTH}
 };
 
-void scrollViewProperty::parseProperty(cocos2d::Node* node, const jsonObject& object) {
-    if (auto scrollNode = dynamic_cast<cocos2d::ui::ScrollView*>(node)) {
+void scrollViewProperty::parseProperty(ax::Node* node, const jsonObject& object) {
+    if (auto scrollNode = dynamic_cast<ax::ui::ScrollView*>(node)) {
         // direction
-        auto direction = cocos2d::ui::ScrollView::Direction::NONE;
+        auto direction = ax::ui::ScrollView::Direction::NONE;
         if (object.HasMember("direction") && object["direction"].IsString()) {
             std::string conf = object["direction"].GetString();
             if (scrollDirectionsMap.count(conf)) {
@@ -29,12 +29,12 @@ void scrollViewProperty::parseProperty(cocos2d::Node* node, const jsonObject& ob
             bounce = object["bounce"].GetBool();
         }
         scrollNode->setBounceEnabled(bounce);
-        if (object.HasMember("bounceOffset") && object["bounceOffset"].IsArray()) {
-            auto tempArray = object["bounceOffset"].GetArray();
-            if (tempArray[0].IsNumber() && tempArray[1].IsNumber()) {
-                scrollNode->setBounceOffset(tempArray[0].GetFloat(), tempArray[1].GetFloat());
-            }
-        }
+//        if (object.HasMember("bounceOffset") && object["bounceOffset"].IsArray()) {
+//            auto tempArray = object["bounceOffset"].GetArray();
+//            if (tempArray[0].IsNumber() && tempArray[1].IsNumber()) {
+//                scrollNode->setBounceOffset(tempArray[0].GetFloat(), tempArray[1].GetFloat());
+//            }
+//        }
         // scroll bar
         bool scrollBar = false;
         if (object.HasMember("scrollBar") && object["scrollBar"].IsBool()) {
@@ -51,7 +51,7 @@ void scrollViewProperty::parseProperty(cocos2d::Node* node, const jsonObject& ob
         if (object.HasMember("containerSize") && object["containerSize"].IsArray()) {
             auto containerSize = object["containerSize"].GetArray();
             if (containerSize.Size() == 2u) {
-                cocos2d::Size innerSize;
+                ax::Size innerSize;
                 innerSize.width = containerSize[0].GetFloat();
                 innerSize.height = containerSize[1].GetFloat();
                 scrollNode->setInnerContainerSize(innerSize);
@@ -61,18 +61,18 @@ void scrollViewProperty::parseProperty(cocos2d::Node* node, const jsonObject& ob
         if (object.HasMember("scrollPosPercent") && object["scrollPosPercent"].IsArray()) {
             auto scrollPosPercent = object["scrollPosPercent"].GetArray();
             if (scrollPosPercent.Size() == 2u) {
-                cocos2d::Vec2 jumpPos;
+                ax::Vec2 jumpPos;
                 jumpPos.x = scrollPosPercent[0].GetFloat();
                 jumpPos.y = scrollPosPercent[1].GetFloat();
                 switch (direction) {
-                case cocos2d::ui::ScrollView::Direction::VERTICAL:
+                case ax::ui::ScrollView::Direction::VERTICAL:
                     scrollNode->jumpToPercentVertical(jumpPos.y);
                     break;
-                case cocos2d::ui::ScrollView::Direction::HORIZONTAL:
+                case ax::ui::ScrollView::Direction::HORIZONTAL:
                     scrollNode->jumpToPercentHorizontal(jumpPos.x);
                     break;
-                case cocos2d::ui::ScrollView::Direction::BOTH:
-                case cocos2d::ui::ScrollView::Direction::NONE:
+                case ax::ui::ScrollView::Direction::BOTH:
+                case ax::ui::ScrollView::Direction::NONE:
                     scrollNode->jumpToPercentBothDirection(jumpPos);
                     break;
                 }

@@ -1,7 +1,8 @@
+#pragma once
 #ifndef GENERIC_STRINGUTILITY_H
 #define GENERIC_STRINGUTILITY_H
 
-#include "cocos2d.h"
+#include "axmol.h"
 #include <algorithm>
 #include <cctype>
 #include <clocale>
@@ -12,7 +13,7 @@
 #include <utility>
 #include <vector>
 
-#define STRING_FORMAT(string, ...) cocos2d::StringUtils::format(string, ##__VA_ARGS__)
+#define STRING_FORMAT(string, ...) ax::StringUtils::format(string, ##__VA_ARGS__)
 #define CSTRING_FORMAT(string, ...) generic::utilityModule::stringToChar(STRING_FORMAT(string, ##__VA_ARGS__))
 
 

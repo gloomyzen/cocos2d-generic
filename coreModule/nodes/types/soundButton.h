@@ -1,7 +1,8 @@
+#pragma once
 #ifndef GENERIC_SOUNDBUTTON_H
 #define GENERIC_SOUNDBUTTON_H
 
-#include "cocos2d.h"
+#include "axmol.h"
 #include "generic/coreModule/nodes/nodeProperties.h"
 #include "generic/coreModule/nodes/types/buttonType.h"
 #include "generic/coreModule/nodes/types/eventNode.h"
@@ -11,7 +12,7 @@
 namespace generic::coreModule {
 
     class soundButton
-      : public generic::coreModule::buttonType<cocos2d::Sprite>
+      : public generic::coreModule::buttonType<ax::Sprite>
       , public generic::coreModule::nodeProperties {
     public:
         soundButton();

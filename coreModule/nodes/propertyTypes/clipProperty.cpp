@@ -1,16 +1,16 @@
 #include "clipProperty.h"
-#include "generic/debugModule/logManager.h"
+#include "generic/utilityModule/logManager.h"
 #include "generic/utilityModule/stringUtility.h"
-#include <generic/coreModule/nodes/types/drawNodeBase.h>
+#include "generic/coreModule/nodes/types/drawNodeBase.h"
 
 using namespace generic::coreModule;
 
 
-void clipProperty::parseProperty(cocos2d::Node* node, const jsonObject& object) {
-    if (auto clipNode = dynamic_cast<cocos2d::ClippingNode*>(node)) {
+void clipProperty::parseProperty(ax::Node* node, const jsonObject& object) {
+    if (auto clipNode = dynamic_cast<ax::ClippingNode*>(node)) {
         bool inverted = false;
         bool autoUpdate = false;
-        auto stencilColor = cocos2d::Color4F::BLACK;
+        auto stencilColor = ax::Color4F::BLACK;
         if (object.HasMember("inverted") && object["inverted"].IsBool()) {
             inverted = object["inverted"].GetBool();
         }
@@ -20,7 +20,7 @@ void clipProperty::parseProperty(cocos2d::Node* node, const jsonObject& object) 
         if (object.HasMember("color") && object["color"].IsArray()) {
             auto color = object["color"].GetArray();
             if (color.Size() == 4u) {
-                cocos2d::Color4F rgba;
+                ax::Color4F rgba;
                 rgba.r = color[0].GetFloat() / 255;
                 rgba.g = color[1].GetFloat() / 255;
                 rgba.b = color[2].GetFloat() / 255;
@@ -35,9 +35,9 @@ void clipProperty::parseProperty(cocos2d::Node* node, const jsonObject& object) 
 //            stencil->setName(name);
 //            if (allProperties.HasMember(name) && allProperties[name].IsObject()) {
 //                auto nodeObj = allProperties[name].GetObject();
-//                if (nodeObj.HasMember("transformProperty") && nodeObj["transformProperty"].IsObject()) {
-//                    auto componentObj = nodeObj["transformProperty"].GetObject();
-//                    readComponent(stencil, "transformProperty", componentObj, allProperties);
+//                if (nodeObj.HasMember("baseProperty") && nodeObj["baseProperty"].IsObject()) {
+//                    auto componentObj = nodeObj["baseProperty"].GetObject();
+//                    readComponent(stencil, "baseProperty", componentObj, allProperties);
 //                }
 //            }
 //            clipNode->setInverted(inverted);
@@ -47,8 +47,8 @@ void clipProperty::parseProperty(cocos2d::Node* node, const jsonObject& object) 
 //        } else {
 //            LOG_ERROR(STRING_FORMAT("Component '%s' has invalid nodeName!", componentName.c_str()));
 //        }
-        auto stencil = drawNodeBase::create();
-        stencil->drawSolidRect(cocos2d::Vec2::ZERO, clipNode->getContentSize(), stencilColor);
+        auto stencil = ax::utils::createInstance<drawNodeBase>();
+        stencil->drawSolidRect(ax::Vec2::ZERO, clipNode->getContentSize(), stencilColor);
         clipNode->setStencil(stencil);
 //        clipNode->addChild(stencil);
         stencil->setDrawColor(stencilColor);

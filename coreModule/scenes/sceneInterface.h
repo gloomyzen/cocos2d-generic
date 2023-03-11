@@ -1,100 +1,66 @@
+#pragma once
 #ifndef GENERIC_SCENEINTERFACE_H
 #define GENERIC_SCENEINTERFACE_H
 
-#include "cocos2d.h"
+#include "axmol.h"
 #include "layersEnum.h"
 #include "generic/coreModule/scenes/windows/windowSystem.h"
-#include "generic/debugModule/imGuiLayer.h"
+#include <vector>
+#include <tuple>
 
 namespace generic::coreModule {
-    class sceneInterface : public cocos2d::Scene {
+    class sceneInterface : public ax::Scene {
     public:
-        sceneInterface() {
-            initLayerColor(cocos2d::Color3B::BLACK);
-        }
+        sceneInterface();
 
         virtual ~sceneInterface() {}
 
         virtual void onSceneLoading();
         virtual void onSceneClosing();
 
+        void onEnter() override;
+
         void setPhysics(bool value) {
-            physics = value;
+            _physics = value;
         }
         bool isPhysics() const {
-            return physics;
+            return _physics;
         }
-        void setGravity(cocos2d::Vec2 value) {
-            defaultGravity = value;
+        void setGravity(ax::Vec2 value) {
+            _defaultGravity = value;
         }
-        cocos2d::Vec2 getGravity() {
-            return defaultGravity;
+        ax::Vec2 getGravity() {
+            return _defaultGravity;
         }
-        void initLayerColor(cocos2d::Color3B color) {
-            if (!bgLayer) {
-                bgLayer = new cocos2d::LayerColor();
-                bgLayer->setContentSize(cocos2d::Director::getInstance()->getVisibleSize());
-                this->addChild(bgLayer, static_cast<int>(eGameLayers::BACKGROUND));
+        void initLayerColor(ax::Color3B color) {
+            if (!_bgLayer) {
+                _bgLayer = new ax::LayerColor();
+                _bgLayer->setContentSize(ax::Director::getInstance()->getVisibleSize());
+                this->addChild(_bgLayer, static_cast<int>(eGameLayers::BACKGROUND));
             }
-            bgLayer->setColor(color);
+            _bgLayer->setColor(color);
         }
         void updateLayers(sceneInterface* prevScene) {
-            // update imGuiLayer
-#ifdef DEBUG
-            if (!prevScene || !prevScene->imGuiLayer) {
-                /// insert debug layer
-                imGuiLayer = generic::debugModule::imGuiLayer::create();
-                this->addChild(imGuiLayer, eGameLayers::DEBUG_LAYER);
-            } else {
-                prevScene->imGuiLayer->retain();
-                prevScene->removeChild(prevScene->imGuiLayer, true);
-                this->addChild(prevScene->imGuiLayer, eGameLayers::DEBUG_LAYER);
-                imGuiLayer = prevScene->imGuiLayer;
-                prevScene->imGuiLayer = nullptr;
-            }
-#endif
-            windowViewer = new windowSystem();
-            this->addChild(windowViewer, eGameLayers::WINDOW);
+            _windowViewer = new windowSystem();
+            this->addChild(_windowViewer, eGameLayers::WINDOW);
         }
         void setFadeTransition(float value) {
-            fadeTransitionTime = value;
+            _fadeTransitionTime = value;
         }
         float getFadeTransition() const {
-            return fadeTransitionTime;
+            return _fadeTransitionTime;
         }
-        generic::debugModule::imGuiLayer* getImGuiLayer() {
-#ifdef DEBUG
-            return imGuiLayer;
-#else
-            return nullptr;
-#endif
-        }
-        windowSystem* getWindowSystem() { return windowViewer; }
-        bool isPhysicsDebugDraw() {
-#ifdef DEBUG
-            return physicsDebugDraw;
-#else
-            return false;
-#endif
-        }
-        void setPhysicsDebugDraw(bool value) {
-#ifdef DEBUG
-            physicsDebugDraw = value;
-#endif
-        }
-        void setValues(const cocos2d::ValueMap& value) { sceneData = value; }
+        windowSystem* getWindowSystem() { return _windowViewer; }
+        void setValues(const ax::ValueMap& value) {
+            _sceneData = value; }
 
     protected:
-        bool physics = false;
-        cocos2d::Vec2 defaultGravity = { 0.f, 0.f };
-        cocos2d::LayerColor* bgLayer = nullptr;
-        windowSystem* windowViewer = nullptr;
-        float fadeTransitionTime = .1f;
-        cocos2d::ValueMap sceneData;
-#ifdef DEBUG
-        generic::debugModule::imGuiLayer* imGuiLayer = nullptr;
-        bool physicsDebugDraw = false;
-#endif
+        bool _physics = false;
+        ax::Vec2 _defaultGravity = { 0.f, 0.f };
+        ax::LayerColor* _bgLayer = nullptr;
+        windowSystem* _windowViewer = nullptr;
+        float _fadeTransitionTime = .4f;
+        ax::ValueMap _sceneData;
     };
 }// namespace generic::coreModule
 

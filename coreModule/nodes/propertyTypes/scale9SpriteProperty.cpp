@@ -1,14 +1,14 @@
 #include "scale9SpriteProperty.h"
-#include "generic/debugModule/logManager.h"
+#include "generic/utilityModule/logManager.h"
 #include "generic/utilityModule/stringUtility.h"
 #include "ui/CocosGUI.h"
 
 using namespace generic::coreModule;
 
 
-void scale9SpriteProperty::parseProperty(cocos2d::Node* node, const jsonObject& object) {
-    if (auto scaleSprite = dynamic_cast<cocos2d::ui::Scale9Sprite*>(node)) {
-        cocos2d::Rect sliceRect = cocos2d::Rect::ZERO;
+void scale9SpriteProperty::parseProperty(ax::Node* node, const jsonObject& object) {
+    if (auto scaleSprite = dynamic_cast<ax::ui::Scale9Sprite*>(node)) {
+        ax::Rect sliceRect = ax::Rect::ZERO;
         if (object.HasMember("image") && object["image"].IsString()) {
             std::string imagePath;
             imagePath = object["image"].GetString();
@@ -35,7 +35,7 @@ void scale9SpriteProperty::parseProperty(cocos2d::Node* node, const jsonObject& 
             scaleSprite->setCapInsets(sliceRect);
         }
         if (object.HasMember("size") && object["size"].IsArray()) {
-            auto _size = cocos2d::Size();
+            auto _size = ax::Size();
             auto size = object["size"].GetArray();
             if (size.Size() == 2u) {
                 _size.width = size[0].GetFloat();
@@ -44,11 +44,11 @@ void scale9SpriteProperty::parseProperty(cocos2d::Node* node, const jsonObject& 
             }
         }
     }
-    else if (auto sprite = dynamic_cast<cocos2d::Sprite*>(node)) {
-        auto tempSprite = new cocos2d::ui::Scale9Sprite();
+    else if (auto sprite = dynamic_cast<ax::Sprite*>(node)) {
+        auto tempSprite = new ax::ui::Scale9Sprite();
         parseProperty(tempSprite, object);
-        tempSprite->setAnchorPoint(cocos2d::Vec2::ZERO);
-        auto rTarget = cocos2d::RenderTexture::create(tempSprite->getContentSize().width, tempSprite->getContentSize().height);
+        tempSprite->setAnchorPoint(ax::Vec2::ZERO);
+        auto rTarget = ax::RenderTexture::create(tempSprite->getContentSize().width, tempSprite->getContentSize().height);
         rTarget->begin();
         tempSprite->visit();
         rTarget->end();
@@ -58,8 +58,8 @@ void scale9SpriteProperty::parseProperty(cocos2d::Node* node, const jsonObject& 
         } else {
             LOG_ERROR(CSTRING_FORMAT("Can not get texture from render target."));
         }
-        CC_SAFE_RETAIN(tempSprite);
-        CC_SAFE_RETAIN(rTarget);
+        AX_SAFE_RETAIN(tempSprite);
+        AX_SAFE_RETAIN(rTarget);
     }
     else {
         LOG_ERROR(CSTRING_FORMAT("Node '%s' no has scale9Sprite property!", propertyName.c_str()));

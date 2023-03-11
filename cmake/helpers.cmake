@@ -15,3 +15,13 @@ function(MakeReadableListOfSources sources)
     endforeach()
     SET(${sources} ${result} PARENT_SCOPE)
 endfunction()
+
+function(AddCurrentSourcesPathToList sources)
+    set(imgui_sources)
+    foreach(source ${${sources}})
+        list(APPEND imgui_sources
+            ${CMAKE_CURRENT_SOURCE_DIR}/${source}
+        )
+    endforeach()
+    SET(${sources} ${imgui_sources} PARENT_SCOPE)
+endfunction()

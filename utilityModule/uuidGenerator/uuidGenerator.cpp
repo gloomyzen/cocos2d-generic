@@ -1,6 +1,6 @@
 #include "uuidGenerator.h"
 #include "uuid.h"
-#include "cocos2d.h"
+#include "axmol.h"
 
 using namespace generic::utilityModule;
 
@@ -43,5 +43,5 @@ void uuidGenerator::create() {
 }
 
 void uuidGenerator::onDeadReference() {
-    CCASSERT(false, "Founded dead reference!");
+    AXASSERT(false, "Founded dead reference!");
 }

@@ -1,17 +1,18 @@
 #include "transformProperty.h"
-#include "generic/debugModule/logManager.h"
+#include "generic/utilityModule/logManager.h"
 #include "generic/utilityModule/stringUtility.h"
+#include "generic/coreModule/components/transformComponent.h"
 
 using namespace generic::coreModule;
 
 
-void transformProperty::parseProperty(cocos2d::Node* node, const jsonObject& object) {
+void baseProperty::parseProperty(ax::Node* node, const jsonObject& object) {
     if (object.HasMember("position")) {
         auto positions = object["position"].GetArray();
         if (positions.Size() == 2u) {
             node->setPosition(positions[0].GetFloat(), positions[1].GetFloat());
         } else if (positions.Size() == 3u) {
-            node->setPosition3D(cocos2d::Vec3(positions[0].GetFloat(), positions[1].GetFloat(), positions[2].GetFloat()));
+            node->setPosition3D(ax::Vec3(positions[0].GetFloat(), positions[1].GetFloat(), positions[2].GetFloat()));
         } else {
             LOG_ERROR(CSTRING_FORMAT(
               "Property '%s' has wrong '%s' position keys!", propertyName.c_str(), std::to_string(positions.Size()).c_str()));
@@ -20,7 +21,12 @@ void transformProperty::parseProperty(cocos2d::Node* node, const jsonObject& obj
     if (object.HasMember("pivot")) {
         auto pivot = object["pivot"].GetArray();
         if (pivot.Size() == 2u) {
-            node->setPivotPoint(cocos2d::Vec2(pivot[0].GetFloat(), pivot[1].GetFloat()));
+            auto component = dynamic_cast<transformComponent*>(node->getComponent(transformComponent::TRANSFORM_COMPONENT_NAME));
+            if (!component) {
+                component = new transformComponent();
+                node->addComponent(component);
+            }
+            component->setPivotPoint(ax::Vec2(pivot[0].GetFloat(), pivot[1].GetFloat()));
         } else {
             LOG_ERROR(
               CSTRING_FORMAT("Property '%s' has wrong '%s' pivot keys!", propertyName.c_str(), std::to_string(pivot.Size()).c_str()));
@@ -29,7 +35,7 @@ void transformProperty::parseProperty(cocos2d::Node* node, const jsonObject& obj
     if (object.HasMember("anchor")) {
         auto anchor = object["anchor"].GetArray();
         if (anchor.Size() == 2u) {
-            node->setAnchorPoint(cocos2d::Vec2(anchor[0].GetFloat(), anchor[1].GetFloat()));
+            node->setAnchorPoint(ax::Vec2(anchor[0].GetFloat(), anchor[1].GetFloat()));
         } else {
             LOG_ERROR(
               CSTRING_FORMAT("Property '%s' has wrong '%s' anchor keys!", propertyName.c_str(), std::to_string(anchor.Size()).c_str()));
@@ -41,25 +47,25 @@ void transformProperty::parseProperty(cocos2d::Node* node, const jsonObject& obj
             bool onlyScaleMode = false;
             float scaleX, scaleY;
             scaleX = scaleY = .0f;
-            if (auto sprite = dynamic_cast<cocos2d::Sprite*>(node)) {
-                if (sprite->getRenderMode() == cocos2d::Sprite::RenderMode::QUAD_BATCHNODE
-                    || sprite->getRenderMode() == cocos2d::Sprite::RenderMode::POLYGON) {
+            if (auto sprite = dynamic_cast<ax::Sprite*>(node)) {
+//                if (sprite->getRenderMode() == ax::Sprite::RenderMode::QUAD_BATCHNODE
+//                    || sprite->getRenderMode() == ax::Sprite::RenderMode::POLYGON) {
                     onlyScaleMode = true;
                     const auto& content = sprite->getContentSize();
-                    auto _size = cocos2d::Size();
+                    auto _size = ax::Size();
                     _size.width = size[0].GetFloat();
                     _size.height = size[1].GetFloat();
                     if (content.width != 0.f) {
                         scaleX = _size.width / content.width;
                         scaleY = _size.height / content.height;
                     }
-                }
+//                }
             }
             if (onlyScaleMode) {
                 node->setScaleX(scaleX);
                 node->setScaleY(scaleY);
             } else {
-                auto _size = cocos2d::Size();
+                auto _size = ax::Size();
                 _size.width = size[0].GetFloat();
                 _size.height = size[1].GetFloat();
                 node->setContentSize(_size);
@@ -86,7 +92,7 @@ void transformProperty::parseProperty(cocos2d::Node* node, const jsonObject& obj
     if (object.HasMember("rotation3d")) {
         auto rotation3d = object["rotation3d"].GetArray();
         if (rotation3d.Size() == 3u) {
-            node->setRotation3D(cocos2d::Vec3(rotation3d[0].GetFloat(), rotation3d[1].GetFloat(), rotation3d[2].GetFloat()));
+            node->setRotation3D(ax::Vec3(rotation3d[0].GetFloat(), rotation3d[1].GetFloat(), rotation3d[2].GetFloat()));
         } else {
             LOG_ERROR(CSTRING_FORMAT(
               "Property '%s' has wrong '%s' rotation3d keys!", propertyName.c_str(), std::to_string(rotation3d.Size()).c_str()));
@@ -95,7 +101,12 @@ void transformProperty::parseProperty(cocos2d::Node* node, const jsonObject& obj
     if (object.HasMember("stretch")) {
         auto stretch = object["stretch"].GetArray();
         if (stretch.Size() == 2u) {
-            node->setStretch(stretch[0].GetFloat(), stretch[1].GetFloat());
+            auto component = dynamic_cast<transformComponent*>(node->getComponent(transformComponent::TRANSFORM_COMPONENT_NAME));
+            if (!component) {
+                component = new transformComponent();
+                node->addComponent(component);
+            }
+            component->setStretch(stretch[0].GetFloat(), stretch[1].GetFloat());
         } else {
             LOG_ERROR(
               CSTRING_FORMAT("Property '%s' has wrong '%s' stretch keys!", propertyName.c_str(), std::to_string(stretch.Size()).c_str()));

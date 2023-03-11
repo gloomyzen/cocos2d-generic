@@ -1,6 +1,6 @@
 #include "resourceManager.h"
-#include "cocos2d.h"
-#include "generic/debugModule/logManager.h"
+#include "axmol.h"
+#include "generic/utilityModule/logManager.h"
 
 using namespace generic::coreModule;
 
@@ -44,7 +44,7 @@ void resourceManager::create() {
 }
 
 void resourceManager::onDeadReference() {
-    CCASSERT(false, "Founded dead reference!");
+    AXASSERT(false, "Founded dead reference!");
 }
 
 jsonLoader* resourceManager::getJsonLoader() {
@@ -57,8 +57,8 @@ settingManager* resourceManager::getSettingManager() {
 
 std::string resourceManager::getImagePathWithExtension(const std::string& path) {
     for (const auto& extension : imageExtensions) {
-        auto fullPath = cocos2d::StringUtils::format("%s.%s", path.c_str(), extension.c_str());
-        if (cocos2d::FileUtils::getInstance()->isFileExist(fullPath)) {
+        auto fullPath = ax::StringUtils::format("%s.%s", path.c_str(), extension.c_str());
+        if (ax::FileUtils::getInstance()->isFileExist(fullPath)) {
             return fullPath;
         }
     }

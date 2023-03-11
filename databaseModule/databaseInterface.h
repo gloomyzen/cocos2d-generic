@@ -1,8 +1,9 @@
+#pragma once
 #ifndef GENERIC_DATABASEINTERFACE_H
 #define GENERIC_DATABASEINTERFACE_H
 
-#include "cocos2d.h"
-#include "generic/debugModule/logManager.h"
+#include "axmol.h"
+#include "generic/utilityModule/logManager.h"
 #include "generic/utilityModule/jsonHelper.h"
 #include <string>
 
@@ -15,7 +16,7 @@ namespace generic::databaseModule {
         virtual void executeLoadData() {
             if (isLoaded())
                 return;
-            const std::string& jsonStr = cocos2d::FileUtils::getInstance()->getStringFromFile(jsonPath);
+            const std::string& jsonStr = ax::FileUtils::getInstance()->getStringFromFile(jsonPath);
             rapidjson::Document data;
             data.Parse<0>(jsonStr.c_str());
             if (utilityModule::isValidJson(data)) {

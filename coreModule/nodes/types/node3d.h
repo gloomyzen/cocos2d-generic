@@ -1,7 +1,8 @@
+#pragma once
 #ifndef GENERIC_NODE3D_H
 #define GENERIC_NODE3D_H
 
-#include "cocos2d.h"
+#include "axmol.h"
 #include <functional>
 #include <utility>
 
@@ -19,13 +20,13 @@ namespace generic::coreModule {
         bool isEnabled = true;
     };
 
-    class node3d : public cocos2d::Node {
+    class node3d : public ax::Node {
     public:
         node3d() = default;
         ~node3d() override = default;
         CREATE_FUNC(node3d);
 
-        void visit(cocos2d::Renderer* renderer, const cocos2d::Mat4& parentTransform, uint32_t parentFlags) override {
+        void visit(ax::Renderer* renderer, const ax::Mat4& parentTransform, uint32_t parentFlags) override {
             // quick return if not visible. children won't be drawn.
             if (!_visible) {
                 return;
@@ -33,9 +34,9 @@ namespace generic::coreModule {
 
             uint32_t flags = processParentFlags(parentTransform, parentFlags);
 
-            cocos2d::Director* director = cocos2d::Director::getInstance();
-            director->pushMatrix(cocos2d::MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
-            director->loadMatrix(cocos2d::MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW, _modelViewTransform);
+            ax::Director* director = ax::Director::getInstance();
+            director->pushMatrix(ax::MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
+            director->loadMatrix(ax::MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW, _modelViewTransform);
 
             bool visibleByCamera = isVisitableByVisitingCamera();
 
@@ -73,7 +74,7 @@ namespace generic::coreModule {
                 this->draw(renderer, _modelViewTransform, flags);
             }
 
-            director->popMatrix(cocos2d::MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
+            director->popMatrix(ax::MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
         }
     };
 }// namespace generic::coreModule

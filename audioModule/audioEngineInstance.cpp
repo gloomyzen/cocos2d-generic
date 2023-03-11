@@ -1,7 +1,7 @@
 #include "audioEngineInstance.h"
 
-#include "cocos2d.h"
-#include "generic/debugModule/logManager.h"
+#include "axmol.h"
+#include "generic/utilityModule/logManager.h"
 #include "generic/utilityModule/jsonHelper.h"
 #include <utility>
 
@@ -15,7 +15,7 @@ std::vector<std::string> audioEngineInstance::reservedPrefix = {"ui.", "music."}
 audioEngineInstance::audioEngineInstance() {
     // load json
     const std::string& regionStr =
-      cocos2d::FileUtils::getInstance()->getStringFromFile(std::string(AUDIO_ENGINE_SOUND_DIR) + std::string(AUDIO_ENGINE_SOUND_FILE));
+      ax::FileUtils::getInstance()->getStringFromFile(std::string(AUDIO_ENGINE_SOUND_DIR) + std::string(AUDIO_ENGINE_SOUND_FILE));
     rapidjson::Document data;
     data.Parse<0>(regionStr.c_str());
 
@@ -38,6 +38,15 @@ audioEngineInstance::audioEngineInstance() {
             }
         }
     }
+    //loading fairyGUI sounds if exists
+    auto fSoundIt = data.FindMember("fairyGUI");
+    if (fSoundIt != data.MemberEnd() && fSoundIt->value.IsArray()) {
+        for (auto value = fSoundIt->value.Begin(); value != fSoundIt->value.End(); ++value) {
+            if (value->IsString()) {
+                preload(value->GetString());
+            }
+        }
+    }
 }
 
 void audioEngineInstance::create() {
@@ -46,7 +55,7 @@ void audioEngineInstance::create() {
 }
 
 void audioEngineInstance::onDeadReference() {
-    CCASSERT(false, "Founded dead reference!");
+    AXASSERT(false, "Founded dead reference!");
 }
 
 audioEngineInstance::~audioEngineInstance() {
@@ -69,10 +78,10 @@ void audioEngineInstance::cleanup() {
     pInstance = nullptr;
 }
 
-void audioEngineInstance::play(const std::string& name, bool loop, float volume, const cocos2d::AudioProfile* profile) {
+void audioEngineInstance::play(const std::string& name, bool loop, float volume, const ax::AudioProfile* profile) {
 #ifndef DISABLE_AUDIO_ENGINE
     if (sounds.count(name)) {
-        auto id = cocos2d::AudioEngine::play2d(sounds[name].first, loop, volume, profile);
+        auto id = ax::AudioEngine::play2d(sounds[name].first, loop, volume, profile);
         if (id != AUDIO_ENGINE_INVALID_TAG) {
             sounds[name].second = id;
         }
@@ -80,10 +89,10 @@ void audioEngineInstance::play(const std::string& name, bool loop, float volume,
 #endif
 }
 
-void audioEngineInstance::playOnce(const std::string& name, bool loop, float volume, const cocos2d::AudioProfile* profile) {
+void audioEngineInstance::playOnce(const std::string& name, bool loop, float volume, const ax::AudioProfile* profile) {
 #ifndef DISABLE_AUDIO_ENGINE
     if (sounds.count(name) && sounds[name].second == AUDIO_ENGINE_INVALID_TAG) {
-        auto id = cocos2d::AudioEngine::play2d(sounds[name].first, loop, volume, profile);
+        auto id = ax::AudioEngine::play2d(sounds[name].first, loop, volume, profile);
         if (id != AUDIO_ENGINE_INVALID_TAG) {
             sounds[name].second = id;
         }
@@ -95,7 +104,7 @@ void audioEngineInstance::pause(const std::string& name) {
 #ifndef DISABLE_AUDIO_ENGINE
     if (sounds.count(name)) {
         if (sounds[name].second != AUDIO_ENGINE_INVALID_TAG) {
-            cocos2d::AudioEngine::pause(sounds[name].second);
+            ax::AudioEngine::pause(sounds[name].second);
         }
     }
 #endif
@@ -104,7 +113,7 @@ void audioEngineInstance::pause(const std::string& name) {
 void audioEngineInstance::pauseAll() {
 #ifndef DISABLE_AUDIO_ENGINE
     for (const auto& item : sounds) {
-        cocos2d::AudioEngine::pause(item.second.second);
+        ax::AudioEngine::pause(item.second.second);
     }
 #endif
 }
@@ -113,7 +122,7 @@ void audioEngineInstance::resume(const std::string& name) {
 #ifndef DISABLE_AUDIO_ENGINE
     if (sounds.count(name)) {
         if (sounds[name].second != AUDIO_ENGINE_INVALID_TAG) {
-            cocos2d::AudioEngine::resume(sounds[name].second);
+            ax::AudioEngine::resume(sounds[name].second);
         }
     }
 #endif
@@ -122,7 +131,7 @@ void audioEngineInstance::resume(const std::string& name) {
 void audioEngineInstance::resumeAll() {
 #ifndef DISABLE_AUDIO_ENGINE
     for (const auto& item : sounds) {
-        cocos2d::AudioEngine::resume(item.second.second);
+        ax::AudioEngine::resume(item.second.second);
     }
 #endif
 }
@@ -130,7 +139,7 @@ void audioEngineInstance::resumeAll() {
 void audioEngineInstance::stop(const std::string& name) {
     if (sounds.count(name)) {
         if (sounds[name].second != AUDIO_ENGINE_INVALID_TAG) {
-            cocos2d::AudioEngine::stop(sounds[name].second);
+            ax::AudioEngine::stop(sounds[name].second);
         }
         sounds[name].second = AUDIO_ENGINE_INVALID_TAG;
     }
@@ -139,7 +148,7 @@ void audioEngineInstance::stop(const std::string& name) {
 void audioEngineInstance::stopAll() {
 #ifndef DISABLE_AUDIO_ENGINE
     for (const auto& item : sounds) {
-        cocos2d::AudioEngine::stop(item.second.second);
+        ax::AudioEngine::stop(item.second.second);
     }
 #endif
 }
@@ -147,7 +156,7 @@ void audioEngineInstance::stopAll() {
 void audioEngineInstance::preload(const std::string& name, const std::function<void(bool)>& clb) {
 #ifndef DISABLE_AUDIO_ENGINE
     if (sounds.count(name)) {
-        cocos2d::AudioEngine::preload(sounds[name].first, clb);
+        ax::AudioEngine::preload(sounds[name].first, clb);
     }
 #endif
 }
@@ -155,7 +164,7 @@ void audioEngineInstance::preload(const std::string& name, const std::function<v
 void audioEngineInstance::unload(const std::string& name) {
 #ifndef DISABLE_AUDIO_ENGINE
     if (sounds.count(name)) {
-        cocos2d::AudioEngine::uncache(sounds[name].first);
+        ax::AudioEngine::uncache(sounds[name].first);
     }
 #endif
 }

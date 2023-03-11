@@ -1,3 +1,4 @@
+#pragma once
 #ifndef GENERIC_UUIDGENERATOR_H
 #define GENERIC_UUIDGENERATOR_H
 

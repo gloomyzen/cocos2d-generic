@@ -1,7 +1,8 @@
+#pragma once
 #ifndef GENERIC_PHYSICSSHAPECACHE_H
 #define GENERIC_PHYSICSSHAPECACHE_H
 
-#include "cocos2d.h"
+#include "axmol.h"
 
 #define GET_PHYSICS_SHAPE() generic::coreModule::physicsShapeCache::getInstance()
 
@@ -62,7 +63,7 @@ namespace generic::coreModule {
          * @return new PhysicsBody
          * @retval nullptr if body is not found
          */
-        cocos2d::PhysicsBody* createBodyWithName(const std::string& name);
+        ax::PhysicsBody* createBodyWithName(const std::string& name);
 
         /**
          * Creates a new PhysicsBody and attaches it to the given sprite
@@ -73,7 +74,7 @@ namespace generic::coreModule {
          * @retval true if body was attached to the sprite
          * @retval false if body was not found
          */
-        bool setBodyOnSprite(const std::string& name, cocos2d::Sprite* sprite);
+        bool setBodyOnSprite(const std::string& name, ax::Sprite* sprite);
 
     private:
         typedef enum { FIXTURE_POLYGON, FIXTURE_CIRCLE } FixtureType;
@@ -81,7 +82,7 @@ namespace generic::coreModule {
 
         class Polygon {
         public:
-            cocos2d::Point* vertices;
+            ax::Point* vertices;
             int numVertices;
         };
 
@@ -101,7 +102,7 @@ namespace generic::coreModule {
             int contactTestMask;
 
             // for circles
-            cocos2d::Point center;
+            ax::Point center;
             float radius;
 
 
@@ -111,7 +112,7 @@ namespace generic::coreModule {
 
         class BodyDef {
         public:
-            cocos2d::Point anchorPoint;
+            ax::Point anchorPoint;
             std::vector<FixtureData*> fixtures;
 
             bool isDynamic;
@@ -128,8 +129,8 @@ namespace generic::coreModule {
         ~physicsShapeCache();
         void safeDeleteBodyDef(BodyDef* bodyDef);
         BodyDef* getBodyDef(const std::string& name);
-        void setBodyProperties(cocos2d::PhysicsBody* body, BodyDef* bd);
-        void setShapeProperties(cocos2d::PhysicsShape* shape, FixtureData* fd);
+        void setBodyProperties(ax::PhysicsBody* body, BodyDef* bd);
+        void setShapeProperties(ax::PhysicsShape* shape, FixtureData* fd);
 
         std::map<std::string, BodyDef*> bodyDefs;
         std::map<std::string, std::vector<BodyDef*>> bodiesInFile;

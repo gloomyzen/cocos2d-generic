@@ -1,8 +1,9 @@
+#pragma once
 #ifndef GENERIC_ARMATUREHOLDERNODE_H
 #define GENERIC_ARMATUREHOLDERNODE_H
 
-#include "cocos2d.h"
-#if defined(CC_BUILD_WITH_DRANGBONES) && CC_BUILD_WITH_DRANGBONES
+#include "axmol.h"
+#if defined(AX_BUILD_WITH_DRANGBONES) && AX_BUILD_WITH_DRANGBONES
 #include "DragonBones/CCDragonBonesHeaders.h"
 #include "cocos-ext.h"
 #include <functional>
@@ -12,7 +13,7 @@
 
 namespace generic::coreModule {
 
-    class armatureNode : public cocos2d::Node {
+    class armatureNode : public ax::Node {
     public:
         enum class eArmatureState {
             START = 0,
@@ -35,10 +36,10 @@ namespace generic::coreModule {
 
         dragonBones::CCArmatureDisplay* getArmatureNode();
 
-        void setAnimation(const std::string& name, std::function<void(cocos2d::EventCustom*)> clb = nullptr);
-        void setAnimationCallback(eArmatureState, std::function<void(cocos2d::EventCustom*)>);
+        void setAnimation(const std::string& name, std::function<void(ax::EventCustom*)> clb = nullptr);
+        void setAnimationCallback(eArmatureState, std::function<void(ax::EventCustom*)>);
         void removeAnimationCallback(eArmatureState);
-        void setCustomAnimationCallback(const std::string&, const std::function<void(cocos2d::EventCustom*)>&);
+        void setCustomAnimationCallback(const std::string&, const std::function<void(ax::EventCustom*)>&);
         void removeCustomAnimationCallback(const std::string&);
         bool isEventsEnable() const;
         void setEventsEnabled(bool);
@@ -49,13 +50,13 @@ namespace generic::coreModule {
     protected:
         bool handleEvents = false;
         dragonBones::CCArmatureDisplay* boneNode = nullptr;
-        std::map<std::string, std::function<void(cocos2d::EventCustom*)>> customCallbacksMap;
+        std::map<std::string, std::function<void(ax::EventCustom*)>> customCallbacksMap;
     };
 }// namespace generic::coreModule
 #else
 namespace generic::coreModule {
 
-    class armatureNode : public cocos2d::Node {
+    class armatureNode : public ax::Node {
     public:
         CREATE_FUNC(armatureNode);
     };
