@@ -1,4 +1,0 @@
-[submodule "debugModule/imgui"]
-	path = debugModule/imgui
-	url = git@github.com:gloomyzen/cocos2d-x-imgui.git
-	branch = master
