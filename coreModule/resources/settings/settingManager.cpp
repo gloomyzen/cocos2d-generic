@@ -45,7 +45,7 @@ void settingManager::load() {
             } else if (key == "path" && resIt->value.IsString()) {
                 currentResolution->path = resIt->value.GetString();
             } else if (key == "showDisplayStats" && resIt->value.IsBool()) {
-#ifdef DEBUG
+#ifdef DEBUG_ENABLED
                 currentResolution->showStats = resIt->value.GetBool();
 #else
                 currentResolution->showStats = false;
@@ -58,7 +58,7 @@ void settingManager::load() {
     }
 
     if (allResolutions.empty()) {
-        LOG_ERROR("No data in json file!");
+        LOG_ERROR("No data in json file");
         allResolutions.insert({ defaultResolution->resolutionName, defaultResolution });
         return;
     } else {
@@ -109,12 +109,12 @@ bool settingManager::init(bool isMobile, const std::string& settingName) {
         if (resolution != nullptr) {
             currentSize = resolution;
         } else {
-            LOG_ERROR("Can't detect valid resolution!");
+            LOG_ERROR("Can't detect valid resolution");
             return false;
         }
     }
     if (currentSize == nullptr) {
-        LOG_ERROR("Can't detect valid resolution!");
+        LOG_ERROR("Can't detect valid resolution");
         return false;
     }
     return true;

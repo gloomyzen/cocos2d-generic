@@ -18,7 +18,7 @@ int mainDebugOverlay::nodeEditorH = 450;
 propertyViewer* mainDebugOverlay::_propertyViewer = nullptr;
 ax::Node* mainDebugOverlay::lastTarget = nullptr;
 std::vector<std::pair<std::string, std::function<void()>>> mainDebugOverlay::overlayModules = {};
-std::map<std::string, std::string> mainDebugOverlay::classList = {};
+std::map<std::type_index, std::string> mainDebugOverlay::classList = {};
 
 static bool closeAll = false;
 static bool debugOpened = false;
@@ -31,100 +31,100 @@ void mainDebugOverlay::init() {
 
     {
         // General
-        classList[typeid(ax::Camera).name()] = "[Camera]";
-        classList[typeid(ax::Scene).name()] = "[Scene]";
+        classList[typeid(ax::Camera)] = "[Camera]";
+        classList[typeid(ax::Scene)] = "[Scene]";
         // Nodes
-        classList[typeid(ax::Node).name()] = "[Node]";
-        classList[typeid(ax::ClippingNode).name()] = "[ClippingNode]";
-        classList[typeid(ax::DrawNode).name()] = "[DrawNode]";
-        classList[typeid(ax::ParticleSystem).name()] = "[ParticleSystem]";
-        classList[typeid(ax::ParticleBatchNode).name()] = "[ParticleBatchNode]";
-        classList[typeid(ax::SpriteBatchNode).name()] = "[SpriteBatchNode]";
-        classList[typeid(ax::ParallaxNode).name()] = "[ParallaxNode]";
-        classList[typeid(ax::RenderTexture).name()] = "[RenderTexture]";
-        classList[typeid(ax::ClippingRectangleNode).name()] = "[ClippingRectangleNode]";
-        classList[typeid(ax::AttachNode).name()] = "[AttachNode]";
-        classList[typeid(ax::Sprite).name()] = "[Sprite]";
-        classList[typeid(ax::NodeGrid).name()] = "[NodeGrid]";
-        classList[typeid(ax::Label).name()] = "[Label]";
-        classList[typeid(ax::Menu).name()] = "[Menu]";
-        classList[typeid(ax::MenuItem).name()] = "[MenuItem]";
+        classList[typeid(ax::Node)] = "[Node]";
+        classList[typeid(ax::ClippingNode)] = "[ClippingNode]";
+        classList[typeid(ax::DrawNode)] = "[DrawNode]";
+        classList[typeid(ax::ParticleSystem)] = "[ParticleSystem]";
+        classList[typeid(ax::ParticleBatchNode)] = "[ParticleBatchNode]";
+        classList[typeid(ax::SpriteBatchNode)] = "[SpriteBatchNode]";
+        classList[typeid(ax::ParallaxNode)] = "[ParallaxNode]";
+        classList[typeid(ax::RenderTexture)] = "[RenderTexture]";
+        classList[typeid(ax::ClippingRectangleNode)] = "[ClippingRectangleNode]";
+        classList[typeid(ax::AttachNode)] = "[AttachNode]";
+        classList[typeid(ax::Sprite)] = "[Sprite]";
+        classList[typeid(ax::NodeGrid)] = "[NodeGrid]";
+        classList[typeid(ax::Label)] = "[Label]";
+        classList[typeid(ax::Menu)] = "[Menu]";
+        classList[typeid(ax::MenuItem)] = "[MenuItem]";
         // todo add other menu types
 
         // Widgets
-        classList[typeid(ax::ui::Widget).name()] = "[ui::Widget]";
-        classList[typeid(ax::ui::Layout).name()] = "[ui::Layout]";
-        classList[typeid(ax::ui::Button).name()] = "[ui::Button]";
-        classList[typeid(ax::ui::ListView).name()] = "[ui::ListView]";
-        classList[typeid(ax::ui::AbstractCheckButton).name()] = "[ui::AbstractCheckButton]";
-        classList[typeid(ax::ui::CheckBox).name()] = "[ui::CheckBox]";
-        classList[typeid(ax::ui::RadioButton).name()] = "[ui::RadioButton]";
-        classList[typeid(ax::ui::RadioButtonGroup).name()] = "[ui::RadioButtonGroup]";
-        classList[typeid(ax::ui::PageView).name()] = "[ui::PageView]";
-        classList[typeid(ax::ui::ImageView).name()] = "[ui::ImageView]";
-        classList[typeid(ax::ui::ScrollView).name()] = "[ui::ScrollView]";
-        classList[typeid(ax::ui::Slider).name()] = "[ui::Slider]";
-        classList[typeid(ax::ui::EditBox).name()] = "[ui::EditBox]";
-        classList[typeid(ax::ui::LoadingBar).name()] = "[ui::LoadingBar]";
-        classList[typeid(ax::ui::Text).name()] = "[ui::Text]";
-        classList[typeid(ax::ui::TextField).name()] = "[ui::TextField]";
-        classList[typeid(ax::ui::RichText).name()] = "[ui::RichText]";
-        classList[typeid(ax::ui::TabControl).name()] = "[ui::TabControl]";
-        classList[typeid(ax::ui::TabHeader).name()] = "[ui::TabHeader]";
+        classList[typeid(ax::ui::Widget)] = "[ui::Widget]";
+        classList[typeid(ax::ui::Layout)] = "[ui::Layout]";
+        classList[typeid(ax::ui::Button)] = "[ui::Button]";
+        classList[typeid(ax::ui::ListView)] = "[ui::ListView]";
+        classList[typeid(ax::ui::AbstractCheckButton)] = "[ui::AbstractCheckButton]";
+        classList[typeid(ax::ui::CheckBox)] = "[ui::CheckBox]";
+        classList[typeid(ax::ui::RadioButton)] = "[ui::RadioButton]";
+        classList[typeid(ax::ui::RadioButtonGroup)] = "[ui::RadioButtonGroup]";
+        classList[typeid(ax::ui::PageView)] = "[ui::PageView]";
+        classList[typeid(ax::ui::ImageView)] = "[ui::ImageView]";
+        classList[typeid(ax::ui::ScrollView)] = "[ui::ScrollView]";
+        classList[typeid(ax::ui::Slider)] = "[ui::Slider]";
+        classList[typeid(ax::ui::EditBox)] = "[ui::EditBox]";
+        classList[typeid(ax::ui::LoadingBar)] = "[ui::LoadingBar]";
+        classList[typeid(ax::ui::Text)] = "[ui::Text]";
+        classList[typeid(ax::ui::TextField)] = "[ui::TextField]";
+        classList[typeid(ax::ui::RichText)] = "[ui::RichText]";
+        classList[typeid(ax::ui::TabControl)] = "[ui::TabControl]";
+        classList[typeid(ax::ui::TabHeader)] = "[ui::TabHeader]";
         // 3D & Light
-        classList[typeid(ax::Sprite3D).name()] = "[Sprite3D]";
-        classList[typeid(ax::BillBoard).name()] = "[BillBoard]";
-        classList[typeid(ax::Skybox).name()] = "[Skybox]";
-        classList[typeid(ax::Mesh).name()] = "[Mesh]";
-        classList[typeid(ax::Terrain).name()] = "[Terrain]";
-        classList[typeid(ax::AmbientLight).name()] = "[AmbientLight]";
-        classList[typeid(ax::BaseLight).name()] = "[BaseLight]";
-        classList[typeid(ax::DirectionLight).name()] = "[DirectionLight]";
-        classList[typeid(ax::PointLight).name()] = "[PointLight]";
-        classList[typeid(ax::SpotLight).name()] = "[SpotLight]";
+        classList[typeid(ax::Sprite3D)] = "[Sprite3D]";
+        classList[typeid(ax::BillBoard)] = "[BillBoard]";
+        classList[typeid(ax::Skybox)] = "[Skybox]";
+        classList[typeid(ax::Mesh)] = "[Mesh]";
+        classList[typeid(ax::Terrain)] = "[Terrain]";
+        classList[typeid(ax::AmbientLight)] = "[AmbientLight]";
+        classList[typeid(ax::BaseLight)] = "[BaseLight]";
+        classList[typeid(ax::DirectionLight)] = "[DirectionLight]";
+        classList[typeid(ax::PointLight)] = "[PointLight]";
+        classList[typeid(ax::SpotLight)] = "[SpotLight]";
         // Layers
-        classList[typeid(ax::Layer).name()] = "[Layer]";
-        classList[typeid(ax::LayerColor).name()] = "[LayerColor]";
+        classList[typeid(ax::Layer)] = "[Layer]";
+        classList[typeid(ax::LayerColor)] = "[LayerColor]";
         // Actions
-        classList[typeid(ax::Action).name()] = "[Action]";
+        classList[typeid(ax::Action)] = "[Action]";
         // DragonBones node
 #if defined(AX_BUILD_WITH_DRANGBONES) && AX_BUILD_WITH_DRANGBONES
-        classList[typeid(dragonBones::CCArmatureDisplay).name()] = "[DBArmature]";
-        classList[typeid(generic::coreModule::armatureNode).name()] = "[DBHolder]";
+        classList[typeid(dragonBones::CCArmatureDisplay)] = "[DBArmature]";
+        classList[typeid(generic::coreModule::armatureNode)] = "[DBHolder]";
 #endif
-        classList[typeid(spine::SkeletonAnimation).name()] = "[spine]";
+        classList[typeid(spine::SkeletonAnimation)] = "[spine]";
 
         //FairyGUI
-//        classList[typeid(fairygui::GBasicTextField).name()] = "[GBasicTextField]";
-//        classList[typeid(fairygui::GButton).name()] = "[GButton]";
-//        classList[typeid(fairygui::GComboBox).name()] = "[GComboBox]";
-//        classList[typeid(fairygui::GComponent).name()] = "[GComponent]";
-//        classList[typeid(fairygui::GController).name()] = "[GController]";
-//        classList[typeid(fairygui::GGraph).name()] = "[GGraph]";
-//        classList[typeid(fairygui::GGroup).name()] = "[GGroup]";
-//        classList[typeid(fairygui::GImage).name()] = "[GImage]";
-//        classList[typeid(fairygui::GLabel).name()] = "[GLabel]";
-//        classList[typeid(fairygui::GList).name()] = "[GList]";
-//        classList[typeid(fairygui::GLoader).name()] = "[GLoader]";
-//        classList[typeid(fairygui::GMovieClip).name()] = "[GMovieClip]";
-//        classList[typeid(fairygui::GObject).name()] = "[GObject]";
-//        classList[typeid(fairygui::GObjectPool).name()] = "[GObjectPool]";
-//        classList[typeid(fairygui::GProgressBar).name()] = "[GProgressBar]";
-//        classList[typeid(fairygui::GRichTextField).name()] = "[GRichTextField]";
-//        classList[typeid(fairygui::GRoot).name()] = "[GRoot]";
-//        classList[typeid(fairygui::GScrollBar).name()] = "[GScrollBar]";
-//        classList[typeid(fairygui::GSlider).name()] = "[GSlider]";
-//        classList[typeid(fairygui::GTextField).name()] = "[GTextField]";
-//        classList[typeid(fairygui::GTextInput).name()] = "[GTextInput]";
-//        classList[typeid(fairygui::GTree).name()] = "[GTree]";
-//        classList[typeid(fairygui::GTreeNode).name()] = "[GTreeNode]";
-//        classList[typeid(fairygui::GTween).name()] = "[GTween]";
-        classList[typeid(fairygui::FUIContainer).name()] = "[FUIContainer]";
-        classList[typeid(fairygui::FUIInnerContainer).name()] = "[FUIInnerContainer]";
-        classList[typeid(fairygui::FUIInput).name()] = "[FUIInput]";
-        classList[typeid(fairygui::FUILabel).name()] = "[FUILabel]";
-        classList[typeid(fairygui::FUIRichText).name()] = "[FUIRichText]";
-        classList[typeid(fairygui::FUISprite).name()] = "[FUISprite]";
+//        classList[typeid(fairygui::GBasicTextField)] = "[GBasicTextField]";
+//        classList[typeid(fairygui::GButton)] = "[GButton]";
+//        classList[typeid(fairygui::GComboBox)] = "[GComboBox]";
+//        classList[typeid(fairygui::GComponent)] = "[GComponent]";
+//        classList[typeid(fairygui::GController)] = "[GController]";
+//        classList[typeid(fairygui::GGraph)] = "[GGraph]";
+//        classList[typeid(fairygui::GGroup)] = "[GGroup]";
+//        classList[typeid(fairygui::GImage)] = "[GImage]";
+//        classList[typeid(fairygui::GLabel)] = "[GLabel]";
+//        classList[typeid(fairygui::GList)] = "[GList]";
+//        classList[typeid(fairygui::GLoader)] = "[GLoader]";
+//        classList[typeid(fairygui::GMovieClip)] = "[GMovieClip]";
+//        classList[typeid(fairygui::GObject)] = "[GObject]";
+//        classList[typeid(fairygui::GObjectPool)] = "[GObjectPool]";
+//        classList[typeid(fairygui::GProgressBar)] = "[GProgressBar]";
+//        classList[typeid(fairygui::GRichTextField)] = "[GRichTextField]";
+//        classList[typeid(fairygui::GRoot)] = "[GRoot]";
+//        classList[typeid(fairygui::GScrollBar)] = "[GScrollBar]";
+//        classList[typeid(fairygui::GSlider)] = "[GSlider]";
+//        classList[typeid(fairygui::GTextField)] = "[GTextField]";
+//        classList[typeid(fairygui::GTextInput)] = "[GTextInput]";
+//        classList[typeid(fairygui::GTree)] = "[GTree]";
+//        classList[typeid(fairygui::GTreeNode)] = "[GTreeNode]";
+//        classList[typeid(fairygui::GTween)] = "[GTween]";
+        classList[typeid(fairygui::FUIContainer)] = "[FUIContainer]";
+        classList[typeid(fairygui::FUIInnerContainer)] = "[FUIInnerContainer]";
+        classList[typeid(fairygui::FUIInput)] = "[FUIInput]";
+        classList[typeid(fairygui::FUILabel)] = "[FUILabel]";
+        classList[typeid(fairygui::FUIRichText)] = "[FUIRichText]";
+        classList[typeid(fairygui::FUISprite)] = "[FUISprite]";
     }
 
     GET_IMGUI_CONTROLLER().addCallback("mainOverlay", [](){
@@ -218,13 +218,13 @@ ImRect mainDebugOverlay::renderTree(const ax::Vector<ax::Node*>& n) {
         ImGui::AlignTextToFramePadding();
         std::string className;
         //		auto test = typeid(*node).name(); // need only for debug
-        if (classList.find(typeid(*node).name()) != classList.end()) {
-            className = classList[typeid(*node).name()] + " ";
+        if (classList.count(typeid(*node)) > 0U) {
+            className = classList[typeid(*node)];
         }
-        std::string name = cocos2d::StringUtils::format("%s%s%s", className.c_str(), node->getName().data(), node->isVisible() ? "" : " #inactive");
+        std::string name = cocos2d::StringUtils::format("%s %s%s", className.c_str(), node->getName().data(), node->isVisible() ? "" : " #inactive");
         if (auto fairy = dynamic_cast<fairygui::FUIContainer*>(node)) {
             if (fairy->gOwner)
-                name = cocos2d::StringUtils::format("%s%s[%s]%s", className.c_str(), fairy->gOwner->name.c_str(), fairy->gOwner->id.c_str(), node->isVisible() ? "" : " #inactive");
+                name = cocos2d::StringUtils::format("%s[id:%s] %s%s", className.c_str(), fairy->gOwner->id.c_str(), fairy->gOwner->name.c_str(), node->isVisible() ? "" : " #inactive");
         }
         ImGuiTreeNodeFlags nodeFlags =
           ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth;

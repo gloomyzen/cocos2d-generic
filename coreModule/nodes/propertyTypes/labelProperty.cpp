@@ -49,6 +49,6 @@ void labelProperty::parseProperty(ax::Node* node, const jsonObject& object) {
             }
         }
     } else {
-        LOG_ERROR(CSTRING_FORMAT("Node '%s' no has label property!", propertyName.c_str()));
+        LOG_ERROR("Node '{}' no has label property", propertyName.c_str());
     }
 }

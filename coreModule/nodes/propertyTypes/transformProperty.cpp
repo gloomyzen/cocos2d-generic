@@ -14,8 +14,7 @@ void baseProperty::parseProperty(ax::Node* node, const jsonObject& object) {
         } else if (positions.Size() == 3u) {
             node->setPosition3D(ax::Vec3(positions[0].GetFloat(), positions[1].GetFloat(), positions[2].GetFloat()));
         } else {
-            LOG_ERROR(CSTRING_FORMAT(
-              "Property '%s' has wrong '%s' position keys!", propertyName.c_str(), std::to_string(positions.Size()).c_str()));
+            LOG_ERROR("Property '{}' has wrong '{}' position keys", propertyName.c_str(), positions.Size());
         }
     }
     if (object.HasMember("pivot")) {
@@ -28,8 +27,7 @@ void baseProperty::parseProperty(ax::Node* node, const jsonObject& object) {
             }
             component->setPivotPoint(ax::Vec2(pivot[0].GetFloat(), pivot[1].GetFloat()));
         } else {
-            LOG_ERROR(
-              CSTRING_FORMAT("Property '%s' has wrong '%s' pivot keys!", propertyName.c_str(), std::to_string(pivot.Size()).c_str()));
+            LOG_ERROR("Property '{}' has wrong '{}' pivot keys", propertyName.c_str(), pivot.Size());
         }
     }
     if (object.HasMember("anchor")) {
@@ -37,8 +35,7 @@ void baseProperty::parseProperty(ax::Node* node, const jsonObject& object) {
         if (anchor.Size() == 2u) {
             node->setAnchorPoint(ax::Vec2(anchor[0].GetFloat(), anchor[1].GetFloat()));
         } else {
-            LOG_ERROR(
-              CSTRING_FORMAT("Property '%s' has wrong '%s' anchor keys!", propertyName.c_str(), std::to_string(anchor.Size()).c_str()));
+            LOG_ERROR("Property '{}' has wrong '{}' anchor keys", propertyName.c_str(), anchor.Size());
         }
     }
     if (object.HasMember("size")) {
@@ -71,7 +68,7 @@ void baseProperty::parseProperty(ax::Node* node, const jsonObject& object) {
                 node->setContentSize(_size);
             }
         } else {
-            LOG_ERROR(CSTRING_FORMAT("Property '%s' has wrong '%s' size keys!", propertyName.c_str(), std::to_string(size.Size()).c_str()));
+            LOG_ERROR("Property '{}' has wrong '{}' size keys", propertyName.c_str(), size.Size());
         }
     }
     if (object.HasMember("scale") && object["scale"].IsNumber()) {
@@ -82,8 +79,7 @@ void baseProperty::parseProperty(ax::Node* node, const jsonObject& object) {
         if (scale.Size() == 2u) {
             node->setScale(scale[0].GetFloat(), scale[1].GetFloat());
         } else {
-            LOG_ERROR(
-              CSTRING_FORMAT("Property '%s' has wrong '%s' scale keys!", propertyName.c_str(), std::to_string(scale.Size()).c_str()));
+            LOG_ERROR("Property '{}' has wrong '{}' scale keys", propertyName.c_str(), scale.Size());
         }
     }
     if (object.HasMember("rotation") && object["rotation"].IsNumber()) {
@@ -94,8 +90,7 @@ void baseProperty::parseProperty(ax::Node* node, const jsonObject& object) {
         if (rotation3d.Size() == 3u) {
             node->setRotation3D(ax::Vec3(rotation3d[0].GetFloat(), rotation3d[1].GetFloat(), rotation3d[2].GetFloat()));
         } else {
-            LOG_ERROR(CSTRING_FORMAT(
-              "Property '%s' has wrong '%s' rotation3d keys!", propertyName.c_str(), std::to_string(rotation3d.Size()).c_str()));
+            LOG_ERROR("Property '{}' has wrong '{}' rotation3d keys", propertyName.c_str(), rotation3d.Size());
         }
     }
     if (object.HasMember("stretch")) {
@@ -108,8 +103,7 @@ void baseProperty::parseProperty(ax::Node* node, const jsonObject& object) {
             }
             component->setStretch(stretch[0].GetFloat(), stretch[1].GetFloat());
         } else {
-            LOG_ERROR(
-              CSTRING_FORMAT("Property '%s' has wrong '%s' stretch keys!", propertyName.c_str(), std::to_string(stretch.Size()).c_str()));
+            LOG_ERROR("Property '{}' has wrong '{}' stretch keys", propertyName.c_str(), stretch.Size());
         }
     }
 }

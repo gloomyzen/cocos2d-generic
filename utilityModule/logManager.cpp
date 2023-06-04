@@ -32,30 +32,9 @@ void logManager::onDeadReference() {
     AXASSERT(false, "Founded dead reference!");
 }
 
-void logManager::info(const std::string& message) {
-#ifdef DEBUG
-    AXLOG("[INFO] %s", message.c_str());
-#endif// DEBUG
-    addLogMessage(sLogMessage(eLogTypes::LOG_INFO, message));
-}
-
-void logManager::warning(const std::string& message) {
-#ifdef DEBUG
-    AXLOGWARN("[WARNING] %s", message.c_str());
-#endif// DEBUG
-    addLogMessage(sLogMessage(eLogTypes::LOG_WARNING, message));
-}
-
-void logManager::error(const std::string& message) {
-#ifdef DEBUG
-    AXLOGWARN("[ERROR] %s", message.c_str());
-#endif// DEBUG
-    addLogMessage(sLogMessage(eLogTypes::LOG_ERROR, message));
-}
-
 void logManager::addLogMessage(const sLogMessage& message) {
-    log.emplace_back(message);
-    if (log.size() > LOGMANAGER_ITEMS_LIMIT) {
-        log.erase(log.begin());
+    logVec.emplace_back(message);
+    if (logVec.size() > LOGMANAGER_ITEMS_LIMIT) {
+        logVec.erase(logVec.begin());
     }
 }

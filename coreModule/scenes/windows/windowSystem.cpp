@@ -3,6 +3,7 @@
 #include "generic/utilityModule/logManager.h"
 #include "generic/utilityModule/stringUtility.h"
 #include "generic/coreModule/components/transformComponent.h"
+#include <fmt/core.h>
 #include <algorithm>
 
 using namespace generic::coreModule;
@@ -21,7 +22,7 @@ void windowSystem::registerWindow(const std::string& name, const std::function<w
     if (find == registeredWindowList.end()) {
         registeredWindowList[name] = clb;
     } else {
-        LOG_ERROR(CSTRING_FORMAT("Trying to register a duplicate window '%s'!", name.c_str()));
+        LOG_ERROR("Trying to register a duplicate window '{}'", name.c_str());
     }
 }
 
@@ -49,7 +50,7 @@ windowBase* windowSystem::requestWindow(const std::string& name, bool force) {
               return true;
           },
           0.f,
-          STRING_FORMAT("openWindow_%s", name.c_str()));
+          fmt::format("openWindow_{}", name.c_str()));
         return window;
     } else if (findWaiting == waitingWindowList.end() && findOpened == openedWindowList.end()) {
         waitingWindowList.push_back(window);
@@ -62,7 +63,7 @@ bool windowSystem::closeWindow(const std::string& name) {
     auto find = std::find_if(openedWindowList.begin(), openedWindowList.end(), [name](const std::pair<windowBase*, int>& c) {
         return c.first->getWindowName() == name;
     });
-    auto taskName = STRING_FORMAT("closeWindowTask_%s_%u", name.c_str(), this->_ID);
+    auto taskName = fmt::format("closeWindowTask_{}_{}", name.c_str(), this->_ID);
     if (!this->isScheduled(taskName)) {
         this->scheduleOnce(
           [this, find, name](float) {
@@ -71,7 +72,7 @@ bool windowSystem::closeWindow(const std::string& name) {
                   (*find).first->getEmitter()->onWindowClose.disconnect((*find).second);
                   openedWindowList.erase(find);
               }
-              auto taskName = STRING_FORMAT("openWindow_%s", name.c_str());
+              auto taskName = fmt::format("openWindow_{}", name.c_str());
               if (!waitingWindowList.empty() && !this->isScheduled(taskName)) {
                   auto window = waitingWindowList.begin();
                   auto slotId = (*window)->getEmitter()->onWindowClose.connect([this](const std::string& windowName){

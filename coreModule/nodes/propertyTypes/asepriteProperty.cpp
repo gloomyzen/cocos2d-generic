@@ -31,6 +31,6 @@ void asepriteProperty::parseProperty(ax::Node* node, const jsonObject& object) {
             aNode->setAnimation(object["animation"].GetString(), isLoop);
         }
     } else {
-        LOG_ERROR(CSTRING_FORMAT("Node '%s' no has aseprite property!", propertyName.c_str()));
+        LOG_ERROR("Node '{}' no has aseprite property", propertyName.c_str());
     }
 }

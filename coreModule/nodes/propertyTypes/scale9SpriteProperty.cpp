@@ -13,7 +13,7 @@ void scale9SpriteProperty::parseProperty(ax::Node* node, const jsonObject& objec
             std::string imagePath;
             imagePath = object["image"].GetString();
             if (imagePath.empty()) {
-                LOG_ERROR(CSTRING_FORMAT("Property '%s' has invalid image path!", propertyName.c_str()));
+                LOG_ERROR("Property '{}' has invalid image path", propertyName.c_str());
                 return;
             }
             scaleSprite->initWithFile(imagePath);
@@ -56,12 +56,12 @@ void scale9SpriteProperty::parseProperty(ax::Node* node, const jsonObject& objec
         if (rTarget->getSprite() && rTarget->getSprite()->getTexture()) {
             sprite->initWithTexture(rTarget->getSprite()->getTexture());
         } else {
-            LOG_ERROR(CSTRING_FORMAT("Can not get texture from render target."));
+            LOG_ERROR("Can not get texture from render target.");
         }
         AX_SAFE_RETAIN(tempSprite);
         AX_SAFE_RETAIN(rTarget);
     }
     else {
-        LOG_ERROR(CSTRING_FORMAT("Node '%s' no has scale9Sprite property!", propertyName.c_str()));
+        LOG_ERROR("Node '{}' no has scale9Sprite property", propertyName.c_str());
     }
 }

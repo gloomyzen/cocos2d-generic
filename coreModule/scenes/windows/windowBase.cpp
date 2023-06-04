@@ -3,6 +3,7 @@
 #include "generic/utilityModule/logManager.h"
 #include "generic/utilityModule/stringUtility.h"
 #include "generic/utilityModule/findUtility.h"
+#include <fmt/core.h>
 
 #include <utility>
 
@@ -26,7 +27,7 @@ windowBase::~windowBase() {
 
 void windowBase::initWindow() {
     this->setName("windowBase");
-    initWithProperties(STRING_FORMAT("windows/%s", this->getName().data()));
+    initWithProperties(fmt::format("windows/{}", this->getName().data()));
     removeJsonData();
     if (auto bgNode = dynamic_cast<ax::Sprite*>(generic::utilityModule::findNode(this, "buttonNode"))) {
         //todo fix this, buttonNode type was deleted

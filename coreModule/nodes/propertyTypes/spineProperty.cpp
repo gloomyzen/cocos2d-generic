@@ -3,6 +3,7 @@
 #include "generic/utilityModule/stringUtility.h"
 #include "spine/spine-cocos2dx.h"
 #include "ui/CocosGUI.h"
+#include <fmt/core.h>
 
 using namespace generic::coreModule;
 
@@ -14,9 +15,9 @@ void spineProperty::parseProperty(ax::Node* node, const jsonObject& object) {
             scale = object["scale"].GetFloat();
         }
         if (object.HasMember("file") && object["file"].IsString()) {
-            auto atlas = STRING_FORMAT("%s.atlas", object["file"].GetString());
-            auto skel = STRING_FORMAT("%s.skel", object["file"].GetString());
-            auto json = STRING_FORMAT("%s.json", object["file"].GetString());
+            auto atlas = fmt::format("{}.atlas", object["file"].GetString());
+            auto skel = fmt::format("{}.skel", object["file"].GetString());
+            auto json = fmt::format("{}.json", object["file"].GetString());
             if (ax::FileUtils::getInstance()->isFileExist(atlas) && ax::FileUtils::getInstance()->isFileExist(skel)) {
                 spine->initWithBinaryFile(skel, atlas, scale);
                 spine->autorelease();
@@ -24,8 +25,7 @@ void spineProperty::parseProperty(ax::Node* node, const jsonObject& object) {
                 spine->initWithJsonFile(json, atlas, scale);
                 spine->autorelease();
             } else {
-                LOG_ERROR(CSTRING_FORMAT("Can't get atlas or binary file for spine '%s'!",
-                                         node->getName().data()));
+                LOG_ERROR("Can't get atlas or binary file for spine '{}'", node->getName().data());
             }
         }
         auto loop = false;
@@ -40,7 +40,7 @@ void spineProperty::parseProperty(ax::Node* node, const jsonObject& object) {
             spine->setSkin(object["skin"].GetString());
         }
     } else {
-        LOG_ERROR(CSTRING_FORMAT("Node '%s' no has spine property!", propertyName.c_str()));
+        LOG_ERROR("Node '{}' no has spine property", propertyName.c_str());
     }
 }
 

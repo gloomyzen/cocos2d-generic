@@ -45,7 +45,7 @@ void clipProperty::parseProperty(ax::Node* node, const jsonObject& object) {
 //            stencil->drawSolidRect(Vec2::ZERO, stencil->getContentSize(), stencilColor);
 //            clipNode->setStencil(stencil);
 //        } else {
-//            LOG_ERROR(STRING_FORMAT("Component '%s' has invalid nodeName!", componentName.c_str()));
+//            LOG_ERROR("Component '{}' has invalid nodeName", componentName.c_str());
 //        }
         auto stencil = ax::utils::createInstance<drawNodeBase>();
         stencil->drawSolidRect(ax::Vec2::ZERO, clipNode->getContentSize(), stencilColor);
@@ -56,7 +56,7 @@ void clipProperty::parseProperty(ax::Node* node, const jsonObject& object) {
         stencil->forceUpdateRect();
         clipNode->setInverted(inverted);
     } else {
-        LOG_ERROR(CSTRING_FORMAT("Node '%s' no has clip property!", propertyName.c_str()));
+        LOG_ERROR("Node '{}' no has clip property", propertyName.c_str());
     }
 }
 

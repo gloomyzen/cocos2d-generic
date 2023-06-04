@@ -26,7 +26,7 @@ void spriteProperty::parseProperty(ax::Node* node, const jsonObject& object) {
         if (object.HasMember("image") && object["image"].IsString()) {
             imagePath = object["image"].GetString();
             if (imagePath.empty()) {
-                LOG_ERROR(CSTRING_FORMAT("Property '%s' has invalid image path!", propertyName.c_str()));
+                LOG_ERROR("Property '{}' has invalid image path", propertyName.c_str());
                 return;
             }
             if (object.HasMember("polygon") && object["polygon"].IsBool()) {
@@ -58,10 +58,10 @@ void spriteProperty::parseProperty(ax::Node* node, const jsonObject& object) {
                 }
             }
         } else {
-            LOG_ERROR(CSTRING_FORMAT("Property '%s' no has image path!", propertyName.c_str()));
+            LOG_ERROR("Property '{}' no has image path", propertyName.c_str());
             return;
         }
     } else {
-        LOG_ERROR(CSTRING_FORMAT("Node '%s' no has sprite property!", propertyName.c_str()));
+        LOG_ERROR("Node '{}' no has sprite property", propertyName.c_str());
     }
 }

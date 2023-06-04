@@ -34,7 +34,7 @@ namespace generic::coreModule {
         }
         void initLayerColor(ax::Color3B color) {
             if (!_bgLayer) {
-                _bgLayer = new ax::LayerColor();
+                _bgLayer = ax::LayerColor::create();
                 _bgLayer->setContentSize(ax::Director::getInstance()->getVisibleSize());
                 this->addChild(_bgLayer, static_cast<int>(eGameLayers::BACKGROUND));
             }

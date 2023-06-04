@@ -43,7 +43,7 @@ void gridProperty::parseProperty(ax::Node* node, const jsonObject& object) {
             grid->setDirection(direction);
         }
     } else {
-        LOG_ERROR(CSTRING_FORMAT("Node '%s' no has grid property!", propertyName.c_str()));
+        LOG_ERROR("Node '{}' no has grid property", propertyName.c_str());
     }
 }
 

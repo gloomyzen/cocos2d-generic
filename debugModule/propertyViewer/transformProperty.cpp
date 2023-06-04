@@ -36,15 +36,24 @@ void transformProperty::viewProperty(ax::Node* node) {
             ax::Vec3 vec3 = { vecPos[0], vecPos[1], vecPos[2] };
             node->setPosition3D(vec3);
         }
-        /**
-         * Pivot
-         */
         if (transform) {
+            /**
+             * Pivot
+             */
             auto nodePivot = transform->getPivotPoint();
             float vecPivot[2] = { nodePivot.x, nodePivot.y };
             ImGui::DragFloat2("Pivot X/Y", vecPivot, 0.01f, -10.f, 10.f);
             if (vecPivot[0] != nodePivot.x || vecPivot[1] != nodePivot.y) {
                 transform->setPivotPoint({ vecPivot[0], vecPivot[1] });
+            }
+            /**
+             * Stretch
+             */
+            auto nodeStretch = transform->getStretch();
+            float vecStretch[2] = { nodeStretch.x, nodeStretch.y };
+            ImGui::DragFloat2("Stretch W/H", vecStretch, 0.01f, 0.f, 10.f);
+            if (vecStretch[0] != nodeStretch.x || vecStretch[1] != nodeStretch.y) {
+                transform->setStretch(vecStretch[0], vecStretch[1]);
             }
         }
         /**

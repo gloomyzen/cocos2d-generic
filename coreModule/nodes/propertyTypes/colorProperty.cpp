@@ -18,7 +18,7 @@ void colorProperty::parseProperty(ax::Node* node, const jsonObject& object) {
                 node->setOpacity(static_cast<uint8_t>(color[3].GetFloat()));
             }
         } else {
-            LOG_ERROR(CSTRING_FORMAT("Node '%s' no has color property!", propertyName.c_str()));
+            LOG_ERROR("Node '{}' no has color property", propertyName.c_str());
         }
     }
 }

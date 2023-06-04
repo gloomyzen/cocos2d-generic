@@ -4,6 +4,7 @@
 #include "generic/coreModule/resources/settings/settingManager.h"
 #include "generic/utilityModule/logManager.h"
 #include "generic/utilityModule/stringUtility.h"
+#include <fmt/core.h>
 
 using namespace generic::coreModule;
 
@@ -17,18 +18,18 @@ rapidjson::Document jsonLoader::loadJson(const std::string& path) {
 
         rapidjson::Writer<rapidjson::StringBuffer> writer(strBuf);
         currentDeviceData.Accept(writer);
-        AXLOG(CSTRING_FORMAT("before current: %s", strBuf.GetString()));
+        LOG_INFO("before current: {}", strBuf.GetString());
         strBuf.Clear();
 
         rapidjson::Writer<rapidjson::StringBuffer> writer2(strBuf);
         currentDeviceData.Accept(writer2);
-        AXLOG(CSTRING_FORMAT("next current: %s", strBuf.GetString()));
+        LOG_INFO("next current: {}", strBuf.GetString());
         mergeObjects(currentDeviceData, nextResolution, currentDeviceData.GetAllocator());
         strBuf.Clear();
 
         rapidjson::Writer<rapidjson::StringBuffer> writer3(strBuf);
         currentDeviceData.Accept(writer3);
-        AXLOG(CSTRING_FORMAT("final current: %s", strBuf.GetString()));
+        LOG_INFO("final current: {}", strBuf.GetString());
     }
     return currentDeviceData;
 }
@@ -42,7 +43,7 @@ rapidjson::Document jsonLoader::stringToJson(const std::string& jsonStr) {
     if (!document.HasParseError()) {
         return document;
     }
-    LOG_ERROR(CSTRING_FORMAT("GetParseError %u\n", document.GetParseError()));
+    LOG_ERROR("GetParseError {}\n", document.GetParseError());
     return nullptr;
 }
 
@@ -65,7 +66,7 @@ rapidjson::Document jsonLoader::findByResolution(const std::string& path) {
         return nullptr;
     }
     auto resolutionPath = GET_RESOLUTION_SETTING()->getCurrentSize()->getPath();
-    auto pathProperties = STRING_FORMAT("%s/%s.json", resolutionPath.c_str(), path.c_str());
+    auto pathProperties = fmt::format("{}/{}.json", resolutionPath.c_str(), path.c_str());
 
     if (!ax::FileUtils::getInstance()->isFileExist(pathProperties)) {
         return nullptr;

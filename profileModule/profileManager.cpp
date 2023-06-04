@@ -5,6 +5,7 @@
 #include "generic/utilityModule/logManager.h"
 #include "generic/utilityModule/jsonHelper.h"
 #include "generic/utilityModule/stringUtility.h"
+#include <fmt/core.h>
 
 using namespace generic;
 using namespace generic::profileModule;
@@ -66,16 +67,16 @@ void profileManager::load() {
     const std::string& path = "config/user_profile";
     auto defaultProfile = GET_JSON_MANAGER()->loadJson(path);
     auto profile =
-      ax::UserDefault::getInstance()->getStringForKey(STRING_FORMAT("profile_%s", APP_NAME.c_str()).c_str(), std::string());
+      ax::UserDefault::getInstance()->getStringForKey(fmt::format("profile_{}", APP_NAME).c_str(), std::string());
     auto localProfile = GET_JSON_MANAGER()->stringToJson(profile.data());
-#ifdef DEBUG
+#ifdef DEBUG_ENABLED
     if (!localProfile.HasParseError() && !localProfile.IsNull()) {
         rapidjson::StringBuffer strBuf;
         strBuf.Clear();
 
         rapidjson::Writer<rapidjson::StringBuffer> writer(strBuf);
         localProfile.Accept(writer);
-        AXLOG(CSTRING_FORMAT("local profile: %s", strBuf.GetString()));
+        LOG_INFO("local profile: {}", strBuf.GetString());
     }
 #endif
     loadProfile(defaultProfile, localProfile);
@@ -98,16 +99,16 @@ void profileManager::save() {
 
     rapidjson::Writer<rapidjson::StringBuffer> writer(strBuf);
     json.Accept(writer);
-#ifdef DEBUG
-    AXLOG(CSTRING_FORMAT("save local profile: %s", strBuf.GetString()));
+#ifdef DEBUG_ENABLED
+    LOG_INFO("save local profile: {}", strBuf.GetString());
 #endif
 
-    ax::UserDefault::getInstance()->setStringForKey(STRING_FORMAT("profile_%s", APP_NAME.c_str()).c_str(), strBuf.GetString());
+    ax::UserDefault::getInstance()->setStringForKey(fmt::format("profile_{}", APP_NAME).c_str(), strBuf.GetString());
 }
 
 void profileManager::loadProfile(const rapidjson::Document& defaultData, const rapidjson::Document& localData) {
     if (!defaultData.IsObject() || defaultData.HasParseError() || defaultData.IsNull()) {
-        LOG_ERROR("Object not found! Profile not loaded!");
+        LOG_ERROR("Object not found! Profile not loaded");
         return;
     }
     auto localProfileValid = !localData.HasParseError() && !localData.IsNull() && localData.IsObject();

@@ -7,6 +7,7 @@
 #include "generic/coreModule/nodes/types/asepriteNode.h"
 #include "generic/utilityModule/logManager.h"
 #include "generic/utilityModule/stringUtility.h"
+#include "generic/coreModule/components/transformComponent.h"
 #include "spine/spine-cocos2dx.h"
 #include "ui/CocosGUI.h"
 #include <map>
@@ -95,7 +96,7 @@ void nodeFactory::readProperty(ax::Node* node,
         return;
 
     if (!hasRegisteredProperty(propertyName)) {
-        LOG_ERROR(CSTRING_FORMAT("Property '%s' was not registered!", propertyName.c_str()));
+        LOG_ERROR("Property '{}' was not registered", propertyName.c_str());
         return;
     }
     if (propertiesMap.count(propertyName) && propertiesMap[propertyName]) {
@@ -112,8 +113,13 @@ ax::Node* nodeFactory::createNodeWithType(const std::string& type) {
     if (nodes.count(type) != 0u) {
         node = nodes[type]();
     } else {
-        LOG_ERROR(CSTRING_FORMAT("Type of node '%s' not registered! Created default node.", type.c_str()));
+        LOG_ERROR("Type of node '{}' not registered. Created default node.", type.c_str());
         node = ax::Node::create();
+    }
+    auto component = dynamic_cast<transformComponent*>(node->getComponent(transformComponent::TRANSFORM_COMPONENT_NAME));
+    if (!component) {
+        component = new transformComponent();
+        node->addComponent(component);
     }
     return node;
 }

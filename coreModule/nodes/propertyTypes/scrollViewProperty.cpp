@@ -79,7 +79,7 @@ void scrollViewProperty::parseProperty(ax::Node* node, const jsonObject& object)
             }
         }
     } else {
-        LOG_ERROR(CSTRING_FORMAT("Node '%s' no has scrollView property!", propertyName.c_str()));
+        LOG_ERROR("Node '{}' no has scrollView property", propertyName.c_str());
     }
 }
 

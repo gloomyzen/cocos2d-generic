@@ -8,6 +8,8 @@
 #include <string>
 #include <tuple>
 #include <functional>
+#include <typeindex>
+#include <typeinfo>
 
 namespace generic::debugModule {
 
@@ -36,7 +38,7 @@ namespace generic::debugModule {
 
         static propertyViewer* _propertyViewer;
         static std::vector<std::pair<std::string, std::function<void()>>> overlayModules;
-        static std::map<std::string, std::string> classList;
+        static std::map<std::type_index, std::string> classList;
     };
 }
 

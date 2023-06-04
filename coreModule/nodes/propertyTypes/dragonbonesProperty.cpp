@@ -33,18 +33,18 @@ void dragonbonesProperty::parseProperty(ax::Node* node, const jsonObject& object
                     if (bone->getAnimation()->hasAnimation(object["animation"].GetString())) {
                         bone->getAnimation()->fadeIn(object["animation"].GetString(), fadeInTime, playTimes);
                     } else {
-                        LOG_ERROR(CSTRING_FORMAT("Can't find animation '%s'", object["animation"].GetString()));
+                        LOG_ERROR("Can't find animation '{}'", object["animation"].GetString());
                     }
                 }
                 rootNode->addChild(bone);
             } else {
-                LOG_ERROR("Can't get any armature from factory!");
+                LOG_ERROR("Can't get any armature from factory");
             }
         }
     } else {
-        LOG_ERROR(CSTRING_FORMAT("Node '%s' no has dragonBones property!", propertyName.c_str()));
+        LOG_ERROR("Node '{}' no has dragonBones property", propertyName.c_str());
     }
 #else
-    LOG_ERROR(CSTRING_FORMAT("Engine can't support dragonBones property!"));
+    LOG_ERROR("Engine can't support dragonBones property");
 #endif
 }

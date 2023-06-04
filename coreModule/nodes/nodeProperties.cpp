@@ -1,6 +1,7 @@
 #include "nodeProperties.h"
 #include "generic/utilityModule/stringUtility.h"
 #include <cassert>
+#include <fmt/core.h>
 
 using namespace generic::coreModule;
 using namespace ax;
@@ -16,26 +17,25 @@ void nodeProperties::initWithProperties(const std::string_view& path, ax::Node* 
     if (!node) {
         node = dynamic_cast<ax::Node*>(this);
         if (!node) {
-            LOG_ERROR("Node is null!");
+            LOG_ERROR("Node is null");
             return;
         }
     }
     if (node->getName().empty()) {
-        LOG_ERROR("Node has no identifier!");
+        LOG_ERROR("Node has no identifier");
         return;
     }
     loadJson(path);
 
     if (propertyData.HasParseError() || !propertyData.IsObject()) {
-        LOG_ERROR(CSTRING_FORMAT("Json file '%s' for node '%s' has errors or not found!", pathProperties.data(), node->getName().data()));
+        LOG_ERROR("Json file '{}' for node '{}' has errors or not found", pathProperties.data(), node->getName().data());
         return;
     }
     if (propertyData.HasMember("struct") && propertyData["struct"].IsObject()) {
         auto strObject = propertyData["struct"].GetObject();
         if (!strObject.HasMember("type") || !strObject.HasMember("name") || !strObject["type"].IsString()
             || !strObject["name"].IsString()) {
-            LOG_ERROR(
-              CSTRING_FORMAT("Json file '%s' for node '%s' not has 'type' and 'name'!", pathProperties.data(), node->getName().data()));
+            LOG_ERROR("Json file '{}' for node '{}' not has 'type' and 'name'", pathProperties.data(), node->getName().data());
             return;
         }
 
@@ -70,7 +70,7 @@ void nodeProperties::loadProperty(ax::Node* node, const std::string_view& name) 
         return;
     }
     if (node->getName().empty()) {
-        LOG_ERROR("Node has no identifier!");
+        LOG_ERROR("Node has no identifier");
         return;
     }
     parseProperties(node, name);
@@ -85,17 +85,17 @@ void nodeProperties::removeJsonData() {
 
 void nodeProperties::loadJson(const std::string_view& path) {
     removeJsonData();
-    pathProperties = STRING_FORMAT("%s%s", defaultNodesPath.data(), path.data());
+    pathProperties = fmt::format("{}{}", defaultNodesPath.data(), path.data());
     propertyData = GET_JSON(pathProperties.data());
 }
 
 void nodeProperties::parseProperties(ax::Node* node, const std::string_view& name) {
     if (propertyData.HasParseError() || !propertyData.IsObject()) {
-        LOG_ERROR(CSTRING_FORMAT("Json file '%s' contains errors or not found!", pathProperties.data()));
+        LOG_ERROR("Json file '{}' contains errors or not found", pathProperties.data());
         return;
     }
     if (!propertyData.HasMember("props") || !propertyData["props"].IsObject()) {
-        LOG_ERROR(CSTRING_FORMAT("Json file '%s' don't have 'props' object!", pathProperties.data()));
+        LOG_ERROR("Json file '{}' don't have 'props' object", pathProperties.data());
         return;
     }
     auto propJson = propertyData["props"].GetObject();
@@ -104,7 +104,7 @@ void nodeProperties::parseProperties(ax::Node* node, const std::string_view& nam
         auto propObj = propJson[nodeName.data()].GetObject();
         for (const auto& propertyName : GET_NODE_FACTORY().getPropertiesPriority()) {
             if (propertyName.empty()) {
-                LOG_ERROR(CSTRING_FORMAT("Bad property '%s' in 'propertyPriorityList'", propertyName.c_str()));
+                LOG_ERROR("Bad property '{}' in 'propertyPriorityList'", propertyName.c_str());
                 continue;
             }
             const auto propertyItr = propObj.FindMember(propertyName.c_str());
