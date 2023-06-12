@@ -49,7 +49,7 @@ namespace generic::coreModule {
             AX_SAFE_RELEASE_NULL(_programState);
         }
         ax::backend::ProgramState* _programState = nullptr;
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+#if (AX_TARGET_PLATFORM == AX_PLATFORM_ANDROID)
         std::string _fragSource;
         ax::EventListenerCustom* _backgroundListener;
 #endif

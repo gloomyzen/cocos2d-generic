@@ -26,7 +26,7 @@ bool effect::initProgramState(const std::string& fragmentFilename) {
     auto fragmentFullPath = fileUtils->fullPathForFilename(fragmentFilename);
     auto fragSource = fileUtils->getStringFromFile(fragmentFullPath);
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+#if (AX_TARGET_PLATFORM == AX_PLATFORM_ANDROID)
     _fragSource = fragSource;
 #endif
     auto program = backend::Device::getInstance()->newProgram(positionTextureColor_vert, fragSource);
