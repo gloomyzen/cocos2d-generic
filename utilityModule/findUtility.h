@@ -27,7 +27,7 @@ namespace generic::utilityModule {
                     return nodeFound;
             }
         }
-        return nullptr;
+        return nodeFound;
     }
 
     static fairygui::GObject* findNode(fairygui::GObject* node, const std::string& name) {
