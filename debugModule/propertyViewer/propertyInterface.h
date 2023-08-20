@@ -3,7 +3,7 @@
 #define GENERIC_PROPERTYINTERFACE_H
 
 #include "axmol.h"
-#include "FairyGUI.h"
+#include "fairygui/FairyGUI.h"
 #include <string>
 
 namespace generic::debugModule {

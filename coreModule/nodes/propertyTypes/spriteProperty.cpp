@@ -5,11 +5,11 @@
 using namespace generic::coreModule;
 
 #ifdef CC_SPRITE_SET_RENDERMODE
-std::map<std::string, ax::Sprite::RenderMode> spriteProperty::renderModeMap = {
-    {"quad", ax::Sprite::RenderMode::QUAD},
-    {"polygon", ax::Sprite::RenderMode::POLYGON},
-    {"slice9", ax::Sprite::RenderMode::SLICE9},
-    {"quad_batchnode", ax::Sprite::RenderMode::QUAD_BATCHNODE}
+std::map<std::string, cocos2d::Sprite::RenderMode> spriteProperty::renderModeMap = {
+    {"quad", cocos2d::Sprite::RenderMode::QUAD},
+    {"polygon", cocos2d::Sprite::RenderMode::POLYGON},
+    {"slice9", cocos2d::Sprite::RenderMode::SLICE9},
+    {"quad_batchnode", cocos2d::Sprite::RenderMode::QUAD_BATCHNODE}
 };
 #endif
 

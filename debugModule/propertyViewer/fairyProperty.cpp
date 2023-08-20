@@ -38,7 +38,7 @@ void fairyProperty::viewPropertyFairyGUI(fairygui::GObject* object) {
 }
 
 void fairyProperty::proceedObject(fairygui::GObject* object) {
-    ImGui::SetNextItemOpen(false, ImGuiCond_Once);
+    /*ImGui::SetNextItemOpen(false, ImGuiCond_Once);
     if (ImGui::CollapsingHeader(ax::StringUtils::format("Custom data (count:%zu)", object->getCustomData().size()).c_str())) {
         for (auto& item : object->getCustomData()) {
             if (item.second.getType() == ax::Value::Type::STRING)
@@ -55,5 +55,5 @@ void fairyProperty::proceedObject(fairygui::GObject* object) {
         }
 //        object->relations().
 //        for ()
-    }
+    }*/
 }

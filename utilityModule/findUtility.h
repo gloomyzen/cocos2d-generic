@@ -4,7 +4,7 @@
 
 #include "randomUtility.h"
 #include "axmol.h"
-#include "FairyGUI.h"
+#include "fairygui/FairyGUI.h"
 #include <tuple>
 #include <vector>
 #include <string>
@@ -27,7 +27,7 @@ namespace generic::utilityModule {
                     return nodeFound;
             }
         }
-        return nodeFound;
+        return nullptr;
     }
 
     static fairygui::GObject* findNode(fairygui::GObject* node, const std::string& name) {

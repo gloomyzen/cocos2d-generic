@@ -221,10 +221,10 @@ ImRect mainDebugOverlay::renderTree(const ax::Vector<ax::Node*>& n) {
         if (classList.count(typeid(*node)) > 0U) {
             className = classList[typeid(*node)];
         }
-        std::string name = ax::StringUtils::format("%s %s%s", className.c_str(), node->getName().data(), node->isVisible() ? "" : " #inactive");
+        std::string name = cocos2d::StringUtils::format("%s %s%s", className.c_str(), node->getName().data(), node->isVisible() ? "" : " #inactive");
         if (auto fairy = dynamic_cast<fairygui::FUIContainer*>(node)) {
             if (fairy->gOwner)
-                name = ax::StringUtils::format("%s[id:%s] %s%s", className.c_str(), fairy->gOwner->id.c_str(), fairy->gOwner->name.c_str(), node->isVisible() ? "" : " #inactive");
+                name = cocos2d::StringUtils::format("%s[id:%s] %s%s", className.c_str(), fairy->gOwner->id.c_str(), fairy->gOwner->name.c_str(), node->isVisible() ? "" : " #inactive");
         }
         ImGuiTreeNodeFlags nodeFlags =
           ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth;
