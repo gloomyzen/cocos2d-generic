@@ -23,7 +23,8 @@ nodeFactory::nodeFactory() {
     /// Core types
     nodes["node"] = []() { return ax::Node::create(); };
     nodes["sprite"] = []() { return ax::Sprite::create(); };
-    nodes["sprite3d"] = []() { return ax::Sprite3D::create(); };
+    nodes["sprite3d"] = []() { return ax::MeshRenderer::create(); };
+    nodes["meshRenderer"] = []() { return ax::MeshRenderer::create(); };
     nodes["label"] = []() { return ax::Label::create(); };
     nodes["layout"] = []() { return ax::ui::Layout::create(); };
     nodes["layer"] = []() { return ax::Layer::create(); };

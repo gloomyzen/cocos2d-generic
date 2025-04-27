@@ -187,9 +187,9 @@ rapidjson::Value nodeProperties::getSettingsData() {
     if (!settingsData.IsObject()) {
         rapidjson::Value data;
         data.SetObject();
-        return data.GetObject();
+        return data;
     }
-    return settingsData.GetObject();
+    return std::move(settingsData);
 }
 
 void nodeProperties::removeSettingsData() {
