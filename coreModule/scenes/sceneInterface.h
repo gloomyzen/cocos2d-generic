@@ -2,7 +2,7 @@
 #ifndef GENERIC_SCENEINTERFACE_H
 #define GENERIC_SCENEINTERFACE_H
 
-#include "axmol.h"
+#include "axmol/axmol.h"
 #include "layersEnum.h"
 #include "generic/coreModule/scenes/windows/windowSystem.h"
 #include <vector>
@@ -32,7 +32,7 @@ namespace generic::coreModule {
         ax::Vec2 getGravity() {
             return _defaultGravity;
         }
-        void initLayerColor(ax::Color3B color) {
+        void initLayerColor(ax::Color32 color) {
             if (!_bgLayer) {
                 _bgLayer = ax::LayerColor::create();
                 _bgLayer->setContentSize(ax::Director::getInstance()->getVisibleSize());

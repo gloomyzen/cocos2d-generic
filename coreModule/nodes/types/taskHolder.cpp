@@ -1,5 +1,5 @@
 #include "taskHolder.h"
-#include "axmol.h"
+#include "axmol/axmol.h"
 #include "generic/coreModule/components/taskHolderComponent.h"
 
 using namespace generic::coreModule;

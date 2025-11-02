@@ -2,7 +2,7 @@
 #ifndef GENERIC_COLORPROPERTY_H
 #define GENERIC_COLORPROPERTY_H
 
-#include "axmol.h"
+#include "axmol/axmol.h"
 #include "generic/utilityModule/jsonHelper.h"
 #include "propertyInterface.h"
 

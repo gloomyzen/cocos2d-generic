@@ -1,14 +1,17 @@
 #include "spineProperty.h"
 #include "generic/utilityModule/logManager.h"
 #include "generic/utilityModule/stringUtility.h"
-#include "spine/spine-cocos2dx.h"
-#include "ui/CocosGUI.h"
+#if defined(AX_ENABLE_EXT_SPINE)
+#include "axmol/spine/spine-cocos2dx.h"
+#endif
+#include "axmol/ui/CocosGUI.h"
 #include <fmt/core.h>
 
 using namespace generic::coreModule;
 
 
 void spineProperty::parseProperty(ax::Node* node, const jsonObject& object) {
+#if defined(AX_ENABLE_EXT_SPINE)
     if (auto spine = dynamic_cast<spine::SkeletonAnimation*>(node)) {
         auto scale = 1.f;
         if (object.HasMember("scale") && object["scale"].IsNumber()) {
@@ -42,5 +45,6 @@ void spineProperty::parseProperty(ax::Node* node, const jsonObject& object) {
     } else {
         LOG_ERROR("Node '{}' no has spine property", propertyName.c_str());
     }
+#endif
 }
 

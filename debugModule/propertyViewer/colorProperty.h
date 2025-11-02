@@ -2,7 +2,7 @@
 #ifndef GENERIC_COLORPROPERTY_H
 #define GENERIC_COLORPROPERTY_H
 
-#include "axmol.h"
+#include "axmol/axmol.h"
 #include "propertyInterface.h"
 
 namespace generic::debugModule {

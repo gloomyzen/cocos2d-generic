@@ -2,7 +2,7 @@
 #ifndef GENERIC_TOUCHESNODE_H
 #define GENERIC_TOUCHESNODE_H
 
-#include "axmol.h"
+#include "axmol/axmol.h"
 #include <functional>
 #include <utility>
 

@@ -2,7 +2,7 @@
 #ifndef GENERIC_DATABASEINTERFACE_H
 #define GENERIC_DATABASEINTERFACE_H
 
-#include "axmol.h"
+#include "axmol/axmol.h"
 #include "generic/utilityModule/logManager.h"
 #include "generic/utilityModule/jsonHelper.h"
 #include <string>

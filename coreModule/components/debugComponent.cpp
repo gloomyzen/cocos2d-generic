@@ -46,18 +46,18 @@ void debugComponent::setDebugEnabled(bool value) {
     }
 }
 
-void debugComponent::setLineColor(ax::Color4F color) {
+void debugComponent::setLineColor(ax::Color32 color) {
     _debugColorLine = color;
 }
 
-void debugComponent::setPointColor(ax::Color4F color) {
+void debugComponent::setPointColor(ax::Color32 color) {
     _debugColorPoint = color;
 }
 
-ax::Color4F debugComponent::getLineColor() {
+ax::Color32 debugComponent::getLineColor() {
     return _debugColorLine;
 }
 
-ax::Color4F debugComponent::getPointColor() {
+ax::Color32 debugComponent::getPointColor() {
     return _debugColorPoint;
 }

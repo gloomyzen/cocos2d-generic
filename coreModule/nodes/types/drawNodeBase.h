@@ -2,7 +2,7 @@
 #ifndef GENERIC_DRAWNODEBASE_H
 #define GENERIC_DRAWNODEBASE_H
 
-#include "axmol.h"
+#include "axmol/axmol.h"
 #include <functional>
 #include <utility>
 
@@ -10,7 +10,7 @@ namespace generic::coreModule {
     class drawNodeBase : public ax::DrawNode {
     private:
         bool autoUpdateEnabled = false;
-        ax::Color4F drawColor;
+        ax::Color32 drawColor;
     public:
         drawNodeBase() {
             setName("drawNodeBase");
@@ -23,7 +23,7 @@ namespace generic::coreModule {
             autoUpdateEnabled = value;
         }
 
-        void setDrawColor(ax::Color4F value) {
+        void setDrawColor(ax::Color32 value) {
             drawColor = value;
         }
 

@@ -2,7 +2,7 @@
 #ifndef GENERIC_NODEPROPERTIES_H
 #define GENERIC_NODEPROPERTIES_H
 
-#include "axmol.h"
+#include "axmol/axmol.h"
 #include "generic/coreModule/nodes/nodeFactory.h"
 #include "generic/coreModule/resources/resourceManager.h"
 #include "generic/coreModule/resources/settings/settingManager.h"

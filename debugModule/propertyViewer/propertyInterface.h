@@ -2,7 +2,7 @@
 #ifndef GENERIC_PROPERTYINTERFACE_H
 #define GENERIC_PROPERTYINTERFACE_H
 
-#include "axmol.h"
+#include "axmol/axmol.h"
 #include "fairygui/FairyGUI.h"
 #include <string>
 

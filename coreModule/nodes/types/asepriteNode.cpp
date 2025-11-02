@@ -70,7 +70,7 @@ bool asepriteNode::loadFrames(const jsonObject& object,
         for (auto [animName, animIndexes] : anim) {
             for (auto i = animIndexes.first; i <= animIndexes.second; ++i) {
                 auto framePtr = std::make_shared<sAnimFrame>();
-                auto cacheId = ax::StringUtils::format("%d_%s", this->_ID, memberNames[static_cast<size_t>(i)].c_str());
+                auto cacheId = fmt::format("%d_%s", this->_ID, memberNames[static_cast<size_t>(i)].c_str());
                 if (framePtr->load(frames[memberNames[static_cast<size_t>(i)].c_str()].GetObject(), fullPath, cacheId)) {
                     animationsMap[animName].emplace_back(framePtr);
                 }
@@ -89,7 +89,7 @@ bool asepriteNode::loadFrames(const jsonObject& object,
             for (auto i = animIndexes.first; i <= animIndexes.second; ++i) {
                 auto obj = frames[static_cast<unsigned>(i)].GetObject();
                 auto framePtr = std::make_shared<sAnimFrame>();
-                auto cacheId = ax::StringUtils::format("%d_%s", this->_ID, obj["filename"].GetString());
+                auto cacheId = fmt::format("%d_%s", this->_ID, obj["filename"].GetString());
                 if (framePtr->load(obj, fullPath, cacheId)) {
                     animationsMap[animName].emplace_back(framePtr);
                 }

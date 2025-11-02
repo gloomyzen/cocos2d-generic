@@ -2,7 +2,7 @@
 #ifndef GENERIC_SPRITEPROPERTY_H
 #define GENERIC_SPRITEPROPERTY_H
 
-#include "axmol.h"
+#include "axmol/axmol.h"
 #include "generic/utilityModule/jsonHelper.h"
 #include "propertyInterface.h"
 #include <map>

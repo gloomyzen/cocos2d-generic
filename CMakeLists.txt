@@ -18,10 +18,8 @@ add_subdirectory(coreModule)
 add_subdirectory(databaseModule)
 add_subdirectory(profileModule)
 add_subdirectory(utilityModule)
-#add_subdirectory(thirdparty/fairygui)
 add_subdirectory(thirdparty/magic_enum)
 target_include_directories(${GENERIC_LIB_NAME}
-#        PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/fairygui
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/magic_enum
 )
 if (DEBUG_ENABLED)

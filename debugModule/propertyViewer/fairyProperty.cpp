@@ -1,6 +1,6 @@
 #include "fairyProperty.h"
 #include "ImGui/imgui/imgui_internal.h"
-#include "axmol.h"
+#include "axmol/axmol.h"
 #include "FairyGUI.h"
 
 using namespace generic::debugModule;
@@ -39,7 +39,7 @@ void fairyProperty::viewPropertyFairyGUI(fairygui::GObject* object) {
 
 void fairyProperty::proceedObject(fairygui::GObject* object) {
     /*ImGui::SetNextItemOpen(false, ImGuiCond_Once);
-    if (ImGui::CollapsingHeader(ax::StringUtils::format("Custom data (count:%zu)", object->getCustomData().size()).c_str())) {
+    if (ImGui::CollapsingHeader(fmt::format("Custom data (count:%zu)", object->getCustomData().size()).c_str())) {
         for (auto& item : object->getCustomData()) {
             if (item.second.getType() == ax::Value::Type::STRING)
                 ImGui::Text("%s: %s ",item.first.c_str(), item.second.asString().c_str());

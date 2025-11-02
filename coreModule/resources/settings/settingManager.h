@@ -2,7 +2,7 @@
 #ifndef GENERIC_SETTINGMANAGER_H
 #define GENERIC_SETTINGMANAGER_H
 
-#include "axmol.h"
+#include "axmol/axmol.h"
 #include <map>
 #include <string>
 #include <utility>

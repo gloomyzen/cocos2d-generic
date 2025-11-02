@@ -2,8 +2,8 @@
 #ifndef GENERIC_BUTTONTYPE_H
 #define GENERIC_BUTTONTYPE_H
 
-#include "ui/CocosGUI.h"
-#include "axmol.h"
+#include "axmol/ui/CocosGUI.h"
+#include "axmol/axmol.h"
 #include "generic/coreModule/nodes/types/eventNode.h"
 #include "generic/coreModule/scenes/sceneInterface.h"
 #include "generic/coreModule/scenes/scenesFactoryInstance.h"
@@ -35,7 +35,7 @@ namespace generic::coreModule {
             listener->setSwallowTouches(true);
             listener->onTouchBegan = [this](ax::Touch* touch, ax::Event* event){
                 auto node = event->getCurrentTarget();
-                if (auto body = node->getPhysicsBody()) {
+                /*if (auto body = node->getPhysicsBody()) {
                     auto touchPos = touch->getStartLocation();
                     auto shapes = body->getShapes();
                     auto find = std::find_if(shapes.begin(), shapes.end(), [&](ax::PhysicsShape* shape){
@@ -44,7 +44,7 @@ namespace generic::coreModule {
                     if (!shapes.empty() && find == shapes.end()) {
                         return false;
                     }
-                } else {
+                } else {*/
                     auto touchLocation = node->convertToNodeSpace(touch->getLocation());
                     auto boundingBox = node->getBoundingBox();
                     boundingBox.origin.x += boundingBox.size.width * node->getAnchorPoint().x;
@@ -58,7 +58,7 @@ namespace generic::coreModule {
                     bool correctNode = boundingBox.containsPoint(touchLocation);
                     if (!correctNode)
                         return false;
-                }
+                /*}*/
                 auto currentAction = node->getActionByTag(static_cast<int>(buttonType::eButtonStatus::END_CLICK));
                 if ((currentAction != nullptr && !getAllowSpamTap() && !currentAction->isDone()) || !getAllowClick()) {
                     return false;
@@ -142,7 +142,7 @@ namespace generic::coreModule {
         bool changeColorByClick = true;
 
     protected:
-        ax::Color3B defaultColor;
+        ax::Color32 defaultColor;
         int moveTimes = 0;
     };
 }

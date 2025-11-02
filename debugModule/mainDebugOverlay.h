@@ -2,7 +2,7 @@
 #ifndef GENERIC_INITDEBUG_H
 #define GENERIC_INITDEBUG_H
 
-#include "axmol.h"
+#include "axmol/axmol.h"
 #include "ImGui/imgui/imgui_internal.h"
 #include <vector>
 #include <string>

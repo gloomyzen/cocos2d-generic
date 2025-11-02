@@ -2,7 +2,7 @@
 #ifndef GENERIC_LOGMANAGER_H
 #define GENERIC_LOGMANAGER_H
 
-#include "axmol.h"
+#include "axmol/axmol.h"
 #include <iostream>
 #include <string>
 #include <utility>

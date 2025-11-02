@@ -8,8 +8,10 @@
 #include "generic/utilityModule/logManager.h"
 #include "generic/utilityModule/stringUtility.h"
 #include "generic/coreModule/components/transformComponent.h"
+#if defined(AX_ENABLE_EXT_SPINE)
 #include "spine/spine-cocos2dx.h"
-#include "ui/CocosGUI.h"
+#endif
+#include "axmol/ui/CocosGUI.h"
 #include <map>
 #include <utility>
 
@@ -23,8 +25,8 @@ nodeFactory::nodeFactory() {
     /// Core types
     nodes["node"] = []() { return ax::Node::create(); };
     nodes["sprite"] = []() { return ax::Sprite::create(); };
-    nodes["sprite3d"] = []() { return ax::MeshRenderer::create(); };
-    nodes["meshRenderer"] = []() { return ax::MeshRenderer::create(); };
+    // nodes["sprite3d"] = []() { return ax::MeshRenderer::create(); };
+    // nodes["meshRenderer"] = []() { return ax::MeshRenderer::create(); };
     nodes["label"] = []() { return ax::Label::create(); };
     nodes["layout"] = []() { return ax::ui::Layout::create(); };
     nodes["layer"] = []() { return ax::Layer::create(); };
@@ -32,7 +34,9 @@ nodeFactory::nodeFactory() {
     nodes["scale9Sprite"] = []() { return ax::ui::Scale9Sprite::create(); };
     /// External types, in generic
     nodes["dragonbones"] = []() { return armatureNode::create(); };
+#if defined(AX_ENABLE_EXT_SPINE)
     nodes["spine"] = []() { return new spine::SkeletonAnimation(); };
+#endif
     nodes["scrollView"] = []() { return ax::ui::ScrollView::create(); };
     nodes["soundButton"] = []() { return soundButton::create(); };
     nodes["grid"] = []() { return gridNode::create(); };

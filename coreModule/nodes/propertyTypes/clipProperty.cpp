@@ -10,7 +10,7 @@ void clipProperty::parseProperty(ax::Node* node, const jsonObject& object) {
     if (auto clipNode = dynamic_cast<ax::ClippingNode*>(node)) {
         bool inverted = false;
         bool autoUpdate = false;
-        auto stencilColor = ax::Color4F::BLACK;
+        auto stencilColor = ax::Color32::BLACK;
         if (object.HasMember("inverted") && object["inverted"].IsBool()) {
             inverted = object["inverted"].GetBool();
         }
@@ -20,7 +20,7 @@ void clipProperty::parseProperty(ax::Node* node, const jsonObject& object) {
         if (object.HasMember("color") && object["color"].IsArray()) {
             auto color = object["color"].GetArray();
             if (color.Size() == 4u) {
-                ax::Color4F rgba;
+                ax::Color32 rgba;
                 rgba.r = color[0].GetFloat() / 255;
                 rgba.g = color[1].GetFloat() / 255;
                 rgba.b = color[2].GetFloat() / 255;

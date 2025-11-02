@@ -1,7 +1,7 @@
 #pragma once
 #ifndef IMGUI_MODULE_IMGUICONTROLLER_H
 #define IMGUI_MODULE_IMGUICONTROLLER_H
-#include "axmol.h"
+#include "axmol/axmol.h"
 #include "ImGui/ImGuiPresenter.h"
 #include <vector>
 #include <functional>

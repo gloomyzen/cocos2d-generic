@@ -1,6 +1,6 @@
 #include "labelProperty.h"
 #include "ImGui/imgui/imgui_internal.h"
-#include "axmol.h"
+#include "axmol/axmol.h"
 
 using namespace generic::debugModule;
 

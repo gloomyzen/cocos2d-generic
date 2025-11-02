@@ -2,8 +2,8 @@
 #ifndef GENERIC_SPRITEPOLYGON_H
 #define GENERIC_SPRITEPOLYGON_H
 
-#include "axmol.h"
-#include "ui/CocosGUI.h"
+#include "axmol/axmol.h"
+#include "axmol/ui/CocosGUI.h"
 
 namespace generic::coreModule {
 

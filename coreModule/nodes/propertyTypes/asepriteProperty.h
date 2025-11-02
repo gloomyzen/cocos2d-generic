@@ -2,7 +2,7 @@
 #ifndef GENERIC_ASEPRITEPROPERTY_H
 #define GENERIC_ASEPRITEPROPERTY_H
 
-#include "axmol.h"
+#include "axmol/axmol.h"
 #include "generic/utilityModule/jsonHelper.h"
 #include "propertyInterface.h"
 

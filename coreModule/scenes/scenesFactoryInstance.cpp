@@ -57,12 +57,12 @@ bool scenesFactoryInstance::runSceneWithParameters(const std::string& sceneName,
             return false;
         scene->setValues(values);
         bool isFirstStart = _currentScene == nullptr;
-        if (scene->isPhysics()) {
+        /*if (scene->isPhysics()) {
             scene->initWithPhysics();
             scene->getPhysicsWorld()->setGravity(scene->getGravity());
-        } else {
+        } else {*/
             scene->init();
-        }
+        /*}*/
         scene->updateLayers(_currentScene);
         if (_currentScene) {
             _currentScene->onSceneClosing();

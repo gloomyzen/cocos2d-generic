@@ -2,7 +2,7 @@
 #ifndef GENERIC_ASEPRITENODE_H
 #define GENERIC_ASEPRITENODE_H
 
-#include "axmol.h"
+#include "axmol/axmol.h"
 #include "generic/utilityModule/jsonHelper.h"
 #include <functional>
 #include <utility>

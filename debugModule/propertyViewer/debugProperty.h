@@ -2,7 +2,7 @@
 #ifndef GENERIC_DEBUGPROPERTY_H
 #define GENERIC_DEBUGPROPERTY_H
 
-#include "axmol.h"
+#include "axmol/axmol.h"
 #include "propertyInterface.h"
 
 namespace generic::debugModule {

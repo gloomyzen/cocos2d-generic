@@ -2,7 +2,7 @@
 #ifndef GENERIC_TRANSFORMCOMPONENT_H
 #define GENERIC_TRANSFORMCOMPONENT_H
 
-#include "axmol.h"
+#include "axmol/axmol.h"
 #include <string_view>
 
 namespace generic::coreModule {

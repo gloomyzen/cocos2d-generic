@@ -2,7 +2,7 @@
 #ifndef GENERIC_WINDOWSYSTEM_H
 #define GENERIC_WINDOWSYSTEM_H
 
-#include "axmol.h"
+#include "axmol/axmol.h"
 #include "generic/coreModule/nodes/nodeProperties.h"
 #include <map>
 #include <string>

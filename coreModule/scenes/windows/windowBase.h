@@ -2,7 +2,7 @@
 #ifndef GENERIC_WINDOWBASE_H
 #define GENERIC_WINDOWBASE_H
 
-#include "axmol.h"
+#include "axmol/axmol.h"
 #include "generic/coreModule/nodes/nodeProperties.h"
 #include "generic/coreModule/nodes/types/soundButton.h"
 #include "generic/coreModule/signals/signalHolder.h"

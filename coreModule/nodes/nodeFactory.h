@@ -2,7 +2,7 @@
 #ifndef GENERIC_NODEFACTORY_H
 #define GENERIC_NODEFACTORY_H
 
-#include "axmol.h"
+#include "axmol/axmol.h"
 #include "generic/coreModule/nodes/propertyTypes/propertyInterface.h"
 #include "generic/utilityModule/jsonHelper.h"
 #include <functional>

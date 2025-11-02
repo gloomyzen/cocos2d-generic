@@ -2,7 +2,7 @@
 #ifndef GENERIC_STRINGUTILITY_H
 #define GENERIC_STRINGUTILITY_H
 
-#include "axmol.h"
+#include "axmol/axmol.h"
 #include <algorithm>
 #include <cctype>
 #include <clocale>
@@ -13,7 +13,7 @@
 #include <utility>
 #include <vector>
 
-#define STRING_FORMAT(string, ...) ax::StringUtils::format(string, ##__VA_ARGS__)
+#define STRING_FORMAT(string, ...) fmt::format(string, ##__VA_ARGS__)
 #define CSTRING_FORMAT(string, ...) generic::utilityModule::stringToChar(STRING_FORMAT(string, ##__VA_ARGS__))
 
 

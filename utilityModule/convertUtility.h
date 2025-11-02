@@ -2,12 +2,12 @@
 #ifndef GENERIC_COVERTUTILITY_H
 #define GENERIC_COVERTUTILITY_H
 
-#include "axmol.h"
+#include "axmol/axmol.h"
 
 namespace generic::utilityModule {
     class convertUtility {
     public:
-        static ax::Color3B changeColorFromTo(const ax::Color3B& from, const ax::Color3B& to, float percent) {
+        static ax::Color32 changeColorFromTo(const ax::Color32& from, const ax::Color32& to, float percent) {
             if (percent > 1.0f)
                 percent = 1.0f;
             else if (percent < 0.f)
@@ -15,14 +15,14 @@ namespace generic::utilityModule {
             auto getColor = [](float a, float b, float p) {
                 return static_cast<int>((b - a) * p + a);
             };
-            ax::Color3B result;
+            ax::Color32 result;
             result.r = getColor(from.r, to.r, percent);
             result.g = getColor(from.g, to.g, percent);
             result.b = getColor(from.b, to.b, percent);
             return result;
         };
 
-        static ax::Color3B changeColorByPercent(const ax::Color3B& color, float percent) {
+        static ax::Color32 changeColorByPercent(const ax::Color32& color, float percent) {
             if (percent > 1.0f)
                 percent = 1.0f;
             else if (percent < 0.f)
@@ -34,7 +34,7 @@ namespace generic::utilityModule {
                     return static_cast<int>(0);
                 return static_cast<int>(a * p);
             };
-            ax::Color3B result;
+            ax::Color32 result;
             result.r = getColor(color.r, percent);
             result.g = getColor(color.g, percent);
             result.b = getColor(color.b, percent);

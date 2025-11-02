@@ -1,5 +1,5 @@
 #include "resourceManager.h"
-#include "axmol.h"
+#include "axmol/axmol.h"
 #include "generic/utilityModule/logManager.h"
 
 using namespace generic::coreModule;
@@ -57,7 +57,7 @@ settingManager* resourceManager::getSettingManager() {
 
 std::string resourceManager::getImagePathWithExtension(const std::string& path) {
     for (const auto& extension : imageExtensions) {
-        auto fullPath = ax::StringUtils::format("%s.%s", path.c_str(), extension.c_str());
+        auto fullPath = STRING_FORMAT("%s.%s", path.c_str(), extension.c_str());
         if (ax::FileUtils::getInstance()->isFileExist(fullPath)) {
             return fullPath;
         }

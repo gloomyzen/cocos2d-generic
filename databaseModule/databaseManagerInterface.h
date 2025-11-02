@@ -2,7 +2,7 @@
 #ifndef GENERIC_DATABASEMANAGER_H
 #define GENERIC_DATABASEMANAGER_H
 
-#include "axmol.h"
+#include "axmol/axmol.h"
 #include "generic/databaseModule/databaseInterface.h"
 #include <map>
 #include <string>

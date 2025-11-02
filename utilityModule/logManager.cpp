@@ -1,5 +1,5 @@
 #include "logManager.h"
-#include "axmol.h"
+#include "axmol/axmol.h"
 #include <map>
 
 using namespace generic::utilityModule;

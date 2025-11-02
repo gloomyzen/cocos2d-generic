@@ -2,7 +2,7 @@
 #ifndef GENERIC_SCENESFACTORYINSTANCE_H
 #define GENERIC_SCENESFACTORYINSTANCE_H
 
-#include "axmol.h"
+#include "axmol/axmol.h"
 #include "generic/coreModule/scenes/layersEnum.h"
 #include <functional>
 #include <map>

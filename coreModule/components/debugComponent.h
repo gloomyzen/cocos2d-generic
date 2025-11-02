@@ -2,7 +2,7 @@
 #ifndef GENERIC_DEBUGCOMPONENT_H
 #define GENERIC_DEBUGCOMPONENT_H
 
-#include "axmol.h"
+#include "axmol/axmol.h"
 #include <string_view>
 
 namespace generic::coreModule {
@@ -17,16 +17,16 @@ namespace generic::coreModule {
         bool isDebugEnabled();
         void setDebugEnabled(bool);
 
-        void setLineColor(ax::Color4F);
-        ax::Color4F getLineColor();
-        void setPointColor(ax::Color4F);
-        ax::Color4F getPointColor();
+        void setLineColor(ax::Color32);
+        ax::Color32 getLineColor();
+        void setPointColor(ax::Color32);
+        ax::Color32 getPointColor();
 
         static std::string_view DEBUG_COMPONENT_NAME;
     protected:
         bool _debugDrawEnabled = false;
-        ax::Color4F _debugColorLine = ax::Color4F::WHITE;
-        ax::Color4F _debugColorPoint = ax::Color4F::RED;
+        ax::Color32 _debugColorLine = ax::Color32::WHITE;
+        ax::Color32 _debugColorPoint = ax::Color32::RED;
 
         ax::DrawNode* _debugDrawNode = nullptr;
     };

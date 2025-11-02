@@ -2,7 +2,7 @@
 #ifndef GENERIC_SOUNDBUTTON_H
 #define GENERIC_SOUNDBUTTON_H
 
-#include "axmol.h"
+#include "axmol/axmol.h"
 #include "generic/coreModule/nodes/nodeProperties.h"
 #include "generic/coreModule/nodes/types/buttonType.h"
 #include "generic/coreModule/nodes/types/eventNode.h"

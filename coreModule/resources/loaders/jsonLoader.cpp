@@ -1,5 +1,5 @@
 #include "jsonLoader.h"
-#include "axmol.h"
+#include "axmol/axmol.h"
 #include "generic/coreModule/resources/resourceManager.h"
 #include "generic/coreModule/resources/settings/settingManager.h"
 #include "generic/utilityModule/logManager.h"

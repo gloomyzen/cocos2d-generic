@@ -2,7 +2,7 @@
 #ifndef GENERIC_AUDIOENGINEINSTANCE_H
 #define GENERIC_AUDIOENGINEINSTANCE_H
 
-#include "audio/AudioEngine.h"
+#include "axmol/audio/AudioEngine.h"
 #include <functional>
 #include <map>
 #include <string>

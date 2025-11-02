@@ -2,7 +2,7 @@
 #ifndef GENERIC_ARMATUREHOLDERNODE_H
 #define GENERIC_ARMATUREHOLDERNODE_H
 
-#include "axmol.h"
+#include "axmol/axmol.h"
 #if defined(AX_BUILD_WITH_DRANGBONES) && AX_BUILD_WITH_DRANGBONES
 #include "DragonBones/CCDragonBonesHeaders.h"
 #include "cocos-ext.h"

@@ -2,10 +2,10 @@
 #ifndef GENERIC_SCROLLVIEWPROPERTY_H
 #define GENERIC_SCROLLVIEWPROPERTY_H
 
-#include "axmol.h"
+#include "axmol/axmol.h"
 #include "generic/utilityModule/jsonHelper.h"
 #include "propertyInterface.h"
-#include "ui/CocosGUI.h"
+#include "axmol/ui/CocosGUI.h"
 #include <string>
 #include <map>
 

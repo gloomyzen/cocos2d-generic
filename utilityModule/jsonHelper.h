@@ -4,7 +4,7 @@
 #ifdef GetObject //fix win32 f***ing api
 #undef GetObject
 #endif
-#include "axmol.h"
+#include "axmol/axmol.h"
 #include "rapidjson/document.h"
 #include "rapidjson/istreamwrapper.h"
 #include "rapidjson/ostreamwrapper.h"

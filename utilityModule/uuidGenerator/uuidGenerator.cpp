@@ -1,6 +1,6 @@
 #include "uuidGenerator.h"
 #include "uuid.h"
-#include "axmol.h"
+#include "axmol/axmol.h"
 
 using namespace generic::utilityModule;
 

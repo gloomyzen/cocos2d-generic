@@ -2,7 +2,7 @@
 #ifndef GENERIC_NODE3D_H
 #define GENERIC_NODE3D_H
 
-#include "axmol.h"
+#include "axmol/axmol.h"
 #include <functional>
 #include <utility>
 

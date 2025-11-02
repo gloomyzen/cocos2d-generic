@@ -2,7 +2,7 @@
 #ifndef GENERIC_LABELPROPERTY_H
 #define GENERIC_LABELPROPERTY_H
 
-#include "axmol.h"
+#include "axmol/axmol.h"
 #include "generic/utilityModule/jsonHelper.h"
 #include "propertyInterface.h"
 #include <string>

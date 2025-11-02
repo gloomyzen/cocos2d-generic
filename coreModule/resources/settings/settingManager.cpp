@@ -86,7 +86,7 @@ bool settingManager::init(bool isMobile, const std::string& settingName) {
     if (isMobile) {
         using namespace generic::utilityModule;
         auto director = ax::Director::getInstance();
-        auto glView = director->getGLView();
+        auto glView = director->getRenderView();
         auto currentRes = glView->getDesignResolutionSize();
         auto current = currentRes.height / currentRes.width;
         int lastSteps = 0;

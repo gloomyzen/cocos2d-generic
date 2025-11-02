@@ -2,7 +2,7 @@
 #ifndef GENERIC_FAIRYPROPERTY_H
 #define GENERIC_FAIRYPROPERTY_H
 
-#include "axmol.h"
+#include "axmol/axmol.h"
 #include "propertyInterface.h"
 #include <vector>
 

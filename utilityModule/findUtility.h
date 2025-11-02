@@ -3,8 +3,10 @@
 #define GENERIC_FINDUTILITY_H
 
 #include "randomUtility.h"
-#include "axmol.h"
+#include "axmol/axmol.h"
+#if defined(AX_ENABLE_EXT_FAIRYGUI)
 #include "fairygui/FairyGUI.h"
+#endif
 #include <tuple>
 #include <vector>
 #include <string>
@@ -30,6 +32,8 @@ namespace generic::utilityModule {
         return nullptr;
     }
 
+#if defined(AX_ENABLE_EXT_FAIRYGUI)
+
     static fairygui::GObject* findNode(fairygui::GObject* node, const std::string& name) {
         if (!node || name.empty())
             return nullptr;
@@ -50,6 +54,8 @@ namespace generic::utilityModule {
         }
         return nullptr;
     }
+
+#endif
 
     class findUtility {
     public:

@@ -2,7 +2,7 @@
 #ifndef GENERIC_TASKHOLDERCOMPONENT_H
 #define GENERIC_TASKHOLDERCOMPONENT_H
 
-#include "axmol.h"
+#include "axmol/axmol.h"
 #include <string_view>
 
 namespace generic::coreModule {

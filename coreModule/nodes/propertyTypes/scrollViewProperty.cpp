@@ -1,7 +1,7 @@
 #include "scrollViewProperty.h"
 #include "generic/utilityModule/logManager.h"
 #include "generic/utilityModule/stringUtility.h"
-#include "ui/CocosGUI.h"
+#include "axmol/ui/CocosGUI.h"
 
 using namespace generic::coreModule;
 

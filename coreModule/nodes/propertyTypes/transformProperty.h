@@ -2,7 +2,7 @@
 #ifndef GENERIC_TRANSFORMPROPERTY_H
 #define GENERIC_TRANSFORMPROPERTY_H
 
-#include "axmol.h"
+#include "axmol/axmol.h"
 #include "generic/utilityModule/jsonHelper.h"
 #include "propertyInterface.h"
 

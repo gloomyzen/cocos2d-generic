@@ -1,7 +1,7 @@
 #include "spineProperty.h"
 #include "generic/debugModule/imguiController.h"
 #include "ImGui/imgui/imgui_internal.h"
-#include "axmol.h"
+#include "axmol/axmol.h"
 #include "spine/spine-cocos2dx.h"
 
 using namespace generic::debugModule;

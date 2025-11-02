@@ -1,6 +1,6 @@
 #include "audioEngineInstance.h"
 
-#include "axmol.h"
+#include "axmol/axmol.h"
 #include "generic/utilityModule/logManager.h"
 #include "generic/utilityModule/jsonHelper.h"
 #include <utility>

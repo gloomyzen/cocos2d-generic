@@ -8,7 +8,7 @@
 #include "labelProperty.h"
 #include "debugProperty.h"
 #include "fairyProperty.h"
-#include "axmol.h"
+#include "axmol/axmol.h"
 #include "FairyGUI.h"
 
 using namespace generic::debugModule;
