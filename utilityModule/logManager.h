@@ -57,13 +57,13 @@ namespace generic::utilityModule {
             // using native axmol logging to the console
             switch (level) {
             case eLogTypes::LOG_ERROR:
-                AXLOGERROR("[ERROR] %s", fmt_full.c_str());
+                AXLOGERROR("[ERROR] {}", fmt_full.c_str());
                 break;
             case eLogTypes::LOG_WARNING:
-                AXLOGWARN("[WARNING] %s", fmt_full.c_str());
+                AXLOGWARN("[WARNING] {}", fmt_full.c_str());
                 break;
             case eLogTypes::LOG_INFO:
-                AXLOG("[INFO] %s", fmt_full.c_str());
+                AXLOG("[INFO] {}", fmt_full.c_str());
                 break;
             }
 #endif// DEBUG
