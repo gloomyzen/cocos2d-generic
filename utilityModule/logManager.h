@@ -53,20 +53,20 @@ namespace generic::utilityModule {
             auto&& fmt_args = fmt::make_format_args(args...);
             auto fmt_str = fmt::vformat(format, fmt_args);
             auto fmt_full = fmt::format("{}: {}", location, fmt_str);
-#ifdef DEBUG_ENABLED
+// #ifdef DEBUG_ENABLED
             // using native axmol logging to the console
             switch (level) {
             case eLogTypes::LOG_ERROR:
-                AXLOGERROR("[ERROR] {}", fmt_full.c_str());
+                AXLOG_WITH_LEVEL(ax::LogLevel::Error, "[ERROR] {}", fmt_full.c_str());
                 break;
             case eLogTypes::LOG_WARNING:
-                AXLOGWARN("[WARNING] {}", fmt_full.c_str());
+                AXLOG_WITH_LEVEL(ax::LogLevel::Warn, "[WARNING] {}", fmt_full.c_str());
                 break;
             case eLogTypes::LOG_INFO:
-                AXLOG("[INFO] {}", fmt_full.c_str());
+                AXLOG_WITH_LEVEL(ax::LogLevel::Info, "[INFO] {}", fmt_full.c_str());
                 break;
             }
-#endif// DEBUG
+// #endif// DEBUG
             addLogMessage(sLogMessage(level, fmt_full));
             if (makeAssert) {
                 assert(false && fmt_full.c_str());

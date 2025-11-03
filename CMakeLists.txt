@@ -22,10 +22,10 @@ add_subdirectory(thirdparty/magic_enum)
 target_include_directories(${GENERIC_LIB_NAME}
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/magic_enum
 )
-if (DEBUG_ENABLED)
-    message("Debug module enabled.")
-    add_subdirectory(debugModule)
-endif ()
+#if (DEBUG_ENABLED)
+#    message("Debug module enabled.")
+#    add_subdirectory(debugModule)
+#endif ()
 
 set(GAME_HEADER ${GAME_HEADER} ${GENERIC_HEADER} PARENT_SCOPE)
 set(GAME_SOURCE ${GAME_SOURCE} ${GENERIC_SOURCE} PARENT_SCOPE)
