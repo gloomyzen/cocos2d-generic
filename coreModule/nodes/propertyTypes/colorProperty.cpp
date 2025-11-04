@@ -13,6 +13,11 @@ void colorProperty::parseProperty(ax::Node* node, const jsonObject& object) {
             rgb.r = static_cast<uint8_t>(color[0].GetFloat());
             rgb.g = static_cast<uint8_t>(color[1].GetFloat());
             rgb.b = static_cast<uint8_t>(color[2].GetFloat());
+            if (color.Size() == 4u) {
+                rgb.a = static_cast<uint8_t>(color[3].GetFloat());
+            } else {
+                rgb.a = 255;
+            }
             node->setColor(rgb);
             if (color.Size() == 4u) {
                 node->setOpacity(static_cast<uint8_t>(color[3].GetFloat()));
