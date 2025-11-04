@@ -106,36 +106,44 @@ bool asepriteNode::hasAnimation(const std::string& name) {
 }
 
 bool asepriteNode::setAnimation(const std::string& name, bool loop) {
-    if (hasAnimation(name)) {
-        animation = name;
-        const auto& animations = animationsMap[animation];
-        ax::Vector<ax::AnimationFrame*> list;
-        float allDuration = 0.f;
-        for (const auto& item : animations) {
-            if (auto spriteFrame = ax::SpriteFrameCache::getInstance()->getSpriteFrameByName(item->spriteFrameId)) {
-                auto frame = ax::AnimationFrame::create(spriteFrame, item->duration, {});
-                allDuration += item->duration;
-                list.pushBack(frame);
-            }
-        }
-        auto anim = ax::Animation::create(list, allDuration);
-        auto animAction = ax::Animate::create(anim);
-        if (auto currentAction = getActionByTag(animTag)) {
-            stopAction(currentAction);
-        }
-        if (loop) {
-            auto action = ax::RepeatForever::create(animAction);
-            action->setTag(animTag);
-            runAction(action);
-        } else {
-            animAction->setTag(animTag);
-            runAction(animAction);
-        }
-        ax::Sprite::init();
+    if (!hasAnimation(name)) return false;
 
-        return true;
+    animation = name;
+
+    const auto& animItems = animationsMap[animation];
+    if (animItems.empty()) return false;
+
+    ax::Vector<ax::AnimationFrame*> frames;
+    frames.reserve(animItems.size());
+
+    for (const auto& item : animItems) {
+        if (auto sf = ax::SpriteFrameCache::getInstance()->getSpriteFrameByName(item->spriteFrameId)) {
+            frames.pushBack(ax::AnimationFrame::create(sf, item->duration, {}));
+        }
     }
-    return false;
+
+    if (frames.empty()) return false;
+
+    this->setSpriteFrame(frames.front()->getSpriteFrame());
+
+    float delayPerUnit = 1.0f;
+
+    auto anim = ax::Animation::create(frames, delayPerUnit);
+    anim->setRestoreOriginalFrame(false);
+
+    auto animAction = ax::Animate::create(anim);
+
+    if (auto currentAction = getActionByTag(animTag)) stopAction(currentAction);
+
+    if (loop) {
+        auto action = ax::RepeatForever::create(animAction);
+        action->setTag(animTag);
+        runAction(action);
+    } else {
+        animAction->setTag(animTag);
+        runAction(animAction);
+    }
+    return true;
 }
 
 //void asepriteNode::setUsePixelMode(bool value) {
