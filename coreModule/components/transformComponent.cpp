@@ -15,13 +15,16 @@ void transformComponent::update(float delta) {
     Component::update(delta);
     if (_isPivotPointEnabled) {
         if (_owner && _owner->getParent()) {
-            auto parent = _owner->getParent();
-            ax::Mat4 mat;
-            mat.m[12] = parent->getContentSize().width * _pivotPoint.x;
-            mat.m[13] = parent->getContentSize().height * _pivotPoint.y;
-            _owner->setAdditionalTransform(&mat);
-            if (_pivotPoint.x == 0.f && _pivotPoint.y == 0.f)
-                _isPivotPointEnabled = false;
+            // auto parent = _owner->getParent();
+            // ax::Mat4 mat;
+            // mat.m[12] = parent->getContentSize().width * _pivotPoint.x;
+            // mat.m[13] = parent->getContentSize().height * _pivotPoint.y;
+            // _owner->setAdditionalTransform(&mat);
+            _owner->setPivotPoint(_pivotPoint);
+            // not correct // _owner->setPositionNormalized(_pivotPoint);
+            // not correct // _owner->setIgnoreAnchorPointForPosition(false);
+            // if (_pivotPoint.x == 0.f && _pivotPoint.y == 0.f)
+            _isPivotPointEnabled = false;
         }
     }
     if (_isStretchEnabled) {

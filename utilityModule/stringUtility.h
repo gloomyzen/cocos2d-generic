@@ -13,10 +13,6 @@
 #include <utility>
 #include <vector>
 
-#define STRING_FORMAT(string, ...) fmt::format(string, ##__VA_ARGS__)
-#define CSTRING_FORMAT(string, ...) generic::utilityModule::stringToChar(STRING_FORMAT(string, ##__VA_ARGS__))
-
-
 namespace generic::utilityModule {
 
     std::string ltrim(std::string s);

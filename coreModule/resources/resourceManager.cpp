@@ -57,7 +57,7 @@ settingManager* resourceManager::getSettingManager() {
 
 std::string resourceManager::getImagePathWithExtension(const std::string& path) {
     for (const auto& extension : imageExtensions) {
-        auto fullPath = STRING_FORMAT("{}.{}", path.c_str(), extension.c_str());
+        auto fullPath = fmt::format("{}.{}", path.c_str(), extension.c_str());
         if (ax::FileUtils::getInstance()->isFileExist(fullPath)) {
             return fullPath;
         }
