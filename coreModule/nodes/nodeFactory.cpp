@@ -44,7 +44,7 @@ nodeFactory::nodeFactory() {
     nodes["aseprite"] = []() { return asepriteNode::create(); };
 
     // prop types parser
-    propertiesMap["baseProperty"] = new baseProperty("baseProperty");
+    propertiesMap["transformProperty"] = new transformProperty("transformProperty");
     propertiesMap["labelProperty"] = new labelProperty("labelProperty");
     propertiesMap["colorProperty"] = new colorProperty("colorProperty");
     propertiesMap["gridProperty"] = new gridProperty("gridProperty");
@@ -57,7 +57,7 @@ nodeFactory::nodeFactory() {
     propertiesMap["asepriteProperty"] = new asepriteProperty("asepriteProperty");
 
     propertyPriorityList = { "spriteProperty", "labelProperty", "dragonbonesProperty", "spineProperty", "scale9SpriteProperty", "asepriteProperty",
-                             "colorProperty", "scrollViewProperty", "gridProperty", "clipProperty", "baseProperty" };
+                             "colorProperty", "scrollViewProperty", "gridProperty", "clipProperty", "transformProperty" };
 }
 
 nodeFactory::~nodeFactory() {

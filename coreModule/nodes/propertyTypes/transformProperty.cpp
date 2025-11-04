@@ -6,7 +6,7 @@
 using namespace generic::coreModule;
 
 
-void baseProperty::parseProperty(ax::Node* node, const jsonObject& object) {
+void transformProperty::parseProperty(ax::Node* node, const jsonObject& object) {
     if (object.HasMember("position")) {
         auto positions = object["position"].GetArray();
         if (positions.Size() == 2u) {
