@@ -29,7 +29,7 @@ namespace generic::utilityModule {
                     return nodeFound;
             }
         }
-        return nullptr;
+        return nodeFound;
     }
 
 #if defined(AX_ENABLE_EXT_FAIRYGUI)
