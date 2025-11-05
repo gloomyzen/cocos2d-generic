@@ -10,7 +10,7 @@ using namespace generic::audioModule;
 audioEngineInstance* audioEngineInstance::pInstance = nullptr;
 bool audioEngineInstance::destroyed = false;
 
-std::vector<std::string> audioEngineInstance::reservedPrefix = {"ui.", "music.", "gameScene."};
+std::vector<std::string> audioEngineInstance::reservedPrefix = {"ui.", "music."};
 
 audioEngineInstance::audioEngineInstance() {
     // load json
