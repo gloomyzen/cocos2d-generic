@@ -1,7 +1,7 @@
 #include "transformProperty.h"
+#include "generic/coreModule/components/transformComponent.h"
 #include "generic/utilityModule/logManager.h"
 #include "generic/utilityModule/stringUtility.h"
-#include "generic/coreModule/components/transformComponent.h"
 
 using namespace generic::coreModule;
 
@@ -45,18 +45,18 @@ void transformProperty::parseProperty(ax::Node* node, const jsonObject& object) 
             float scaleX, scaleY;
             scaleX = scaleY = .0f;
             if (auto sprite = dynamic_cast<ax::Sprite*>(node)) {
-//                if (sprite->getRenderMode() == ax::Sprite::RenderMode::QUAD_BATCHNODE
-//                    || sprite->getRenderMode() == ax::Sprite::RenderMode::POLYGON) {
-                    onlyScaleMode = true;
-                    const auto& content = sprite->getContentSize();
-                    auto _size = ax::Size();
-                    _size.width = size[0].GetFloat();
-                    _size.height = size[1].GetFloat();
-                    if (content.width != 0.f) {
-                        scaleX = _size.width / content.width;
-                        scaleY = _size.height / content.height;
-                    }
-//                }
+                //                if (sprite->getRenderMode() == ax::Sprite::RenderMode::QUAD_BATCHNODE
+                //                    || sprite->getRenderMode() == ax::Sprite::RenderMode::POLYGON) {
+                onlyScaleMode = true;
+                const auto& content = sprite->getContentSize();
+                auto _size = ax::Size();
+                _size.width = size[0].GetFloat();
+                _size.height = size[1].GetFloat();
+                if (content.width != 0.f) {
+                    scaleX = _size.width / content.width;
+                    scaleY = _size.height / content.height;
+                }
+                //                }
             }
             if (onlyScaleMode) {
                 node->setScaleX(scaleX);
@@ -101,7 +101,15 @@ void transformProperty::parseProperty(ax::Node* node, const jsonObject& object) 
                 component = new transformComponent();
                 node->addComponent(component);
             }
-            component->setStretch(stretch[0].GetFloat(), stretch[1].GetFloat());
+            // component->setStretch(stretch[0].GetFloat(), stretch[1].GetFloat());
+            const auto setStretch = [](ax::Node* node, float w, float h) {
+                auto visibleSize = ax::Director::getInstance()->getVisibleSize();
+                auto _size = ax::Size();
+                _size.width = visibleSize.width * w;
+                _size.height = visibleSize.height * h;
+                node->setContentSize(_size);
+            };
+            setStretch(node, stretch[0].GetFloat(), stretch[1].GetFloat());
         } else {
             LOG_ERROR("Property '{}' has wrong '{}' stretch keys", propertyName.c_str(), stretch.Size());
         }
