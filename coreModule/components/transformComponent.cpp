@@ -20,7 +20,7 @@ void transformComponent::update(float delta) {
             // mat.m[12] = parent->getContentSize().width * _pivotPoint.x;
             // mat.m[13] = parent->getContentSize().height * _pivotPoint.y;
             // _owner->setAdditionalTransform(&mat);
-            _owner->setPivotPoint(_pivotPoint);
+            // _owner->setPivotPoint(_pivotPoint);
             // not correct // _owner->setPositionNormalized(_pivotPoint);
             // not correct // _owner->setIgnoreAnchorPointForPosition(false);
             // if (_pivotPoint.x == 0.f && _pivotPoint.y == 0.f)
@@ -28,13 +28,13 @@ void transformComponent::update(float delta) {
         }
     }
     if (_isStretchEnabled) {
-        if (_owner && _owner->getParent()) {
-            auto parent = _owner->getParent();
-            auto size = parent->getContentSize();
-            size.x *= _stretch.x;
-            size.y *= _stretch.y;
-            _owner->setContentSize(size);
-        }
+        // if (_owner && _owner->getParent()) {
+        //     auto parent = _owner->getParent();
+        //     auto size = parent->getContentSize();
+        //     size.x *= _stretch.x;
+        //     size.y *= _stretch.y;
+        //     _owner->setContentSize(size);
+        // }
     }
 }
 
