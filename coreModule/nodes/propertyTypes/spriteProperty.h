@@ -17,7 +17,7 @@ namespace generic::coreModule {
 
 
     private:
-#ifdef CC_SPRITE_SET_RENDERMODE
+#ifdef AX_SPRITE_SET_RENDERMODE
         static std::map<std::string, ax::Sprite::RenderMode> renderModeMap;
 #endif
     };

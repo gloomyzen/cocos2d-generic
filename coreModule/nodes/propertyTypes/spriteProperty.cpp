@@ -4,7 +4,7 @@
 
 using namespace generic::coreModule;
 
-#ifdef CC_SPRITE_SET_RENDERMODE
+#ifdef AX_SPRITE_SET_RENDERMODE
 std::map<std::string, ax::Sprite::RenderMode> spriteProperty::renderModeMap = {
     {"quad", ax::Sprite::RenderMode::QUAD},
     {"polygon", ax::Sprite::RenderMode::POLYGON},
@@ -32,7 +32,7 @@ void spriteProperty::parseProperty(ax::Node* node, const jsonObject& object) {
             if (object.HasMember("polygon") && object["polygon"].IsBool()) {
                 isPoly = object["polygon"].GetBool();
             }
-#ifdef CC_SPRITE_SET_RENDERMODE
+#ifdef AX_SPRITE_SET_RENDERMODE
             if (object.HasMember("renderMode") && object["renderMode"].IsString()) {
                 auto renderModeStr = object["renderMode"].GetString();
                 if (renderModeMap.count(renderModeStr)) {
