@@ -25,7 +25,7 @@ void transformProperty::parseProperty(ax::Node* node, const jsonObject& object) 
                 component = new transformComponent();
                 node->addComponent(component);
             }
-            // component->setPivotPoint(ax::Vec2(pivot[0].GetFloat(), pivot[1].GetFloat()));
+            component->setPivotPoint(ax::Vec2(pivot[0].GetFloat(), pivot[1].GetFloat()));
             node->setPivotPoint(ax::Vec2(pivot[0].GetFloat(), pivot[1].GetFloat()));
         } else {
             LOG_ERROR("Property '{}' has wrong '{}' pivot keys", propertyName.c_str(), pivot.Size());
@@ -102,7 +102,7 @@ void transformProperty::parseProperty(ax::Node* node, const jsonObject& object) 
                 component = new transformComponent();
                 node->addComponent(component);
             }
-            // component->setStretch(stretch[0].GetFloat(), stretch[1].GetFloat());
+            component->setStretch(stretch[0].GetFloat(), stretch[1].GetFloat());
             const auto setStretch = [](ax::Node* node, float w, float h) {
                 auto visibleSize = ax::Director::getInstance()->getVisibleSize();
                 auto _size = ax::Size();

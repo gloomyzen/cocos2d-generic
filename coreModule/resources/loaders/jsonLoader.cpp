@@ -4,7 +4,6 @@
 #include "generic/coreModule/resources/settings/settingManager.h"
 #include "generic/utilityModule/logManager.h"
 #include "generic/utilityModule/stringUtility.h"
-#include "magic_enum.hpp"
 #include <fmt/core.h>
 
 using namespace generic::coreModule;
@@ -44,8 +43,8 @@ rapidjson::Document jsonLoader::stringToJson(const std::string& jsonStr) {
     if (!document.HasParseError()) {
         return document;
     }
-    auto errorType = magic_enum::enum_name(document.GetParseError());
-    LOG_ERROR("GetParseError {}\n", errorType);
+    // auto errorType = magic_enum::enum_name(document.GetParseError());
+    LOG_ERROR("GetParseError {}\n", static_cast<int>(document.GetParseError()));
     return nullptr;
 }
 
